@@ -12,9 +12,15 @@ const Dabeen = ({Component, store}) => {
     return (
         // <Provider store={store}>
         <>
+        <style jsx global>{`
+        body {
+            font-family: 'Yeon Sung', cursive;
+        }
+      `}</style>
             <Head>
                 <title>Dabeen</title>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"/>
+                <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
             </Head>
                 <AppLayout>
                     <Component/>
