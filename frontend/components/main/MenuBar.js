@@ -13,8 +13,6 @@ const Menubar = styled.div`
         justify-content: center;
         align-items: center;
     }
-
-
 `;
 
 const MenuBar = () => {
