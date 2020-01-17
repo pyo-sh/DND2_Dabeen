@@ -1,11 +1,14 @@
 import React from "react";
-import Login from "./signUp/login";
+import SignUp from './signUp/SignUp';
+import RegistSupplier from './signUp/RegistSupplier';
 
-const AppLayout = ({children}) => {
+const AppLayout = ({ children }) => {
   return (
-      <>
-      {children}
-      </>
+      <div>
+        {/* <SignUp></SignUp> */}
+        <RegistSupplier></RegistSupplier>
+        {children}
+      </div>
   );
 };
 
