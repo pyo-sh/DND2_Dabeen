@@ -10,14 +10,15 @@ import reducer from '../reducers';
 
 const Dabeen = ({Component, store}) => {
     return (
-        <>{/*<Provider store={store}>*/}
+      {/* <Provider store={store}> // 컴포넌트가 AppLayout의 props로 듶어감 */}
+      <>
             <Head>
                 <title>Dabeen</title>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"/>
             </Head>
-                <AppLayout>
-                    <Component/>
-                </AppLayout>
+            <AppLayout>
+                <Component/>
+            </AppLayout>
         {/* </Provider> // 컴포넌트가 AppLayout의 props로 듶어감 */}</>
     );
 };
