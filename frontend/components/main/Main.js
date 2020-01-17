@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
+import LiveHelpRequest from './LiveHelpRequest';
 
 const MainForm = styled.div`
     display: flex;
@@ -66,6 +67,7 @@ const Main = () => {
                 <div className="liveHelpRequest">메뉴3</div>
                 <div className="liveHelpRequest">메뉴4</div>
             </LiveHelpRequestMenuBar>
+            <LiveHelpRequest />
         </MainForm>
     );
 };
