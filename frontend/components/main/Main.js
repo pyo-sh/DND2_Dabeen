@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
+import MainDaBeenerProfile from './MainDaBeenerProfile';
+import MainBottom from './MainBottom';
 
 const MainForm = styled.div`
     display: flex;
@@ -22,7 +24,7 @@ const MainForm = styled.div`
     }
 
     & > h1 {
-        margin-top: 50px;
+        margin-top: 70px;
         color: gray;
         font-size: 30px;
     }
@@ -51,7 +53,7 @@ const Main = () => {
                     대충 우리 사이트 설명 어쩌고 저쩌고 다빈이라는 이름 예쁘다
                     나는 딸 가지면 이름을 아영이로 짓고싶다 ^^!
                     <br />
-                    배경은 사진 넣으면ㄷ ㅚㅁㄷ
+                    배경은 사진 넣으면됩니당.
                 </p>
             </div>
             <div className="buttonForm"> {/* 카테고리 */}   
@@ -68,6 +70,9 @@ const Main = () => {
                 <div className="liveHelpRequest">메뉴4</div>
             </LiveHelpRequestMenuBar>
             <LiveHelpRequest />
+            <h1>내 주변의 높은 평점을 가진 DaBeener를 확인하세요!</h1>
+            <MainDaBeenerProfile />
+            <MainBottom />
         </MainForm>
     );
 };
