@@ -1,10 +1,10 @@
 import React from "react";
-import PostInfo from "../components/posts/PostInfo";
+import User from "../components/myPage/User";
 
 const Home = () => {
   return (
     <div>
-      <PostInfo/>
+      <User/>
     </div>
   );
 };

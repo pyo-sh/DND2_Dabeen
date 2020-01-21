@@ -14,7 +14,7 @@ const Dabeen = ({Component, store}) => {
         <>
         <style jsx global>{`
         body {
-            font-family: 'Yeon Sung', cursive;
+            font-family: 'Yeon Sung', 'Noto Sans KR', sans-serif ;
         }
       `}</style>
             <Head>

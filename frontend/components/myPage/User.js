@@ -45,7 +45,7 @@ const User = () => {
   return (
     <UserBox>
       <div className="pic">
-        <img src="/static/react.png"></img>
+        <img src="/react.png"></img>
       </div>
       <div>
         <div className="idBox">
