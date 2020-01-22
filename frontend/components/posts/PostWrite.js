@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Select, Row, Col } from 'antd';
+import { Select, Row, Col, TimePicker } from 'antd';
+
+const format = 'HH:mm';
 
 const PostWriteForm = styled.div`
     display: flex;
@@ -31,6 +33,9 @@ const PostWrite = () => {
                     </Select>
                 </Col>
                 <Col span={8}>시간</Col>
+                <Col span={8} offset={8}>
+                    <TimePicker format={format} />
+                </Col>
             </Row>
         </PostWriteForm>
     );
