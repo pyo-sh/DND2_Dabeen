@@ -10,18 +10,23 @@ import reducer from '../reducers';
 
 const Dabeen = ({Component, store}) => {
     return (
-    <>
-      {/* <Provider store={store}> // 컴포넌트가 AppLayout의 props로 듶어감 */}
-    
+        // <Provider store={store}>
+        <>
+        <style jsx global>{`
+        body {
+            font-family: 'Yeon Sung', 'Noto Sans KR', sans-serif ;
+        }
+      `}</style>
             <Head>
                 <title>Dabeen</title>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"/>
+                <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
             </Head>
-            <AppLayout>
-                <Component/>
-            </AppLayout>
-        {/* </Provider> // 컴포넌트가 AppLayout의 props로 듶어감 */}
-    </>
+                <AppLayout>
+                    <Component/>
+                </AppLayout>
+        </>
+        // </Provider> // 컴포넌트가 AppLayout의 props로 듶어감
     );
 };
 
@@ -35,5 +40,4 @@ const Dabeen = ({Component, store}) => {
 //     sagaMiddleware.run(rootSaga);
 //     return store;
 // })(Dabeen);
-
 export default Dabeen;
