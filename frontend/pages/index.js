@@ -7,8 +7,6 @@ import Main from "../components/main/Main";
 const Home = () => {
   return (
     <div>
-      <MenuBar />
-      <Main />
     </div>
   );
 };
