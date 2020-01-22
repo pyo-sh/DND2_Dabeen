@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import {Button} from 'antd';
 
 const MainBottomForm = styled.div`
-    border-top: solid 1px gray;
+    margin-top: 30px;
+    padding-top: 10px;
+    border-top: solid 1px darkgray;
+    width: 100%;
     color: gray;
     display: flex;
     flex-direction: column;
