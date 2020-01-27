@@ -7,6 +7,7 @@ const Menubar = styled.div`
     justify-content: space-around;
     align-items: center; */
     margin-top: 2vh;
+    margin-bottom: 2vh;
     text-align: center;
 
     & .logoInput{
@@ -25,7 +26,7 @@ const MenuBar = () => {
             <Row>
                 <Col span={6} offset={2}>
                     <div className="logoInput">
-                        <div>로고</div>
+                        <div style={{width: 100}}>로고</div>
                         <Input.Search 
                         placeholder="도움을 검색하세요!"
                         style={{marginLeft: 10}}
