@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Select, Calendar, TimePicker, Input, Upload, message, Icon, Button } from 'antd';
+import { Select, TimePicker, Input, Upload, message, Icon, Button } from 'antd';
 
 const format = 'HH:mm';
 
