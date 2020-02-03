@@ -14,7 +14,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
 
 	@Override
 	public Header<UserApiResponse> create(Header<UserApiRequset> request) {
-        UserApiRequset userApiRequset = request.getDate();
+        UserApiRequset userApiRequset = request.getData();
         
         User user = User.builder()
                         .userNum(userApiRequset.getUserNum())
@@ -45,7 +45,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
 
 	@Override
 	public Header<UserApiResponse> update(Header<UserApiRequset> request) {
-		UserApiRequset userApiRequset = request.getDate();
+		UserApiRequset userApiRequset = request.getData();
         
         Optional<User> optional = baseRepository.findById(userApiRequset.getUserNum());
 
