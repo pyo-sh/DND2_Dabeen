@@ -10,6 +10,9 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequset;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResponse, User>{
 
 	@Override
@@ -28,6 +31,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                         .nickname(userApiRequset.getNickname())
                         .itdcCont(userApiRequset.getItdcCont())
                         .supplWhet(userApiRequset.getSupplWhet())
+                        .blonSggName(userApiRequset.getBlonSggName())
                         .build();
         User newUser = baseRepository.save(user);
 
@@ -60,7 +64,8 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                              .setEmail(userApiRequset.getEmail())
                              .setNickname(userApiRequset.getNickname())
                              .setItdcCont(userApiRequset.getItdcCont())
-                             .setSupplWhet(userApiRequset.getSupplWhet());
+                             .setSupplWhet(userApiRequset.getSupplWhet())
+                             .setBlonSggName(userApiRequset.getBlonSggName());
                         return user;
                     })
                     .map(baseRepository::save)
@@ -93,6 +98,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                                                         .nickname(user.getNickname())
                                                         .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
+                                                        .blonSggName(user.getBlonSggName())
                                                         .build();
         
         return userApiResponse;
