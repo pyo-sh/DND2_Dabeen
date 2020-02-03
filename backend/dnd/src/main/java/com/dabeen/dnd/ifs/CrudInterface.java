@@ -6,8 +6,8 @@ package com.dabeen.dnd.ifs;
 import com.dabeen.dnd.model.network.Header;
 
 public interface CrudInterface<Req, Res> {
-    Header<Res> create(Header<Res> request); 
-    Header<Res> read(String id);
-    Header<Res> update(Header<Res> request);
-    Header delete(String id);
+    Header<Res> create(Header<Req> request); 
+    Header<Res> read(String num);
+    Header<Res> update(Header<Req> request);
+    Header delete(String num);
 }
