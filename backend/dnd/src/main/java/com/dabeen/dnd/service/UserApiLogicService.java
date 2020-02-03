@@ -25,7 +25,8 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                         .id(userApiRequset.getId())
                         .pwd(userApiRequset.getPwd())
                         .email(userApiRequset.getEmail())
-                        .nickName(userApiRequset.getNickName())
+                        .nickname(userApiRequset.getNickname())
+                        .itdcCont(userApiRequset.getItdcCont())
                         .supplWhet(userApiRequset.getSupplWhet())
                         .build();
         User newUser = baseRepository.save(user);
@@ -57,7 +58,8 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                              .setId(userApiRequset.getId())
                              .setPwd(userApiRequset.getPwd())
                              .setEmail(userApiRequset.getEmail())
-                             .setNickName(userApiRequset.getNickName())
+                             .setNickname(userApiRequset.getNickname())
+                             .setItdcCont(userApiRequset.getItdcCont())
                              .setSupplWhet(userApiRequset.getSupplWhet());
                         return user;
                     })
@@ -88,7 +90,8 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                                                         .phoneNum(user.getPhoneNum())
                                                         .id(user.getId())
                                                         .email(user.getEmail())
-                                                        .nickName(user.getNickName())
+                                                        .nickname(user.getNickname())
+                                                        .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
                                                         .build();
         

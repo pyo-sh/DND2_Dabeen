@@ -6,7 +6,6 @@
 package com.dabeen.dnd.model.network.response;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import com.dabeen.dnd.model.enumclass.Whether;
 
@@ -23,12 +22,13 @@ public class UserApiResponse{
     // response에서 전달될 데이터
     private String userNum;
     private String userName;
-    private LocalDate birthDate;
+    private String birthDate;
     private String address;
     private String phoneNum;
     private String id;
     private String email;
-    private String nickName;
+    private String nickname;
+    private String itdcCont;
     private Whether supplWhet;
     private String blonSggName;    
     private String picPath;
