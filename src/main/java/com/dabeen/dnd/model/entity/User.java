@@ -5,7 +5,6 @@
 package com.dabeen.dnd.model.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,7 +32,7 @@ public class User{
 
     private String userName;
 
-    private LocalDate birthDate;
+    private String birthDate;
 
     private String address;
 
@@ -45,7 +44,9 @@ public class User{
 
     private String email;
 
-    private String nickName;
+    private String nickname;
+
+    private String itdcCont;
 
     // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     @Enumerated(EnumType.STRING)
