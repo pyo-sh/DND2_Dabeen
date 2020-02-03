@@ -28,35 +28,35 @@ import lombok.experimental.Accessors;
 public class User{
     // 기본 식별자
     @Id
-    private String userNum;
+    private String userNum; // 사용자 번호
 
-    private String userName;
+    private String userName; // 사용자 이름
 
-    private String birthDate;
+    private String birthDate; // 생일
 
-    private String address;
+    private String address; // 주소
 
-    private String phoneNum;
+    private String phoneNum; //휴대폰 번호
 
-    private String id;
+    private String id; // 아이디
 
-    private String pwd;
+    private String pwd; // 비밀번호
 
-    private String email;
+    private String email; // 이메일
 
-    private String nickname;
+    private String nickname; // 닉네임
 
-    private String itdcCont;
+    private String itdcCont; // 소개내용
 
     // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     @Enumerated(EnumType.STRING)
-    private Whether supplWhet;
+    private Whether supplWhet; // 공급자 여부
 
-    private String blonSggName;    
+    private String blonSggName; // 소속시군구명
 
-    private String picPath;
+    private String picPath; // 사진경로명
 
-    private BigDecimal avgRate;
+    private BigDecimal avgRate; // 평점
 
-    private BigDecimal ownMilege;
+    private BigDecimal ownMilege; // 보유 마일리지
 }
