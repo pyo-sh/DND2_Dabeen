@@ -5,7 +5,7 @@
 package com.dabeen.dnd.model.entity;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,7 +33,7 @@ public class User{
 
     private String userName;
 
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     private String address;
 

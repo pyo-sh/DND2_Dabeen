@@ -4,7 +4,7 @@
 package com.dabeen.dnd.model.network.request;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import com.dabeen.dnd.model.enumclass.Whether;
 
@@ -21,7 +21,7 @@ public class UserApiRequset {
     // requset에서 전달될 데이터
     private String userNum;
     private String userName;
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
     private String address;
     private String phoneNum;
     private String id;
