@@ -27,7 +27,7 @@ public class Header<T>{
     private String description;
 
     /* 개별 데이터 */
-    private T date;
+    private T data;
     
     public static <T> Header<T> OK(){
         return (Header<T>)Header.builder()
@@ -42,7 +42,7 @@ public class Header<T>{
                                 .transactionTime(LocalDateTime.now())
                                 .resultCode("OK")
                                 .description("OK")
-                                .date(data)
+                                .data(data)
                                 .build();
     }
 
