@@ -32,6 +32,9 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                         .itdcCont(userApiRequset.getItdcCont())
                         .supplWhet(userApiRequset.getSupplWhet())
                         .blonSggName(userApiRequset.getBlonSggName())
+                        .picPath(userApiRequset.getPicPath())
+                        .avgRate(userApiRequset.getAvgRate())
+                        .ownMilege(userApiRequset.getOwnMilege())
                         .build();
         User newUser = baseRepository.save(user);
 
@@ -55,17 +58,20 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
 
         return optional.map(user -> {
                         user.setUserNum(userApiRequset.getUserNum())
-                             .setUserName(userApiRequset.getUserName())
-                             .setBirthDate(userApiRequset.getBirthDate())
-                             .setAddress(userApiRequset.getAddress())
-                             .setPhoneNum(userApiRequset.getPhoneNum())
-                             .setId(userApiRequset.getId())
-                             .setPwd(userApiRequset.getPwd())
-                             .setEmail(userApiRequset.getEmail())
-                             .setNickname(userApiRequset.getNickname())
-                             .setItdcCont(userApiRequset.getItdcCont())
-                             .setSupplWhet(userApiRequset.getSupplWhet())
-                             .setBlonSggName(userApiRequset.getBlonSggName());
+                            .setUserName(userApiRequset.getUserName())
+                            .setBirthDate(userApiRequset.getBirthDate())
+                            .setAddress(userApiRequset.getAddress())
+                            .setPhoneNum(userApiRequset.getPhoneNum())
+                            .setId(userApiRequset.getId())
+                            .setPwd(userApiRequset.getPwd())
+                            .setEmail(userApiRequset.getEmail())
+                            .setNickname(userApiRequset.getNickname())
+                            .setItdcCont(userApiRequset.getItdcCont())
+                            .setSupplWhet(userApiRequset.getSupplWhet())
+                            .setBlonSggName(userApiRequset.getBlonSggName())
+                            .setPicPath(userApiRequset.getPicPath())
+                            .setAvgRate(userApiRequset.getAvgRate())
+                            .setOwnMilege(userApiRequset.getOwnMilege());
                         return user;
                     })
                     .map(baseRepository::save)
@@ -99,6 +105,9 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                                                         .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
                                                         .blonSggName(user.getBlonSggName())
+                                                        .picPath(user.getPicPath())
+                                                        .avgRate(user.getAvgRate())
+                                                        .ownMilege(user.getOwnMilege())
                                                         .build();
         
         return userApiResponse;
