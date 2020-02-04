@@ -9,7 +9,7 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
-import com.dabeen.dnd.service.HelpSupplCompApiService;
+import com.dabeen.dnd.service.api.HelpSupplCompApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;

@@ -1,7 +1,7 @@
-// UserApiLogicService.java
+// UserApiService.java
 // 작성자 : 이은비
 
-package com.dabeen.dnd.service;
+package com.dabeen.dnd.service.api;
 
 import java.util.Optional;
 
@@ -11,11 +11,12 @@ import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequset;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
+import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResponse, User>{
+public class UserApiService extends BaseService<UserApiRequset, UserApiResponse, User>{
 
 	@Override
 	public Header<UserApiResponse> create(@Valid Header<UserApiRequset> request) {
@@ -40,14 +41,14 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                         .build();
         User newUser = baseRepository.save(user);
 
-        return Header.OK(resposne(newUser));
+        return Header.OK(response(newUser));
 	}
 
     @Override
 	public Header<UserApiResponse> read(String num) {
         Optional<User> optional = baseRepository.findById(num);
         
-        return optional.map(user -> resposne(user))
+        return optional.map(user -> response(user))
                         .map(Header::OK)
                         .orElseGet(() -> Header.ERROR("Date does not exist."));
 	}
@@ -77,7 +78,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
                         return user;
                     })
                     .map(baseRepository::save)
-                    .map(this::resposne)
+                    .map(this::response)
                     .map(Header::OK)
                     .orElseGet(() -> Header.ERROR("Date does not exist."));
 	}
@@ -94,7 +95,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
     }
 
     // User > UserApiResponse 를 위한 메소드
-	private UserApiResponse resposne(User user) {
+	private UserApiResponse response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
                                                         .userNum(user.getUserNum())
                                                         .userName(user.getUserName())
