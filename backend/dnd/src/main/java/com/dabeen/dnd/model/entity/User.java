@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
 import com.dabeen.dnd.model.enumclass.Whether;
 
@@ -56,7 +58,10 @@ public class User{
 
     private String picPath; // 사진경로명
 
+    @Min(value = 0, message = "AvgRate must be a value between 0 and 5, inclusive.")
+    @Max(value = 5, message = "AvgRate must be a value between 0 and 5, inclusive.")
     private BigDecimal avgRate; // 평점
 
+    @Min(value = 0, message = "OwnMileage must be at least 0.")
     private BigDecimal ownMilege; // 보유 마일리지
 }

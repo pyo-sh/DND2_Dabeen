@@ -5,6 +5,8 @@ package com.dabeen.dnd.service;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequset;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResponse, User>{
 
 	@Override
-	public Header<UserApiResponse> create(Header<UserApiRequset> request) {
+	public Header<UserApiResponse> create(@Valid Header<UserApiRequset> request) {
         UserApiRequset userApiRequset = request.getData();
         
         User user = User.builder()
@@ -51,7 +53,7 @@ public class UserApiLogicService extends BaseService<UserApiRequset, UserApiResp
 	}
 
 	@Override
-	public Header<UserApiResponse> update(Header<UserApiRequset> request) {
+	public Header<UserApiResponse> update(@Valid Header<UserApiRequset> request) {
 		UserApiRequset userApiRequset = request.getData();
         
         Optional<User> optional = baseRepository.findById(userApiRequset.getUserNum());
