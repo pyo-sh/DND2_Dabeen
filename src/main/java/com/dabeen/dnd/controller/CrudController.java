@@ -31,7 +31,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
 
     // Read 메소드
     @Override
-    @GetMapping("{num}")
+    @GetMapping("{num}") // User의 id와 헷갈려서 num으로 작성
     public Header<Res> read(@PathVariable String num){
         return baseService.read(num);
     }

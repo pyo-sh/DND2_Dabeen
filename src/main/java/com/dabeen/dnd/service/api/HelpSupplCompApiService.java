@@ -2,7 +2,7 @@
 // application 층에서 작동하는 HelpSupplCompApiService
 // 작성자 : 이은비
 
-package com.dabeen.dnd.service;
+package com.dabeen.dnd.service.api;
 
 import java.util.Optional;
 
@@ -23,6 +23,7 @@ public class HelpSupplCompApiService {
 
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
+        // PK 객체 생성
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(),requestData.getSupplNum());
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
@@ -49,6 +50,7 @@ public class HelpSupplCompApiService {
 
     public Header<HelpSupplCompApiResponse> update(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
+        // PK 객체 생성
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
 
         Optional<HelpSupplComp> optional = helpSupplCompRepository.findById(pk);
