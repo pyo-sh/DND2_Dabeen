@@ -8,7 +8,9 @@ package com.dabeen.dnd.repository;
 import com.dabeen.dnd.model.entity.Bskt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface BsktRepository extends JpaRepository<Bskt, String>{
     
 }
