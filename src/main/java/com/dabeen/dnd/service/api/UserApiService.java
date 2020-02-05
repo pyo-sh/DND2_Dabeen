@@ -7,23 +7,26 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.dabeen.dnd.mapper.UserMapper;
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequset;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserApiService extends BaseService<UserApiRequset, UserApiResponse, User>{
+    @Autowired
+    private UserMapper userMapper;
 
 	@Override
 	public Header<UserApiResponse> create(@Valid Header<UserApiRequset> request) {
         UserApiRequset userApiRequset = request.getData();
         
         User user = User.builder()
-                        .userNum(userApiRequset.getUserNum())
                         .userName(userApiRequset.getUserName())
                         .birthDate(userApiRequset.getBirthDate())
                         .address(userApiRequset.getAddress())
@@ -36,12 +39,14 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                         .supplWhet(userApiRequset.getSupplWhet())
                         .blonSggName(userApiRequset.getBlonSggName())
                         .picPath(userApiRequset.getPicPath())
+                        .rrnRear(userApiRequset.getRrnRear())
                         .avgRate(userApiRequset.getAvgRate())
                         .ownMilege(userApiRequset.getOwnMilege())
                         .build();
-        User newUser = baseRepository.save(user);
+    
+        userMapper.insert(user); // create 쿼리
 
-        return Header.OK(response(newUser));
+        return Header.OK(response(user));
 	}
 
     @Override
