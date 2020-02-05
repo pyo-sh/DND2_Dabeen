@@ -32,6 +32,7 @@ public class UserApiResponse{
     private Whether supplWhet; // 공급자 여부
     private String blonSggName; // 소속시군구명
     private String picPath; // 사진 경로명
+    private String rrnRear; // 주민번호 뒷자리
     private BigDecimal avgRate; // 평점
     private BigDecimal ownMilege; // 보유 마일리지
 }

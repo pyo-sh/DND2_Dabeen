@@ -10,26 +10,30 @@ import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktApiRequest;
 import com.dabeen.dnd.model.network.response.BsktApiResponse;
+import com.dabeen.dnd.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse, Bskt> {
+    @Autowired
+    private BsktMapper bsktMapper;
 
     @Override
     public Header<BsktApiResponse> create(Header<BsktApiRequest> request) {
         BsktApiRequest requestData  = request.getData();
 
         Bskt bskt = Bskt.builder()
-                        .bsktNum(requestData.getBsktNum())
                         .bsktUserNum(requestData.getBsktUserNum())
                         .totalPrice(requestData.getTotalPrice())
                         .milegeUseWhet(requestData.getMilegeUseWhet())
                         .build();
-        Bskt newBskt = baseRepository.save(bskt);
 
-        return Header.OK(response(newBskt));
+        bsktMapper.insert(bskt); // 식별자를 "생성일자 + 순번"으로 하기 위해 mybatis 이용
+
+        return Header.OK(response(bskt));
     }
 
     @Override

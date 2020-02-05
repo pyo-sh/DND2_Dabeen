@@ -58,6 +58,8 @@ public class User{
 
     private String picPath; // 사진경로명
 
+    private String rrnRear; // 주민번호 뒷자리
+    
     @Min(value = 0, message = "AvgRate must be a value between 0 and 5, inclusive.")
     @Max(value = 5, message = "AvgRate must be a value between 0 and 5, inclusive.")
     private BigDecimal avgRate; // 평점
