@@ -53,7 +53,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
 	public Header<UserApiResponse> read(String num) {
         Optional<User> optional = baseRepository.findById(num);
         
-        return optional.map(user -> response(user))
+        return optional.map(this::response)
                         .map(Header::OK)
                         .orElseGet(() -> Header.ERROR("Date does not exist."));
 	}
@@ -65,8 +65,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
         Optional<User> optional = baseRepository.findById(userApiRequset.getUserNum());
 
         return optional.map(user -> {
-                        user.setUserNum(userApiRequset.getUserNum())
-                            .setUserName(userApiRequset.getUserName())
+                        user.setUserName(userApiRequset.getUserName())
                             .setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())
                             .setPhoneNum(userApiRequset.getPhoneNum())

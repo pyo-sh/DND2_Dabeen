@@ -52,10 +52,10 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         Optional<Bskt> optional = baseRepository.findById(requestData.getBsktNum());
         
         return optional.map(bskt -> {
-                bskt.setBsktNum(bskt.getBsktNum())
-                    .setBsktUserNum(bskt.getBsktUserNum())
-                    .setTotalPrice(bskt.getTotalPrice())
-                    .setMilegeUseWhet(bskt.getMilegeUseWhet());
+                bskt.setBsktNum(requestData.getBsktNum())
+                    .setBsktUserNum(requestData.getBsktUserNum())
+                    .setTotalPrice(requestData.getTotalPrice())
+                    .setMilegeUseWhet(requestData.getMilegeUseWhet());
                 return bskt;
         })
         .map(baseRepository::save)
