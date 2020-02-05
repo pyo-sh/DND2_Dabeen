@@ -5,6 +5,7 @@
 package com.dabeen.dnd.service.api;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Optional;
 
 import com.dabeen.dnd.model.entity.Bskt;
@@ -31,8 +32,14 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                         .totalPrice(requestData.getTotalPrice())
                         .milegeUseWhet(requestData.getMilegeUseWhet())
                         .build();
-        bsktMapper.insert(bskt, LocalDateTime.now());
 
+        // 2개 이상의 객체를 파라미터로 넘기기 위해서
+        HashMap<String, Object> map = new HashMap<String, Object>();
+       
+        map.put("bskt", bskt);
+        map.put("sysdate", LocalDateTime.now());
+
+        bsktMapper.insert(map);
         return Header.OK(response(bskt));
     }
 
