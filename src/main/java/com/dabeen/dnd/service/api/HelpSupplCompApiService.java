@@ -56,12 +56,11 @@ public class HelpSupplCompApiService {
         Optional<HelpSupplComp> optional = helpSupplCompRepository.findById(pk);
         
         return optional.map(helpSupplComp -> {
-                    helpSupplComp.setHelpSupplCompPK(helpSupplComp.getHelpSupplCompPK())
-                                .setHelpAprvWhet(helpSupplComp.getHelpAprvWhet())
-                                .setAprvDttm(helpSupplComp.getAprvDttm())
-                                .setAstDttm(helpSupplComp.getAstDttm())
-                                .setRate(helpSupplComp.getRate())
-                                .setAstCont(helpSupplComp.getAstCont());
+                    helpSupplComp.setHelpAprvWhet(requestData.getHelpAprvWhet())
+                                .setAprvDttm(requestData.getAprvDttm())
+                                .setAstDttm(requestData.getAstDttm())
+                                .setRate(requestData.getRate())
+                                .setAstCont(requestData.getAstCont());
                     return helpSupplComp;
                 })
                 .map(helpSupplCompRepository::save)

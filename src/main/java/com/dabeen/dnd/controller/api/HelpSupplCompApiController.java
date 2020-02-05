@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class HelpSupplCompApiController{
     private HelpSupplCompApiService helpSupplCompApiService;
     
     @PostMapping("")
-    public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
+    public Header<HelpSupplCompApiResponse> create(@RequestBody Header<HelpSupplCompApiRequest> request) {
         return helpSupplCompApiService.create(request);
     }
 
@@ -43,7 +44,7 @@ public class HelpSupplCompApiController{
     }
 
     @PutMapping("")
-    public Header<HelpSupplCompApiResponse> update(Header<HelpSupplCompApiRequest> request) {
+    public Header<HelpSupplCompApiResponse> update(@RequestBody Header<HelpSupplCompApiRequest> request) {
         return helpSupplCompApiService.update(request);
     }
 

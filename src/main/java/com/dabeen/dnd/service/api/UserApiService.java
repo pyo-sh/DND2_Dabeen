@@ -65,8 +65,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
         Optional<User> optional = baseRepository.findById(userApiRequset.getUserNum());
 
         return optional.map(user -> {
-                        user.setUserNum(userApiRequset.getUserNum())
-                            .setUserName(userApiRequset.getUserName())
+                        user.setUserName(userApiRequset.getUserName())
                             .setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())
                             .setPhoneNum(userApiRequset.getPhoneNum())
