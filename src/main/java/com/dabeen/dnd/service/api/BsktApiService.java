@@ -12,7 +12,7 @@ import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktApiRequest;
 import com.dabeen.dnd.model.network.response.BsktApiResponse;
-import com.dabeen.dnd.repository.BsktMapper;
+import com.dabeen.dnd.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,8 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                         .milegeUseWhet(requestData.getMilegeUseWhet())
                         .build();
 
-        // 2개 이상의 객체를 파라미터로 넘기기 위해서
-        HashMap<String, Object> map = new HashMap<String, Object>();
-       
-        map.put("bskt", bskt);
-        map.put("sysdate", LocalDateTime.now());
+        bsktMapper.insert(bskt); // 식별자를 "생성일자 + 순번"으로 하기 위해 mybatis 이용
 
-        bsktMapper.insert(map);
         return Header.OK(response(bskt));
     }
 
