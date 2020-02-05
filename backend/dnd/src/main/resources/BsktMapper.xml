@@ -7,7 +7,9 @@
             select to_char(sysdate, 'YYMMDD') || to_char(nvl(to_char(max(substr(bskt_num, 7)), '00')) + 1)
             form bskt
             where (
-                case when substr(bskt_num, 1, 6) = to_char(sysdate,'YYMMDD') then bskt_num else concat(to_char(sysdate,'YYMMDD'), '000') end)
+                case when substr(bskt_num, 1, 6) = to_char(sysdate,'YYMMDD') 
+                then bskt_num else concat(to_char(sysdate,'YYMMDD'), '000')
+             end)
             <!-- 키 생성 쿼리 -->
         </selectKey>
         insert
