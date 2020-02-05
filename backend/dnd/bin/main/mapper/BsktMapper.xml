@@ -15,4 +15,9 @@
     </insert>
 </mapper>
 
-<!-- mybatis 작성파일 -->
+<!--
+    BsktMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->
