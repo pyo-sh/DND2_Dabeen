@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.BsktMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert">
+        <selectKey order="AFTER">
+            select to_char(sysdate, 'YYMMDD') || nvl(max(substr(bskt_num, 7)), '00') + 1
+            form bskt
+            where left(bskt_num, 6) = to_char(sysdate, 'YYMMDD')
+            <!-- 키 생성 쿼리 -->
+        </selectKey>
+        insert
+            into bskt(bsktNum, bsktUserNum, totalPrice, milegeUseWhet)
+            valuse(#{bsktNum}, #{bsktUserNum}, #{totalPrice}, #{milegeUseWhet}, sysdate)
+    </insert>
+</mapper>
+
+<!-- mybatis 작성파일 -->
