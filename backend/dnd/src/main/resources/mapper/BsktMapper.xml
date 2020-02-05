@@ -3,10 +3,16 @@
 <mapper namespace= "com.dabeen.dnd.mapper.BsktMapper"> <!-- Mapper 클래스주소-->
     <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Bskt" useGeneratedKeys="false">
         <selectKey order="BEFORE" keyProperty="bsktNum" resultType="String" > 
-            <!-- 쿼리 못해먹겟다. 나중에 고쳐.. -->
             select concat(date_format(now(), "%y%m%d"), LPAD(ifnull(max(substr(bskt_num, 7)), "0") + 1, 3, 0))
+            <!-- LPAD(ifnull(max(substr(bskt_num, 7)), "0") + 1, 3, 0))
+                만약 오늘 생성된 엔터티가 있다면 그 중 가장 순번이 뒤인, 없다면 0 에서 +1 
+                이후 순번이 3자리를 수를 가지도록 앞에 0을 채워줌
+
+                concat(date_format(now(), "%y%m%d"), ~)
+                날짜 + 순번
+            -->
             from bskt
-            where substr(bskt_num, 1, 6) = date_format(now(), "%y%m%d") 
+            where substr(bskt_num, 1, 6) = date_format(now(), "%y%m%d") <!-- 해당 테이블 엔터티 중 오늘 생성된 엔터티가 있는지-->
             <!-- 키 생성 쿼리 -->
         </selectKey>
         insert 
