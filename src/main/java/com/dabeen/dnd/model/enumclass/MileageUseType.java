@@ -10,9 +10,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum MileageUseType{
-    U(0, "USE", "마일리지 사용"),
-    W(1, "WITHDRAW", "마일리지 인출"),
-    R(2, "REFUND",  "마일리지 환불");
+    u(0, "USE", "마일리지 사용"),
+    w(1, "WITHDRAW", "마일리지 인출"),
+    r(2, "REFUND",  "마일리지 환불");
 
     private Integer id;
     private String title;
