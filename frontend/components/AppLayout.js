@@ -10,10 +10,10 @@ const AppLayout = ({ children }) => {
   return (
       <div>
         {/* <SignUp></SignUp> */}
-        {/* <MenuBar />
+        <MenuBar />
         <Main />
-        <MainBottom /> */}
-        <PostMain />
+        <MainBottom />
+        {/* <PostMain /> */}
         {children}
       </div>
   );
