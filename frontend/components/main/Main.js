@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
 import MainDaBeenerProfile from './MainDaBeenerProfile';
-import MainBottom from './MainBottom';
 
 const MainForm = styled.div`
     display: flex;
@@ -72,7 +71,6 @@ const Main = () => {
             <LiveHelpRequest />
             <h1>내 주변의 높은 평점을 가진 DaBeener를 확인하세요!</h1>
             <MainDaBeenerProfile />
-            <MainBottom />
         </MainForm>
     );
 };
