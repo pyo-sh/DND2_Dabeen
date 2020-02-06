@@ -20,15 +20,12 @@ import com.dabeen.dnd.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
-
-
+@Transactional
 @Service
 public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse, Bskt> {
     @Autowired
     private BsktMapper bsktMapper;
 
-    @Transactional
     @Override
     public Header<BsktApiResponse> create(Header<BsktApiRequest> request) {
         BsktApiRequest requestData  = request.getData();
@@ -44,7 +41,6 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         return Header.OK(response(bskt));
     }
 
-    @Transactional
     @Override
     public Header<BsktApiResponse> read(String num) {
         Optional<Bskt> optional = baseRepository.findById(num);
@@ -54,7 +50,6 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                         .orElseThrow(() -> new NotFoundException("Bskt"));
     }
 
-    @Transactional
     @Override
     public Header<BsktApiResponse> update(Header<BsktApiRequest> request) {
         BsktApiRequest requestData  = request.getData();
@@ -77,7 +72,6 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                 .orElseThrow(() -> new NotFoundException("Bskt"));
     }
 
-    @Transactional
     @Override
     public Header delete(String num) {
         Optional<Bskt> optional = baseRepository.findById(num);
