@@ -14,7 +14,7 @@ const SignUpUpperDiv = styled.div`
     margin-top: 90px;
     padding: 40px;
     width: 100%;
-    height: 900px;
+    height: 1120px;
     max-width: 600px;
 
     min-width: 320px;
@@ -74,30 +74,27 @@ const SignUpGetDataDiv = styled.div`
 // 회원가입 창
 const SignUp = () => {
     // 로그인하는데 유저의 필요한 정보의 state
-    const [nickname, setNickname] = useState('');   // 닉네임 state
     const [id, setId] = useState('');   // 아이디 state
     const [password, setPassword] = useState('');   // 비밀번호 state
     const [passwordCheck, setPasswordCheck] = useState(''); // 비밀번호 확인 state
+    const [nickname, setNickname] = useState('');   // 닉네임 state
     const [name, setName] = useState('');   // 이름 state
     const [firstRegistrationNumber, setFirstRegistrationNumber] = useState(''); // 주민등록번호 앞자리 state
     const [secondRegistrationNumber, setSecondRegistrationNumber] = useState('');   // 주민등록번호 뒷자리 state
+    const [email, setEmail] = useState(''); // 이메일 state
+    const [telephone, setTelephone] = useState('');
+    const [mainAddress, setMainAddress] = useState('');
+    const [subAddress, setSubAddress] = useState('');
+
+
     // 입력한 정보가 맞는 정보인지 확인하는 state
-    const [isNicknameCorrect, setIsNicknameCorrect] = useState(false);  // 닉네임 확인
     const [isIdCorrect, setIsIdCorrect] = useState(false);  // 아이디 확인
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);  // 비밀번호 확인
     const [isPasswordChecked, setIsPasswordChecked] = useState(false);  // 비밀번호 확인을 확인
+    const [isNicknameCorrect, setIsNicknameCorrect] = useState(false);  // 닉네임 확인
     const [isRegistrationCorrect, setIsRegistrationCorrect] = useState(false);  // 이름과 주민등록번호 매칭 확인
+    const [isEmailCorrect, setIsEmailCorrect] = useState(false);  // 아이디 확인
 
-    // 닉네임 입력창이 바뀔 때 마다 실행하는 함수
-    const onChangeNickname = useCallback((e)=>{
-        const targetString = e.target.value;    // Input창의 value 값
-        const deleteSpace = e.target.value.replace(/(\s*)/g,"");    // value의 공백을 제거한 값
-        if(!targetString)                 setIsNicknameCorrect(false);  // value가 빈 값일 때
-        else if(targetString !== deleteSpace)   setIsNicknameCorrect(false);    // value에 공백을 포함했을 때
-        else                                    setIsNicknameCorrect(true); // 나머지는 가능한 상황
-        // state를 바뀔때마다 setState
-        setNickname(targetString);
-    }, []);
     // 아이디 입력창이 바뀔 때 마다 실행하는 함수
     const onChangeId = useCallback((e) => {
         const targetString = e.target.value;    // Input창의 value 값
@@ -120,26 +117,49 @@ const SignUp = () => {
     }, []);
     // 비밀번호 확인 입력창이 바뀔 때 마다 실행하는 함수.
     const onChangePasswordCheck = useCallback((e) => { setPasswordCheck(e.target.value); }, []);
+    // 닉네임 입력창이 바뀔 때 마다 실행하는 함수
+    const onChangeNickname = useCallback((e)=>{
+        const targetString = e.target.value;    // Input창의 value 값
+        const deleteSpace = e.target.value.replace(/(\s*)/g,"");    // value의 공백을 제거한 값
+        if(!targetString)                 setIsNicknameCorrect(false);  // value가 빈 값일 때
+        else if(targetString !== deleteSpace)   setIsNicknameCorrect(false);    // value에 공백을 포함했을 때
+        else                                    setIsNicknameCorrect(true); // 나머지는 가능한 상황
+        // state를 바뀔때마다 setState
+        setNickname(targetString);
+    }, []);
     // 이름 입력창이 바뀔 때 마다 실행하는 함수
     const onChangeName = useCallback((e) => {
         
         setName(e.target.value);
     }, []);
+
     // 주민등록번호 앞자리 입력창이 바뀔 때 마다 실행하는 함수
-    const onChangeFirstRegistrationNumber = useCallback((e) => {
+    // const onChangeFirstRegistrationNumber = useCallback((e) => {
+    //     const targetString = e.target.value;    // Input창의 value 값
+    //     const intCheck = targetString.replace(/[0-9]/g, "");    // value값에서 숫자들을 제외한 string.
+    //     if(!targetString) setFirstRegistrationNumber(e.target.value);   // value가 빈 값일 때
+    //     else if(!intCheck) {  // 숫자들을 제외한 string 값이 비어있으면 string에 숫자만 있는 것이다.
+    //         setFirstRegistrationNumber(e.target.value); // 그러면 state값을 바꾸게 해준다.
+    //     }
+    //     else    console.log("숫자만 입력해");   // 숫자가 아니면 state값을 바꿀 수 없게 만든다.
+    // }, []);
+    // // 주민등록번호 뒷자리 입력창이 바뀔 때 마다 실행하는 함수
+    // const onChangeSecondRegistrationNumber = useCallback((e) => {
+    //     console.log(e.target.value);
+    //     setSecondRegistrationNumber(e.target.value)
+    // }, []);
+
+    // 아이디 입력창이 바뀔 때 마다 실행하는 함수
+    const onChangeEmail = useCallback((e) => {
         const targetString = e.target.value;    // Input창의 value 값
-        const intCheck = targetString.replace(/[0-9]/g, "");    // value값에서 숫자들을 제외한 string.
-        if(!targetString) setFirstRegistrationNumber(e.target.value);   // value가 빈 값일 때
-        else if(!intCheck) {  // 숫자들을 제외한 string 값이 비어있으면 string에 숫자만 있는 것이다.
-            setFirstRegistrationNumber(e.target.value); // 그러면 state값을 바꾸게 해준다.
-        }
-        else    console.log("숫자만 입력해");   // 숫자가 아니면 state값을 바꿀 수 없게 만든다.
+        const deleteSpace = e.target.value.replace(/(\s*)/g,"");    // value의 공백을 제거한 값
+        if(!targetString)                 setIsEmailCorrect(false);    // value가 빈 값일 때
+        else if(targetString !== deleteSpace)   setIsEmailCorrect(false);  // value에 공백을 포함했을 때
+        else                                    setIsEmailCorrect(true);   // 나머지는 가능한 상황
+        // state를 바뀔때마다 setState
+        setEmail(e.target.value);
     }, []);
-    // 주민등록번호 뒷자리 입력창이 바뀔 때 마다 실행하는 함수
-    const onChangeSecondRegistrationNumber = useCallback((e) => {
-        console.log(e.target.value);
-        setSecondRegistrationNumber(e.target.value)
-    }, []);
+
 
     // 비밀번호와 비밀번호 확인 state가 바뀔 때 마다 확인
     useEffect(() => {
@@ -187,17 +207,6 @@ const SignUp = () => {
     return (
         <SignUpUpperDiv>
             <SignUpGetDataDiv>
-                <div className="Title">닉네임 *</div>
-                <Input
-                    placeholder="닉네임 입력"
-                    onChange={onChangeNickname}
-                />
-                {isNicknameCorrect || (nickname === '')
-                ?   <div className="Check"></div>
-                :   <div className="Check">닉네임을 알맞게 입력해주세요</div>
-                }
-            </SignUpGetDataDiv>
-            <SignUpGetDataDiv>
                 <div>아이디 *</div>
                 <Input
                     placeholder="아이디 입력"
@@ -231,6 +240,17 @@ const SignUp = () => {
                 }
             </SignUpGetDataDiv>
             <SignUpGetDataDiv>
+                <div className="Title">닉네임 *</div>
+                <Input
+                    placeholder="닉네임 입력"
+                    onChange={onChangeNickname}
+                />
+                {isNicknameCorrect || (nickname === '')
+                ?   <div className="Check"></div>
+                :   <div className="Check">닉네임을 알맞게 입력해주세요</div>
+                }
+            </SignUpGetDataDiv>
+            <SignUpGetDataDiv>
                 <div>이름 *</div>
                 <Input
                     placeholder="이름 입력"
@@ -238,12 +258,11 @@ const SignUp = () => {
                 />
             </SignUpGetDataDiv>
             <SignUpGetDataDiv>
-                <div>주민등록번호 *</div>
+                <div>생년월일 *</div>
                 <div className="Regist">
                     <Input
                         className="Regist_Input"
                         placeholder=""
-                        onChange={onChangeFirstRegistrationNumber}
                         value={firstRegistrationNumber}
                         maxLength={6}
                     />
@@ -252,7 +271,6 @@ const SignUp = () => {
                         type="number"
                         className="Regist_Input"
                         placeholder=""
-                        onChange={onChangeSecondRegistrationNumber}
                         maxLength={7}
                     />
                 </div>
@@ -260,6 +278,31 @@ const SignUp = () => {
                     ?   <div className="Check"></div>
                     :   <div className="Check">이름과 주민등록번호를 확인해주세요</div>
                 }
+            </SignUpGetDataDiv>
+            <SignUpGetDataDiv>
+                <div>이메일 *</div>
+                <Input
+                    placeholder="이메일 입력"
+                    // onChange={onChangeId}
+                />
+            </SignUpGetDataDiv>
+            <SignUpGetDataDiv>
+                <div>전화번호 *</div>
+                <Input
+                    placeholder="'-'를 제외한 숫자"
+                    // onChange={onChangeId}
+                />
+            </SignUpGetDataDiv>
+            <SignUpGetDataDiv>
+                <div>주소 *</div>
+                <Input
+                    placeholder="시"
+                    // onChange={onChangeId}
+                />
+                <Input
+                    placeholder="면/읍/리?"
+                    // onChange={onChangeId}
+                />
             </SignUpGetDataDiv>
             <Button
                 onClick={onClickSignUp}
