@@ -41,7 +41,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                         .picPath(userApiRequset.getPicPath())
                         .rrnRear(userApiRequset.getRrnRear())
                         .avgRate(userApiRequset.getAvgRate())
-                        .ownMilege(userApiRequset.getOwnMilege())
+                        .ownMileage(userApiRequset.getOwnMileage())
                         .build();
     
         userMapper.insert(user); // create 쿼리
@@ -78,7 +78,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                             .setBlonSggName(userApiRequset.getBlonSggName())
                             .setPicPath(userApiRequset.getPicPath())
                             .setAvgRate(userApiRequset.getAvgRate())
-                            .setOwnMilege(userApiRequset.getOwnMilege());
+                            .setOwnMileage(userApiRequset.getOwnMileage());
                         return user;
                     })
                     .map(baseRepository::save)
@@ -114,7 +114,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                                                         .blonSggName(user.getBlonSggName())
                                                         .picPath(user.getPicPath())
                                                         .avgRate(user.getAvgRate())
-                                                        .ownMilege(user.getOwnMilege())
+                                                        .ownMileage(user.getOwnMileage())
                                                         .build();
         
         return userApiResponse;

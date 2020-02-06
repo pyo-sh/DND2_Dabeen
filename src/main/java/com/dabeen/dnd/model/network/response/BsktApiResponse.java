@@ -21,5 +21,5 @@ public class BsktApiResponse{
     private String bsktNum; // 장바구니 번호
     private String bsktUserNum; // 장바구니 사용자 번호
     private BigDecimal totalPrice; // 합계금액
-    private Whether milegeUseWhet; // 마일리지 사용 여부
+    private Whether mileageUseWhet; // 마일리지 사용 여부
 }
