@@ -5,6 +5,7 @@ package com.dabeen.dnd.service.api;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import com.dabeen.dnd.mapper.UserMapper;
@@ -17,6 +18,7 @@ import com.dabeen.dnd.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class UserApiService extends BaseService<UserApiRequset, UserApiResponse, User>{
     @Autowired
