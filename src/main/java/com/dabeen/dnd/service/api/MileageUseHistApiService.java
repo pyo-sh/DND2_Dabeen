@@ -7,6 +7,8 @@ package com.dabeen.dnd.service.api;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.dabeen.dnd.model.entity.MileageUseHist;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.MileageUseHistApiRequest;
@@ -17,9 +19,7 @@ import com.dabeen.dnd.repository.MileageUseHistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+@Transactional
 @Service
 public class MileageUseHistApiService {
     @Autowired
@@ -27,7 +27,7 @@ public class MileageUseHistApiService {
    
     public Header<MileageUseHistApiResponse> create(Header<MileageUseHistApiRequest> request) {
         MileageUseHistApiRequest requestData = request.getData();
-        log.info("{}", request);
+        
         MileageUseHistPK pk = new MileageUseHistPK(requestData.getUserNum(), LocalDateTime.now());
 
         MileageUseHist mileageUseHist = MileageUseHist.builder()

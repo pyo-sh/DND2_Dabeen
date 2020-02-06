@@ -6,6 +6,8 @@ package com.dabeen.dnd.service.api;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.dabeen.dnd.mapper.AdminMapper;
 import com.dabeen.dnd.model.entity.Admin;
 import com.dabeen.dnd.model.network.Header;
@@ -16,6 +18,7 @@ import com.dabeen.dnd.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class AdminApiService extends BaseService<AdminApiRequest, AdminApiResponse, Admin> {
     @Autowired

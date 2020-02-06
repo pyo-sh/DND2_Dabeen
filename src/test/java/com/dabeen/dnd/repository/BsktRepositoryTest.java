@@ -29,7 +29,7 @@ public class BsktRepositoryTest extends DemoApplicationTests{
                         .bsktNum(bsktNum)
                         .bsktUserNum(bsktUserNum)
                         .totalPrice(totalPrice)
-                        .milegeUseWhet(milegeUseWhet)
+                        .mileageUseWhet(milegeUseWhet)
                         .build();
         Bskt newBskt = bsktRepository.save(bskt);
 

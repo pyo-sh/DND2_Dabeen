@@ -6,6 +6,8 @@ package com.dabeen.dnd.service.api;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
@@ -16,6 +18,7 @@ import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Transactional
 @Service
 public class HelpSupplCompApiService {
     @Autowired
