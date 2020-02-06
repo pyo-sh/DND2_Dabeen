@@ -7,6 +7,8 @@ package com.dabeen.dnd.controller.api;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
+
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.MileageUseHistApiRequest;
 import com.dabeen.dnd.model.network.response.MileageUseHistApiResponse;
@@ -30,7 +32,7 @@ public class MileageUseHistApiController {
     private MileageUseHistApiService mileageUseHistApiService;
     
     @PostMapping("")
-    public Header<MileageUseHistApiResponse> create(@RequestBody Header<MileageUseHistApiRequest> request) {
+    public Header<MileageUseHistApiResponse> create(@RequestBody @Valid Header<MileageUseHistApiRequest> request) {
         return mileageUseHistApiService.create(request);
     }
 
@@ -46,7 +48,7 @@ public class MileageUseHistApiController {
     }
 
     @PutMapping("")
-    public Header<MileageUseHistApiResponse> update(@RequestBody Header<MileageUseHistApiRequest> request) {
+    public Header<MileageUseHistApiResponse> update(@RequestBody @Valid Header<MileageUseHistApiRequest> request) {
         return mileageUseHistApiService.update(request);
     }
 

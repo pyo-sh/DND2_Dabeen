@@ -29,13 +29,17 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Bskt{
     @Id
+    @NotEmpty(message = " is not Empty")
     private String bsktNum; // 장바구니 번호
 
+    @NotEmpty(message = " is not Empty")
     private String bsktUserNum; // 장바구니 사용자 번호
 
-    @Min(value = 0, message = "TotalPrice must be at least 0.")
+    @NotNull(message = " is not null.")
+    @Min(value = 0, message = " must be at least 0.")
     private BigDecimal totalPrice; // 합계 금액
 
+    @NotNull(message = " is not null.")
     @Enumerated(EnumType.STRING)
     private Whether mileageUseWhet; // 마일리지 사용 여부
 }

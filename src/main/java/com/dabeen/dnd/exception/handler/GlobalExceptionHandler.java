@@ -6,6 +6,9 @@ package com.dabeen.dnd.exception.handler;
 
 import com.dabeen.dnd.model.network.Header;
 
+import java.sql.SQLIntegrityConstraintViolationException;
+
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import com.dabeen.dnd.exception.NotFoundException;
@@ -13,7 +16,6 @@ import com.dabeen.dnd.exception.NotUpdateableException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,25 +44,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TransactionSystemException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Header<?> handlerVaildException(Exception ex) {
-        Throwable cause = ((TransactionSystemException) ex).getRootCause(); 
+        Throwable cause = ((TransactionSystemException) ex).getRootCause();
         if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
-            String message = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next().getMessage();
+            ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
+            String message = conEx.getPropertyPath() + conEx.getMessage();
 
             return Header.ERROR(HttpStatus.BAD_REQUEST, message);
         }
         else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
     }
 
-    /* NotNull, NotEmpty 예외 처리하는 방법이라던데 계속 오류남. 
-       원래라면 valid 오류가 호출되어야 하는데 NullPointError만 나는 상태
-    */
-    //@ExceptionHandler(MethodArgumentNotValidException.class)
-    //@ResponseStatus(HttpStatus.BAD_REQUEST)
-    //public Header<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-    //    log.error("서버오류 : {}",  ex.getBindingResult().getFieldError());
-    //    return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getBindingResult().getFieldError().getDefaultMessage());
-    //}
-
+    // 쿼리문을 이용한 create 시, 에러 처리
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerCreateException(SQLIntegrityConstraintViolationException ex){
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+    
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

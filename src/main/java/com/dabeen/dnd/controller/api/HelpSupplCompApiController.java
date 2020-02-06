@@ -5,6 +5,8 @@
 
 package com.dabeen.dnd.controller.api;
 
+import javax.validation.Valid;
+
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
@@ -28,7 +30,7 @@ public class HelpSupplCompApiController{
     private HelpSupplCompApiService helpSupplCompApiService;
     
     @PostMapping("")
-    public Header<HelpSupplCompApiResponse> create(@RequestBody Header<HelpSupplCompApiRequest> request) {
+    public Header<HelpSupplCompApiResponse> create(@RequestBody @Valid Header<HelpSupplCompApiRequest> request) {
         return helpSupplCompApiService.create(request);
     }
 
@@ -44,7 +46,7 @@ public class HelpSupplCompApiController{
     }
 
     @PutMapping("")
-    public Header<HelpSupplCompApiResponse> update(@RequestBody Header<HelpSupplCompApiRequest> request) {
+    public Header<HelpSupplCompApiResponse> update(@RequestBody @Valid Header<HelpSupplCompApiRequest> request) {
         return helpSupplCompApiService.update(request);
     }
 
