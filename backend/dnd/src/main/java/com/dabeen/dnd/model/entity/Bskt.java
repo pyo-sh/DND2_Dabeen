@@ -35,5 +35,5 @@ public class Bskt{
     private BigDecimal totalPrice; // 합계 금액
 
     @Enumerated(EnumType.STRING)
-    private Whether milegeUseWhet; // 마일리지 사용 여부
+    private Whether mileageUseWhet; // 마일리지 사용 여부
 }

@@ -28,7 +28,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         Bskt bskt = Bskt.builder()
                         .bsktUserNum(requestData.getBsktUserNum())
                         .totalPrice(requestData.getTotalPrice())
-                        .milegeUseWhet(requestData.getMilegeUseWhet())
+                        .mileageUseWhet(requestData.getMileageUseWhet())
                         .build();
 
         bsktMapper.insert(bskt); // 식별자를 "생성일자 + 순번"으로 하기 위해 mybatis 이용
@@ -55,7 +55,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                 bskt.setBsktNum(requestData.getBsktNum())
                     .setBsktUserNum(requestData.getBsktUserNum())
                     .setTotalPrice(requestData.getTotalPrice())
-                    .setMilegeUseWhet(requestData.getMilegeUseWhet());
+                    .setMileageUseWhet(requestData.getMileageUseWhet());
                 return bskt;
         })
         .map(baseRepository::save)
@@ -81,7 +81,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                                                         .bsktNum(bskt.getBsktNum())
                                                         .bsktUserNum(bskt.getBsktUserNum())
                                                         .totalPrice(bskt.getTotalPrice())
-                                                        .milegeUseWhet(bskt.getMilegeUseWhet())
+                                                        .mileageUseWhet(bskt.getMileageUseWhet())
                                                         .build();
         
         return bsktApiResponse;

@@ -65,5 +65,5 @@ public class User{
     private BigDecimal avgRate; // 평점
 
     @Min(value = 0, message = "OwnMileage must be at least 0.")
-    private BigDecimal ownMilege; // 보유 마일리지
+    private BigDecimal ownMileage; // 보유 마일리지
 }
