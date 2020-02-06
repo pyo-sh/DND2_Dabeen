@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Input, Row, Col } from "antd";
 import styled from "styled-components";
-import Link from 'next/link';
+import Link from "next/link";
 const Menubar = styled.div`
   position: fixed;
   width: 100%;
@@ -12,24 +12,24 @@ const Menubar = styled.div`
   background: white;
   text-align: center;
   border-bottom: 1px solid black;
-  color : black;
+  color: black;
 
   & .menuLeft {
     display: flex;
     justify-content: center;
     align-items: center;
-    width : 60vw;
+    width: 60vw;
     & input {
-        width : 30vw;
+      width: 30vw;
     }
     & ul {
       display: flex;
-      justify-content : space-between;
-      align-items : center;
-      width : 100%;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
       list-style: none;
       font-size: 18px;
-      margin : 0;
+      margin: 0;
     }
   }
   & .buttonForm {
@@ -51,13 +51,19 @@ const MenuBar = () => {
         />
         <ul>
           <li>
-            <Link><a>심부름</a></Link>
+            <Link href="">
+              <a>심부름</a>
+            </Link>
           </li>
           <li>
-            <a>대여</a>
+            <Link href="">
+              <a>대여</a>
+            </Link>
           </li>
           <li>
-            <a>잡일</a>
+            <Link href="">
+              <a>잡일</a>
+            </Link>
           </li>
         </ul>
       </div>

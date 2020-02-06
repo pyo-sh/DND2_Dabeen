@@ -29,7 +29,6 @@ const PostItem = styled.div`
 
 
 const PostWrite = () => {
-
     return (
         <PostWriteForm>
             <PostItem>
