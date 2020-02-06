@@ -8,11 +8,13 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.dabeen.dnd.exception.NotFoundException;
+import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktApiRequest;
 import com.dabeen.dnd.model.network.response.BsktApiResponse;
-import com.dabeen.dnd.mapper.BsktMapper;
+import com.dabeen.dnd.repository.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +49,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
 
         return optional.map(bskt -> response(bskt))
                         .map(Header::OK)
-                        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                        .orElseThrow(() -> new NotFoundException("Bskt"));
     }
 
     @Override
@@ -57,16 +59,19 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         Optional<Bskt> optional = baseRepository.findById(requestData.getBsktNum());
         
         return optional.map(bskt -> {
-                bskt.setBsktNum(requestData.getBsktNum())
-                    .setBsktUserNum(requestData.getBsktUserNum())
-                    .setTotalPrice(requestData.getTotalPrice())
-                    .setMileageUseWhet(requestData.getMileageUseWhet());
-                return bskt;
-        })
-        .map(baseRepository::save)
-        .map(this::response)
-        .map(Header::OK)
-        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                    // 장바구니 사용자 번호는 수정 불가, 수정하려고 할 시 에러 호출
+                    if(!requestData.getBsktUserNum().equals(bskt.getBsktUserNum()))
+                        throw new NotUpdateableException("Bskt_user_num");
+
+                    bskt.setBsktNum(requestData.getBsktNum())
+                        .setTotalPrice(requestData.getTotalPrice())
+                        .setMileageUseWhet(requestData.getMileageUseWhet());
+                    return bskt;
+                })
+                .map(baseRepository::save)
+                .map(this::response)
+                .map(Header::OK)
+                .orElseThrow(() -> new NotFoundException("Bskt"));
     }
 
     @Override
@@ -77,7 +82,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
                     baseRepository.delete(bskt);
                     return Header.OK();
                 })
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("Bskt"));
     }
 
     // Bskt > BsktApiResponse

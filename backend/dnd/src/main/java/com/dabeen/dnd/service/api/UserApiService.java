@@ -8,7 +8,9 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import com.dabeen.dnd.mapper.UserMapper;
+import com.dabeen.dnd.repository.mapper.UserMapper;
+import com.dabeen.dnd.exception.NotFoundException;
+import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequset;
@@ -57,7 +59,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
         
         return optional.map(this::response)
                         .map(Header::OK)
-                        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                        .orElseThrow(() -> new NotFoundException("User"));
 	}
 
 	@Override
@@ -67,11 +69,17 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
         Optional<User> optional = baseRepository.findById(userApiRequset.getUserNum());
 
         return optional.map(user -> {
-                        user.setUserName(userApiRequset.getUserName())
-                            .setBirthDate(userApiRequset.getBirthDate())
+                        // 사용자 이름, 아이디, 주민번호 뒷자리는 수정불가. 수정하려고 할 시 에러 호출
+                        if(!userApiRequset.getUserName().equals(user.getUserName()))
+                            throw new NotUpdateableException("User_name");
+                        if(!userApiRequset.getId().equals(user.getId()))
+                            throw new NotUpdateableException("Id");
+                        if(!userApiRequset.getRrnRear().equals(user.getRrnRear()))
+                            throw new NotFoundException("Rrn_rear");
+                        
+                        user.setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())
                             .setPhoneNum(userApiRequset.getPhoneNum())
-                            .setId(userApiRequset.getId())
                             .setPwd(userApiRequset.getPwd())
                             .setEmail(userApiRequset.getEmail())
                             .setNickname(userApiRequset.getNickname())
@@ -86,7 +94,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                     .map(baseRepository::save)
                     .map(this::response)
                     .map(Header::OK)
-                    .orElseGet(() -> Header.ERROR("Date does not exist."));
+                    .orElseThrow(() -> new NotFoundException("User"));
 	}
 
 	@Override
@@ -97,7 +105,7 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
                     baseRepository.delete(user);
                     return Header.OK();
                 })
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("User"));
     }
 
     // User > UserApiResponse 를 위한 메소드
