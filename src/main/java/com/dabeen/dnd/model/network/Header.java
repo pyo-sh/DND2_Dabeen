@@ -6,6 +6,8 @@ package com.dabeen.dnd.model.network;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +23,7 @@ public class Header<T>{
     private LocalDateTime transactionTime;
 
     // api 응답코드
-    private String resultCode;
+    private int resultCode;
 
     // api 부가 설명
     private String description;
@@ -32,7 +34,7 @@ public class Header<T>{
     public static <T> Header<T> OK(){
         return (Header<T>)Header.builder()
                                 .transactionTime(LocalDateTime.now())
-                                .resultCode("OK")
+                                .resultCode(200)
                                 .description("OK")
                                 .build();
     }
@@ -40,16 +42,16 @@ public class Header<T>{
     public static <T> Header<T> OK(T data){
         return (Header<T>)Header.builder()
                                 .transactionTime(LocalDateTime.now())
-                                .resultCode("OK")
+                                .resultCode(200)
                                 .description("OK")
                                 .data(data)
                                 .build();
     }
 
-    public static <T> Header<T> ERROR(String description){
+    public static <T> Header<T> ERROR(HttpStatus httpStatus, String description){
         return (Header<T>)Header.builder()
                                 .transactionTime(LocalDateTime.now())
-                                .resultCode("OK")
+                                .resultCode(httpStatus.value())
                                 .description(description)
                                 .build();
     }

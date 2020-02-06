@@ -4,6 +4,8 @@
 
 package com.dabeen.dnd.controller;
 
+import javax.validation.Valid;
+
 import com.dabeen.dnd.ifs.CrudInterface;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.service.BaseService;
@@ -25,7 +27,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     // Create 메소드
     @Override
     @PostMapping("")
-    public Header<Res> create(@RequestBody Header<Req> request){
+    public Header<Res> create(@RequestBody @Valid Header<Req> request){
         return baseService.create(request);
     }
 
@@ -39,7 +41,7 @@ public abstract class CrudController<Req, Res, Entity> implements CrudInterface<
     // Update 메소드
     @Override
     @PutMapping("")
-    public Header<Res> update(@RequestBody Header<Req> request){
+    public Header<Res> update(@RequestBody @Valid Header<Req> request){
         return baseService.update(request);
     }
 

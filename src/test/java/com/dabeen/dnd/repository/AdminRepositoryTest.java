@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import junit.framework.Assert;
 
 import com.dabeen.dnd.DemoApplicationTests;
-import com.dabeen.dnd.mapper.AdminMapper;
+import com.dabeen.dnd.repository.mapper.AdminMapper;
 import com.dabeen.dnd.model.entity.Admin;
     
 public class AdminRepositoryTest extends DemoApplicationTests{

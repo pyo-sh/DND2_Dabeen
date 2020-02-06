@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace= "com.dabeen.dnd.mapper.AdminMapper"> <!-- Mapper 클래스주소-->
+<mapper namespace= "com.dabeen.dnd.repository.mapper.AdminMapper"> <!-- Mapper 클래스주소-->
     <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Admin" useGeneratedKeys="false">
         <selectKey order="BEFORE" keyProperty="adminNum" resultType="String" > 
             select concat(date_format(now(), "%y%m%d"), LPAD(ifnull(max(substr(admin_num, 7)), "0") + 1, 4, 0))

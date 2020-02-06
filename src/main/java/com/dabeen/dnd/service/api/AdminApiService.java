@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import com.dabeen.dnd.mapper.AdminMapper;
+import com.dabeen.dnd.repository.mapper.AdminMapper;
+import com.dabeen.dnd.exception.NotFoundException;
+import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.Admin;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.AdminApiRequest;
@@ -47,7 +49,7 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
 
         return optional.map(this::response)
                         .map(Header::OK)
-                        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                        .orElseThrow(() -> new NotFoundException("Admin"));
     }
 
     @Override
@@ -57,10 +59,14 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
         Optional<Admin> optional = baseRepository.findById(requestData.getAdminNum());
 
         return optional.map(admin -> {
-                    admin.setAdminName(requestData.getAdminName())
-                        .setAddress(requestData.getAddress())
+                    // 관리자 이름, 아이디는 수정불가. 수정하려고 한다면 에러 호출
+                    if(!requestData.getAdminName().equals(admin.getAdminName()))
+                        throw new NotUpdateableException("Admin_name");
+                    if(!requestData.getId().equals(admin.getId()))
+                        throw new NotUpdateableException("Id");
+
+                    admin.setAddress(requestData.getAddress())
                         .setPhoneNum(requestData.getPhoneNum())
-                        .setId(requestData.getId())
                         .setPwd(requestData.getPwd())
                         .setEmail(requestData.getEmail());
                     return admin;
@@ -68,7 +74,7 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
                 .map(baseRepository::save)
                 .map(this::response)
                 .map(Header::OK)
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("Admin"));
     }
 
     @Override
@@ -79,7 +85,7 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
                     baseRepository.delete(admin);
                     return Header.OK();
                 })
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("Admin"));
     }
 
     // Admin > AdminApiResponse

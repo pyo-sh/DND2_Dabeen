@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
@@ -48,7 +49,7 @@ public class HelpSupplCompApiService {
 
         return optional.map(helpSupplComp -> response(helpSupplComp))
                         .map(Header::OK)
-                        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                        .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
     }
 
     public Header<HelpSupplCompApiResponse> update(Header<HelpSupplCompApiRequest> request) {
@@ -69,7 +70,7 @@ public class HelpSupplCompApiService {
                 .map(helpSupplCompRepository::save)
                 .map(this::response)
                 .map(Header::OK)
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
     }
 
     public Header delete(HelpSupplCompPK pk) {
@@ -78,7 +79,7 @@ public class HelpSupplCompApiService {
         return optional.map(HelpSupplComp -> {
                     helpSupplCompRepository.delete(HelpSupplComp);
                     return Header.OK();
-                }).orElseGet(() -> Header.ERROR("Date does not exist."));
+                }).orElseThrow(() -> new NotFoundException("HelpSupplComp"));
     }
 
     // HelpSupplComp > HelpSupplCompApiResponse
