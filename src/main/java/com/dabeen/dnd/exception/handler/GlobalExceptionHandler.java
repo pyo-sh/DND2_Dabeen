@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
 
             return Header.ERROR(HttpStatus.BAD_REQUEST, message);
         }
-        else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
+        else return Header.ERROR(HttpStatus.BAD_REQUEST, "Bad Request");
     }
 
     // 쿼리문을 이용한 create 시, 에러 처리
