@@ -61,9 +61,9 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
         return optional.map(admin -> {
                     // 관리자 이름, 아이디는 수정불가. 수정하려고 한다면 에러 호출
                     if(!requestData.getAdminName().equals(admin.getAdminName()))
-                        throw new NotUpdateableException("Admin_name");
+                        throw new NotUpdateableException("adminName");
                     if(!requestData.getId().equals(admin.getId()))
-                        throw new NotUpdateableException("Id");
+                        throw new NotUpdateableException("id");
 
                     admin.setAddress(requestData.getAddress())
                         .setPhoneNum(requestData.getPhoneNum())

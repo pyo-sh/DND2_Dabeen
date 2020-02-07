@@ -59,7 +59,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         return optional.map(bskt -> {
                     // 장바구니 사용자 번호는 수정 불가, 수정하려고 할 시 에러 호출
                     if(!requestData.getBsktUserNum().equals(bskt.getBsktUserNum()))
-                        throw new NotUpdateableException("Bskt_user_num");
+                        throw new NotUpdateableException("bsktUserNum");
 
                     bskt.setBsktNum(requestData.getBsktNum())
                         .setTotalPrice(requestData.getTotalPrice())

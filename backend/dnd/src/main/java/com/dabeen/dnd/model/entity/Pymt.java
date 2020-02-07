@@ -43,7 +43,7 @@ public class Pymt{
     private PymtMthdType pymtMthdType; // 결제방법구분
 
     @NotNull(message = " is not null")
-    @Min(value = 0, message =  "Price must be at least 0.")
+    @Min(value = 0, message =  " must be at least 0.")
     private BigDecimal pymtPrice; // 결제 금액
 
     @Enumerated(EnumType.STRING)
