@@ -25,42 +25,42 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-//    // 해당 엔터티를 찾을 수 없는 경우 에러 처리
-//    @ExceptionHandler(NotFoundException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Header<?> handlerNotFoundException(NotFoundException ex) {
-//        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
-//    }
-//
-//    // 수정 불가한 속성을 수정하려고 할 경우 발생되는 에러 처리
-//    @ExceptionHandler(NotUpdateableException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Header<?> handlerNotUpdateException(NotUpdateableException ex) {
-//        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
-//    }
-//
-//    // Min, Max 등의 @Valid 에러 처리함수
-//    // TransactionSystemException 안에 해당 에러가 발생하는 형태이므로 TransactionSystemException를 받아서 처리
-//    @ExceptionHandler(TransactionSystemException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Header<?> handlerVaildException(Exception ex) {
-//        Throwable cause = ((TransactionSystemException) ex).getRootCause();
-//        if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
-//            ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
-//            String message = conEx.getPropertyPath() + conEx.getMessage();
-//
-//            return Header.ERROR(HttpStatus.BAD_REQUEST, message);
-//        }
-//        else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
-//    }
-//
-//    // 쿼리문을 이용한 create 시, 에러 처리
-//    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public Header<?> handlerCreateException(SQLIntegrityConstraintViolationException ex){
-//        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
-//    }
-//    
+    // 해당 엔터티를 찾을 수 없는 경우 에러 처리
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerNotFoundException(NotFoundException ex) {
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // 수정 불가한 속성을 수정하려고 할 경우 발생되는 에러 처리
+    @ExceptionHandler(NotUpdateableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerNotUpdateException(NotUpdateableException ex) {
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // Min, Max 등의 @Valid 에러 처리함수
+    // TransactionSystemException 안에 해당 에러가 발생하는 형태이므로 TransactionSystemException를 받아서 처리
+    @ExceptionHandler(TransactionSystemException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerVaildException(Exception ex) {
+        Throwable cause = ((TransactionSystemException) ex).getRootCause();
+        if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
+            ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
+            String message = conEx.getPropertyPath() + conEx.getMessage();
+
+            return Header.ERROR(HttpStatus.BAD_REQUEST, message);
+        }
+        else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
+    }
+
+    // 쿼리문을 이용한 create 시, 에러 처리
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerCreateException(SQLIntegrityConstraintViolationException ex){
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+    
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
