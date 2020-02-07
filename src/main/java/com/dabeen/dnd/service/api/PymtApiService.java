@@ -37,9 +37,9 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         .refdWhet(requestData.getRefdWhet())
                         .refdDttm(requestData.getRefdDttm())
                         .build();
-                        log.info("new {}", pymt);           
+                               
         Pymt newPymt = baseRepository.save(pymt);
-        log.info("new {}", newPymt);
+   
         return Header.OK(response(newPymt));
     }
 
