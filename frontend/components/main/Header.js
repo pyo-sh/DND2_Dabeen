@@ -14,6 +14,7 @@ const Menubar = styled.nav`
   text-align: center;
   border-bottom: 1px solid black;
   color: black;
+  z-index : 1;
   & .menuToggle {
     position: absolute;
     top: 13px;

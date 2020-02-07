@@ -1,17 +1,19 @@
 //도움말
-import React from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import ServiceItem from './ServiceItem';
+import ServiceQuestion from './ServiceQuestion';
+import Charge from "../money/Charge";
+import Refund from "../money/Refund";
 
 const ServiceWrapper = styled.div`
   width: 100%;
-  height: 90vh;
   margin-top: 65px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow : auto;
+  
   & > div {
     padding: 10px;
   }
@@ -95,6 +97,10 @@ const dummyQuestion = [
   }
 ];
 const ServiceCenter = () => {
+  const [visible, setVisible] = useState(false);
+  const showModal = useCallback(() => {
+    setVisible(true);
+  }, []);
   return (
     <ServiceWrapper>
       <div className="serviceTitle">
@@ -104,19 +110,21 @@ const ServiceCenter = () => {
         <h2>내 문의</h2>
         <div className="serviceQuestion">
           <ul>
-          {dummyMyQuestion.map(v => (
-            <ServiceItem service={v}/>
+          {dummyMyQuestion.map((v,i) => (
+            <ServiceItem key={i} service={v}/>
           ))}
           </ul>
         </div>
         <div className="btnBox">
-          <button>문의하기</button>
+          <button onClick={showModal}>문의하기</button>
         </div>
+        {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
+        <Refund visible={visible} setVisible={setVisible} />
         <h2>자주 묻는 질문</h2>
         <div className="frequentQuestion">
           <ul>
-            {dummyQuestion.map(v => (
-              <ServiceItem service={v}/>
+            {dummyQuestion.map((v,i) => (
+              <ServiceItem key={i} service={v}/>
             ))}
           </ul>
         </div>

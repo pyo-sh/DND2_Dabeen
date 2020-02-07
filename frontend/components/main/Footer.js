@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import {Button} from 'antd';
 
 const FooterBox = styled.div`
+    position: absolute;
+    height : 2.5rem;
+    width : 100%;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;

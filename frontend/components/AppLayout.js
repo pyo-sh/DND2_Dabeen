@@ -4,13 +4,12 @@ import Footer from "./main/Footer";
 import styled from "styled-components";
 
 const AllDiv = styled.div`
-  display: flex;
-  flex-direction : column;
-  justify-content : space-between;
+  position: relative;
+  min-height : 100vh;
 `;
 const ChildrenDiv = styled.div`
-  height: 100vh;
   margin-top: 40px;
+  padding-bottom : 2.5rem;
 `;
 const AppLayout = ({ children }) => {
   return (
