@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
         String subject = ex.getTargetType().getSimpleName();
         subject = subject.substring(0, 1).toLowerCase() + subject.substring(1);
         
-        String message = subject + " not one of declared enum istance name";
+        String message = subject + " not one of declared enum istance name.";
         
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }

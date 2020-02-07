@@ -36,7 +36,7 @@ public class HelpSupplComp{
     @NotEmpty(message = " is not null")
     private HelpSupplCompPK helpSupplCompPK; // 복합키를 구현하기 위한 PK 객체
 
-    @NotNull(message = " is not null")
+    @NotEmpty(message = " is not null")
     @Enumerated(EnumType.STRING) // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     private Whether helpAprvWhet; // 도움승인여부
 
