@@ -64,7 +64,7 @@ public class User{
     @NotEmpty(message = " is not null")
     private String itdcCont; // 소개내용
 
-    @NotNull(message = " is not null")
+    @NotEmpty(message = " is not null")
     @Enumerated(EnumType.STRING) // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     private Whether supplWhet; // 공급자 여부
 
