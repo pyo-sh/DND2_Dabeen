@@ -5,6 +5,7 @@
 package com.dabeen.dnd.exception.handler;
 
 import com.dabeen.dnd.model.network.Header;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -47,7 +48,7 @@ public class GlobalExceptionHandler {
         Throwable cause = ((TransactionSystemException) ex).getRootCause();
         if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
             ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
-            String message = conEx.getPropertyPath() + conEx.getMessage();
+            String message = conEx.getPropertyPath() + conEx.getMessage(); // 에러발생 변수 + 메세지
 
             return Header.ERROR(HttpStatus.BAD_REQUEST, message);
         }
@@ -60,7 +61,21 @@ public class GlobalExceptionHandler {
     public Header<?> handlerCreateException(SQLIntegrityConstraintViolationException ex){
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    // Enumclass를 사용한 변수에서 enum 외의 값을 전달받은 경우
+    @ExceptionHandler(InvalidFormatException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerEnumInvaildFormatException(InvalidFormatException ex){
+        // 에러메세지의 형식을 맞추기 위해
+        String subject = ex.getTargetType().getSimpleName();
+        subject = subject.substring(0, 1).toLowerCase() + subject.substring(1);
+        
+        String message = subject + " not one of declared enum istance name";
+        
+        return Header.ERROR(HttpStatus.BAD_REQUEST, message);
+    }
     
+
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

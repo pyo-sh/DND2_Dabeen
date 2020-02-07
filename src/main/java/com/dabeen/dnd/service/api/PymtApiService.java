@@ -28,7 +28,7 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
     @Override
     public Header<PymtApiResponse> create(Header<PymtApiRequest> request) {
         PymtApiRequest requestData = request.getData();
-        log.info("new {}", requestData);
+        
         Pymt pymt = Pymt.builder()
                         .pymtNum(requestData.getPymtNum())
                         .pymtDttm(LocalDateTime.now())
@@ -61,11 +61,11 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
         return optional.map(pymt -> {
                     // 결제일시, 결제금액, 결제수단은 수정 불가능, 수정하려고 할 시 에러 호출
                     if(!requestData.getPymtDttm().equals(pymt.getPymtDttm()))
-                        throw new NotUpdateableException("Pymt_dttm");
+                        throw new NotUpdateableException("pymtDttm");
                     if(!requestData.getPymtPrice().equals(pymt.getPymtPrice()))
-                        throw new NotUpdateableException("Pymt_price");
+                        throw new NotUpdateableException("pymtPrice");
                     if(!requestData.getPymtMthdType().equals(pymt.getPymtMthdType()))
-                        throw new NotUpdateableException("Pymt_mthd_type");
+                        throw new NotUpdateableException("pymtMthdType");
 
                     pymt.setRefdWhet(requestData.getRefdWhet())
                         .setRefdDttm(requestData.getRefdDttm());

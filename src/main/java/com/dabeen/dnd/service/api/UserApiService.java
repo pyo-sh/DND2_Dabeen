@@ -71,11 +71,11 @@ public class UserApiService extends BaseService<UserApiRequset, UserApiResponse,
         return optional.map(user -> {
                         // 사용자 이름, 아이디, 주민번호 뒷자리는 수정불가. 수정하려고 할 시 에러 호출
                         if(!userApiRequset.getUserName().equals(user.getUserName()))
-                            throw new NotUpdateableException("User_name");
+                            throw new NotUpdateableException("userName");
                         if(!userApiRequset.getId().equals(user.getId()))
                             throw new NotUpdateableException("Id");
                         if(!userApiRequset.getRrnRear().equals(user.getRrnRear()))
-                            throw new NotFoundException("Rrn_rear");
+                            throw new NotFoundException("rrnRear");
                         
                         user.setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())

@@ -64,9 +64,9 @@ public class MileageUseHistApiService {
         return optional.map(mileageUseHist -> {
                     // 장바구니 번호, 결제 번호는 수정 불가. 수정하려고 한다면 에러 호출
                     if(!requestData.getBsktNum().equals(mileageUseHist.getBsktNum()))
-                        throw new NotUpdateableException("Bskt_num");
+                        throw new NotUpdateableException("bsktNum");
                     if(!requestData.getPymtNum().equals(mileageUseHist.getPymtNum()))
-                        throw new NotUpdateableException("Pymt_num");
+                        throw new NotUpdateableException("pymtNum");
                                            
                     mileageUseHist.setUseType(requestData.getUseType())
                                 .setUsePrice(requestData.getUsePrice())
