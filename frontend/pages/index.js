@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MenuBar from "../components/main/MenuBar";
 import MainBottom from "../components/main/MainBottom";
 // import PostWrite from "../components/posts/PostWrite";
-import SignUp from "../components/signUp/SignUp";
+import RegistSupplier from "../components/signUp/RegistSupplier";
 
 const Content = styled.div`
   position: absolute;
@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <>
     <MenuBar />
-    <SignUp/>
+    <RegistSupplier/>
     <Footer><MainBottom /></Footer>
     </>
   );
