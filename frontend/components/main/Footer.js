@@ -11,6 +11,14 @@ const FooterBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > .mainBottomContent {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 15vw;
+        font-size: 15px;
+    }
 `;
 
 const Footer = () => {
