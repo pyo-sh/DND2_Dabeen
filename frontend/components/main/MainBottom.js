@@ -3,26 +3,35 @@ import styled from 'styled-components';
 import {Button} from 'antd';
 
 const MainBottomForm = styled.div`
-    /* padding-top: 10px;
+    margin-top: 20px;
+    padding-top: 10px;
     border-top: solid 1px darkgray;
     width: 100%;
-    color: gray; */
+    color: #7A7A7A;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    & > .mainBottomContent {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 15vw;
+        font-size: 15px;
+    }
 `;
 
 const MainBottom = () => {
     return (
         <MainBottomForm>
-            <div>
-                <Button type='link' style={{color: 'darkgray'}}>이용약관</Button>
-                <Button type='link' style={{color: 'darkgray'}}>개인정보 처리방침</Button>
-                <Button type='link' style={{color: 'darkgray'}}>고객센터</Button>
-                <Button type='link' style={{color: 'darkgray'}}>공지사항</Button>
+            <div className="mainBottomContent">
+                <div>이용약관</div>
+                <div>개인정보 처리방침</div>
+                <div>고객센터</div>
+                <div>공지사항</div>
             </div>
-            <div>Copyright ⓒ DaBeen Team. All rights reserved</div>
+            <div style={{fontSize: 10}}>Copyright ⓒ DaBeen Team. All rights reserved</div>
         </MainBottomForm>
         );
 };

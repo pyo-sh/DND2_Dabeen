@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
 import MainDaBeenerProfile from './MainDaBeenerProfile';
-import MainBottom from './MainBottom';
 
 const MainForm = styled.div`
     display: flex;
@@ -13,34 +12,67 @@ const MainForm = styled.div`
 
     & > .mainImage {
         border: solid 1px gray;
-        width: 90vw;
+        width: 90%;
         height: 30vh;
         margin-top: 30px;
         text-align: center;
     }
 
-    & > .buttonForm {
-        margin-top: 30px;
-    }
+    & .title {
+        color: #424242;
+        font-size: 48px;
 
-    & > h1 {
-        margin-top: 70px;
-        color: gray;
-        font-size: 30px;
+        @media only screen and (max-width: 1024px){
+            font-size: 36px;
+        }
+
+        @media only screen and (max-width: 768px){
+            font-size: 28px;
+        }
+
+        @media only screen and (max-width: 425px){
+            font-size: 20px;
+        }
     }
 `;
 
 const LiveHelpRequestMenuBar = styled.div`
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    width: 100vw;
+    margin-top: 5vh;
 
-    & > .liveHelpRequest {
-        border-bottom: solid 1px gray;  /*선택시 색상 변경되게*/
-        width: 10vw;
-        font-size: 17px;
-        margin-top: 10px;
-        margin-left: 25px;
+    & .liveHelpRequestForm {
+        display: flex;
+        justify-content: space-around;
+        width: 20vw;
+
+        @media only screen and (max-width: 425px){
+            margin-left: 1vw;
+        }
+    }
+
+    & .liveHelpRequest {
+        /*선택시 색상 변경되게*/
+        font-size: 30px;
+        cursor: pointer;
+        
+        :hover{
+            color: #FF4300;
+        }
+
+        @media only screen and (max-width: 1024px){
+            font-size: 20px;
+        }
+
+        @media only screen and (max-width: 768px){
+            font-size: 18px;
+        }
+
+        @media only screen and (max-width: 425px){
+            font-size: 12px;
+        }
     }
 `;
 
@@ -56,23 +88,17 @@ const Main = () => {
                     배경은 사진 넣으면됩니당.
                 </p>
             </div>
-            <div className="buttonForm"> {/* 카테고리 */}   
-                <Button size="large" style={{marginLeft: 20}}>카테고리1</Button>
-                <Button size="large" style={{marginLeft: 20}}>카테고리2</Button>
-                <Button size="large" style={{marginLeft: 20}}>카테고리3</Button>
-                <Button size="large" style={{marginLeft: 20}}>카테고리4</Button>     
-            </div>
-            <h1>실시간 도움 요청</h1>
             <LiveHelpRequestMenuBar>
-                <div className="liveHelpRequest">메뉴1</div>
-                <div className="liveHelpRequest">메뉴2</div>
-                <div className="liveHelpRequest">메뉴3</div>
-                <div className="liveHelpRequest">메뉴4</div>
+                <div className="title">실시간 도움 요청</div>
+                <div className="liveHelpRequestForm">
+                    <div className="liveHelpRequest">심부름</div>
+                    <div className="liveHelpRequest">대여</div>
+                    <div className="liveHelpRequest">잡일</div>
+                </div>
             </LiveHelpRequestMenuBar>
             <LiveHelpRequest />
-            <h1>내 주변의 높은 평점을 가진 DaBeener를 확인하세요!</h1>
+            <div className="title">내 주변의 높은 평점을 가진 DaBeener를 확인하세요!</div>
             <MainDaBeenerProfile />
-            <MainBottom />
         </MainForm>
     );
 };

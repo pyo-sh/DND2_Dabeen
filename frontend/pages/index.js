@@ -1,11 +1,11 @@
 import React from "react";
-import PostWrite from "../components/posts/PostWrite";
 import Main from "../components/main/Main";
+import PostWrite from "../components/posts/PostWrite";
 
 const Home = () => {
   return (
     <>
-    <Main/>
+    <PostWrite/>
     </>
   );
 };
