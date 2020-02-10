@@ -28,17 +28,17 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Post{
     @Id
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     private String postNum; // 게시글 번호
 
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     @Enumerated(EnumType.STRING)
     private PostType postType; // 게시글 구분
  
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     private String title; // 제목
  
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     private String cont; // 내용
     
     private LocalDateTime questPstnDttm; // 질문게시일시

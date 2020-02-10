@@ -5,7 +5,7 @@ package com.dabeen.dnd.controller.api;
 
 import com.dabeen.dnd.controller.CrudController;
 import com.dabeen.dnd.model.entity.User;
-import com.dabeen.dnd.model.network.request.UserApiRequset;
+import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserApiController extends CrudController<UserApiRequset, UserApiResponse, User>{
+public class UserApiController extends CrudController<UserApiRequest, UserApiResponse, User>{
 
 }
