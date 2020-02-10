@@ -5,10 +5,12 @@ import { Input, Button, Select } from 'antd';
 
 const SignUpUpperDiv = styled.div`
     margin: 90px auto;
+
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    
     & .Title{
         font-size: 50px;
         font-weight: bold;
