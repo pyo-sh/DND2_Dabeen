@@ -38,7 +38,7 @@ public class UserRepositoryTest extends DemoApplicationTests {
                         .birthDate(birthDate)
                         .address(address)
                         .phoneNum(phoneNum)
-                        .id(id)
+                        .userId(id)
                         .pwd(pwd)
                         .email(email)
                         .nickname(nickname)

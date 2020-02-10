@@ -12,6 +12,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 
@@ -28,8 +29,15 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
     // 해당 엔터티를 찾을 수 없는 경우 에러 처리
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public Header<?> handlerNotFoundException(NotFoundException ex) {
+        return Header.ERROR(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    // 사용자, 관리자 생성 시 해당 아이디가 이미 존재하는 경우 발생되는 에러 처리    
+    @ExceptionHandler(IdExistedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerIdExistedException(IdExistedException ex){
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
@@ -48,7 +56,7 @@ public class GlobalExceptionHandler {
         Throwable cause = ((TransactionSystemException) ex).getRootCause();
         if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
             ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
-            String message = conEx.getPropertyPath() + conEx.getMessage(); // 에러발생 변수 + 메세지
+            String message = conEx.getPropertyPath() + " " + conEx.getMessage(); // 에러발생 변수 + 메세지
 
             return Header.ERROR(HttpStatus.BAD_REQUEST, message);
         }

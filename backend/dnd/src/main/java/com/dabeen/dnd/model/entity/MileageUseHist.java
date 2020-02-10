@@ -31,15 +31,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class MileageUseHist {
     @EmbeddedId
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     private MileageUseHistPK mileageUseHistPK; // 복합 PK, userNum/MileageUseDttm
     
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     @Enumerated(EnumType.STRING)
     private MileageUseType useType; // 사용구분
 
-    @NotNull(message = " is not null")
-    @Min(value = 0, message = " must be at least 0.")
+    @NotNull(message = "is not null")
+    @Min(value = 0, message = "must be at least 0.")
     private BigDecimal usePrice; // 사용 금액
 
     private String bsktNum; // 장바구니 번호

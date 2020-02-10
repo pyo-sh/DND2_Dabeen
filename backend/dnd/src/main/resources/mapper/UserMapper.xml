@@ -18,7 +18,7 @@
         insert 
             into user
             values (#{userNum}, #{userName}, #{birthDate}, #{address}, #{phoneNum}, 
-                    #{id}, #{pwd}, #{email}, #{nickname}, #{itdcCont}, #{supplWhet}, 
+                    #{userId}, #{pwd}, #{email}, #{nickname}, #{itdcCont}, #{supplWhet}, 
                     #{blonSggName}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
     </insert>
 </mapper>
