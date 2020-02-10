@@ -1,8 +1,3 @@
-// Category.java
-// Category 엔터티
-// 작성자 : 권영인
-
-
 package com.dabeen.dnd.model.entity;
 
 import javax.persistence.Entity;
@@ -21,19 +16,18 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class Category{
+public class HelpPic{
+
+    //FK로써 추후 Help로 종속성 대칭 필요
+    @Id
+    @NotEmpty(message = " is not null")
+    private String helpNum; // 도움번호
 
     @Id
     @NotEmpty(message = " is not null")
-    private String catNum; // 카테고리번호
+    private Integer picOrnu; // 사진순번
 
     @NotEmpty(message = " is not null")
-    private String catName; // 카테고리명
-
-    @NotEmpty(message = " is not null")
-    private String catDesc; // 카테고리설명
-
-    //FK로서 Category로 종속성 대칭 필요
-    private String highCatNum; //상위카테고리번호
+    private String path; // 경로명
 
 }

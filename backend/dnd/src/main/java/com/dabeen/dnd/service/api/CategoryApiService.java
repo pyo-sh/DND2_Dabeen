@@ -24,7 +24,9 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         
         Category newCategory = baseRepository.save(category);
         
-        return Header.OK(response(newCategory));    }
+        return Header.OK(response(newCategory));
+    
+    }
 
     @Override
     public Header<CategoryApiResponse> read(String num) {
