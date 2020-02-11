@@ -1,9 +1,6 @@
-// Category.java
-// Category 엔터티
-// 작성자 : 권영인
-
-
 package com.dabeen.dnd.model.entity;
+
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,19 +18,22 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class Category{
+public class Fqa{
 
     @Id
     @NotEmpty(message = " is not empty")
-    private String catNum; // 카테고리번호
+    private String fqaNum; // 자주묻는질문번호
+
+    private LocalDateTime questPstnDttm; // 질문게시일시
 
     @NotEmpty(message = " is not empty")
-    private String catName; // 카테고리명
+    private String title; // 제목
 
     @NotEmpty(message = " is not empty")
-    private String catDesc; // 카테고리설명
+    private String rplyCont; // 답변내용
 
-    //FK로서 Category로 종속성 대칭 필요
-    private String highCatNum; //상위카테고리번호
+    //Default CRUD 생성 후 종속성 연결 작업 필요
+    @NotEmpty(message = " is not empty")
+    private String fqaRgistrantNum; // 자주묻는질문등록자번호
 
 }

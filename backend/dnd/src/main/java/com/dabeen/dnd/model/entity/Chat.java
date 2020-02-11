@@ -1,5 +1,7 @@
 package com.dabeen.dnd.model.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
@@ -17,18 +19,26 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-public class HelpPic{
+public class Chat{
 
-    //FK로써 추후 Help로 종속성 대칭 필요
+    // Default CRUD 작업 후 종속성 작업 필요
     @Id
+    @NotEmpty(message = " is not empty")
+    private String chatNum; // 채팅번호
+
+    @NotNull(message = " is not null")
+    private LocalDateTime chatGenDttm; // 채팅생성일시 
+
+    @NotNull(message = " is not null")
+    private LocalDateTime chatEndDttm; // 채팅종료일시
+
     @NotEmpty(message = " is not empty")
     private String helpNum; // 도움번호
 
-    @Id
-    @NotNull(message = " is not null")
-    private Integer picOrnu; // 사진순번
+    @NotEmpty(message = " is not empty")
+    private String cnsrNum; // 수요자번호
 
     @NotEmpty(message = " is not empty")
-    private String path; // 경로명
+    private String supplNum; // 공급자번호
 
 }

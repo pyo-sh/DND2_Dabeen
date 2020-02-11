@@ -1,8 +1,9 @@
 // CategoryApiService.java
 // 작성자 : 권영인
 
-
 package com.dabeen.dnd.service.api;
+
+import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Category;
@@ -11,6 +12,11 @@ import com.dabeen.dnd.model.network.request.CategoryApiRequest;
 import com.dabeen.dnd.model.network.response.CategoryApiResponse;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.stereotype.Service;
+
+
+@Transactional
+@Service
 public class CategoryApiService extends BaseService<CategoryApiRequest, CategoryApiResponse, Category> {
 
     @Override
