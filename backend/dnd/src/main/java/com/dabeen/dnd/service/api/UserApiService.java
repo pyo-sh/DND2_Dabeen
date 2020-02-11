@@ -13,11 +13,16 @@ import com.dabeen.dnd.repository.mapper.UserMapper;
 import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.exception.PasswordWrongException;
 import com.dabeen.dnd.model.entity.User;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
+import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
+import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.BaseService;
+import com.dabeen.dnd.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +31,7 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Transactional
+@Slf4j
 @Service
 public class UserApiService extends BaseService<UserApiRequest, UserApiResponse, User>{
     @Autowired 
@@ -36,6 +42,9 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     @Autowired
     private PasswordEncoder passwordEncoder; // 패스워드 암호화를 위한 Encoder
+
+    @Autowired
+    private JwtService jwtService;
 
     // 사용자 생성, 회원가입
 	@Override
@@ -150,5 +159,27 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                                                         .build();
         
         return userApiResponse;
+    }
+
+    // 로그인을 위한 메소드
+    public Header<LoginApiResponse> login(Header<LoginApiRequest> request){
+        LoginApiRequest requestData = request.getData();
+        User user = userRepository.findByUserId(requestData.getId())
+                                    .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' ID"));
+      
+                                    log.info("requestData.getPwd() {}", passwordEncoder.encode(requestData.getPwd()));
+                                    log.info("user.getPwd() {}", user.getPwd());
+        if(!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
+            throw new PasswordWrongException();
+      
+
+        // 해당 사용자가 공급자인지 아닌지 판단
+        String role = user.getSupplWhet().equals(Whether.Y) ? "suppler" : "user";
+
+        return Header.OK(
+                LoginApiResponse.builder()
+                                .token(jwtService.createToken(user.getUserNum(), role))
+                                .build()
+                );
     }
 }

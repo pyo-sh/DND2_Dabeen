@@ -13,8 +13,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import com.dabeen.dnd.exception.IdExistedException;
+import com.dabeen.dnd.exception.InvaildTokenException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.exception.PasswordWrongException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
@@ -41,11 +43,19 @@ public class GlobalExceptionHandler {
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    // 입력된 비밀번호가 틀린 경우 발생되는 에러 처리 
+    @ExceptionHandler(PasswordWrongException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerPasswordWrongException(PasswordWrongException ex){
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+
     // 수정 불가한 속성을 수정하려고 할 경우 발생되는 에러 처리
     @ExceptionHandler(NotUpdateableException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_MODIFIED)
     public Header<?> handlerNotUpdateException(NotUpdateableException ex) {
-        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+        return Header.ERROR(HttpStatus.NOT_MODIFIED, ex.getMessage());
     }
 
     // Min, Max 등의 @Valid 에러 처리함수
@@ -83,7 +93,13 @@ public class GlobalExceptionHandler {
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }
     
-
+    // 토큰 정보가 잘못된 경우 
+    @ExceptionHandler(InvaildTokenException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerInvaildTokenExceptio(InvaildTokenException ex) {
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+    
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
