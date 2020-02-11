@@ -4,37 +4,43 @@ import { Modal, Button, Input, Select } from "antd";
 import styled from "styled-components";
 
 const RefundModal = styled(Modal)`
+  & .ant-modal-header div {
+    font-size: 25px;
+  }
   & .bankSelectBoX {
     display: flex;
     & .bankSelect {
-    width: 120px;
-    border-radius : 5px;
-    color : tomato;
-    & :focus, :hover {
-      border : 1px solid tomato;
-      box-shadow : none;
-      outline : tomato;
-    }
+      width: 120px;
+      border-radius: 5px;
+      color: tomato;
+      & :focus,
+      :hover {
+        border: 1px solid tomato;
+        box-shadow: none;
+        outline: tomato;
+      }
     }
     & span {
       color: tomato;
     }
   }
   & input {
-    & :focus, :hover {
-      border : 1px solid tomato;
-      box-shadow : none;
+    & :focus,
+    :hover {
+      border: 1px solid tomato;
+      box-shadow: none;
     }
-    & ::-webkit-outer-spin-button, ::-webkit-inner-spin-button {
-        -webkit-appearance : none;
-        margin: 0;
-      }
+    & ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
-  
+
   & .refundMoneyBox {
-    display : flex;
-    justify-content : center;
-    align-items : center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     & input {
       border: none;
       border-bottom: 1px solid black;
@@ -42,36 +48,38 @@ const RefundModal = styled(Modal)`
       width: 80%;
       height: 10vh;
       font-size: 30px;
-      padding-bottom : 0;
-      & :focus, :hover {
+      padding-bottom: 0;
+      & :focus,
+      :hover {
         box-shadow: none;
       }
-      & ::-webkit-outer-spin-button, ::-webkit-inner-spin-button {
-        -webkit-appearance : none;
+      & ::-webkit-outer-spin-button,
+      ::-webkit-inner-spin-button {
+        -webkit-appearance: none;
         margin: 0;
       }
     }
     & span {
-      font-size : 40px;
+      font-size: 40px;
     }
   }
   & .warnText {
     text-align: center;
-    margin : 14px 0;
+    margin: 14px 0;
     font-size: 15px;
   }
   & .ant-modal-footer {
-      display : flex;
-      justify-content : center;
-      & button {
-        background :tomato;
-        color :white;
-        & :hover {
-          border : 1px solid tomato;
-          color : black;
-        }
+    display: flex;
+    justify-content: center;
+    & button {
+      background: tomato;
+      color: white;
+      & :hover {
+        border: 1px solid #ff4300;
+        color: black;
       }
     }
+  }
 `;
 const banks = [
   "카카오",
@@ -89,15 +97,15 @@ const banks = [
 const Refund = ({ visible, setVisible }) => {
   const [selectBank, setSelectBank] = useState("");
   const [accountNumber, setAccountNumber] = useState(null);
-  const [refundPrice, setRefundPrice ] = useState(null);
+  const [refundPrice, setRefundPrice] = useState(null);
 
   const selectOnChange = useCallback(value => {
     setSelectBank(value);
   }, []);
-  const accountNumberOnChange = useCallback((e) => {
+  const accountNumberOnChange = useCallback(e => {
     setAccountNumber(e.target.value);
   }, []);
-  const refundPirceOnChange = useCallback((e) => {
+  const refundPirceOnChange = useCallback(e => {
     setRefundPrice(e.target.value);
   }, []);
   const handleOk = useCallback(e => {
@@ -114,9 +122,7 @@ const Refund = ({ visible, setVisible }) => {
       onOk={handleOk}
       onCancel={handleCancel}
       title="환급"
-      footer={[
-        <Button onClick={handleOk}>환급하기</Button>
-      ]}
+      footer={[<Button onClick={handleOk}>환급하기</Button>]}
     >
       <div>
         <div className="bankSelectBoX">
@@ -131,10 +137,18 @@ const Refund = ({ visible, setVisible }) => {
               </option>
             ))}
           </select>
-          <Input type="number" placeholder="계좌번호" onChange= {accountNumberOnChange}/>
+          <Input
+            type="number"
+            placeholder="계좌번호"
+            onChange={accountNumberOnChange}
+          />
         </div>
         <div className="refundMoneyBox">
-          <Input placeholder="환급 금액" type="number" onChange={refundPirceOnChange} />
+          <Input
+            placeholder="환급 금액"
+            type="number"
+            onChange={refundPirceOnChange}
+          />
           <span>원</span>
         </div>
         <div className="warnText">

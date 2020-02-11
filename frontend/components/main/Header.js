@@ -2,6 +2,99 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Button, Input, Icon } from "antd";
 import styled from "styled-components";
 import Link from "next/link";
+
+const isBrowser = typeof window !== "undefined";
+const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
+const Header = () => {
+  const divRef = useRef();
+  const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
+  const clickMenuIcon = useCallback(() => {
+    divRef.current.classList.toggle("active");
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    if (width > 768) {
+      divRef.current.classList.remove("active");
+    }
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [width]);
+  return (
+    <Menubar>
+      <sapn className="menuToggle">
+        <Icon
+          type="menu"
+          onClick={clickMenuIcon}
+          style={{ color: "#FF4300" }}
+        />
+      </sapn>
+      <div className="menuLeft">
+        <Link href="/"><a>로고</a></Link>
+        <Input.Search
+          placeholder="도움을 검색하세요!"
+          style={{ marginLeft: 10 }}
+        />
+      </div>
+      <div className="menuRight" ref={divRef}>
+        <ul>
+          <li>
+            <Link href="/errand">
+              <a>심부름</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="rental">
+              <a>대여</a>
+            </Link>
+          </li>
+          <li>
+            <Link href="/etc">
+              <a>잡일</a>
+            </Link>
+          </li>
+        </ul>
+        <div className="loginBox">
+          {isLogin ? (
+            <>
+              <div>
+                <Link href="/charge">
+                  <a>충전</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/logout">
+                  <a>로그아웃</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/mypage">
+                  <a>마이페이지</a>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <Link href="/login">
+                  <a>로그인</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/terms">
+                  <a>회원가입</a>
+                </Link>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </Menubar>
+  );
+};
+
 const Menubar = styled.nav`
   position: fixed;
   top: 0;
@@ -105,96 +198,5 @@ const Menubar = styled.nav`
     }
   }
 `;
-const isBrowser = typeof window !== "undefined";
-const isLogin = true; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
-const Header = () => {
-  const divRef = useRef();
-  const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
-  const clickMenuIcon = useCallback(() => {
-    divRef.current.classList.toggle("active");
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    if (width > 768) {
-      divRef.current.classList.remove("active");
-    }
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [width]);
-  return (
-    <Menubar>
-      <sapn className="menuToggle">
-        <Icon
-          type="menu"
-          onClick={clickMenuIcon}
-          style={{ color: "#FF4300" }}
-        />
-      </sapn>
-      <div className="menuLeft">
-        <div>로고</div>
-        <Input.Search
-          placeholder="도움을 검색하세요!"
-          style={{ marginLeft: 10 }}
-        />
-      </div>
-      <div className="menuRight" ref={divRef}>
-        <ul>
-          <li>
-            <Link href="/errand">
-              <a>심부름</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="rental">
-              <a>대여</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/etc">
-              <a>잡일</a>
-            </Link>
-          </li>
-        </ul>
-        <div className="loginBox">
-          {isLogin ? (
-            <>
-              <div>
-                <Link href="/charge">
-                  <a>충전</a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/logout">
-                  <a>로그아웃</a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/mypage">
-                  <a>마이페이지</a>
-                </Link>
-              </div>
-            </>
-          ) : (
-            <>
-              <div>
-                <Link href="/login">
-                  <a>로그인</a>
-                </Link>
-              </div>
-              <div>
-                <Link href="/signup">
-                  <a>회원가입</a>
-                </Link>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </Menubar>
-  );
-};
 
 export default Header;
