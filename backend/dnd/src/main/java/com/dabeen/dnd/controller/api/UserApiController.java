@@ -25,9 +25,6 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     @Autowired
     private UserApiService userApiService;
     
-    @Autowired
-    private JwtService jwtService;
-    
     @PostMapping("/login")
     public Header<LoginApiResponse> login(@RequestBody Header<LoginApiRequest> request){
         return userApiService.login(request);

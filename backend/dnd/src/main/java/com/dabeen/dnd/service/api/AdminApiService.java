@@ -13,11 +13,15 @@ import com.dabeen.dnd.repository.mapper.AdminMapper;
 import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.exception.PasswordWrongException;
 import com.dabeen.dnd.model.entity.Admin;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.AdminApiRequest;
+import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.response.AdminApiResponse;
+import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.service.BaseService;
+import com.dabeen.dnd.service.JwtService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +38,9 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
 
     @Autowired
     private PasswordEncoder passwordEncoder; // 패스워드 암호화를 위한 Encoder
+
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public Header<AdminApiResponse> create(Header<AdminApiRequest> request) {
@@ -121,4 +128,19 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
         return adminApiResponse;
     }
 
+    // 로그인을 위한 메소드
+    public Header<LoginApiResponse> login(Header<LoginApiRequest> request){
+        LoginApiRequest requestData = request.getData();
+        Admin admin = adminRepository.findByAdminId(requestData.getId())
+                                    .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' ID"));
+      
+        if(!passwordEncoder.matches(requestData.getPwd(), admin.getPwd()))
+            throw new PasswordWrongException();
+      
+        return Header.OK(
+                LoginApiResponse.builder()
+                                .token(jwtService.createToken(admin.getAdminNum(), "admin"))
+                                .build()
+                );
+    }
 }
