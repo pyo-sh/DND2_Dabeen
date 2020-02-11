@@ -101,7 +101,7 @@ const Menubar = styled.nav`
       display: flex;
       justify-content: space-around;
       align-items: center;
-      width: 10vw;
+      width: 18vw;
     }
   }
 `;
@@ -161,6 +161,11 @@ const Header = () => {
         <div className="loginBox">
           {isLogin ? (
             <>
+              <div>
+                <Link href="/charge">
+                  <a>충전</a>
+                </Link>
+              </div>
               <div>
                 <Link href="/logout">
                   <a>로그아웃</a>

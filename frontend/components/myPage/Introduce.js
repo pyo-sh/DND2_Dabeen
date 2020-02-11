@@ -93,6 +93,7 @@ const IntroWrapper = styled.div`
   & .introMain {
     border: 1px solid black;
     width: 60%;
+    max-width : 640px;
     padding: 20px;
   }
   & .introHeader {
