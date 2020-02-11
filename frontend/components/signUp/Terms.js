@@ -42,7 +42,7 @@ const TermsWrapper = styled.div`
   }
 
   & > button {
-    background: tomato;
+    background: #FF4300;
     border: none;
     color: white;
     cursor: pointer;

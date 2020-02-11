@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Link from "next/link";
 const Menubar = styled.nav`
   position: fixed;
-  top : 0;
+  top: 0;
   width: 100%;
   padding: 10px 0;
   display: flex;
@@ -14,7 +14,7 @@ const Menubar = styled.nav`
   text-align: center;
   border-bottom: 1px solid black;
   color: black;
-  z-index : 1;
+  z-index: 1;
   & .menuToggle {
     position: absolute;
     top: 13px;
@@ -26,6 +26,13 @@ const Menubar = styled.nav`
   & .menuLeft {
     display: flex;
     width: 60vw;
+    & span .ant-input {
+      & :hover,
+      :focus {
+        border: 1px solid #ff4300;
+        box-shadow: none;
+      }
+    }
   }
   & .menuRight {
     display: none;
@@ -34,34 +41,34 @@ const Menubar = styled.nav`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content : center;
+    justify-content: center;
     position: absolute;
     font-size: 20px;
     top: 62px;
     right: 5px;
-    background : rgba(255,99,71, 0.9);
-    border-radius : 5px;
+    background: rgba(255, 99, 71, 0.9);
+    border-radius: 5px;
     & a {
-        color : white;
+      color: white;
     }
     & ul {
       display: flex;
-      margin : 0;
-      padding : 0;
+      margin: 0;
+      padding: 0;
       flex-direction: column;
-      justify-content : center;
+      justify-content: center;
       align-items: center;
       list-style: none;
     }
     & ::before {
-        content: "";
-        width: 10px;
-        height: 10px;
-        position: absolute;
-        background : rgba(255,99,71, 0.9);
-        top : -5px;
-        left : 50%;
-        transform : translate(-50%) rotate(45deg);
+      content: "";
+      width: 10px;
+      height: 10px;
+      position: absolute;
+      background: rgba(255, 99, 71, 0.9);
+      top: -5px;
+      left: 50%;
+      transform: translate(-50%) rotate(45deg);
     }
   }
 
@@ -78,7 +85,7 @@ const Menubar = styled.nav`
       width: 60vw;
       justify-content: space-around;
       & a {
-          color : black;
+        color: black;
       }
     }
     & .menuRight ul {
@@ -99,7 +106,7 @@ const Menubar = styled.nav`
   }
 `;
 const isBrowser = typeof window !== "undefined";
-
+const isLogin = true; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
 const Header = () => {
   const divRef = useRef();
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
@@ -120,7 +127,11 @@ const Header = () => {
   return (
     <Menubar>
       <sapn className="menuToggle">
-        <Icon type="menu" onClick={clickMenuIcon} />
+        <Icon
+          type="menu"
+          onClick={clickMenuIcon}
+          style={{ color: "#FF4300" }}
+        />
       </sapn>
       <div className="menuLeft">
         <div>로고</div>
@@ -132,32 +143,49 @@ const Header = () => {
       <div className="menuRight" ref={divRef}>
         <ul>
           <li>
-            <Link href="">
+            <Link href="/errand">
               <a>심부름</a>
             </Link>
           </li>
           <li>
-            <Link href="">
+            <Link href="rental">
               <a>대여</a>
             </Link>
           </li>
           <li>
-            <Link href="">
+            <Link href="/etc">
               <a>잡일</a>
             </Link>
           </li>
         </ul>
         <div className="loginBox">
-          <div>
-            <Link href="">
-              <a>로그인</a>
-            </Link>
-          </div>
-          <div>
-            <Link href="">
-              <a>회원가입</a>
-            </Link>
-          </div>
+          {isLogin ? (
+            <>
+              <div>
+                <Link href="/logout">
+                  <a>로그아웃</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/mypage">
+                  <a>마이페이지</a>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <Link href="/login">
+                  <a>로그인</a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/signup">
+                  <a>회원가입</a>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Menubar>

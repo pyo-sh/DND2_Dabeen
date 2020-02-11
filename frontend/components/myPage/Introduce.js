@@ -1,7 +1,87 @@
 // 자기 소개
 import React from "react";
-import { Icon } from 'antd';
+import { Icon } from "antd";
 import styled from "styled-components";
+import EvaluationItem from "./EvaluationItem";
+import StarScore from "./StarScore";
+
+const Introduce = ({ myInfomation, evaluation }) => {
+  const {
+    id,
+    nickname,
+    introduce,
+    totalHelp,
+    totalScore,
+    totalRevenu,
+    location,
+    isDabeener
+  } = myInfomation;
+  return (
+    <IntroWrapper>
+      <div className="introMain">
+        <div className="introHeader">
+          <div className="introProfile">프로필 사진</div>
+          <div className="introInfoBox">
+            <div className="introInfo">
+              <div className="introNick">
+                <h1>{nickname}</h1>
+                <span>@{id}</span>
+              </div>
+              <button>edit</button>
+            </div>
+            <div className="content">{introduce}</div>
+            {isDabeener && (
+              <div className="myTotalEval">
+                <div>
+                  <b>{totalHelp}</b>
+                  <br />총 도움수
+                </div>
+                <div>
+                  <b>
+                    <StarScore score={totalScore} />
+                    {totalScore}
+                  </b>
+                  <br />
+                  평점
+                </div>
+                <div>
+                  <b><span className="myRevenu">{totalRevenu}</span>원</b>
+                  <br />
+                  수익
+                </div>
+                <Icon type="right" />
+              </div>
+            )}
+          </div>
+        </div>
+        {!isDabeener && (
+          <div className="dabeenerApply">
+            <div>
+              <h2>다비너 지원하기</h2>
+              <p>이웃을 도우며 소소한 행복을 느껴보세요.</p>
+            </div>
+            <Icon type="right" />
+          </div>
+        )}
+        {isDabeener && (
+          <div className="myEvaluation">
+            <h2>받은 평가</h2>
+            <div className="evaluations">
+              {evaluation.map(eItem => (
+                <EvaluationItem eItem={eItem} />
+              ))}
+            </div>
+          </div>
+        )}
+        <div className ="mapBox">
+          <h1>내 위치</h1>
+          <div className="map"></div>{/* 지도를 나타낸다!*/}
+          <div className="myLocation">{location}</div>
+        </div>
+      </div>
+    </IntroWrapper>
+  );
+};
 
 const IntroWrapper = styled.div`
   width: 100%;
@@ -18,9 +98,9 @@ const IntroWrapper = styled.div`
   & .introHeader {
     display: flex;
     width: 100%;
-    padding-bottom : 15px;
+    padding-bottom: 15px;
     justify-content: space-around;
-    flex-wrap : wrap;
+    flex-wrap: wrap;
     & .introProfile {
       border: 1px solid black;
       border-radius: 50%;
@@ -30,11 +110,11 @@ const IntroWrapper = styled.div`
       line-height: 150px;
     }
     & .introInfoBox {
-        width: 60%;
+      width: 60%;
     }
     & .introInfo {
       display: flex;
-      width : 100%;
+      width: 100%;
       justify-content: space-between;
       align-items: center;
       & .introNick {
@@ -53,59 +133,46 @@ const IntroWrapper = styled.div`
     & .content {
       color: darkblue;
     }
+    & .myTotalEval {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      & div .myRevenu{
+        color : #FF4300;
+      }
+    }
   }
   & .dabeenerApply {
-      display : flex;
-      border-radius : 5px;
-      justify-content : space-around;
-      align-items : center;
-      background : #F0F0F0;
-      color : #8B8B8B;
-      & h2 {
-          margin : 0;
-      }
-
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-around;
+    align-items: center;
+    background: #f0f0f0;
+    color: #8b8b8b;
+    & h2 {
+      margin: 0;
+    }
   }
-  & .map {
+  & .myEvaluation {
+    & .evaluations {
+      border: 1px solid black;
+      border-bottom: 0px;
+    }
+  }
+  & .mapBox {
+    & .map {
     border: 1px solid black;
-    width: 80%;
     height: 40vh;
+    }
+    & .myLocation {
+      border : 1px solid black;
+      border-top : 0px;
+    }
+  }
+  @media screen and (max-width: 768px) { /* 768보다 작을 때는 화면 크게 만들거임!!*/
+    & .introMain {
+      width : 100%;
+    }
   }
 `;
-
-const Introduce = () => {
-  return (
-    <IntroWrapper>
-      <div className="introMain">
-        <div className="introHeader">
-          <div className="introProfile">프로필 사진</div>
-          <div className= "introInfoBox">
-            <div className="introInfo">
-              <div className="introNick">
-                <h1>닉네임</h1>
-                <span>@아이디</span>
-              </div>
-              <button>edit</button>
-            </div>
-            <div className="content">
-              안녕 날 소개하지, 내 직업은 ~ 돈 좀 버는 직업이야
-            </div>
-          </div>
-        </div>
-        <div className="dabeenerApply">
-          <div>
-            <h2>다비너 지원하기</h2>
-            <p>이웃을 도우며 소소한 행복을 느껴보세요.</p>
-          </div>
-          <Icon type="right" />
-        </div>
-        <div>
-          <h1>내 위치</h1>
-          <div className="map"></div>
-        </div>
-      </div>
-    </IntroWrapper>
-  );
-};
-
 export default Introduce;

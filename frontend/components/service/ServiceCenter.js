@@ -40,7 +40,7 @@ const ServiceWrapper = styled.div`
   }
   & div button {
       border: none;
-      background: tomato;
+      background: #FF4300;
       color: white;
       margin-left: auto;
       margin-top : 10px;

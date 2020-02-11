@@ -13,11 +13,11 @@ const ServiceItemBox = styled.div`
     color: black;
   }
   & b {
-      color: tomato;
+      color: #FF4300;
       font-size: 20px;
     }
   & a:hover {
-    color: tomato;
+    color: #FF4300;
   }
   & .answer {
     color: black;

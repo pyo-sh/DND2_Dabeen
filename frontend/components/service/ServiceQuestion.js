@@ -7,15 +7,15 @@ const CustomModal = styled(Modal)`
         font-size: 25px;
     }
     & .submit {
-        background : tomato;
+        background : #FF4300;
         color : white;
     }
     & .cancel:hover{
-        color : tomato;
-        border : 1px solid tomato;
+        color : #FF4300;
+        border : 1px solid #FF4300;
     }
     & input:focus {
-        border : 1px solid tomato;
+        border : 1px solid #FF4300;
         box-shadow : none;
     }
     & textarea {
@@ -24,7 +24,7 @@ const CustomModal = styled(Modal)`
         height: 20vh;
     }
     & textarea:focus {
-        outline-color:tomato;
+        outline-color:#FF4300;
     }
 `;
 
