@@ -1,8 +1,9 @@
 // HelpPicApiService.java
 // 작성자 : 권영인
 
-
 package com.dabeen.dnd.service.api;
+
+import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpPic;
@@ -13,7 +14,11 @@ import com.dabeen.dnd.model.pk.HelpPicPK;
 import com.dabeen.dnd.repository.HelpPicRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+
+@Transactional
+@Service
 public class HelpPicApiService  {
 
     @Autowired

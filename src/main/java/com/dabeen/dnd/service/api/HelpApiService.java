@@ -3,6 +3,8 @@
 
 package com.dabeen.dnd.service.api;
 
+import javax.transaction.Transactional;
+
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Help;
 import com.dabeen.dnd.model.network.Header;
@@ -10,6 +12,11 @@ import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.stereotype.Service;
+
+
+@Transactional
+@Service
 public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse, Help> {
 
     @Override
