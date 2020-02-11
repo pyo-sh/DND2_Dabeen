@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { Select, DatePicker, TimePicker, Input, Upload, message, Icon, Button } from 'antd';
+import { Select, DatePicker, TimePicker, Upload, Icon, Button } from 'antd';
 
 const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -11,7 +11,7 @@ const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     position: fixed;
     left: 0;
-    top: 0;
+    top: 30;
     height: 100%;
     width: 100%;
     display: flex;
@@ -24,31 +24,37 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 720px;
-    height: 920px;
+    width: 33vw;
+    height: 87vh;
     display: flex; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: auto;
-    ::-webkit-scrollbar{display:none;}
+    overflow: scroll;
+    ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
 `;
 
 const Content = styled.div`
-    width: 680px;
-    height: 920px;
+    width: 29vw;
+    height: 80vh;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     margin-top: 10px;
 `;
 
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 29vw;
+`;
+
 const PostSetting = styled.div`
-    width: 680px;
-    height: 238px;
+    width: 29vw;
+    height: 27vh;
     background: #F0F0F0;
     font-size: 20px;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-left: 20px;
 
     & .ant-select-arrow{
@@ -123,6 +129,7 @@ const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 40px;
+    width: 29vw;
     ::placeholder{
         color: #BFC7CE;
     }
@@ -134,10 +141,11 @@ const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 20px;
     margin-top: 20px;
+    width: 29vw;
 
     & > textarea {
-        width: 680px;
-        height: 200px;
+        width: 29vw;
+        height: 15vh;
         resize: none;
         color: #7a7a7a;
         ::placeholder{
@@ -149,12 +157,13 @@ const ContentItem = styled.div`
 const UploadImage = styled.div`
     display: flex;
     margin-top: 20px;
+    width: 29vw;
 `;
 
 const UploadButton = styled(Button)`
     width: 15vw;
-    height: 50px;
     margin-top: 20px;
+    margin-bottom: 20px;
     background: #FF4300;
     border: #FF4300;
     color: white;
@@ -171,11 +180,51 @@ const UploadButton = styled(Button)`
 `;
 
 const PostWrite = () => {
+    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [fileList, setFileList] = useState([]);
+    
+    // const getBase64 = (file) => {
+    //     return new Promise((resolve, reject) => {
+    //       const reader = new FileReader();
+    //       reader.readAsDataURL(file);
+    //       reader.onload = () => resolve(reader.result);
+    //       reader.onerror = error => reject(error);
+    //     });
+    // }
+
+    // const handleCancel = useCallback(() => {
+    //     setPreviewVisible(false);
+    // }, []);
+
+    // const handlePreview = useCallback(file => () => {
+    //     if (!file.url && !file.preview) {
+    //     file.preview = getBase64(file.originFileObj);
+    //     }
+        
+    //     setPreviewImage(file.url || file.priview)
+    //     setPreviewVisible(true);
+    // },[file]);
+
+    const handleChange = useCallback(({ fileList }) => () => {
+        setFileList({fileList});
+    },[fileList]);
+
+    const uploadButton = (
+        <div>
+          <Icon type="plus" />
+          <div className="ant-upload-text">Upload</div>
+        </div>
+    );
+
     return (
         <Modal>
             <ContentFlex>
                 <Content>
-                    <InputTitle placeholder="제목을 입력하세요."/> {/*input 쓰삼 */}
+                    <Title>
+                        <InputTitle placeholder="제목을 입력하세요."/> {/*input 쓰삼 */}
+                        <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
+                    </Title>
                     <PostSetting>
                         <div className="category">
                             <div>카테고리</div>
@@ -215,10 +264,19 @@ const PostWrite = () => {
                         <textarea id="requirement" placeholder="요구사항을 입력하세요." required />
                     </ContentItem>
                     <UploadImage>
-                        <div>사진첨부</div>
-                    </UploadImage>
-                </Content>       
-                <UploadButton>글 올리기</UploadButton>
+                        <div style={{width: "5vw"}}>사진첨부</div>
+                        <Upload
+                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                            listType="picture-card"
+                            fileList={fileList}
+                            // onPreview={handlePreview}
+                            onChange={handleChange}
+                        >
+                            {fileList.length >= 8 ? null : uploadButton}
+                        </Upload>
+                    </UploadImage>    
+                    <UploadButton>글 올리기</UploadButton>     
+                </Content>                  
             </ContentFlex>
         </Modal>
     );
