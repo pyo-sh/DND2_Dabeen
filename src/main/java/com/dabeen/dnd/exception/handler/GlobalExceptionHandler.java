@@ -13,7 +13,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 import com.dabeen.dnd.exception.IdExistedException;
-import com.dabeen.dnd.exception.InvaildTokenException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
@@ -92,14 +91,7 @@ public class GlobalExceptionHandler {
         
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }
-    
-    // 토큰 정보가 잘못된 경우 
-    @ExceptionHandler(InvaildTokenException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Header<?> handlerInvaildTokenExceptio(InvaildTokenException ex) {
-        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
-    }
-    
+
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
     //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

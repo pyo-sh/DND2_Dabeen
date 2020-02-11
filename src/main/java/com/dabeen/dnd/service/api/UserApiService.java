@@ -166,9 +166,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         LoginApiRequest requestData = request.getData();
         User user = userRepository.findByUserId(requestData.getId())
                                     .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' ID"));
-      
-                                    log.info("requestData.getPwd() {}", passwordEncoder.encode(requestData.getPwd()));
-                                    log.info("user.getPwd() {}", user.getPwd());
+                                    
         if(!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
             throw new PasswordWrongException();
       

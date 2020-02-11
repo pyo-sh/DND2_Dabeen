@@ -41,7 +41,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             SecurityContext context = SecurityContextHolder.getContext();
             context.setAuthentication(authentication);
         }
-        else throw new InvaildTokenException();
 
         chain.doFilter(request, response); 
     }
