@@ -37,6 +37,9 @@ const LiveHelpRequestContent = styled.div`
     width: 350px;
     height: 240px;
 
+    :hover {
+        border: solid 2px #FF4300;
+    }
     @media only screen and (max-width: 1024px){
         width: 300px;  
         height: 210px;  
