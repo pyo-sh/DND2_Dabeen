@@ -4,6 +4,7 @@
 package com.dabeen.dnd.controller.api;
 
 import java.util.List;
+import java.util.Map;
 
 import com.dabeen.dnd.controller.CrudController;
 import com.dabeen.dnd.model.entity.User;
@@ -50,7 +51,7 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
 
     // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
     @GetMapping(value = {"{ssg_name}/main-page", "/main-page"})
-    public Header<List<UserApiResponse>> searchHighRateUser(@PathVariable(value = "ssg_name", required = false) String ssgName){
+    public Header<List<Map<String, String>>> searchHighRateUser(@PathVariable(value = "ssg_name", required = false) String ssgName){
         return userApiService.searchHighRateUser(ssgName);
     }
 
