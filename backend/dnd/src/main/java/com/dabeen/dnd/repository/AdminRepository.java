@@ -5,6 +5,7 @@
 
 package com.dabeen.dnd.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.dabeen.dnd.model.entity.Admin;
@@ -13,5 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, String> {
-    Optional<Admin> findByAdminId(String adminId);   
+    Optional<Admin> findByAdminId(String adminId);
+
+    List<Admin> findByAdminNameAndEmail(String name, String email);   
 }

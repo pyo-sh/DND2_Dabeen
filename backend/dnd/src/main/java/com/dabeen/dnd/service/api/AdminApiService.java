@@ -4,12 +4,14 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import com.dabeen.dnd.repository.AdminRepository;
 import com.dabeen.dnd.repository.mapper.AdminMapper;
+import com.dabeen.dnd.exception.EmailWrongException;
 import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
@@ -17,11 +19,13 @@ import com.dabeen.dnd.exception.PasswordWrongException;
 import com.dabeen.dnd.model.entity.Admin;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.AdminApiRequest;
+import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.response.AdminApiResponse;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.service.BaseService;
 import com.dabeen.dnd.service.JwtService;
+import com.dabeen.dnd.service.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,6 +45,9 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private MailService mailService;
 
     @Override
     public Header<AdminApiResponse> create(Header<AdminApiRequest> request) {
@@ -139,8 +146,54 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
       
         return Header.OK(
                 LoginApiResponse.builder()
-                                .token(jwtService.createToken(admin.getAdminNum(), "admin"))
+                                .token(jwtService.createToken(admin.getAdminNum(), admin.getAdminId(),"admin"))
                                 .build()
                 );
+    }
+
+    public Header<?> findId(Header<FindApiRequest> request){
+        FindApiRequest requestData = request.getData();
+        List<Admin> admins = adminRepository.findByAdminNameAndEmail(requestData.getName(), requestData.getEmail())
+                   
+        if(admins.isEmpty())
+            throw new NotFoundException("Admin");
+
+       // 해당 사용자의 아이디 목록 생성
+       String ids = "";
+       for(int i = 0; i < admins.size(); i++){
+           ids += admins.get(i).getAdminId();
+
+           if(i != admins.size() - 1)
+               ids += ", ";
+       }
+
+        mailService.sendMail(requestData.getEmail(), "아이디를 알려드립니다.", requestData.getName(), "고객님의 아이디는 [ " + ids + " ] 입니다.");
+        
+        return Header.OK();
+    }
+    
+   
+    public Header<?> findPwd(Header<FindApiRequest> request){
+        FindApiRequest requestData = request.getData();
+        Admin admin = adminRepository.findByAdminId(requestData.getId())
+                                .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' user"));
+
+        // 입력된 메일과 사용자의 메일이 동일하지 않은 경우
+        if(!admin.getEmail().equals(requestData.getEmail()))
+            throw new EmailWrongException();
+
+        // 12자리의 임시 비밀번호 생성
+        String pwd = "";
+		for (int i = 0; i < 12; i++) {
+			pwd += (char) ((Math.random() * 26) + 97);
+        }
+
+        // 새로운 비밀번호로 변경
+        admin.setPwd(passwordEncoder.encode(pwd));
+        adminRepository.save(admin);
+
+        mailService.sendMail(admin.getEmail(), "임시 비밀번호를 알려드립니다.", admin.getAdminName(),"고객님의 임시 비밀번호는 " + pwd + " 입니다.");
+
+        return Header.OK();
     }
 }

@@ -12,6 +12,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dabeen.dnd.exception.EmailWrongException;
+import com.dabeen.dnd.exception.FailedMailSendException;
 import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
@@ -49,6 +51,12 @@ public class GlobalExceptionHandler {
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
+    // 입력된 이메일 틀린 경우 발생되는 에러 처리 
+    @ExceptionHandler(EmailWrongException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerEmailWrongException(EmailWrongException ex){
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
 
     // 수정 불가한 속성을 수정하려고 할 경우 발생되는 에러 처리
     @ExceptionHandler(NotUpdateableException.class)
@@ -69,7 +77,7 @@ public class GlobalExceptionHandler {
 
             return Header.ERROR(HttpStatus.BAD_REQUEST, message);
         }
-        else return Header.ERROR(HttpStatus.BAD_REQUEST, "Bad Request");
+        else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Interanl Server Error");
     }
 
     // 쿼리문을 이용한 create 시, 에러 처리
@@ -91,6 +99,13 @@ public class GlobalExceptionHandler {
         
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }
+
+      // 메일 전송에 실패할 경우 발생되는 에러 처리
+      @ExceptionHandler(FailedMailSendException.class)
+      @ResponseStatus(HttpStatus.NOT_MODIFIED)
+      public Header<?> handlerFailedMailSendException(FailedMailSendException ex) {
+          return Header.ERROR(HttpStatus.NOT_MODIFIED, ex.getMessage());
+      }
 
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)

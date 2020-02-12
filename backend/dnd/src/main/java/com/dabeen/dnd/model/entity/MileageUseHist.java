@@ -31,10 +31,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class MileageUseHist {
     @EmbeddedId
-    @NotEmpty(message = "is not null")
+    @NotNull(message = "is not null")
     private MileageUseHistPK mileageUseHistPK; // 복합 PK, userNum/MileageUseDttm
     
-    @NotEmpty(message = "is not null")
+    @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING)
     private MileageUseType useType; // 사용구분
 
