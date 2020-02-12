@@ -5,6 +5,7 @@
 
 package com.dabeen.dnd.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.dabeen.dnd.model.entity.User;
@@ -15,4 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByUserId(String userId);
+
+	List<User> findByUserNameAndEmail(String userName, String email);
 }

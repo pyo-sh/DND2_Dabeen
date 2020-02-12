@@ -11,6 +11,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.dabeen.dnd.model.enumclass.PostType;
 
@@ -31,7 +32,7 @@ public class Post{
     @NotEmpty(message = "is not null")
     private String postNum; // 게시글 번호
 
-    @NotEmpty(message = "is not null")
+    @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING)
     private PostType postType; // 게시글 구분
  

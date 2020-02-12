@@ -8,10 +8,10 @@ import com.dabeen.dnd.controller.CrudController;
 import com.dabeen.dnd.model.entity.Admin;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.AdminApiRequest;
+import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.response.AdminApiResponse;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
-import com.dabeen.dnd.service.JwtService;
 import com.dabeen.dnd.service.api.AdminApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +29,15 @@ public class AdminApiController extends CrudController<AdminApiRequest, AdminApi
     @PostMapping("/login")
     public Header<LoginApiResponse> login(@RequestBody Header<LoginApiRequest> request){
         return adminApiService.login(request);
+    }
+
+    @PostMapping("/findId")
+    public Header<?> findId(@RequestBody Header<FindApiRequest> request){
+        return adminApiService.findId(request);
+    }
+
+    @PostMapping("/findPwd")
+    public Header<?> findPwd(@RequestBody Header<FindApiRequest> request){
+        return adminApiService.findPwd(request);
     }
 }

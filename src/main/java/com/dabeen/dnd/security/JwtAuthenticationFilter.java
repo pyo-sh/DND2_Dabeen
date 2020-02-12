@@ -9,7 +9,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.dabeen.dnd.exception.InvaildTokenException;
 import com.dabeen.dnd.service.JwtService;
 
 import org.springframework.security.authentication.AuthenticationManager;

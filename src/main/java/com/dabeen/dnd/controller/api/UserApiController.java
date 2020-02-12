@@ -6,6 +6,7 @@ package com.dabeen.dnd.controller.api;
 import com.dabeen.dnd.controller.CrudController;
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.network.Header;
+import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
@@ -28,5 +29,15 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     @PostMapping("/login")
     public Header<LoginApiResponse> login(@RequestBody Header<LoginApiRequest> request){
         return userApiService.login(request);
+    }
+
+    @PostMapping("/findId")
+    public Header<?> findId(@RequestBody Header<FindApiRequest> request){
+        return userApiService.findId(request);
+    }
+
+    @PostMapping("/findPwd")
+    public Header<?> findPwd(@RequestBody Header<FindApiRequest> request){
+        return userApiService.findPwd(request);
     }
 }

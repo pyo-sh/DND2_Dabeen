@@ -38,7 +38,7 @@ public class Pymt{
     @NotNull(message = "is not null")
     private LocalDateTime pymtDttm; // 결제일시
 
-    @NotEmpty(message = "is not null")
+    @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING)
     private PymtMthdType pymtMthdType; // 결제방법구분
 
