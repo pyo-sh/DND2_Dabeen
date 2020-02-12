@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Icon, Button } from 'antd';
+import { Icon, Button, Form } from 'antd';
 
 const Login = () => {
     return (
         <>
             <Modal>
+                <Form>
                 <Content>
                     <div className="loginName">로고 넣음</div>
                     <div className="loginForm">
@@ -18,7 +19,7 @@ const Login = () => {
                             <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
                         </div>
                     </div>
-                    <LoginButton>로그인</LoginButton>
+                    <LoginButton htmlType="submit">로그인</LoginButton>
                     <ContentBottom>
                         <div>회원가입</div>
                         <div className="idAndPasswordFind">
@@ -27,6 +28,7 @@ const Login = () => {
                         </div>
                     </ContentBottom>
                 </Content>
+                </Form>
             </Modal>
         </>
     );
