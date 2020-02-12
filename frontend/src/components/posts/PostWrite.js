@@ -61,7 +61,7 @@ const PostWrite = () => {
             <ContentFlex>
                 <Content>
                     <Title>
-                        <InputTitle placeholder="제목을 입력하세요." value={} onChange={}/> {/*input 쓰삼 */}
+                        <InputTitle placeholder="제목을 입력하세요."/> {/*input 쓰삼 */}
                         <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
@@ -74,8 +74,8 @@ const PostWrite = () => {
                         <div className="deadline">
                             <div>신청 마감 일시</div>
                             <div>
-                                <DatePicker style={{marginRight: 5}} value={}/>
-                                <TimePicker format={format} value={}/>
+                                <DatePicker style={{marginRight: 5}} />
+                                <TimePicker format={format} />
                             </div>
                         </div>
                         <div className="executionDate">
@@ -87,11 +87,11 @@ const PostWrite = () => {
                         </div>
                         <div className="needPersonnel">
                             <div>필요인원</div>
-                            <input type="number" value={} onChange={}/>
+                            <input type="number"/>
                         </div>
                         <div className="money">
                             <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원" value={} onChange={}/>
+                            <input type="number" placeholder="최소 금액 0000원"/>
                         </div>
                     </PostSetting>
                     <ContentItem>

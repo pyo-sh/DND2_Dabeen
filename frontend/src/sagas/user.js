@@ -23,8 +23,8 @@ function* watchLogout() {
 
 // 로그인
 
-function loginAPI() { 
-    
+function loginAPI(data) { 
+    return {data : { id : data.id} }
 };
 
 function* login(action) {

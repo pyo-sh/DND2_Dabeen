@@ -1,17 +1,41 @@
-import React from 'react';
+import React, {useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Icon, Button, Form } from 'antd';
+import {useDispatch, useSelector } from 'react-redux';
+import { loginRequestAction } from '../../reducers/user';
+import Router from 'next/router';
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const { isLoggingIn, isLoginSuccess } = useSelector(state => state.user);
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+    const onChangeId = useCallback((e) => {
+        setId(e.target.value);
+    }, []);
+    const onChangePassword = useCallback((e) => {
+        setPassword(e.target.value);
+    }, []);
+
+    const submitForm = useCallback((e) => {
+        e.preventDefault();
+        dispatch(loginRequestAction({id, password}));
+    },[id, password]);
+
+    useEffect(() => {
+        if(isLoginSuccess){
+            Router.push('/');
+        }
+    }, [isLoginSuccess]);
     return (
         <>
             <Modal>
-                <Form>
+                <Form onSubmit={submitForm}>
                 <Content>
                     <div className="loginName">로고 넣음</div>
                     <div className="loginForm">
-                        <InputUser placeholder="아이디"/>
-                        <InputUser placeholder="비밀번호"/> 
+                        <InputUser onChange={onChangeId} value ={id} placeholder="아이디"/>
+                        <InputUser onChange={onChangePassword} value={password} placeholder="비밀번호"/> 
                         <div className = "loginKeeping">
                             <div>
                             <Icon type="check-circle" style = {{fontSize: '16px'}}/> 로그인 상태 유지
@@ -19,12 +43,12 @@ const Login = () => {
                             <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
                         </div>
                     </div>
-                    <LoginButton htmlType="submit">로그인</LoginButton>
+                    <LoginButton htmlType="submit" loading={isLoggingIn}>로그인</LoginButton>
                     <ContentBottom>
                         <div>회원가입</div>
                         <div className="idAndPasswordFind">
-                            <div>아이디  </div> |
-                            <div>  비밀번호</div>
+                            <div>아이디 찾기</div> |
+                            <div>비밀번호 찾기</div>
                         </div>
                     </ContentBottom>
                 </Content>

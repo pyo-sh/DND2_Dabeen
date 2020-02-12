@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button, Select } from 'antd';
 import { signUpRequestAction } from '../../reducers/user';
 import Router from 'next/router';
@@ -8,7 +8,12 @@ import Router from 'next/router';
 const SignUp = () => {
   
     const dispatch = useDispatch(); // 디스패치
-
+    const { isSigningup, signUpSuccess } = useSelector(state => state.user);
+    useEffect(() => {
+        if(signUpSuccess) {
+            Router.push('/');
+        }
+    }, [signUpSuccess]);
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
@@ -114,7 +119,6 @@ const SignUp = () => {
                 subAddress,
             }
             dispatch(signUpRequestAction(userLog)); // 회원가입 요청
-            Router.push('/');
         }
         else{
             alert('회원가입 실패!');
@@ -271,6 +275,7 @@ const SignUp = () => {
                 <Button
                     className="Sign-Button"
                     onClick={onClickSignUp}
+                    loading ={isSigningup}
                 >가입하기</Button>
             </div>
         </SignUpUpperDiv>
