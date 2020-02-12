@@ -153,7 +153,7 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
 
     public Header<?> findId(Header<FindApiRequest> request){
         FindApiRequest requestData = request.getData();
-        List<Admin> admins = adminRepository.findByAdminNameAndEmail(requestData.getName(), requestData.getEmail())
+        List<Admin> admins = adminRepository.findByAdminNameAndEmail(requestData.getName(), requestData.getEmail());
                    
         if(admins.isEmpty())
             throw new NotFoundException("Admin");

@@ -4,10 +4,14 @@
 
 package com.dabeen.dnd.repository.mapper;
 
+import java.util.List;
+
 import com.dabeen.dnd.model.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper{
     void insert(User user);
+
+    List<User> selectFiveOderByRate(String blonSggName);
 }

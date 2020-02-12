@@ -3,6 +3,7 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,10 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Transactional
-@Slf4j
 @Service
 public class UserApiService extends BaseService<UserApiRequest, UserApiResponse, User>{
     @Autowired 
@@ -233,4 +231,17 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
         return Header.OK();
     }
+
+    // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
+    public Header<List<UserApiResponse>> searchHighRateUser(String ssgName){
+        List<User> users = userMapper.selectFiveOderByRate(ssgName);
+
+        List<UserApiResponse> userApiResponses = new ArrayList<>();
+        for(User user : users){
+            userApiResponses.add(response(user));
+        }
+
+        return Header.OK(userApiResponses);
+    }
+
 }
