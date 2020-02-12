@@ -2,6 +2,36 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon, Button } from 'antd';
 
+const Login = () => {
+    return (
+        <>
+            <Modal>
+                <Content>
+                    <div className="loginName">로고 넣음</div>
+                    <div className="loginForm">
+                        <InputUser placeholder="아이디"/>
+                        <InputUser placeholder="비밀번호"/> 
+                        <div className = "loginKeeping">
+                            <div>
+                            <Icon type="check-circle" style = {{fontSize: '16px'}}/> 로그인 상태 유지
+                            </div>
+                            <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
+                        </div>
+                    </div>
+                    <LoginButton>로그인</LoginButton>
+                    <ContentBottom>
+                        <div>회원가입</div>
+                        <div className="idAndPasswordFind">
+                            <div>아이디  </div> |
+                            <div>  비밀번호</div>
+                        </div>
+                    </ContentBottom>
+                </Content>
+            </Modal>
+        </>
+    );
+};
+
 const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     position: fixed;
@@ -125,35 +155,5 @@ const ContentBottom = styled.div`
         display: flex;
     }
 `;
-
-const Login = () => {
-    return (
-        <>
-            <Modal>
-                <Content>
-                    <div className="loginName">로고 넣음</div>
-                    <div className="loginForm">
-                        <InputUser placeholder="아이디"/>
-                        <InputUser placeholder="비밀번호"/> 
-                        <div className = "loginKeeping">
-                            <div>
-                            <Icon type="check-circle" style = {{fontSize: '16px'}}/> 로그인 상태 유지
-                            </div>
-                            <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
-                        </div>
-                    </div>
-                    <LoginButton>로그인</LoginButton>
-                    <ContentBottom>
-                        <div>회원가입</div>
-                        <div className="idAndPasswordFind">
-                            <div>아이디  </div> |
-                            <div>  비밀번호</div>
-                        </div>
-                    </ContentBottom>
-                </Content>
-            </Modal>
-        </>
-    );
-};
 
 export default Login;

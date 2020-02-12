@@ -1,6 +1,49 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Icon, Avatar} from 'antd';
+import {Icon, Avatar, Button} from 'antd';
+
+const Chatting = () => {
+    return (
+        <Modal>
+            <ChattingForm>
+                <ChattingTop>
+                    <div className="deleteIcon">
+                        <Icon type="close" />
+                    </div>
+                    <div className="profile">
+                        <Avatar size={68} icon="user" style={{marginLeft: 15, marginTop: 5, marginRight: 10}}/>
+                        <div style={{marginRight: 10, fontSize: 25}}>닉네임</div>
+                        <div style={{color:"#7A7A7A", fontSize: 15}}>@아이디</div>
+                    </div>
+                    </ChattingTop>
+                <ChattingMain>
+                    <ArrowBox other>
+                        <div className = "arrowBoxText">
+                        표석훈인가요?
+                        </div>    
+                        <span>시간시간</span>
+                    </ArrowBox>
+                    <ArrowBox>
+                        <span>시간시간</span>
+                        <div className="arrowBoxText">
+                            넵 맞아요^^ 쿠쿠 너무 싫어
+                        </div>        
+                    </ArrowBox>
+                    <ArrowBox>    
+                        <span>시간시간</span>
+                        <div className="arrowBoxText">
+                            좀 되라
+                        </div>        
+                    </ArrowBox>
+                </ChattingMain>
+                <ChattingInput>
+                    <textarea placeholder="여기에 입력하세요." required></textarea>
+                    <Button>입력</Button>
+                </ChattingInput>
+            </ChattingForm>
+        </Modal>
+    );
+};
 
 const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
@@ -57,16 +100,33 @@ const ChattingTop = styled.div`
 const ChattingMain = styled.div`
     width: 24vw;
     height: 45vh;    
+    display:flex;
+    flex-direction: column;
+    overflow: auto;
 `;
 
 const ArrowBox = styled.div`
-    display: inline-block;
-    border: 1px solid;
-    border-radius: 4px;
-    background: ${props => (props.other ? 'white' : '#FF9644')};
-    
     margin-top: 2vh;
     margin-left: 1vw;
+    margin-right: 1vw; 
+    text-align: ${props => (props.other ? 'left' : 'right')};
+    font-size: 10px;
+
+    & .arrowBoxText {
+        display: inline-block;   
+        vertical-align: bottom;
+        border: 1px solid ${props => (props.other ? '#BFC7CE' : '#FF9644')};
+        border-radius: 4px;
+        background: ${props => (props.other ? 'white' : '#FF9644')};  
+        color: ${props => (props.other ? '#7A7A7A' : '#FFFFFF')};
+        font-size: 20px;
+        padding: 1px 5px;
+    }
+
+    & span{
+        margin-left: ${props => (props.other ? '3px' : 0)};
+        margin-right: ${props => (props.other ? 0 : '3px')};
+    }
 `;
 
 const ChattingInput = styled.div`
@@ -74,33 +134,49 @@ const ChattingInput = styled.div`
     bottom: 0;
     background: white;
     width: 24vw;
-    height: 10vh;
+    height: 12vh;
+    display: flex;
+    align-items: flex-start;
+
+    & > textarea {
+        border: none;
+        width: 18vw;
+        height: 9vh;
+        margin-top: 1vh;
+        margin-left: 1vw;
+        margin-right: 1vw;
+        resize: none;
+        color: #7a7a7a;
+        ::placeholder{
+            color: #BFC7CE;
+        }
+
+        :focus{
+            outline: none;
+        }
+    }
+
+    & Button {
+        background: #FF9644;
+        border: #FF9644;
+        color: white;
+        width: 3.5vw;
+        margin-top: 1vh;
+        font-size: 18px;
+
+        :hover{
+            opacity: 0.9;
+            background: #FF9644;
+            border: #FF9644;
+            color: white;
+        }
+
+        :focus{
+            background: #FF9644;
+            border: #FF9644;
+            color: white;
+        }
+    }
 `;
-
-const Chatting = () => {
-    return (
-        <Modal>
-            <ChattingForm>
-                <ChattingTop>
-                    <div className="deleteIcon">
-                        <Icon type="close" />
-                    </div>
-                    <div className="profile">
-                        <Avatar size={68} icon="user" style={{marginLeft: 15, marginTop: 5, marginRight: 10}}/>
-                        <div style={{marginRight: 10, fontSize: 25}}>닉네임</div>
-                        <div style={{color:"#7A7A7A", fontSize: 15}}>@아이디</div>
-                    </div>
-                    </ChattingTop>
-                <ChattingMain>
-                    <ArrowBox other>표석훈인가요?</ArrowBox>
-                    <ArrowBox>넵 맞아요^^ 쿠쿠 너무 싫어</ArrowBox>
-                </ChattingMain>
-                <ChattingInput>
-
-                </ChattingInput>
-            </ChattingForm>
-        </Modal>
-    );
-};
 
 export default Chatting;
