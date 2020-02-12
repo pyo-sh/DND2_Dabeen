@@ -2,9 +2,6 @@ import React from 'react';
 import { Icon } from 'antd';
 import styled from 'styled-components';
 
-const StarIcon = styled(Icon)`
-    color : #FF4300;
-`;
 const StarScore = ({score}) => {
     return (
         <>
@@ -12,5 +9,9 @@ const StarScore = ({score}) => {
         </>
     );
 };
+
+const StarIcon = styled(Icon)`
+    color : #FF4300;
+`;
 
 export default StarScore;

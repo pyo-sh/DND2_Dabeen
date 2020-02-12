@@ -2,21 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'antd';
 
-const PostInfoBox = styled.div`
-    border : 1px solid black;
-    position : absolute;
-    top : 50%;
-    left : 50%;
-    transform : translate(-50%, -50%);
-    display : flex;
-    flex-direction : column;
-
-    & .icon {
-        margin-left: auto;
-        font-size: 1.5em;
-    }
-`;
-
 const PostInfo = () => {
     return (
         <PostInfoBox>
@@ -47,5 +32,20 @@ const PostInfo = () => {
         </PostInfoBox>
     );
 };
+
+const PostInfoBox = styled.div`
+    border : 1px solid black;
+    position : absolute;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
+    display : flex;
+    flex-direction : column;
+
+    & .icon {
+        margin-left: auto;
+        font-size: 1.5em;
+    }
+`;
 
 export default PostInfo;

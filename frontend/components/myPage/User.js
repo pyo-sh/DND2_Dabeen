@@ -2,6 +2,34 @@
 import React from "react";
 import styled from "styled-components";
 
+const User = () => {
+  return (
+    <UserBox>
+      <div className="pic">
+        <img src="/react.png"></img>
+      </div>
+      <div>
+        <div className="idBox">
+            <div>닉네임</div>
+            <div>아이디</div>
+        </div>
+        <div className="evaluate">0개의 평가</div>
+        <div className="etc">
+          <div>총 도움수
+              <div>0 개</div>
+          </div>
+          <div>만족도
+              <div>0%</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button>프로필 등록 / 수정</button>
+      </div>
+    </UserBox>
+  );
+};
+
 const UserBox = styled.div`
   width: 80%;
   height: 25vh;
@@ -40,33 +68,5 @@ const UserBox = styled.div`
       width : 150px;
   }
 `;
-
-const User = () => {
-  return (
-    <UserBox>
-      <div className="pic">
-        <img src="/react.png"></img>
-      </div>
-      <div>
-        <div className="idBox">
-            <div>닉네임</div>
-            <div>아이디</div>
-        </div>
-        <div className="evaluate">0개의 평가</div>
-        <div className="etc">
-          <div>총 도움수
-              <div>0 개</div>
-          </div>
-          <div>만족도
-              <div>0%</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <button>프로필 등록 / 수정</button>
-      </div>
-    </UserBox>
-  );
-};
 
 export default User;
