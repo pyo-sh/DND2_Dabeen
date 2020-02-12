@@ -6,7 +6,7 @@ import PostList from '../components/posts/PostList';
 const Home = () => {
   return (
     <>
-      <PostList/>
+      <Main/>
     </>
   );
 };

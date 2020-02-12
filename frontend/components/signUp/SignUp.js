@@ -1,10 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { useDispatch } from 'react-redux';
 import { Input, Button, Select } from 'antd';
-
+import { signUpRequestAction } from '../../reducers/user';
+import Router from 'next/router';
 // 회원가입 창
 const SignUp = () => {
+  
+    const dispatch = useDispatch(); // 디스패치
+
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
@@ -92,7 +96,7 @@ const SignUp = () => {
         // 비밀번호가 같을 경우 true / 다를 경우 false
         (password === passwordCheck)    ?   setIsPasswordChecked(true)  :   setIsPasswordChecked(false);
     }, [password, passwordCheck]);
-
+    
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickSignUp = useCallback((e) => {
         if(isNicknameCorrect && isIdCorrect && isPasswordCorrect && isPasswordChecked && isRegistrationCorrect){
@@ -109,11 +113,11 @@ const SignUp = () => {
                 mainAddress,
                 subAddress,
             }
-            console.dir(userLog);
-            return userLog;
+            dispatch(signUpRequestAction(userLog)); // 회원가입 요청
+            Router.push('/');
         }
         else{
-            console.log("로그인 실패");
+            alert('회원가입 실패!');
         }
     }, [
         nickname,

@@ -1,17 +1,24 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Button, Input, Icon } from "antd";
+import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
 import Link from "next/link";
+import { loginRequestAction, logoutRequestAction } from "../../reducers/user";
 
 const isBrowser = typeof window !== "undefined";
-const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
+// const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
 const Header = () => {
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector(state => state.user);
   const divRef = useRef();
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
   const clickMenuIcon = useCallback(() => {
     divRef.current.classList.toggle("active");
   }, []);
-
+  const clickLogout = useCallback(() => {
+      dispatch(logoutRequestAction());
+      alert('로그아웃 되었습니다.');
+  }, []);
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
@@ -22,6 +29,7 @@ const Header = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [width]);
+
   return (
     <Menubar>
       <sapn className="menuToggle">
@@ -57,7 +65,7 @@ const Header = () => {
           </li>
         </ul>
         <div className="loginBox">
-          {isLogin ? (
+          {userInfo ? (
             <>
               <div>
                 <Link href="/charge">
@@ -65,9 +73,7 @@ const Header = () => {
                 </Link>
               </div>
               <div>
-                <Link href="/logout">
-                  <a>로그아웃</a>
-                </Link>
+                  <a onClick={clickLogout}>로그아웃</a>
               </div>
               <div>
                 <Link href="/mypage">

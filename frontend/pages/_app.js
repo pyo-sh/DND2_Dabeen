@@ -10,7 +10,7 @@ import reducer from '../reducers';
 
 const Dabeen = ({Component, store}) => {
     return (
-        // <Provider store={store}>
+        <Provider store={store}>
         <>
         <style jsx global>{`
         body {
@@ -26,18 +26,18 @@ const Dabeen = ({Component, store}) => {
                     <Component/>
                 </AppLayout>
         </>
-        // </Provider> // 컴포넌트가 AppLayout의 props로 듶어감
+    </Provider> // 컴포넌트가 AppLayout의 props로 듶어감
     );
 };
 
-// export default withRedux((initialState, options) => {
-//     const sagaMiddleware = createSagaMiddleware();
-//     const middlewares = [sagaMiddleware];
-//     const enhancer = compose(applyMiddleware(...middlewares),
-//     typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : 
-//     (f) => f);
-//     const store = createStore(reducer, initialState, enhancer);
-//     sagaMiddleware.run(rootSaga);
-//     return store;
-// })(Dabeen);
-export default Dabeen;
+const configureStore = (initialState, options) => {
+    const sagaMiddleware = createSagaMiddleware();
+    const middlewares = [sagaMiddleware];
+    const enhancer = compose(applyMiddleware(...middlewares),
+    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined' ? window.__REDUX_DEVTOOLS_EXTENSION__() : 
+    (f) => f);
+    const store = createStore(reducer, initialState, enhancer);
+    sagaMiddleware.run(rootSaga);
+    return store;
+};
+export default withRedux(configureStore)(Dabeen);
