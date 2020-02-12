@@ -3,101 +3,6 @@ import styled from 'styled-components';
 
 import { Input, Button, Select } from 'antd';
 
-const SignUpUpperDiv = styled.div`
-    margin: 90px auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-    & .Title{
-        font-size: 50px;
-        font-weight: bold;
-        width: 100%;
-        max-width: 600px;
-        min-width: 320px;
-    }
-    & .Content{
-        border: 1px solid #d9d9d9;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 50px;
-        width: 100%;
-        max-width: 600px;
-        min-width: 320px;
-        /* height: 1120px; */
-
-        & .Sign-Button {
-            width: 100%;
-            height: 100vh;
-            max-width: 420px;
-            max-height: 50px;
-            min-width: 270px;
-            min-height: 35px;
-            background: #FF9644;
-        }
-    }
-`;
-const SignUpGetDataDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-   
-    padding : 5px;
-    max-width: 425px;
-    min-width: 270px;
-    width : 100%;
-
-    & Input {
-        flex : 1;
-        border: none;
-        border-radius: 0px;
-        border-bottom: 1px solid #d9d9d9;
-
-        margin: 5px;
-        max-width: 420px;
-        min-width: 260px;
-
-        & :hover, :focus{
-            border: none;
-            border-bottom: 2px solid #FF9644;
-            box-shadow: none;
-        }
-    }
-    & .Birth {
-        & .Birth-Year{
-            width: 140px;
-            margin-left: 10px;
-        }
-        & .Birth-Month{
-            width: 100px;
-            margin-left: 10px;
-        }
-        & .Birth-Day{
-            width: 100px;
-            margin-left: 10px;
-        }
-    }
-    
-    & .Sign-Title{
-        font-weight: bold;
-    }
-    & .Check{
-        height: 30px;
-
-        color: red;
-        align-self: flex-end;
-    }
-    & .Check-All{
-        margin-top: 20px;
-        height: 30px;
-        color: red;
-        align-self: flex-end;
-    }
-`;
-
 // 회원가입 창
 const SignUp = () => {
     // 현재 날짜가 필요할 거 같아서..
@@ -367,5 +272,101 @@ const SignUp = () => {
         </SignUpUpperDiv>
     );
 };
+
+
+const SignUpUpperDiv = styled.div`
+    margin: 90px auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    & .Title{
+        font-size: 50px;
+        font-weight: bold;
+        width: 100%;
+        max-width: 600px;
+        min-width: 320px;
+    }
+    & .Content{
+        border: 1px solid #d9d9d9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 50px;
+        width: 100%;
+        max-width: 600px;
+        min-width: 320px;
+        /* height: 1120px; */
+
+        & .Sign-Button {
+            width: 100%;
+            height: 100vh;
+            max-width: 420px;
+            max-height: 50px;
+            min-width: 270px;
+            min-height: 35px;
+            background: #FF9644;
+        }
+    }
+`;
+const SignUpGetDataDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+   
+    padding : 5px;
+    max-width: 425px;
+    min-width: 270px;
+    width : 100%;
+
+    & Input {
+        flex : 1;
+        border: none;
+        border-radius: 0px;
+        border-bottom: 1px solid #d9d9d9;
+
+        margin: 5px;
+        max-width: 420px;
+        min-width: 260px;
+
+        & :hover, :focus{
+            border: none;
+            border-bottom: 2px solid #FF9644;
+            box-shadow: none;
+        }
+    }
+    & .Birth {
+        & .Birth-Year{
+            width: 140px;
+            margin-left: 10px;
+        }
+        & .Birth-Month{
+            width: 100px;
+            margin-left: 10px;
+        }
+        & .Birth-Day{
+            width: 100px;
+            margin-left: 10px;
+        }
+    }
+    
+    & .Sign-Title{
+        font-weight: bold;
+    }
+    & .Check{
+        height: 30px;
+
+        color: red;
+        align-self: flex-end;
+    }
+    & .Check-All{
+        margin-top: 20px;
+        height: 30px;
+        color: red;
+        align-self: flex-end;
+    }
+`;
 
 export default SignUp;

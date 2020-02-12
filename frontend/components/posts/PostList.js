@@ -1,29 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const PostListUpperDiv = styled.div`
-    padding: 90px 0;
-    & .Title{
-        font-weight: bold;
-        display: flex;
-        align-items: flex-end;
-        & .Title-Main{
-            font-size: 50px;
-        }
-        & .Title-Sub{
-            font-size: 28px;
-        }
-    }
-`;
-const PostListSearchBox = styled.div`
-    padding: 5px;
-    display: flex;
-    align-items: flex-end;
-    & .Search-Title{
-        
-    }
-`;
-
 const PostList = () => {
     return (
         <PostListUpperDiv>
@@ -51,5 +28,28 @@ const PostList = () => {
         </PostListUpperDiv>
     );
 };
+
+const PostListUpperDiv = styled.div`
+    padding: 90px 0;
+    & .Title{
+        font-weight: bold;
+        display: flex;
+        align-items: flex-end;
+        & .Title-Main{
+            font-size: 50px;
+        }
+        & .Title-Sub{
+            font-size: 28px;
+        }
+    }
+`;
+const PostListSearchBox = styled.div`
+    padding: 5px;
+    display: flex;
+    align-items: flex-end;
+    & .Search-Title{
+        
+    }
+`;
 
 export default PostList;
