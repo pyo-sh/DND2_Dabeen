@@ -5,6 +5,7 @@ package com.dabeen.dnd.service.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -233,15 +234,10 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     }
 
     // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
-    public Header<List<UserApiResponse>> searchHighRateUser(String ssgName){
-        List<User> users = userMapper.selectFiveOderByRate(ssgName);
-
-        List<UserApiResponse> userApiResponses = new ArrayList<>();
-        for(User user : users){
-            userApiResponses.add(response(user));
-        }
-
-        return Header.OK(userApiResponses);
+    public Header<List<Map<String, String>>> searchHighRateUser(String ssgName){
+        List<Map<String, String>> users = userMapper.selectFiveOderByRate(ssgName);
+        
+        return Header.OK(users);
     }
 
 }
