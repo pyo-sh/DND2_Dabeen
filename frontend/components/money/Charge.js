@@ -4,53 +4,6 @@ import { Modal, Button } from "antd";
 import styled from "styled-components";
 import ChargeItem from "./ChargeItem";
 
-const CoinModal = styled(Modal)`
-  & .ant-modal-header div {
-    font-size: 25px;
-  }
-  & .ant-modal-footer {
-      display: flex;
-      justify-content : center;
-      & button[name="submit"] {
-          background : tomato;
-          color :white;
-      }
-      & button[name="cancel"] {
-          background : #F0F0F0;
-          color : black;
-      }
-  }
-
-  & .modalMain {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    & .coinContent {
-        padding : 10px;
-        font-size: 20px;
-    }
-  }
-  & div .coinBox {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    & div {
-      width: 50%;
-      height: 6vh;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      & button {
-        color: tomato;
-        border: 1px solid tomato;
-      }
-      & button:focus {
-        background: tomato;
-        color: #fff;
-      }
-    }
-  }
-`;
 const coins = [
   { key: 1, coin: 1 },
   { key: 5, coin: 100 },
@@ -104,4 +57,51 @@ const Charge = ({ visible, setVisible }) => {
   );
 };
 
+const CoinModal = styled(Modal)`
+  & .ant-modal-header div {
+    font-size: 25px;
+  }
+  & .ant-modal-footer {
+      display: flex;
+      justify-content : center;
+      & button[name="submit"] {
+          background : tomato;
+          color :white;
+      }
+      & button[name="cancel"] {
+          background : #F0F0F0;
+          color : black;
+      }
+  }
+
+  & .modalMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & .coinContent {
+        padding : 10px;
+        font-size: 20px;
+    }
+  }
+  & div .coinBox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    & div {
+      width: 50%;
+      height: 6vh;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      & button {
+        color: tomato;
+        border: 1px solid tomato;
+      }
+      & button:focus {
+        background: tomato;
+        color: #fff;
+      }
+    }
+  }
+`;
 export default Charge;

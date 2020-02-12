@@ -2,31 +2,6 @@ import React, {useState, useCallback} from 'react';
 import { Modal, Button, Input } from 'antd';
 import styled from 'styled-components';
 // 문의하기 모달!
-const CustomModal = styled(Modal)`
-    & .ant-modal-header div {
-        font-size: 25px;
-    }
-    & .submit {
-        background : #FF4300;
-        color : white;
-    }
-    & .cancel:hover{
-        color : #FF4300;
-        border : 1px solid #FF4300;
-    }
-    & input:focus {
-        border : 1px solid #FF4300;
-        box-shadow : none;
-    }
-    & textarea {
-        margin-top: 15px;
-        width : 100%;
-        height: 20vh;
-    }
-    & textarea:focus {
-        outline-color:#FF4300;
-    }
-`;
 
 const ServiceQuestion = ({visible, setVisible}) => {
     const [question, setQuestion] = useState('');
@@ -63,5 +38,31 @@ const ServiceQuestion = ({visible, setVisible}) => {
         </CustomModal>
     );
 };
+
+const CustomModal = styled(Modal)`
+    & .ant-modal-header div {
+        font-size: 25px;
+    }
+    & .submit {
+        background : #FF4300;
+        color : white;
+    }
+    & .cancel:hover{
+        color : #FF4300;
+        border : 1px solid #FF4300;
+    }
+    & input:focus {
+        border : 1px solid #FF4300;
+        box-shadow : none;
+    }
+    & textarea {
+        margin-top: 15px;
+        width : 100%;
+        height: 20vh;
+    }
+    & textarea:focus {
+        outline-color:#FF4300;
+    }
+`;
 
 export default ServiceQuestion;

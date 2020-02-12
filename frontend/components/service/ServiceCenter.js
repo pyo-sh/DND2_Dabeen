@@ -5,61 +5,8 @@ import ServiceItem from './ServiceItem';
 import ServiceQuestion from './ServiceQuestion';
 import Charge from "../money/Charge";
 import Refund from "../money/Refund";
+import RefundConfirm from "../money/RefundConfirm";
 
-const ServiceWrapper = styled.div`
-  width: 100%;
-  margin-top: 65px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  
-  & > div {
-    padding: 10px;
-  }
-  & .serviceTitle {
-    width : 60%;
-    display : flex;
-    justify-content : flex-start;
-    padding-bottom : 0px;
-  }
-  & .serviceBox {
-    border: 1px solid grey;
-    width: 60%;
-  }
-  & .serviceQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
-    & ul {
-      margin : 0;
-      padding : 0;
-    }
-  }
-  & .btnBox {
-    display : flex;
-  }
-  & div button {
-      border: none;
-      background: #FF4300;
-      color: white;
-      margin-left: auto;
-      margin-top : 10px;
-      width : 70px;
-      height: 30px;
-      cursor : pointer;
-      & :hover {
-        color : black;
-      }
-    }
-  & .frequentQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
-    & ul {
-      margin : 0;
-      padding : 0;
-    }
-  }
-`;
 const dummyMyQuestion = [
   {
     Q: "이 회사 정말 비정상적이네요 ^^",
@@ -119,7 +66,7 @@ const ServiceCenter = () => {
           <button onClick={showModal}>문의하기</button>
         </div>
         {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
-        <Refund visible={visible} setVisible={setVisible} />
+        <RefundConfirm visible={visible} setVisible={setVisible} />
         <h2>자주 묻는 질문</h2>
         <div className="frequentQuestion">
           <ul>
@@ -132,5 +79,66 @@ const ServiceCenter = () => {
     </ServiceWrapper>
   );
 };
+
+const ServiceWrapper = styled.div`
+  width: 100%;
+  margin-top: 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  
+  & > div {
+    padding: 10px;
+  }
+  & .serviceTitle {
+    width : 60%;
+    display : flex;
+    justify-content : flex-start;
+    padding-bottom : 0px;
+  }
+  & .serviceBox {
+    border: 1px solid grey;
+    width: 60%;
+  }
+  & .serviceQuestion {
+    border: 1px solid grey;
+    border-bottom : 0px;
+    & ul {
+      margin : 0;
+      padding : 0;
+    }
+  }
+  & .btnBox {
+    display : flex;
+  }
+  & div button {
+      border: none;
+      background: #FF4300;
+      color: white;
+      margin-left: auto;
+      margin-top : 10px;
+      width : 70px;
+      height: 30px;
+      cursor : pointer;
+      & :hover {
+        color : black;
+      }
+    }
+  & .frequentQuestion {
+    border: 1px solid grey;
+    border-bottom : 0px;
+    & ul {
+      margin : 0;
+      padding : 0;
+    }
+  }
+  @media screen and (max-width: 768px) { /* 768보다 작을 때는 화면 크게 만들거임!!*/
+    & .serviceTitle, .serviceBox {
+      width : 100%;
+      max-width : 612px;
+    }
+  }
+`;
 
 export default ServiceCenter;
