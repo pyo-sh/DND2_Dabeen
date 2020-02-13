@@ -1,9 +1,10 @@
 // 자기 소개
-import React from "react";
+import React, { useCallback } from "react";
 import { Icon } from "antd";
 import styled from "styled-components";
 import EvaluationItem from "./EvaluationItem";
 import StarScore from "./StarScore";
+import Router from 'next/router';
 
 const Introduce = ({ myInfomation, evaluation }) => {
   const {
@@ -27,7 +28,7 @@ const Introduce = ({ myInfomation, evaluation }) => {
                 <h1>{nickname}</h1>
                 <span>@{id}</span>
               </div>
-              <button>edit</button>
+              <button onClick={useCallback(() => Router.push('/modifyuser'),[])}>edit</button>
             </div>
             <div className="content">{introduce}</div>
             {isDabeener && (

@@ -4,7 +4,10 @@
   "description": "dnd2 dabeen project",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build" : "next build",
+    "start" : "next start -p $PORT",
+    "heroku-postbuild" : "npm run build"
   },
   "author": "dabeen",
   "license": "ISC",
@@ -16,6 +19,7 @@
     "next": "^9.1.5",
     "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^4.0.1",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

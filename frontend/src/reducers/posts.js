@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { createAction } from './actionFunction';
 
 export const initialState = {
     helpPosts: [{
@@ -43,72 +44,17 @@ export const REMOVE_HELPPOST_REQUEST = 'REMOVE_HELPPOST_REQUEST';
 export const REMOVE_HELPPOST_SUCCESS = 'REMOVE_HELPPOST_SUCCESS';
 export const REMOVE_HELPPOST_FAILURE = 'REMOVE_HELPPOST_FAILURE';
 
-export const AddHelpPostRequestAction = (object) => {
-    return({
-        type: ADD_HELPPOST_REQUEST,
-        data: object,
-    });
-};
+export const AddHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
+export const AddHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
+export const AddHelpPostFailureAction = createAction(ADD_HELPPOST_FAILURE);
 
-export const AddHelpPostSuccessAction = (object) => {
-    return({
-        type: ADD_HELPPOST_SUCCESS,
-        data: object,
-    });
-};
+export const UpdateHelpPostRequestAction = createAction(UPDATE_HELPPOST_REQUEST);
+export const UpdateHelpPostSuccessAction = createAction(UPDATE_HELPPOST_SUCCESS);
+export const UpdateHelpPostFailureAction = createAction(UPDATE_HELPPOST_FAILURE);
 
-export const AddHelpPostFailureAction = (error) => {
-    return({
-        type: ADD_HELPPOST_FAILURE,
-        data: error,
-    });
-};
-
-export const UpdateHelpPostRequestAction = (id, object) => {
-    return({
-        type: UPDATE_HELPPOST_REQUEST,
-        data: 
-        {
-            id,
-            object
-        }
-    });
-};
-
-export const UpdateHelpPostSuccessAction = (data) => {
-    return({
-        type: UPDATE_HELPPOST_SUCCESS,
-        data
-    });
-};
-
-export const UpdateHelpPostFailureAction = (error) => {
-    return({
-        type: UPDATE_HELPPOST_FAILURE,
-        data: error,
-    });
-};
-
-export const RemoveHelpPostRequestAction = (id) => {
-    return({
-        type: REMOVE_HELPPOST_REQUEST,
-        data: id,
-    });
-};
-
-export const RemoveHelpPostSuccessAction = (data) => {
-    return({
-        type: REMOVE_HELPPOST_SUCCESS,
-        data
-    });
-};
-
-export const RemoveHelpPostFailureAction = (error) => {
-    return({
-        type: REMOVE_HELPPOST_FAILURE,
-        data: error,
-    });
-};
+export const RemoveHelpPostRequestAction = createAction(REMOVE_HELPPOST_REQUEST);
+export const RemoveHelpPostSuccessAction = createAction(REMOVE_HELPPOST_SUCCESS);
+export const RemoveHelpPostFailureAction = createAction(REMOVE_HELPPOST_FAILURE);
 
 const reducer = (state = initialState, action) => {
     return produce(state, draft => {
@@ -128,7 +74,7 @@ const reducer = (state = initialState, action) => {
             }
             case ADD_HELPPOST_FAILURE:{
                 draft.isAddingHelpPost = false;
-                draft.addHelpPostErrorReason = action.error;
+                draft.addHelpPostErrorReason = action.data.error;
                 break;
             }
             case UPDATE_HELPPOST_REQUEST:{
@@ -145,7 +91,7 @@ const reducer = (state = initialState, action) => {
             }
             case UPDATE_HELPPOST_FAILURE:{
                 draft.isUpdatingHelpPost = false;
-                draft.updateHelpPostErrorReason = action.error;
+                draft.updateHelpPostErrorReason = action.data.error;
                 break;
             }
             case REMOVE_HELPPOST_REQUEST:{
@@ -163,7 +109,7 @@ const reducer = (state = initialState, action) => {
             }
             case REMOVE_HELPPOST_FAILURE:{
                 draft.isRemovingHelpPost = false;
-                draft.removeHelpPostErrorReason = action.error;
+                draft.removeHelpPostErrorReason = action.data.error;
                 break;
             }
         }
