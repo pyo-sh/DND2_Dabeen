@@ -14,7 +14,6 @@ import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
-import com.dabeen.dnd.service.JwtService;
 import com.dabeen.dnd.service.api.UserApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
