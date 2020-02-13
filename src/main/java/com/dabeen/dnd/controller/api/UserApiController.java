@@ -13,11 +13,9 @@ import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
-import com.dabeen.dnd.service.JwtService;
 import com.dabeen.dnd.service.api.UserApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
