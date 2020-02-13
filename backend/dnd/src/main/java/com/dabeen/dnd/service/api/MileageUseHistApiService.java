@@ -7,6 +7,10 @@ package com.dabeen.dnd.service.api;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import com.dabeen.dnd.exception.NotFoundException;
+import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.MileageUseHist;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.MileageUseHistApiRequest;
@@ -17,9 +21,7 @@ import com.dabeen.dnd.repository.MileageUseHistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
+@Transactional
 @Service
 public class MileageUseHistApiService {
     @Autowired
@@ -27,7 +29,7 @@ public class MileageUseHistApiService {
    
     public Header<MileageUseHistApiResponse> create(Header<MileageUseHistApiRequest> request) {
         MileageUseHistApiRequest requestData = request.getData();
-        log.info("{}", request);
+        
         MileageUseHistPK pk = new MileageUseHistPK(requestData.getUserNum(), LocalDateTime.now());
 
         MileageUseHist mileageUseHist = MileageUseHist.builder()
@@ -49,7 +51,7 @@ public class MileageUseHistApiService {
         
         return  optional.map(this::response)
                         .map(Header::OK)
-                        .orElseGet(() -> Header.ERROR("Date does not exist."));
+                        .orElseThrow(() -> new NotFoundException("MileageUseHist"));
     }
 
    
@@ -60,17 +62,21 @@ public class MileageUseHistApiService {
         Optional<MileageUseHist> optional = mileageUseHistRepository.findById(pk);
 
         return optional.map(mileageUseHist -> {
+                    // 장바구니 번호, 결제 번호는 수정 불가. 수정하려고 한다면 에러 호출
+                    if(!requestData.getBsktNum().equals(mileageUseHist.getBsktNum()))
+                        throw new NotUpdateableException("bsktNum");
+                    if(!requestData.getPymtNum().equals(mileageUseHist.getPymtNum()))
+                        throw new NotUpdateableException("pymtNum");
+                                           
                     mileageUseHist.setUseType(requestData.getUseType())
                                 .setUsePrice(requestData.getUsePrice())
-                                .setBsktNum(requestData.getBsktNum())
-                                .setWdrlAcctNum(requestData.getWdrlAcctNum())
-                                .setPymtNum(requestData.getPymtNum());
+                                .setWdrlAcctNum(requestData.getWdrlAcctNum());
                     return mileageUseHist;
                 })
                 .map(mileageUseHistRepository::save)
                 .map(this::response)
                 .map(Header::OK)
-                .orElseGet(() -> Header.ERROR("Date does not exist."));
+                .orElseThrow(() -> new NotFoundException("MileageUseHist"));
     }
 
 
@@ -80,7 +86,7 @@ public class MileageUseHistApiService {
         return optional.map(mileagUseHist -> {
                     mileageUseHistRepository.delete(mileagUseHist);
                     return Header.OK();
-                }).orElseGet(() -> Header.ERROR("Date does not exist."));
+                }).orElseThrow(() -> new NotFoundException("MileageUseHist"));
     }
 
     // MileageUseHist > MileageUseHistApiResponse    

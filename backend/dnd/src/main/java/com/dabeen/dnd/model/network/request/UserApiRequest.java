@@ -16,14 +16,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserApiRequset {
+public class UserApiRequest {
     // requset에서 전달될 데이터
     private String userNum; // 사용자 번호
     private String userName; // 사용자 이름
     private String birthDate; // 생일 
     private String address; // 주소
     private String phoneNum; // 휴대폰 번호
-    private String id; // 아이디
+    private String userId; // 아이디
     private String pwd; // 비밀번호
     private String email; // 이메일
     private String nickname; // 닉네임
@@ -33,5 +33,5 @@ public class UserApiRequset {
     private String picPath; // 사진 경로명
     private String rrnRear; // 주민번호 뒷자리
     private BigDecimal avgRate; // 평점
-    private BigDecimal ownMilege; // 보유 마일리지
+    private BigDecimal ownMileage; // 보유 마일리지
 }
