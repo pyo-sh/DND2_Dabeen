@@ -146,6 +146,12 @@ const LoginButton = styled(Button)`
         border: #FF4300;
         color: white;
     }
+
+    :focus {
+        background: #FF4300;
+        border: #FF4300;
+        color: white;
+    }
 `;
 
 const ContentBottom = styled.div`

@@ -5,33 +5,39 @@ import { Select, DatePicker, TimePicker, Upload, Icon, Button, Form } from 'antd
 
 const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
 
-const format = 'HH:mm';
 const Option = {Select};
+
+// const getBase64 = useCallback((file) => {
+//     return new Promise((resolve, reject) => {
+//       const reader = new FileReader();
+//       reader.readAsDataURL(file);
+//       reader.onload = () => resolve(reader.result);
+//       reader.onerror = error => reject(error);
+//     });
+// }, []);
 
 const PostWrite = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [fileList, setFileList] = useState([]);
-    const [title, setTitle] = useState('');
+    const [postTitle, setPostTitle] = useState('');
     const [category, setCategory] = useState('');
-    const [postDeadline, setPostDeadline] = useState({});
-    const [executionDate, setExecutionDate] = useState({})
-    const {helpPosts} = useSelector(state => state.posts);
-    
-    // const getBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //       const reader = new FileReader();
-    //       reader.readAsDataURL(file);
-    //       reader.onload = () => resolve(reader.result);
-    //       reader.onerror = error => reject(error);
-    //     });
-    // }
+    const [postDeadline, setPostDeadline] = useState({date: '', time: ''});
+    const [dateofExecution, setDateofExecution] = useState({date: '', time: ''});
+    const [needPersonnel, setNeedPersonnel] = useState(0);
+    const [money, setMoney] = useState(0);
+    const [location, setLocation] = useState('');
+    const [requirements, setRequirements] = useState('');
+    const [images, setImages] = useState([]);
 
+    // const {helpPosts} = useSelector(state => state.posts);
+    
+    //밑에 친구들 사진 첨부할 떄 
     // const handleCancel = useCallback(() => {
     //     setPreviewVisible(false);
     // }, []);
 
-    // const handlePreview = useCallback(file => () => {
+    // const handlePreview = useCallback(file => {
     //     if (!file.url && !file.preview) {
     //     file.preview = getBase64(file.originFileObj);
     //     }
@@ -50,9 +56,55 @@ const PostWrite = () => {
           <div className="ant-upload-text">Upload</div>
         </div>
     );
+    
+    //도움 게시글 제목 입력
+    const onPostTitle = useCallback((e) => {
+        setPostTitle(e.target.value);
+    }, []);
+
+    //신청 마감 일시 입력
+    const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
+        setPostDeadline({...postDeadline, date: dateString});
+        console.log(dateString);
+    }, [postDeadline]);
+
+    const onPostDeadlineTime = useCallback((deadlineTime, timeString) => {
+        setPostDeadline({...postDeadline, time: timeString});
+        console.log(timeString);
+    }, [postDeadline]);
+
+    //수행 일시 입력
+    const onExecutionDate = useCallback((executionDate, dateString) => {
+        setDateofExecution({...dateofExecution, date: dateString});
+        console.log(dateString);
+    }, [dateofExecution]);
+
+    const onExecutionTime = useCallback((executionTime, timeString) => {
+        setDateofExecution({...dateofExecution, time: timeString});
+        console.log(timeString);
+    }, [dateofExecution]);
+
+    //필요 인원 입력
+    const onNeedPersonnel = useCallback((e) => {
+        setNeedPersonnel(e.target.value);
+    }, []);
+
+    //금액 입력
+    const onMoney = useCallback((e) => {
+        setMoney(e.target.value);
+    }, []);
+
+    //요구사항 입력
+    const onRequirements = useCallback((e) => {
+        setRequirements(e.target.value)
+    }, []);
 
     const addPost = useCallback(() => {
-
+        e.preventDefault();
+        // if(!postTitle || !postTitle.trim()){
+        //     // antd로 경고창 만드셈
+        // } 
+        
     }, []);
 
     return (
@@ -61,37 +113,37 @@ const PostWrite = () => {
             <ContentFlex>
                 <Content>
                     <Title>
-                        <InputTitle placeholder="제목을 입력하세요." value={} onChange={}/> {/*input 쓰삼 */}
+                        <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onPostTitle}/> {/*input 쓰삼 */}
                         <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
                         <div className="category">
                             <div>카테고리</div>
                             <Select style={{width: 128}}>
-                                {categoryValue.map(category => <Option value={category}>{category}</Option>)}
+                                {categoryValue.map(category => <Option value={category} >{category}</Option>)}
                             </Select>
                         </div>
                         <div className="deadline">
                             <div>신청 마감 일시</div>
                             <div>
-                                <DatePicker style={{marginRight: 5}} value={}/>
-                                <TimePicker format={format} value={}/>
+                                <DatePicker style={{marginRight: 5}} onChange={onPostDeadlineDate}/>
+                                <TimePicker use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
                             </div>
                         </div>
                         <div className="executionDate">
                             <div>수행 일시</div>
                             <div>
-                                <DatePicker style={{marginRight: 5}}/>
-                                <TimePicker format={format}/>
+                                <DatePicker style={{marginRight: 5}} onChange={onExecutionDate}/>
+                                <TimePicker use12Hours format="h:mm a" onChange={onExecutionTime}/>
                             </div>
                         </div>
                         <div className="needPersonnel">
                             <div>필요인원</div>
-                            <input type="number" value={} onChange={}/>
+                            <input type="number" value={needPersonnel} onChange={onNeedPersonnel}/>
                         </div>
                         <div className="money">
                             <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원" value={} onChange={}/>
+                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={onMoney}/>
                         </div>
                     </PostSetting>
                     <ContentItem>
@@ -100,7 +152,7 @@ const PostWrite = () => {
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
-                        <textarea id="requirement" placeholder="요구사항을 입력하세요." required />
+                        <textarea placeholder="요구사항을 입력하세요." required  value={requirements} onChange={onRequirements}/>
                     </ContentItem>
                     <UploadImage>
                         <div style={{width: "5vw"}}>사진첨부</div>
@@ -114,7 +166,7 @@ const PostWrite = () => {
                             {fileList.length >= 8 ? null : uploadButton}
                         </Upload>
                     </UploadImage>    
-                    <UploadButton>글 올리기</UploadButton>     
+                    <UploadButton htmlType="submit">글 올리기</UploadButton>     
                 </Content>                  
             </ContentFlex>
             </Form>
@@ -290,6 +342,12 @@ const UploadButton = styled(Button)`
         opacity: 0.9;
         background: #FF4300;
         border: #FF4300;
+        color: white;
+    }
+
+    :focus{
+        background: #FF9644;
+        border: #FF9644;
         color: white;
     }
 `;
