@@ -1,42 +1,27 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { Input, Button, Select } from 'antd';
-import { signUpRequestAction } from '../../reducers/user';
+// import { useDispatch, useSelector } from 'react-redux';
+import { Input, Button } from 'antd';
 import Router from 'next/router';
-// 회원가입 창
-const SignUp = () => {
-  
-    const dispatch = useDispatch(); // 디스패치
-    const { isSigningup, signUpSuccess } = useSelector(state => state.user);
-    useEffect(() => {
-        if(signUpSuccess) {
-            Router.push('/');
-        }
-    }, [signUpSuccess]);
+
+const modifyuser = () => {
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
-    const [id, setId] = useState('');   // 아이디 state
+    const [nickname, setNickname] = useState('');   // 닉네임 state
+    const [introduce, setIntroduce] = useState(""); // 소개 state
     const [password, setPassword] = useState('');   // 비밀번호 state
     const [passwordCheck, setPasswordCheck] = useState(''); // 비밀번호 확인 state
-    const [nickname, setNickname] = useState('');   // 닉네임 state
-    const [name, setName] = useState('');   // 이름 state
-    const [birthYear, setBirthYear] = useState(nowDate.getFullYear()); // 생년월일 중 년
-    const [birthMonth, setBirthMonth] = useState(nowDate.getMonth()+1);   // 생년월일 중 월
-    const [birthDay, setBirthDay] = useState(nowDate.getDate());
     const [email, setEmail] = useState(''); // 이메일 state
     const [telephone, setTelephone] = useState('');
     const [mainAddress, setMainAddress] = useState('');
     const [subAddress, setSubAddress] = useState('');
 
     // 입력한 정보가 맞는 정보인지 확인하는 state
-    const [isIdCorrect, setIsIdCorrect] = useState(false);  // 아이디 확인
+    const [isNicknameCorrect, setIsNicknameCorrect] = useState(false);  // 닉네임 확인
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);  // 비밀번호 확인
     const [isPasswordChecked, setIsPasswordChecked] = useState(false);  // 비밀번호 확인을 확인
-    const [isNicknameCorrect, setIsNicknameCorrect] = useState(false);  // 닉네임 확인
-    const [isRegistrationCorrect, setIsRegistrationCorrect] = useState(false);  // 이름과 주민등록번호 매칭 확인
-    const [isEmailCorrect, setIsEmailCorrect] = useState(false);  // 아이디 확인
+    const [isEmailCorrect, setIsEmailCorrect] = useState(false);  // 이메일 확인
     
     // 문자열내용을 전달하기 위함
     const check_num = /[0-9]/g; // 숫자
@@ -44,33 +29,6 @@ const SignUp = () => {
     const check_spc = /[~!@#$%^&*()_+|<>?:{}]/g; // 특수문자
     const check_kor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g; // 한글
     const check_spa = /(\s)/g;             // 공백
-
-    // 생년월일 선택지를 render 하기 위함
-    const yearOptions = Array(80)
-        .fill(0)
-        .map((v, index) => (
-            <Select.Option className="Month-Item" key={`${nowDate.getFullYear() - index}`}>
-                {nowDate.getFullYear() - index}
-            </Select.Option>
-        )
-    );
-    const monthOptions = Array(12)
-        .fill(0)
-        .map((v, index) => (
-            <Select.Option className="Month-Item" key={`${index}`}>
-                {index+1}
-            </Select.Option>
-        )
-    );
-    const dayOptions = Array(31)
-        .fill(0)
-        .map((v, index) => {
-        return (
-            <Select.Option className="Month-Item" key={`${index+1}`}>
-                {index+1}
-            </Select.Option>
-        );
-    });
 
     // 아이디 = 허용 : [영어 / 숫자], 불가 : [공백, 한글, 특수문자]
     // 비밀번호 = 허용 : [영어 / 숫자 / 특수문자], 불가 : [공백, 한글]
@@ -103,64 +61,61 @@ const SignUp = () => {
     }, [password, passwordCheck]);
     
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
-    const onClickSignUp = useCallback((e) => {
-        if(isNicknameCorrect && isIdCorrect && isPasswordCorrect && isPasswordChecked && isRegistrationCorrect){
+    const onClickModify = useCallback((e) => {
+        if(isNicknameCorrect && isPasswordCorrect && isPasswordChecked && isEmailCorrect){
             const userLog = {
-                id,
-                password,
                 nickname,
-                name,
-                birthYear,
-                birthMonth,
-                birthDay,
+                password,
                 email,
                 telephone,
                 mainAddress,
                 subAddress,
             }
-            dispatch(signUpRequestAction(userLog)); // 회원가입 요청
+            
         }
         else{
             alert('회원가입 실패!');
         }
     }, [
         nickname,
-        id,
         password,
-        name,
-        birthYear,
-        birthMonth,
-        birthDay,
         email,
         telephone,
         mainAddress,
         subAddress,
 
         isNicknameCorrect,
-        isIdCorrect,
         isPasswordCorrect,
         isPasswordChecked,
-        isRegistrationCorrect
     ]);
 
     return (
-        <SignUpUpperDiv>
-            <div className="Title">회원가입</div>
+        <ModifyUserUpperDiv>
+            <div className="Title">회원정보 수정</div>
             <div className="Content">
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">아이디 *</div>
+                <div className="Modify-Profile">프로필 사진</div>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">닉네임 *</div>
                     <Input
-                        placeholder="아이디 입력"
-                        onChange={onChangeInput(setId, [check_eng, check_num])}
-                        value={id}
+                        placeholder="닉네임 입력"
+                        onChange={onChangeInput(setNickname, [check_eng, check_num, check_kor])}
+                        value={nickname}
                     />
-                    {isIdCorrect || (id === '')
+                    {isNicknameCorrect || (nickname === '')
                     ?   <div className="Check"></div>
-                    :   <div className="Check">아이디를 알맞게 입력해주세요</div>
+                    :   <div className="Check">닉네임을 알맞게 입력해주세요</div>
                     }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">비밀번호 *</div>
+                </ModifyUserGetDataDiv>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">소개</div>
+                    <Input
+                        onChange={onChangeInput(setIntroduce, [check_eng, check_num])}
+                        value={introduce}
+                    />
+                </ModifyUserGetDataDiv>
+                <hr className="Hr"></hr>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">비밀번호 *</div>
                     <Input.Password
                         placeholder="비밀번호(8~20자리)"
                         onChange={onChangeInput(setPassword, [check_eng, check_num, check_spc])}
@@ -171,9 +126,9 @@ const SignUp = () => {
                     ?   <div className="Check"></div>
                     :   <div className="Check">비밀번호를 알맞게 입력해주세요</div>
                     }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">비밀번호 확인 *</div>
+                </ModifyUserGetDataDiv>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">비밀번호 확인 *</div>
                     <Input.Password
                         placeholder="비밀번호 재입력"
                         onChange={onChangeInput(setPasswordCheck, [check_eng, check_num, check_spc])}
@@ -184,59 +139,10 @@ const SignUp = () => {
                     ?   <div className="Check"></div>
                     :   <div className="Check">비밀번호를 확인해주세요</div>
                     }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">닉네임 *</div>
-                    <Input
-                        placeholder="닉네임 입력"
-                        onChange={onChangeInput(setNickname, [check_eng, check_num, check_kor])}
-                        value={nickname}
-                    />
-                    {isNicknameCorrect || (nickname === '')
-                    ?   <div className="Check"></div>
-                    :   <div className="Check">닉네임을 알맞게 입력해주세요</div>
-                    }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">이름 *</div>
-                    <Input
-                        placeholder="이름 입력"
-                        onChange={onChangeInput(setName, [check_eng, check_kor, check_spa])}
-                        value={name}
-                    />
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">생년월일 *</div>
-                    <div className="Birth">
-                        <Select
-                            className="Birth-Year"
-                            defaultValue={birthYear}
-                            onChange={onChangeSelect(setBirthYear)}
-                            >
-                            {yearOptions}
-                        </Select>
-                        <Select 
-                            className="Birth-Month"
-                            defaultValue={birthMonth}
-                            onChange={onChangeSelect(setBirthMonth)}
-                            >
-                            {monthOptions}
-                        </Select>
-                        <Select
-                            className="Birth-Day"
-                            defaultValue={birthDay}
-                            onChange={onChangeSelect(setBirthMonth)}
-                            >
-                            {dayOptions}
-                        </Select>
-                    </div>
-                    {isRegistrationCorrect
-                        ?   <div className="Check"></div>
-                        :   <div className="Check">이름과 생년월일을 확인해주세요</div>
-                    }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">이메일 *</div>
+                </ModifyUserGetDataDiv>
+                <hr className="Hr"></hr>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">이메일 *</div>
                     <Input
                         placeholder="이메일 입력"
                         onChange={onChangeInput(setEmail, [check_eng, check_num, /[@]/g])}
@@ -246,17 +152,17 @@ const SignUp = () => {
                         ?   <div className="Check"></div>
                         :   <div className="Check">이메일을 확인해주세요</div>
                     }
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">전화번호 *</div>
+                </ModifyUserGetDataDiv>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">전화번호 *</div>
                     <Input
                         placeholder="'-'를 제외한 숫자"
                         onChange={onChangeInput(setTelephone, [check_num])}
                         value={telephone}
                     />
-                </SignUpGetDataDiv>
-                <SignUpGetDataDiv>
-                    <div className="Sign-Title">주소 *</div>
+                </ModifyUserGetDataDiv>
+                <ModifyUserGetDataDiv>
+                    <div className="Modify-Title">주소 *</div>
                     <Input
                         placeholder="시"
                         onChange={onChangeInput(setMainAddress, [check_eng, check_num, check_kor, /[,.:;'"]/g])}
@@ -271,26 +177,36 @@ const SignUp = () => {
                         ?   <div className="Check-All"></div>
                         :   <div className="Check-All">전부 필수 작성란입니다.</div>
                     }
-                </SignUpGetDataDiv>
-                <Button
-                    className="Sign-Button"
-                    onClick={onClickSignUp}
-                    loading ={isSigningup}
-                >가입하기</Button>
+                </ModifyUserGetDataDiv>
+                <div className="Tips">
+                    - 아이디, 이름, 생년월일은 수정이 불가능 합니다.
+                    <br/>- 닉네임은 변경 후 1개월간 재변경이 불가능합니다.
+                    <br/>- 휴대전화 번호 변경 시 반드시 인증을 거쳐야 합니다.
+                </div>
+                <div className="Btn">
+                    <Button
+                        className="Btn-Back"
+                        onClick={useCallback(() => Router.push('/mypage'),[])}
+                        // loading = {}
+                        >취소</Button>
+                    <Button
+                        className="Btn-Modify"
+                        onClick={onClickModify}
+                        // loading ={null}
+                        >수정</Button>
+                </div>
             </div>
-        </SignUpUpperDiv>
+        </ModifyUserUpperDiv>
     );
 };
 
-
-const SignUpUpperDiv = styled.div`
+const ModifyUserUpperDiv = styled.div`
     margin: 90px auto;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    
     & .Title{
         font-size: 50px;
         font-weight: bold;
@@ -309,19 +225,51 @@ const SignUpUpperDiv = styled.div`
         max-width: 600px;
         min-width: 320px;
         /* height: 1120px; */
-
-        & .Sign-Button {
+        & .Modify-Profile{
+            border: 1px solid black;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            text-align: center;
+            line-height: 150px;
+        }
+        & .Hr{
+            width: 100%;
+            color: #d9d9d9;
+            border: none;
+            border-top: 1px solid #d9d9d9;
+            margin: 35px 0;
+        }
+        & .Tips{
+            width: 100%;
+            margin: 10px 0;
+            max-width: 425px;
+            min-width: 270px;
+            font-size: 16px;
+        }
+    }
+    & .Btn{
+        display: flex;
+        & .Btn-Back{
             width: 100%;
             height: 100vh;
-            max-width: 420px;
-            max-height: 50px;
-            min-width: 270px;
-            min-height: 35px;
+            max-width: 100px;
+            max-height: 40px;
+            min-width: 60px;
+            min-height: 30px;
+        }
+        & .Btn-Modify {
+            width: 100%;
+            height: 100vh;
+            max-width: 100px;
+            max-height: 40px;
+            min-width: 60px;
+            min-height: 30px;
             background: #FF9644;
         }
     }
 `;
-const SignUpGetDataDiv = styled.div`
+const ModifyUserGetDataDiv = styled.div`
     display: flex;
     flex-direction: column;
    
@@ -330,7 +278,7 @@ const SignUpGetDataDiv = styled.div`
     min-width: 270px;
     width : 100%;
 
-    & Input {
+    & input {
         flex : 1;
         border: none;
         border-radius: 0px;
@@ -361,7 +309,7 @@ const SignUpGetDataDiv = styled.div`
         }
     }
     
-    & .Sign-Title{
+    & .Modify-Title{
         font-weight: bold;
     }
     & .Check{
@@ -378,4 +326,4 @@ const SignUpGetDataDiv = styled.div`
     }
 `;
 
-export default SignUp;
+export default modifyuser;

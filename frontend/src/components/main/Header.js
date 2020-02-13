@@ -49,7 +49,7 @@ const Header = () => {
       <div className="menuRight" ref={divRef}>
         <ul>
           <li>
-            <Link href="/errand">
+            <Link href="/postmain">
               <a>심부름</a>
             </Link>
           </li>
