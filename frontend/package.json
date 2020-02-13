@@ -4,7 +4,10 @@
   "description": "dnd2 dabeen project",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build" : "next build",
+    "start" : "next start -p $PORT",
+    "heroku-postbuild" : "npm run build"
   },
   "author": "dabeen",
   "license": "ISC",
