@@ -23,10 +23,10 @@ public class BsktCompApiService{
     public Header<BsktCompApiResponse> create(Header<BsktCompApiRequest> request){
         BsktCompApiRequest bsktCompApiRequest = request.getData();
 
+        BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
+
         BsktComp bsktComp = BsktComp.builder()
-                                    .bsktNum(bsktCompApiRequest.getBsktNum())
-                                    .helpNum(bsktCompApiRequest.getHelpNum())
-                                    .supplNum(bsktCompApiRequest.getSupplNum())
+                                    .bsktCompPK(bsktCompPK)
                                     .indvHelpPrice(bsktCompApiRequest.getIndvHelpPrice()).build();
     
         BsktComp newBsktComp = bsktCompRepository.save(bsktComp);
@@ -66,10 +66,11 @@ public class BsktCompApiService{
     }
 
     public BsktCompApiResponse response(BsktComp bsktComp){
+
         BsktCompApiResponse bsktCompApiResponse = BsktCompApiResponse.builder()
-                                                                    .bsktNum(bsktComp.getBsktNum())
-                                                                    .helpNum(bsktComp.getHelpNum())
-                                                                    .supplNum(bsktComp.getSupplNum())
+                                                                    .bsktNum(bsktComp.getBsktCompPK().getBsktNum())
+                                                                    .helpNum(bsktComp.getBsktCompPK().getHelpNum())
+                                                                    .supplNum(bsktComp.getBsktCompPK().getSupplNum())
                                                                     .indvHelpPrice(bsktComp.getIndvHelpPrice()).build();
 
         return bsktCompApiResponse;

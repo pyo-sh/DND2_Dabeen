@@ -67,8 +67,8 @@ public class HelpPicApiService  {
     public HelpPicApiResponse response(HelpPic helpPic){
 
         HelpPicApiResponse helpPicApiResponse = HelpPicApiResponse.builder()
-                                                           .helpNum(helpPic.getHelpNum())
-                                                           .picOrnu(helpPic.getPicOrnu())
+                                                           .helpNum(helpPic.getHelpPicPK().getHelpNum())
+                                                           .picOrnu(helpPic.getHelpPicPK().getPicOrnu())
                                                            .path(helpPic.getPath()).build();
         
         return helpPicApiResponse;
