@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.mapper.UserMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.User" useGeneratedKeys="false">
+        <selectKey order="BEFORE" keyProperty="userNum" resultType="String" > 
+            SELECT concat(date_format(now(), "%y%m%d"), LPAD(ifnull(max(substr(user_num, 7)), "0") + 1, 4, 0))
+            <!-- LPAD(ifnull(max(substr(bskt_num, 7)), "0") + 1, 3, 0))
+                만약 오늘 생성된 엔터티가 있다면 그 중 가장 순번이 뒤인, 없다면 0 에서 +1 
+                이후 순번이 3자리를 수를 가지도록 앞에 0을 채워줌
+
+                concat(date_format(now(), "%y%m%d"), ~)
+                날짜 + 순번
+            -->
+            FROM user
+            WHERE substr(user_num, 1, 6) = date_format(now(), "%y%m%d")  <!-- 해당 테이블 엔터티 중 오늘 생성된 엔터티가 있는지-->
+            <!-- 키 생성 쿼리 -->
+        </selectKey>
+        insert 
+            into user
+            values (#{userNum}, #{userName}, #{birthDate}, #{address}, #{phoneNum}, 
+                    #{userId}, #{pwd}, #{email}, #{nickname}, #{itdcCont}, #{supplWhet}, 
+                    #{blonSggName}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
+    </insert>
+    <select id="selectFiveOderByRate" resultType="com.dabeen.dnd.model.entity.User" parameterType="string">
+        <choose>
+            <when test="value != null">
+                SELECT user_num AS userNum, user_name As UserName, birth_date AS birthDate, address,
+                        phone_num AS phoneNum, id AS userId, email, itdc_cont AS itdcCont, 
+                        suppl_whet AS supplwhet, blon_sgg_name AS blonSggName, pic_path AS picPath, 
+                        rrn_rear AS rrnRear, avg_rate AS avgRate, own_mileage AS ownMileage
+                FROM user
+                WHERE blon_sgg_name = #{blonSggName}
+                ORDER BY avg_rate DESC
+                LIMIT 5;
+            </when>
+            <otherwise>
+                SELECT user_num AS userNum, user_name As UserName, birth_date AS birthDate, address,
+                        phone_num AS phoneNum, id AS userId, email, itdc_cont AS itdcCont, 
+                        suppl_whet AS supplwhet, blon_sgg_name AS blonSggName, pic_path AS picPath, 
+                        rrn_rear AS rrnRear, avg_rate AS avgRate, own_mileage AS ownMileage
+                FROM user
+                ORDER BY avg_rate DESC
+                LIMIT 5;
+            </otherwise>
+        </choose>
+        <!-- blonSggName이 Null이 아닐 경우 해당 소속시군구의 유저에서 선택, null 일 경우 모든 유저 중에서 선택 -->
+    </select>
+</mapper>
+
+<!--
+    UserMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->
