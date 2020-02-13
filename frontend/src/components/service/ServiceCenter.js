@@ -5,7 +5,6 @@ import ServiceItem from './ServiceItem';
 import ServiceQuestion from './ServiceQuestion';
 import Charge from "../money/Charge";
 import Refund from "../money/Refund";
-import RefundConfirm from "../money/RefundConfirm";
 
 const dummyMyQuestion = [
   {
@@ -66,7 +65,7 @@ const ServiceCenter = () => {
           <button onClick={showModal}>문의하기</button>
         </div>
         {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
-        <RefundConfirm visible={visible} setVisible={setVisible} />
+        <Refund visible={visible} setVisible={setVisible} />
         <h2>자주 묻는 질문</h2>
         <div className="frequentQuestion">
           <ul>

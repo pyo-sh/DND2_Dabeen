@@ -3,13 +3,15 @@ import { Modal, Button } from "antd";
 import styled from "styled-components";
 
 // 정보들 받게 해줘야함. redux로 하던지..
-const RefundConfirm = ({ visible, setVisible }) => {
+const RefundConfirm = ({ visible, setVisible, accountNumber, refundPrice, selectBank, setChecking }) => {
   const handleOk = useCallback(e => {
     e.preventDefault();
     // 다른 행동 취해야함. 받은 은행, 계좌번호, 환불 등을 통해 신청!!
+    setChecking(prev => !prev);
     setVisible(prev => !prev);
   }, []);
   const handleCancel = useCallback(() => {
+    setChecking(prev => !prev);
     setVisible(prev => !prev);
   }, []);
   return (
@@ -30,9 +32,9 @@ const RefundConfirm = ({ visible, setVisible }) => {
         </div>
       ]}
     >
-      <div className="refundInfo">xx 은행 xxxxxxxxxx(수령인)</div>
+      <div className="refundInfo">{selectBank} 은행 {accountNumber}(수령인)</div>
       <div className="refundPrice">
-        <b>환급 금액</b> 원
+        <b>{refundPrice}</b> 원
       </div>
     </ConfirmModal>
   );
