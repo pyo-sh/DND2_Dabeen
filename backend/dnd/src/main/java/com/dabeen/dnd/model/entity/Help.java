@@ -9,7 +9,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,6 +31,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
+@Table(name = "help")
 public class Help{
 
     @Id
@@ -69,6 +73,7 @@ public class Help{
     private String cont; // 내용
 
     @NotNull(message = " is not null")
+    @Enumerated(EnumType.STRING)
     private Whether helpAprvWhet; // 도움승인여부
 
     @NotEmpty(message = " is not empty")
