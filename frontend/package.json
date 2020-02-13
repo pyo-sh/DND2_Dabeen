@@ -1,38 +1,38 @@
 {
-    "name": "dabeen",
-    "version": "1.0.0",
-    "description": "dnd2 dabeen project",
-    "main": "index.js",
-    "scripts": {
-      "dev": "next"
-    },
-    "author": "dabeen",
-    "license": "ISC",
-    "dependencies": {
-      "antd": "^3.26.2",
-      "axios": "^0.19.0",
-      "express": "^4.17.1",
-      "immer": "^5.1.0",
-      "next": "^9.1.5",
-      "next-redux-saga": "^4.1.2",
-      "next-redux-wrapper": "^4.0.1",
-      "prop-types": "^15.7.2",
-      "react": "^16.12.0",
-      "react-dom": "^16.12.0",
-      "react-helmet": "^5.2.1",
-      "react-redux": "^7.1.3",
-      "redux": "^4.0.4",
-      "redux-saga": "^1.1.3",
-      "styled-components": "^4.4.1"
-    },
-    "devDependencies": {
-      "babel-eslint": "^10.0.3",
-      "babel-plugin-styled-components": "^1.10.6",
-      "eslint": "^6.7.2",
-      "eslint-config-airbnb": "^18.0.1",
-      "eslint-plugin-import": "^2.19.1",
-      "eslint-plugin-react": "^7.17.0",
-      "eslint-plugin-react-hooks": "^2.3.0",
-      "webpack": "^4.41.2"
-    }
+  "name": "dabeen",
+  "version": "1.0.0",
+  "description": "dnd2 dabeen project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next"
+  },
+  "author": "dabeen",
+  "license": "ISC",
+  "dependencies": {
+    "antd": "^3.26.2",
+    "axios": "^0.19.0",
+    "express": "^4.17.1",
+    "immer": "^5.1.0",
+    "next": "^9.1.5",
+    "next-redux-saga": "^4.1.2",
+    "next-redux-wrapper": "^4.0.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-helmet": "^5.2.1",
+    "react-redux": "^7.1.3",
+    "redux": "^4.0.4",
+    "redux-saga": "^1.1.3",
+    "styled-components": "^4.4.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-styled-components": "^1.10.6",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "webpack": "^4.41.2"
   }
+}

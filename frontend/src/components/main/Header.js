@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import { Button, Input, Icon } from "antd";
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +17,8 @@ const Header = () => {
     divRef.current.classList.toggle("active");
   }, []);
   const clickLogout = useCallback(() => {
+      axios.get("http://localhost:8080/api/user/2002110003")
+            .then(res => console.log(res));
       dispatch(logoutRequestAction());
       alert('로그아웃 되었습니다.');
   }, []);
