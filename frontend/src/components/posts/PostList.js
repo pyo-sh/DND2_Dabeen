@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+
+import PostCapsule from './PostCapsule';
 
 const PostList = () => {
     return (
@@ -23,14 +25,14 @@ const PostList = () => {
                 </PostListSearchBox>
             </div>
             <div className="Content">
-
+                <PostCapsule></PostCapsule>
             </div>
         </PostListUpperDiv>
     );
 };
 
 const PostListUpperDiv = styled.div`
-    padding: 90px 0;
+    padding: 70px 200px;
     & .Title{
         font-weight: bold;
         display: flex;
@@ -41,6 +43,12 @@ const PostListUpperDiv = styled.div`
         & .Title-Sub{
             font-size: 28px;
         }
+    }
+    & .Search{
+        padding: 10px;
+        border-radius: 8px;
+        background: #F0F0F0;
+        font-size: 18px;
     }
 `;
 const PostListSearchBox = styled.div`

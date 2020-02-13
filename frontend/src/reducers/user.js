@@ -1,4 +1,5 @@
 import proudce, { produce } from "immer";
+import { createAction } from './actionFunction';
 
 export const initialState = {
   isLoggingOut: false, // 로그아웃 시도중
@@ -35,61 +36,23 @@ export const EDIT_USERINFO_SUCCESS = "EDIT_USERINFO_SUCCESS";
 export const EDIT_USERINFO_FAILURE = "EDIT_USERINFO_FAILURE";
 
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
-export const signUpRequestAction = data => ({
-  type: SIGN_UP_REQUEST,
-  data
-});
-
-export const signUpSuccessAction = () => ({
-  type: SIGN_UP_SUCCESS
-});
-
-export const signUpFailureAction = () => ({
-  type: SIGN_UP_FAILURE
-});
+export const signUpRequestAction = createAction(SIGN_UP_REQUEST);
+export const signUpSuccessAction = createAction(SIGN_UP_SUCCESS);
+export const signUpFailureAction = createAction(SIGN_UP_FAILURE);
 
 // id, password를 가지고 로그인 요청을 서버로 보낸다. -> 성공한다 : 유저 정보 저장  or 실패한다 : 에러 이유
-export const loginRequestAction = ({ id, password }) => ({
-  type: LOG_IN_REQUEST,
-  data: {
-    id,
-    password
-  }
-});
-
-export const loginSuccessAction = data => ({
-  type: LOG_IN_SUCCESS,
-  data
-});
-
-export const loginFailureAction = () => ({
-  type: LOG_IN_FAILURE
-});
+export const loginRequestAction = createAction(LOG_IN_REQUEST);
+export const loginSuccessAction = createAction(LOG_IN_SUCCESS);
+export const loginFailureAction = createAction(LOG_IN_FAILURE);
 
 // 회원 정보를 바탕으로 서버에 로그아웃 요청을 보낸다 -> 성공한다 : 유저 정보 null로 or 실패한다 : 에러 이유
-export const logoutRequestAction = () => ({
-  type: LOG_OUT_REQUEST
-});
+export const logoutRequestAction = createAction(LOG_OUT_REQUEST);
+export const logoutSuccessAction = createAction(LOG_OUT_SUCCESS);
+export const logoutFailureAction = createAction(LOG_OUT_FAILURE);
 
-export const logoutSuccessAction = () => ({
-  type: LOG_OUT_SUCCESS
-});
-
-export const logoutFailureAction = () => ({
-  type: LOG_OUT_FAILURE
-});
-
-// export const loadUserRequestAction = () => ({
-//     type : LOAD_USER_REQUEST,
-// });
-
-// export const loadUserSuccessAction = () => ({
-//     type : LOAD_USER_SUCCESS,
-// });
-
-// export const loadUserFailureAction = () => ({
-//     type : LOAD_USER_FAILURE,
-// });
+// export const loadUserRequestAction = createAction(LOAD_USER_REQUEST);
+// export const loadUserSuccessAction = createAction(LOAD_USER_SUCCESS);
+// export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
 
 // 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
 export const editUserInfoRequestAction = ({
@@ -138,7 +101,7 @@ const reducer = (state = initialState, action) => {
       case LOG_IN_FAILURE: {
         draft.isLoggingIn = false;
         draft.isLoginSuccess = false;
-        draft.loginError = action.error;
+        draft.loginError = action.data.error;
         break;
       }
       case LOG_OUT_REQUEST: {
@@ -153,7 +116,7 @@ const reducer = (state = initialState, action) => {
       }
       case LOG_OUT_FAILURE: {
         draft.isLoggingOut = false;
-        draft.logoutError = action.error;
+        draft.logoutError = action.data.error;
         break;
       }
       case SIGN_UP_REQUEST: {
@@ -166,7 +129,7 @@ const reducer = (state = initialState, action) => {
       }
       case SIGN_UP_FAILURE: {
         draft.isSigningup = false;
-        draft.signUpError = action.error;
+        draft.signUpError = action.data.error;
         break;
       }
       case EDIT_USERINFO_REQUEST: {
@@ -180,7 +143,7 @@ const reducer = (state = initialState, action) => {
       }
       case EDIT_USERINFO_FAILURE: {
         draft.isUpdatingInfo = false;
-        draft.updateError = action.error;
+        draft.updateError = action.data.error;
         break;
       }
       default:
