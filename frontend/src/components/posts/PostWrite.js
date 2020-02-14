@@ -2,6 +2,8 @@ import React, { useState, useCallback } from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import { Select, DatePicker, TimePicker, Upload, Icon, Button, Form } from 'antd';
+import DaumPostcode from 'react-daum-postcode';
+import MyLocation from '../map/MyLocation';
 
 const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -29,6 +31,8 @@ const PostWrite = () => {
     const [location, setLocation] = useState('');
     const [requirements, setRequirements] = useState('');
     const [images, setImages] = useState([]);
+    const [click, setClick] = useState(false);
+    const [click2, setClick2] = useState(false);
 
     // const {helpPosts} = useSelector(state => state.posts);
     
@@ -65,23 +69,19 @@ const PostWrite = () => {
     //신청 마감 일시 입력
     const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
         setPostDeadline({...postDeadline, date: dateString});
-        console.log(dateString);
     }, [postDeadline]);
 
     const onPostDeadlineTime = useCallback((deadlineTime, timeString) => {
         setPostDeadline({...postDeadline, time: timeString});
-        console.log(timeString);
     }, [postDeadline]);
 
     //수행 일시 입력
     const onExecutionDate = useCallback((executionDate, dateString) => {
         setDateofExecution({...dateofExecution, date: dateString});
-        console.log(dateString);
     }, [dateofExecution]);
 
     const onExecutionTime = useCallback((executionTime, timeString) => {
         setDateofExecution({...dateofExecution, time: timeString});
-        console.log(timeString);
     }, [dateofExecution]);
 
     //필요 인원 입력
@@ -90,21 +90,46 @@ const PostWrite = () => {
     }, []);
 
     //금액 입력
-    const onMoney = useCallback((e) => {
-        setMoney(e.target.value);
-    }, []);
+    // const onMoney = useCallback((e) => {
+    //     setMoney(e.target.value);
+    // }, []);
 
     //요구사항 입력
     const onRequirements = useCallback((e) => {
         setRequirements(e.target.value)
     }, []);
 
+    const handleAddress = useCallback(data => {
+        const fullAddress = data.address;
+        const extraAddress = '';
+
+        if(data.addressType === 'R'){
+            if(data.bname !== ''){
+                extraAddress += data.bname;
+            }
+            if(date.buildingName !== ''){
+                extraAddress += (extraAddress !== '' ? `,${data.buildingName}`: data.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+          }
+          
+          setLocation(fullAddress);
+          console.log(fullAddress);  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+
+          setClick(false);
+          setClick2(true);
+        }, [])
+            
     const addPost = useCallback(() => {
         e.preventDefault();
         // if(!postTitle || !postTitle.trim()){
         //     // antd로 경고창 만드셈
         // } 
         
+    }, []);
+
+    const setInputLocation = useCallback((e) => {
+        setLocation(e.target.value);
     }, []);
 
     return (
@@ -143,12 +168,25 @@ const PostWrite = () => {
                         </div>
                         <div className="money">
                             <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={onMoney}/>
+                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={() => setMoney(e.target.value)}/>
                         </div>
                     </PostSetting>
                     <ContentItem>
                         <div>위치</div>
-                        <div style={{border: "solid", width: 300, height: 300}}>카카오맵 API 쓰면 됨...............</div>
+                        <div>     
+                            <input placeholder="주소" value={location} />
+                            <Button onClick={() => setClick(!click)}>눌러라</Button>
+                            {click ? 
+                                <DaumPostcode 
+                                    onComplete={handleAddress}
+                                    autoClose={true}
+                                />
+                                : ""
+                            }
+                        </div>
+                        <div>
+                            {click2 ? <MyLocation myLocation={location} /> : ""}
+                        </div>
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
