@@ -18,6 +18,6 @@ public class AdminApiResponse {
     private String adminName; // 관리자 이름
     private String address; // 관리자 주소
     private String phoneNum; // 관리자 전화번호
-    private String id; // 아이디
+    private String adminId; // 아이디
     private String email; // 이메일
 }

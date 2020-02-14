@@ -31,7 +31,7 @@ public class AdminRepositoryTest extends DemoApplicationTests{
         Admin admin = Admin.builder()
                             .adminName(adminName)
                             .address(address)
-                            .id(id)
+                            .adminId(id)
                             .pwd(pwd)
                             .phoneNum(phoneNum)
                             .email(email)

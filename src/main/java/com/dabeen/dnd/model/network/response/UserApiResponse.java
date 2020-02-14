@@ -25,7 +25,7 @@ public class UserApiResponse{
     private String birthDate; // 생일 
     private String address; // 주소
     private String phoneNum; // 휴대폰 번호
-    private String id; // 아이디
+    private String userId; // 아이디
     private String email; // 이메일
     private String nickname; // 닉네임
     private String itdcCont; // 소개 내용
