@@ -7,6 +7,9 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 import reducer from '../reducers';
+import axios from 'axios';
+
+axios.defaults.baseURL = "http://localhost:3065/api";
 
 const Dabeen = ({Component, store}) => {
     return (
@@ -15,12 +18,17 @@ const Dabeen = ({Component, store}) => {
         <style jsx global>{`
         body {
             font-family: 'Yeon Sung', 'Noto Sans KR', sans-serif ;
+            margin : 0;
+            padding : 0;
+            width : 100%;
         }
       `}</style>
             <Head>
                 <title>Dabeen</title>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"/>
                 <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
+                <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /> 
+                <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
             </Head>
                 <AppLayout>
                     <Component/>

@@ -1,10 +1,10 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, memo} from 'react';
 import { Modal, Button, Input } from 'antd';
 import styled from 'styled-components';
 import inputChangeHook from '../../hooks/inputChangeHook';
 // 문의하기 모달!
 
-const ServiceQuestion = ({visible, setVisible}) => {
+const ServiceQuestion = memo(({visible, setVisible}) => {
     const [question, onChangeQuestion] = inputChangeHook('');
     const [title, onChangeTitle] = inputChangeHook('');
 
@@ -31,7 +31,7 @@ const ServiceQuestion = ({visible, setVisible}) => {
             <div>문의사항에 대한 답변은 1~2일정도 소요됩니다.</div>
         </CustomModal>
     );
-};
+});
 
 const CustomModal = styled(Modal)`
     & .ant-modal-header div {
