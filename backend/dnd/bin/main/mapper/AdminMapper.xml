@@ -17,7 +17,7 @@
         </selectKey>
         insert 
             into admin
-            values (#{adminNum}, #{adminName}, #{address}, #{phoneNum}, #{id}, #{pwd}, #{email})
+            values (#{adminNum}, #{adminName}, #{address}, #{phoneNum}, #{adminId}, #{pwd}, #{email})
     </insert>
 </mapper>
 

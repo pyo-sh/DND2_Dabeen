@@ -32,18 +32,18 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Pymt{
     @Id
-    @NotEmpty(message = " is not null")
+    @NotEmpty(message = "is not null")
     private String pymtNum; // 결제번호
     
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private LocalDateTime pymtDttm; // 결제일시
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING)
     private PymtMthdType pymtMthdType; // 결제방법구분
 
-    @NotNull(message = " is not null")
-    @Min(value = 0, message =  " must be at least 0.")
+    @NotNull(message = "is not null")
+    @Min(value = 0, message =  "must be at least 0.")
     private BigDecimal pymtPrice; // 결제 금액
 
     @Enumerated(EnumType.STRING)
