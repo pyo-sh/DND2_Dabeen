@@ -138,11 +138,7 @@ const PostWrite = () => {
             <ContentFlex>
                 <Content>
                     <Title>
-<<<<<<< HEAD
-                        <InputTitle placeholder="제목을 입력하세요."/> {/*input 쓰삼 */}
-=======
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onPostTitle}/> {/*input 쓰삼 */}
->>>>>>> choi
                         <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
@@ -155,13 +151,8 @@ const PostWrite = () => {
                         <div className="deadline">
                             <div>신청 마감 일시</div>
                             <div>
-<<<<<<< HEAD
-                                <DatePicker style={{marginRight: 5}} />
-                                <TimePicker format={format} />
-=======
                                 <DatePicker style={{marginRight: 5}} onChange={onPostDeadlineDate}/>
                                 <TimePicker use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
->>>>>>> choi
                             </div>
                         </div>
                         <div className="executionDate">
@@ -173,19 +164,11 @@ const PostWrite = () => {
                         </div>
                         <div className="needPersonnel">
                             <div>필요인원</div>
-<<<<<<< HEAD
-                            <input type="number"/>
-                        </div>
-                        <div className="money">
-                            <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원"/>
-=======
                             <input type="number" value={needPersonnel} onChange={onNeedPersonnel}/>
                         </div>
                         <div className="money">
                             <div>금액</div>
                             <input type="number" placeholder="최소 금액 0000원" value={money} onChange={() => setMoney(e.target.value)}/>
->>>>>>> choi
                         </div>
                     </PostSetting>
                     <ContentItem>
