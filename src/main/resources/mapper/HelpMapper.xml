@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.mapper.HelpMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Help" useGeneratedKeys="false">
+        <selectKey order="BEFORE" keyProperty="helpNum" resultType="String" > 
+        
+SELECT
+	CASE substring(help_num,1,6) WHEN NOT SUBSTRING(DATE_FORMAT(sysdate(),'%y%m%d'),1,6) THEN CONCAT(SUBSTRING(DATE_FORMAT(sysdate(),'%y%m%d'),1,6), '0001')   
+								ELSE CONCAT(SUBSTRING(help_num,1,6),LPAD(CONVERT(SUBSTRING(help_num,7,4), SIGNED INTEGER) + 1,4,'0')) END as help_num
+from (SELECT IFNULL(MAX(help_num),DATE_FORMAT(DATE(sysdate()),'%y%m%d')) as help_num FROM help) a 
+<!-- 키 생성 쿼리 -->
+        </selectKey>
+        insert 
+            into help(help_num,help_pstn_dttm,cat_num,cnsr_num,title,exec_loc,price,pref_suppl_num,pref_help_exec_dttm,help_aply_cls_dttm,cont,exec_sgg_name)
+            values (#{helpNum}, #{helpPstnDttm}, #{catNum}, #{cnsrNum}, #{title}, #{execLoc}, #{price}, #{prefSupplNum}, #{prefHelpExecDttm}, #{helpAplyClsDttm}, #{cont}, #{execSggName})
+    </insert>
+</mapper>
+
+<!--
+    AdminMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->
