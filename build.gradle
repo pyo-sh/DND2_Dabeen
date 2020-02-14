@@ -46,22 +46,3 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support
 	compile group: 'org.springframework', name: 'spring-context-support', version: '3.2.2.RELEASE'
 }
-
-test {
-	useJUnitPlatform()
-}
-
-task stage(type: Copy, dependsOn: [clean, build]) {
-  from jar.archivePath
-  into project.rootDir
-  
-  rename {
-    'app.jar'
-  }
-}
-
-stage.mustRunAfter(clean)
-
-clean.doLast{
-  project.file('app.jar').delete()
-}
