@@ -2,39 +2,50 @@ import React from 'react';
 import { Avatar, Rate } from 'antd';
 import styled from 'styled-components';
 
+const defaultDabeener = [
+    {
+        userId: "adf",
+        nickname : "123",
+        userRate : 4,
+        profile : ""
+    },
+    {
+        userId: "adf",
+        nickname : "123",
+        userRate : 4,
+        profile : ""
+    },
+    {
+        userId: "adf",
+        nickname : "123",
+        userRate : 4,
+        profile : ""
+    },
+    {
+        userId: "adf",
+        nickname : "123",
+        userRate : 4,
+        profile : ""
+    },
+    {
+        userId: "adf",
+        nickname : "123",
+        userRate : 4,
+        profile : ""
+    },
+]
+
 const MainDaBeenerProfile = () => {
     return (
         <MainDaBeenerProfileForm>
-            <MainDaBeenerProfileInfo>
+            {defaultDabeener.map(user => (
+                <MainDaBeenerProfileInfo>
                 <Avatar size = {100} icon="user"/>
-                <div>@닉네임</div>
-                <div style={{fontSize: 12}}>아이디</div>
-                <Rate disabled defaultValue={4} style={{fontSize: 12}}/>
+                <div>@{user.nickname}</div>
+                <div style={{fontSize: 12}}>{user.userId}</div>
+                <Rate disabled defaultValue={user.userRate} style={{fontSize: 12}}/>
             </MainDaBeenerProfileInfo>
-            <MainDaBeenerProfileInfo>
-                <Avatar size = {100} icon="user"/>
-                <div>@닉네임</div>
-                <div style={{fontSize: 12}}>아이디</div>
-                <Rate disabled defaultValue={4} style={{fontSize: 12}}/>
-            </MainDaBeenerProfileInfo>
-            <MainDaBeenerProfileInfo>
-                <Avatar size = {100} icon="user"/>
-                <div>@닉네임</div>
-                <div style={{fontSize: 12}}>아이디</div>
-                <Rate disabled defaultValue={4} style={{fontSize: 12}}/>
-            </MainDaBeenerProfileInfo>
-            <MainDaBeenerProfileInfo>
-                <Avatar size = {100} icon="user"/>
-                <div>@닉네임</div>
-                <div style={{fontSize: 12}}>아이디</div>
-                <Rate disabled defaultValue={4} style={{fontSize: 12}}/>
-            </MainDaBeenerProfileInfo>
-            <MainDaBeenerProfileInfo>
-                <Avatar size = {100} icon="user"/>
-                <div>@닉네임</div>
-                <div style={{fontSize: 12}}>아이디</div>
-                <Rate disabled defaultValue={4} style={{fontSize: 12}}/>
-            </MainDaBeenerProfileInfo>
+            ))}
         </MainDaBeenerProfileForm>
     );
 };

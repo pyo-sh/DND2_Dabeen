@@ -9,7 +9,7 @@ const isBrowser = typeof window !== "undefined";
 // const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
 const Header = () => {
   const dispatch = useDispatch();
-  const { userInfo } = useSelector(state => state.user);
+  const { userId } = useSelector(state => state.user);
   const divRef = useRef();
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
   const clickMenuIcon = useCallback(() => {
@@ -19,6 +19,7 @@ const Header = () => {
       dispatch(logoutRequestAction());
       alert('로그아웃 되었습니다.');
   }, []);
+
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handleResize);
@@ -70,7 +71,7 @@ const Header = () => {
           </li>
         </ul>
         <div className="loginBox">
-          {userInfo ? (
+          {userId ? (
             <>
               <div>
                 <Link href="/charge">

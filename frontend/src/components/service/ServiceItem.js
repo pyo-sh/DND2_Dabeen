@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, memo } from "react";
 import styled from "styled-components";
 
-const ServiceItem = ({ service }) => {
+const ServiceItem = memo(({ service }) => {
   const [isClick, setIsClick] = useState(false);
   const questionOnClick = useCallback(() => {
     setIsClick(prev => !prev);
@@ -10,17 +10,17 @@ const ServiceItem = ({ service }) => {
     <ServiceItemBox>
       <div className="question">
         <a onClick={questionOnClick}>
-          <b>Q.</b> {service.Q}
+          <b>Q.</b> {service.title}
         </a>
       </div>
       {isClick && (
         <div className="answer">
-          <b>A.</b>  {service.A ? service.A : "아직 답변이 달리지 않았습니다."}
+          <b>A.</b>  {service.rply_const ? service.rply_const : "아직 답변이 달리지 않았습니다."}
         </div>
       )}
     </ServiceItemBox>
   );
-};
+});
 
 const ServiceItemBox = styled.div`
   & .question, .answer {

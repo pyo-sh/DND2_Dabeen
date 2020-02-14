@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import {Button} from 'antd';
 
 const Footer = () => {
@@ -8,7 +9,7 @@ const Footer = () => {
             <div>
                 <Button type='link' style={{color: 'darkgray'}}>이용약관</Button>
                 <Button type='link' style={{color: 'darkgray'}}>개인정보 처리방침</Button>
-                <Button type='link' style={{color: 'darkgray'}}>고객센터</Button>
+                <Link href="/service"><a>고객센터</a></Link>
                 <Button type='link' style={{color: 'darkgray'}}>공지사항</Button>
             </div>
             <div>Copyright ⓒ DaBeen Team. All rights reserved</div>
@@ -25,7 +26,12 @@ const FooterBox = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    & a {
+        color : darkgray;
+        & :hover {
+            color : #ff4300;
+        }
+    }
     & > .mainBottomContent {
         display: flex;
         justify-content: space-around;

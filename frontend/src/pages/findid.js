@@ -7,20 +7,15 @@ import Router from 'next/router';
 import Link from 'next/link';
 import inputChangeHook from '../hooks/inputChangeHook';
 
-const Login = () => {
+const FindId = () => {
     const dispatch = useDispatch();
-    const { isLoggingIn, isLoginSuccess } = useSelector(state => state.user);
-    const [id, onChangeId] = inputChangeHook('');
-    const [password, onChangePassword] = inputChangeHook('');
-    const [loginMaintain, setLoginMaintain] = useState(false);
+    const {isLoginSuccess} = useSelector(state => state.user);
+    const [name, onChangeName] = inputChangeHook('');
+    const [email, onChangeEmail] = inputChangeHook('');
 
-    const onClickMaintain = useCallback((e) => {
-        setLoginMaintain(prev => !prev);
-    }, []);
     const submitForm = useCallback((e) => {
         e.preventDefault();
-        dispatch(loginRequestAction({id, password, loginMaintain}));
-    },[id, password]);
+    },[]);
 
     useEffect(() => {
         if(isLoginSuccess){
@@ -34,21 +29,14 @@ const Login = () => {
                 <Content>
                     <div className="loginName">로고 넣음</div>
                     <div className="loginForm">
-                        <InputUser onChange={onChangeId} value ={id} placeholder="아이디"/>
-                        <InputUser onChange={onChangePassword} value={password} placeholder="비밀번호"/> 
-                        <div className = "loginKeeping">
-                            <div>
-                            <Icon type="check-circle" onClick ={onClickMaintain} style = {{fontSize: '16px', color : loginMaintain ? "green" : "gray"}}/> 로그인 상태 유지
-                            </div>
-                            <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
-                        </div>
+                        <InputUser onChange={onChangeName} value ={name} placeholder="이름"/>
+                        <InputUser onChange={onChangeEmail} type="email" value={email} placeholder="이메일"/> 
                     </div>
-                    <LoginButton htmlType="submit" loading={isLoggingIn}>로그인</LoginButton>
+                    <LoginButton htmlType="submit">아이디 찾기</LoginButton>
                     <ContentBottom>
                         <div><Link href="/signup"><a>회원가입</a></Link></div>
+                        <div><Link href="/login"><a>로그인</a></Link></div>
                         <div className="idAndPasswordFind">
-                            <div><Link href="/findid"><a>아이디 찾기</a></Link> </div>
-                            &nbsp; |  &nbsp;
                             <div><Link href="/findpassword"><a>비밀번호 찾기</a></Link></div>
                         </div>
                     </ContentBottom>
@@ -96,19 +84,6 @@ const Content = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-    }
-
-    & .loginKeeping {
-        display: flex;
-        justify-content: space-between; 
-        width: 100%;
-        margin-bottom: 20px;
-        
-        @media only screen and (max-width: 768px){
-            display: flex;
-            flex-direction: column;    
-            justify-content: space-around;
-        }
     }
 
     & .confirmIDPasswordText {
@@ -188,4 +163,4 @@ const ContentBottom = styled.div`
     }
 `;
 
-export default Login;
+export default FindId;

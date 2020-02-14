@@ -1,149 +1,211 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Divider, Avatar } from 'antd';
+import React, { useEffect, useState, useRef } from "react";
+import styled from "styled-components";
+import { Divider, Avatar } from "antd";
+import Slick from "react-slick";
 
-const LiveHelpRequestForm = styled.div`
+const dummyLiveHelp = [
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+    {
+        userId : "123",
+        nickname : "asdf",
+        title : "아무거나",
+        date : "2020-02-02",
+        location : "부산광역시 남구 대연동",
+        picture : "아무거나 이빈다!!"
+    },
+];
+
+function SampleNextArrow(props) { // 우 화살표
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style}}
+        onClick={onClick}
+      />
+    );
+  };
+
+  function SamplePrevArrow(props) { // 좌 화살표
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style}}
+        onClick={onClick}
+      />
+    );
+  }
+
+// 유즈이펙트로 가져온 유저 정보를 가지고 그려야함
+const LiveHelpRequest = () => {
+  return (
+    // <LiveHelpRequestForm>
+      <TestSlick 
+      initialSlide={0}
+      dots={true}
+      autoplay={true}
+      autoplaySpeed={2500}
+      infinite={true}
+      slidesToShow={3}
+      slidesToScroll={3}
+      nextArrow = {<SampleNextArrow/>}
+      prevArrow = {<SamplePrevArrow/>}>
+          {dummyLiveHelp.map(help => (
+              <div className="liveHelpRequestFlex">
+              <LiveHelpRequestContent>
+                {help.picture}
+                <Divider orientation="left" style={{ marginTop: "42%" }}/>
+                <div className="liveHelpRequestUserInfo">
+                  <Avatar size="large" icon="user" />
+                  <div>
+                    <div className="liveHelpRequestID">{help.userId}</div>
+                    <div className="liveHelpRequestNickname">@{help.nickname}</div>
+                  </div>
+                </div>
+              </LiveHelpRequestContent>
+              <LiveHelpRequestContentInfo>
+                <div className="titleDate">
+                  <h3>{help.title}</h3>
+                  <div>{help.date}</div>
+                </div>
+                <div className="location">{help.location}</div>
+              </LiveHelpRequestContentInfo>
+            </div> 
+          ))}
+      </TestSlick>
+  );
+};
+const TestSlick = styled(Slick)`
+  width: 85vw;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  /* @media only screen and (max-width: 768px) {
     display: flex;
-    justify-content: space-around;
+    justify-items : center;
     align-items: center;
-    width: 50vw;
-    margin-top: 40px;
-    margin-bottom: 40px;
-
-    @media only screen and (max-width: 768px){
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-    }
-
-    & .liveHelpRequestFlex{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        
-        @media only screen and (max-width: 768px){
-            margin-top: 3vh;
-        }
-    }
+    flex-wrap : wrap;
+  }  */
+  & .slick-next, .slick-prev {
+      display : block;
+      background : white;
+      &::before {
+          color : #ff4300;
+          line-height : 10px;
+          font-size : 50px;
+      }
+  }
+  & .slick-prev {
+      margin-left : -10px;
+  }
+  & .slick-next::before {
+    content : ">";
+  }
+  & .slick-prev::before {
+    content : "<";
+  }
+  & .liveHelpRequestFlex {
+    display: flex;
+    padding : 0;
+    margin : 0 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+     @media only screen and (max-width: 768px) {
+      margin-top: 3vh;
+    } 
+   } 
 `;
 
 const LiveHelpRequestContent = styled.div`
-    margin-left: 2vw;
-    border: solid 1px gray;
-    border-radius: 5px;
-    width: 350px;
-    height: 240px;
+  width : 95%;
+  border: solid 1px gray;
+  border-radius: 5px;
+  :hover {
+    border: solid 2px #ff4300;
+  }
 
-    :hover {
-        border: solid 2px #FF4300;
+   & .liveHelpRequestUserInfo {
+    display: flex;
+    justify-content : flex-start;
+    align-items: center;
+    margin-top: -37px;
+    margin-bottom: 5px;
+    & > div {
+        display : flex;
+        align-items : center;
+        margin-top : 10px;
+        margin-left : 10px;
     }
-    @media only screen and (max-width: 1024px){
-        width: 300px;  
-        height: 210px;  
-    }
+  }
 
-    & .liveHelpRequestUserInfo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: -37px;
-        margin-left: -30px;
-        margin-bottom: 5px;
-    }
+  & .liveHelpRequestID {
+    color: black;
+    margin-right: 8px;
+  }
 
-    & .liveHelpRequestID {
-        color: black;
-        margin-right: 8px;
-    }
-
-    & .liveHelpRequestNickname {
-        color: darkgray;
-        font-size: 11px;
-    }
+  & .liveHelpRequestNickname {
+    color: darkgray;
+    font-size: 11px;
+  }
 `;
 
 const LiveHelpRequestContentInfo = styled.div`
-    color: gray;
+  color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width : 90%;
+
+  & > .titleDate {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin-top: 1vh;
-    margin-left: 2vw;
+  }
 
-    & > .titleDate {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 280px;
-    }
-
-    & > .location {
-        border-top: solid 1px gray;
-        text-align: right;
-        width: 280px;
-    }
+  & > .location {
+    border-top: solid 1px gray;
+    text-align: right;
+  }
 `;
-
-const LiveHelpRequest = () => {
-    return (
-        <LiveHelpRequestForm>
-            <div className="liveHelpRequestFlex">
-            <LiveHelpRequestContent>
-                이부분은 사진이 들어갈 예정입니다.
-                <Divider orientation="left" style={{marginTop: '42%'}}><Avatar size={55} icon="user"/></Divider>
-                <div className="liveHelpRequestUserInfo">
-                    <div className="liveHelpRequestID">아이디</div>
-                    <div className="liveHelpRequestNickname">@닉네임</div>
-                </div>
-            </LiveHelpRequestContent>
-            <LiveHelpRequestContentInfo>
-                <div className = "titleDate">
-                    <h3>제목</h3>
-                    <div>2020년 3월 8일</div>
-                </div>
-                <div className = "location">부산광역시 남구 대연동</div>
-            </LiveHelpRequestContentInfo>
-            </div>
-            <div className="liveHelpRequestFlex">
-            <LiveHelpRequestContent>
-                이거 왜 space-around 설정이 안될까요 ㅠ.ㅠ
-                <Divider orientation="left" style={{marginTop: '42%'}}><Avatar size={55} icon="user"/></Divider>
-                <div className="liveHelpRequestUserInfo">
-                    <div className="liveHelpRequestID">아이디</div>
-                    <div className="liveHelpRequestNickname">@닉네임</div>
-                </div>
-            </LiveHelpRequestContent>
-            <LiveHelpRequestContentInfo>
-                <div className = "titleDate">
-                    <h3>제목</h3>
-                    <div>2020년 3월 29일</div>
-                </div>
-                <div className = "location">부산광역시 남구 대연동</div>
-            </LiveHelpRequestContentInfo>
-            </div>
-            <div className="liveHelpRequestFlex">
-            <LiveHelpRequestContent>
-                이거 디자인한 사람 누군데 당장 나온나.
-                <Divider orientation="left" style={{marginTop: '42%'}}><Avatar size={55} icon="user"/></Divider>
-                <div className="liveHelpRequestUserInfo">
-                    <div className="liveHelpRequestID">아이디</div>
-                    <div className="liveHelpRequestNickname">@닉네임</div>
-                </div>
-            </LiveHelpRequestContent>
-            <LiveHelpRequestContentInfo>
-                <div className = "titleDate">
-                    <h3>제목</h3>
-                    <div>2020년 6월 19일</div>
-                </div>
-                <div className = "location">부산광역시 남구 대연동</div>
-            </LiveHelpRequestContentInfo>
-            </div>
-        </LiveHelpRequestForm>
-    );
-};
 
 export default LiveHelpRequest;

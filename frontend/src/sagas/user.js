@@ -24,13 +24,13 @@ function* watchLogout() {
 // 로그인
 
 function loginAPI(data) { 
-    return {data : { id : data.id} }
+    return {data : {data : { id : data.id}} }
 };
 
 function* login(action) {
     try {
         const result = yield call(loginAPI, action.data);
-        yield put(loginSuccessAction(result.data));
+        yield put(loginSuccessAction({token : result.data.data, loginMaintain : action.data.loginMaintain}));
     }catch(e){
         console.error(e);
         yield put(loginFailureAction(e));
