@@ -3,12 +3,13 @@ import axios from 'axios';
 import { loginSuccessAction, logoutFailureAction, logoutSuccessAction, LOG_OUT_REQUEST, LOG_IN_REQUEST, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction } from '../reducers/user';
 
 function logoutAPI() { // 로그 아웃
-    
+    return axios.get("https://dabeenbackend.herokuapp.com/api/user/1")
 };
 
 function* logout() {
     try {
-        yield call(logoutAPI);
+        const result = yield call(logoutAPI);
+        console.log(result);
         yield put(logoutSuccessAction());
     }
     catch(e) {
