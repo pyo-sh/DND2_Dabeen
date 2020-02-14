@@ -1,7 +1,11 @@
-import proudce, { produce } from "immer";
+import produce from "immer";
 import { createAction } from './actionFunction';
 
 export const initialState = {
+  userId : null, // 유저 아이디
+  userNum : null, // 유저 번호
+  userInfo: { id: 1, nickname: "ansrjsdn" }, // 유저정보를 저장해야함.
+
   isLoggingOut: false, // 로그아웃 시도중
   logoutError: "", // 로그아웃 실패 사유
   isLoggingIn: false, // 로그인 시도중
@@ -10,10 +14,11 @@ export const initialState = {
   isSigningup: false, //회원가입 시도중
   signUpSuccess : false, // 회원가입 성공 여부
   signUpError: "", // 회원 가입 실패
-  userInfo: { id: 1, nickname: "ansrjsdn" }, // 내 정보
   isUpdatingInfo: false, // 정보 업데이트중
-  updateError: ""
+  updateError: "",
 };
+
+export const CHECK_MAINTAIN_LOGIN = "CHECK_MAINTAIN_LOGIN";
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
@@ -35,6 +40,7 @@ export const EDIT_USERINFO_REQUEST = "EDIT_USERINFO_REQUEST";
 export const EDIT_USERINFO_SUCCESS = "EDIT_USERINFO_SUCCESS";
 export const EDIT_USERINFO_FAILURE = "EDIT_USERINFO_FAILURE";
 
+export const maintainLoginAction = createAction(CHECK_MAINTAIN_LOGIN);
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
 export const signUpRequestAction = createAction(SIGN_UP_REQUEST);
 export const signUpSuccessAction = createAction(SIGN_UP_SUCCESS);
@@ -88,14 +94,24 @@ export const editUserInfoFailureAction = () => ({
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
     switch (action.type) {
+      case CHECK_MAINTAIN_LOGIN : {
+        // 처음 들어왔을 때 로그인 유지여서 로컬스토리지에 있을 때 바로 저장.
+        // 로컬 스토리지에서 get해서 해석해서  그 정보를 저장!
+        draft.userId = "123";
+        draft.userNum = 1
+        break;
+      }
       case LOG_IN_REQUEST: {
         draft.isLoggingIn = true;
         break;
       }
-      case LOG_IN_SUCCESS: {
+      case LOG_IN_SUCCESS: { // 로그인 토큰이 내려온다 -> 토큰 local 또는 session에 저장하고 토큰 해석해서 id 저장.
         draft.isLoggingIn = false;
         draft.isLoginSuccess = true;
-        draft.userInfo = action.data;
+        action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
+        // 토큰 해석해서 userId, userNum 저장하는 방식!!
+        draft.userId = "adfs";
+        draft.userNum = 1;
         break;
       }
       case LOG_IN_FAILURE: {
@@ -111,7 +127,12 @@ const reducer = (state = initialState, action) => {
       case LOG_OUT_SUCCESS: {
         draft.isLoggingOut = false;
         draft.isLoginSuccess = false;
-        draft.userInfo = null;
+        // draft.userInfo = null;
+        // 로그아웃 성공 했을 때 토큰 삭제
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        draft.userId = null;
+        draft.userNum = null;
         break;
       }
       case LOG_OUT_FAILURE: {

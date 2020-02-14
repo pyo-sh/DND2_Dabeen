@@ -1,9 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {useDispatch} from 'react-redux';
 import Hedaer from "./main/Header";
 import Footer from "./main/Footer";
 import styled from "styled-components";
+import {maintainLoginAction} from '../reducers/user';
 
 const AppLayout = ({ children }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if(localStorage.getItem("token")){
+      dispatch(maintainLoginAction());
+    }
+  }, []);
   return (
     <>
       <Hedaer />

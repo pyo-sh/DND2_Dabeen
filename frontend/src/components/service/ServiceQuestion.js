@@ -1,19 +1,13 @@
 import React, {useState, useCallback} from 'react';
 import { Modal, Button, Input } from 'antd';
 import styled from 'styled-components';
+import inputChangeHook from '../../hooks/inputChangeHook';
 // 문의하기 모달!
 
 const ServiceQuestion = ({visible, setVisible}) => {
-    const [question, setQuestion] = useState('');
-    const [title, setTitle] = useState('');
+    const [question, onChangeQuestion] = inputChangeHook('');
+    const [title, onChangeTitle] = inputChangeHook('');
 
-    const onChangeTitle = useCallback((e) => {
-        setTitle(e.target.value);
-    }, []);
-
-    const onChangeText = useCallback((e)=> {
-        setQuestion(e.target.value);
-    }, []);
     const handleOk = useCallback((e) => {
         e.preventDefault();
         setVisible(prev => !prev); // 이 때 문의사항을 보내야함!!
@@ -33,7 +27,7 @@ const ServiceQuestion = ({visible, setVisible}) => {
             ]}
         >
             <Input placeholder= "제목을 입력하세요." onChange={onChangeTitle} value={title}/>
-            <textarea value={question} onChange={onChangeText}/>
+            <textarea value={question} onChange={onChangeQuestion}/>
             <div>문의사항에 대한 답변은 1~2일정도 소요됩니다.</div>
         </CustomModal>
     );
