@@ -26,6 +26,8 @@ const PostList = () => {
             </div>
             <div className="Content">
                 <PostCapsule></PostCapsule>
+                <PostCapsule></PostCapsule>
+                <PostCapsule></PostCapsule>
             </div>
         </PostListUpperDiv>
     );
@@ -49,6 +51,10 @@ const PostListUpperDiv = styled.div`
         border-radius: 8px;
         background: #F0F0F0;
         font-size: 18px;
+    }
+    & .Content{
+        display: flex;
+        justify-content: space-between;
     }
 `;
 const PostListSearchBox = styled.div`

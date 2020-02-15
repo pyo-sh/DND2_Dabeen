@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Divider } from 'antd';
+import { Icon, Divider } from 'antd';
 
 const PostCapsule = ({ index }) => {
     
@@ -9,7 +9,9 @@ const PostCapsule = ({ index }) => {
         <PostCapsuleUpperDiv>
             <div className="Capsule-Main">
                 <div className="Capsule-Main-Location">
-                    ~~~~시 ~~~구
+                    <LocationIcon
+                        type="environment"/>
+                     ~~~~시 ~~~구
                 </div>
                 <div className="Capsule-Main-Profile">
                     <Divider orientation="left">
@@ -43,6 +45,7 @@ const PostCapsule = ({ index }) => {
 
 const PostCapsuleUpperDiv = styled.div` 
     width: 350px;
+    cursor: pointer;
     & .Capsule-Main{
         width: 100%;
         height: 240px;
@@ -52,6 +55,10 @@ const PostCapsuleUpperDiv = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        & :hover{
+            border: solid 1px #FF4300;
+        }
         & .Capsule-Main-Location{
             align-self: flex-end;
             padding: 5px 10px;
@@ -95,6 +102,10 @@ const PostCapsuleUpperDiv = styled.div`
             text-align: center;
         }
     }
+`;
+
+const LocationIcon = styled(Icon)`
+    color: #FF4300;
 `;
 
 export default PostCapsule;

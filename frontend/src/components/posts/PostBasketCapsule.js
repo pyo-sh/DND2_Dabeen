@@ -56,6 +56,9 @@ const PostBasketCapsuleUpperDiv = styled.div`
         margin-right: 10px;
         border: 1px solid #d9d9d9;
         border-radius: 10px;
+        & :hover{
+            border: 1px solid #FF4300;
+        }
     }
 `;
 const PostBasketCheckIcon = styled(Icon)`
