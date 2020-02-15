@@ -178,7 +178,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
             throw new PasswordWrongException();
       
         // 해당 사용자가 공급자인지 아닌지 판단
-        String role = user.getSupplWhet().equals(Whether.Y) ? "suppler" : "user";
+        String role = user.getSupplWhet().equals(Whether.y) ? "suppler" : "user";
 
         return Header.OK(
                 LoginApiResponse.builder()

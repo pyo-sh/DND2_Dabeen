@@ -23,7 +23,7 @@ public class BsktRepositoryTest extends DemoApplicationTests{
         String bsktNum = "200205001";
         String bsktUserNum = "200204001";
         BigDecimal totalPrice = BigDecimal.valueOf(10000);
-        Whether milegeUseWhet = Whether.Y;
+        Whether milegeUseWhet = Whether.y;
 
         Bskt bskt = Bskt.builder()
                         .bsktNum(bsktNum)
