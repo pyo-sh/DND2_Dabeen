@@ -3,6 +3,7 @@ package com.dabeen.dnd.model.entity;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +21,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
+@Table(name = "help_pic")
 public class HelpPic{
 
     // //FK로써 추후 Help로 종속성 대칭 필요
