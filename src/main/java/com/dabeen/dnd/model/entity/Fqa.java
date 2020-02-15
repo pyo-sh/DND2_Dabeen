@@ -21,19 +21,19 @@ import lombok.experimental.Accessors;
 public class Fqa{
 
     @Id
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String fqaNum; // 자주묻는질문번호
 
     private LocalDateTime questPstnDttm; // 질문게시일시
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String title; // 제목
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String rplyCont; // 답변내용
 
     //Default CRUD 생성 후 종속성 연결 작업 필요
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String fqaRgistrantNum; // 자주묻는질문등록자번호
 
 }

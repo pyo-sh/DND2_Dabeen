@@ -18,6 +18,9 @@ public class BsktRepositoryTest extends DemoApplicationTests{
     @Autowired
     private BsktRepository bsktRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     public void create() {
         String bsktNum = "200205001";
@@ -27,7 +30,7 @@ public class BsktRepositoryTest extends DemoApplicationTests{
 
         Bskt bskt = Bskt.builder()
                         .bsktNum(bsktNum)
-                        .bsktUserNum(bsktUserNum)
+                        .bsktUser(userRepository.getOne(bsktUserNum))
                         .totalPrice(totalPrice)
                         .mileageUseWhet(milegeUseWhet)
                         .build();

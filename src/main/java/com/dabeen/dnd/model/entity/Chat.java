@@ -23,22 +23,22 @@ public class Chat{
 
     // Default CRUD 작업 후 종속성 작업 필요
     @Id
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String chatNum; // 채팅번호
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private LocalDateTime chatGenDttm; // 채팅생성일시 
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private LocalDateTime chatEndDttm; // 채팅종료일시
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String helpNum; // 도움번호
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String cnsrNum; // 수요자번호
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String supplNum; // 공급자번호
 
 }

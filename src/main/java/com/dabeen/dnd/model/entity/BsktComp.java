@@ -40,11 +40,11 @@ public class BsktComp {
     // private String supplNum; // 공급자번호
 
     @EmbeddedId
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private BsktCompPK bsktCompPK;
 
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private BigDecimal indvHelpPrice; // 개별도움가격
 
 }
