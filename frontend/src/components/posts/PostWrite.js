@@ -2,8 +2,8 @@ import React, { useState, useCallback } from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import { Select, DatePicker, TimePicker, Upload, Icon, Button, Form } from 'antd';
-import DaumPostcode from 'react-daum-postcode';
-import MyLocation from '../map/MyLocation';
+import SearchJuso from '../map/SearchJuso';
+import inputChangeHook from '../../hooks/inputChangeHook';
 
 const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -22,17 +22,16 @@ const PostWrite = () => {
     const [previewVisible, setPreviewVisible] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [fileList, setFileList] = useState([]);
-    const [postTitle, setPostTitle] = useState('');
+    const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
-    const [postDeadline, setPostDeadline] = useState({date: '', time: ''});
-    const [dateofExecution, setDateofExecution] = useState({date: '', time: ''});
-    const [needPersonnel, setNeedPersonnel] = useState(0);
-    const [money, setMoney] = useState(0);
-    const [location, setLocation] = useState('');
-    const [requirements, setRequirements] = useState('');
+    const [postDeadline, setPostDeadline] = useState({date: '', time: ''}); //신청 마감 일시 
+    const [dateofExecution, setDateofExecution] = useState({date: '', time: ''});   //수행 일시 
+    const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
+    const [money, onChangeMoney] = inputChangeHook(0);  //금액
+    const [location, setLocation] = useState('');   //위치
+    const [requirements, onChangeRequirements] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);
-    const [click, setClick] = useState(false);
-    const [click2, setClick2] = useState(false);
+    const [click, setClick] = useState(false);  //주소 검색 클릭
 
     // const {helpPosts} = useSelector(state => state.posts);
     
@@ -60,11 +59,6 @@ const PostWrite = () => {
           <div className="ant-upload-text">Upload</div>
         </div>
     );
-    
-    //도움 게시글 제목 입력
-    const onPostTitle = useCallback((e) => {
-        setPostTitle(e.target.value);
-    }, []);
 
     //신청 마감 일시 입력
     const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
@@ -84,41 +78,9 @@ const PostWrite = () => {
         setDateofExecution({...dateofExecution, time: timeString});
     }, [dateofExecution]);
 
-    //필요 인원 입력
-    const onNeedPersonnel = useCallback((e) => {
-        setNeedPersonnel(e.target.value);
+    const getLocation = useCallback(data => {
+        setLocation(data);
     }, []);
-
-    //금액 입력
-    // const onMoney = useCallback((e) => {
-    //     setMoney(e.target.value);
-    // }, []);
-
-    //요구사항 입력
-    const onRequirements = useCallback((e) => {
-        setRequirements(e.target.value)
-    }, []);
-
-    const handleAddress = useCallback(data => {
-        const fullAddress = data.address;
-        const extraAddress = '';
-
-        if(data.addressType === 'R'){
-            if(data.bname !== ''){
-                extraAddress += data.bname;
-            }
-            if(date.buildingName !== ''){
-                extraAddress += (extraAddress !== '' ? `,${data.buildingName}`: data.buildingName);
-            }
-            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-          }
-          
-          setLocation(fullAddress);
-          console.log(fullAddress);  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-
-          setClick(false);
-          setClick2(true);
-        }, [])
             
     const addPost = useCallback(() => {
         e.preventDefault();
@@ -128,8 +90,12 @@ const PostWrite = () => {
         
     }, []);
 
-    const setInputLocation = useCallback((e) => {
-        setLocation(e.target.value);
+    const clickButton = useCallback(() => {
+        setClick(true);
+    }, []);
+
+    const onClose = useCallback(() => {
+        setClick(false);
     }, []);
 
     return (
@@ -138,7 +104,7 @@ const PostWrite = () => {
             <ContentFlex>
                 <Content>
                     <Title>
-                        <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onPostTitle}/> {/*input 쓰삼 */}
+                        <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
                         <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
@@ -164,33 +130,20 @@ const PostWrite = () => {
                         </div>
                         <div className="needPersonnel">
                             <div>필요인원</div>
-                            <input type="number" value={needPersonnel} onChange={onNeedPersonnel}/>
+                            <input type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
                         </div>
                         <div className="money">
                             <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={() => setMoney(e.target.value)}/>
+                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
                         </div>
                     </PostSetting>
                     <ContentItem>
-                        <div>위치</div>
-                        <div>     
-                            <input placeholder="주소" value={location} />
-                            <Button onClick={() => setClick(!click)}>눌러라</Button>
-                            {click ? 
-                                <DaumPostcode 
-                                    onComplete={handleAddress}
-                                    autoClose={true}
-                                />
-                                : ""
-                            }
-                        </div>
-                        <div>
-                            {click2 ? <MyLocation myLocation={location} /> : ""}
-                        </div>
+                        <div>위치</div>  
+                        <SearchJuso click={click} location={location} getLocation={getLocation} clickButton={clickButton} onClose={onClose}/>
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
-                        <textarea placeholder="요구사항을 입력하세요." required  value={requirements} onChange={onRequirements}/>
+                        <textarea placeholder="요구사항을 입력하세요." required  value={requirements} onChange={onChangeRequirements}/>
                     </ContentItem>
                     <UploadImage>
                         <div style={{width: "5vw"}}>사진첨부</div>
@@ -356,6 +309,11 @@ const ContentItem = styled.div`
         ::placeholder{
             color: #BFC7CE;
         }
+    }
+
+    & > .map {
+        width: 29vw;
+        height: 20vh;
     }
 `;
 
