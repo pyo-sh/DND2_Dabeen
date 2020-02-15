@@ -91,7 +91,7 @@ public class HelpRepositoryTest {
     @Transactional
     @Test
     public void delete(){
-        Optional<Help> help = helpRepository.findById("200203002");
+        Optional<Help> help = helpRepository.findById("200203003");
 
         assertNotNull(help.isPresent());
 
@@ -99,9 +99,9 @@ public class HelpRepositoryTest {
            helpRepository.delete(selectUser);
         });
 
-        Optional<Help> deleteHelp = helpRepository.findById("200203002");
+        Optional<Help> deleteHelp = helpRepository.findById("200203003");
         assertNotNull(deleteHelp.isPresent());
-;
+
     }
 }
     

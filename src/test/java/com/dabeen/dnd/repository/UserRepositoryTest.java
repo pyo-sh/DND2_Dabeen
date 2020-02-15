@@ -29,7 +29,7 @@ public class UserRepositoryTest extends DemoApplicationTests {
         String email = "test!@ASd.ca";
         String nickname = "Lihess";
         String itdcCont = "안녕하세요";
-        Whether supplWhet = Whether.N;
+        Whether supplWhet = Whether.n;
         String blonSggName = "사하구";
 
         User user = User.builder()
