@@ -21,7 +21,7 @@ public class HelpSupplCompRepositoryTest extends DemoApplicationTests{
     public void create() {
         String helpNum = "200204001";
         String supplNum = "200204001";
-        Whether helpAprvWhet = Whether.N;
+        Whether helpAprvWhet = Whether.n;
         
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
                                                     .helpSupplCompPK(new HelpSupplCompPK(helpNum, supplNum))
