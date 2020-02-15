@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.mapper.HelpPicMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.HelpPic" useGeneratedKeys="false">
+        <selectKey order="BEFORE" keyProperty="helpNum,picOrnu" resultType="HelpPicPK" >
+            <resultMap id="resultMapHelpPicPK" type="HelpPicPK">
+                <id property="helpPicPK.helpNum" column="helpNum" />
+                <id property="helpPicPK.picOrnu" column="picOrnu" />
+            </resultMap> 
+            select #{helpNum},IFNULL(max(hp.pic_ornu),0)+1 as pic_ornu from (select * from help where help_num=#{}) h left join help_pic hp on h.help_num = hp.help_num
+        </selectKey>
+        insert 
+            into help_pic
+            values (#{helpNum}, #{picOrnu}, #{path})
+    </insert>
+</mapper>
+
+<!--
+    AdminMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->
