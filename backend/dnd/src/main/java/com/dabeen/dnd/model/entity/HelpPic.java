@@ -34,10 +34,10 @@ public class HelpPic{
     // private Integer picOrnu; // 사진순번
 
     @EmbeddedId
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private HelpPicPK helpPicPK;
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String path; // 경로명
 
 }

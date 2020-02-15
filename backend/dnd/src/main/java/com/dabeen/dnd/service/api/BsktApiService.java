@@ -14,6 +14,7 @@ import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktApiRequest;
 import com.dabeen.dnd.model.network.response.BsktApiResponse;
+import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
@@ -26,12 +27,15 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
     @Autowired
     private BsktMapper bsktMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public Header<BsktApiResponse> create(Header<BsktApiRequest> request) {
         BsktApiRequest requestData  = request.getData();
 
         Bskt bskt = Bskt.builder()
-                        .bsktUserNum(requestData.getBsktUserNum())
+                        .bsktUser(userRepository.getOne(requestData.getBsktUserNum()))
                         .totalPrice(requestData.getTotalPrice())
                         .mileageUseWhet(requestData.getMileageUseWhet())
                         .build();
@@ -58,7 +62,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         
         return optional.map(bskt -> {
                     // 장바구니 사용자 번호는 수정 불가, 수정하려고 할 시 에러 호출
-                    if(!requestData.getBsktUserNum().equals(bskt.getBsktUserNum()))
+                    if(!requestData.getBsktUserNum().equals(bskt.getBsktUser().getUserNum()))
                         throw new NotUpdateableException("bsktUserNum");
 
                     bskt.setBsktNum(requestData.getBsktNum())
@@ -87,7 +91,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
     private BsktApiResponse response(Bskt bskt) {
         BsktApiResponse bsktApiResponse = BsktApiResponse.builder()
                                                         .bsktNum(bskt.getBsktNum())
-                                                        .bsktUserNum(bskt.getBsktUserNum())
+                                                        .bsktUserNum(bskt.getBsktUser().getUserNum())
                                                         .totalPrice(bskt.getTotalPrice())
                                                         .mileageUseWhet(bskt.getMileageUseWhet())
                                                         .build();

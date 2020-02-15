@@ -16,6 +16,7 @@ import com.dabeen.dnd.model.enumclass.PostType;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.PostApiRequest;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
+import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.PostMapper;
 import com.dabeen.dnd.service.BaseService;
 
@@ -28,6 +29,9 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
     @Autowired
     private PostMapper postMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public Header<PostApiResponse> create(Header<PostApiRequest> request) {
         PostApiRequest requestData = request.getData();
@@ -36,9 +40,9 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                         .postType(requestData.getPostType())
                         .title(requestData.getTitle())
                         .cont(requestData.getCont())
-                        .questerNum(requestData.getQuesterNum())
-                        .rplyerNum(requestData.getRplyerNum())
-                        .questPostNum(requestData.getQuestPostNum())
+                        .quester(userRepository.findById(requestData.getQuesterNum()).orElse(null))
+                        //.rplyer(userRepository.findById(requestData.getRplyerNum()).orElse(null))
+                        //.questPost(baseRepository.getOne(requestData.getQuestPostNum()))
                         .build();
 
         // 질문의 타입에 따라 그에 맞는 게시일시를 현재시간으로 저장
@@ -71,15 +75,20 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                     // 제목, 내용 외 수정 불가. 수정하려고 할 시 에러 호출
                     if(!requestData.getPostType().equals(post.getPostType()))
                         throw new NotUpdateableException("postType");
-                    if(!requestData.getQuestPstnDttm().equals(post.getQuestPstnDttm()))
+                    if(!requestData.getQuestPstnDttm()
+                                    .equals(post.getQuestPstnDttm()))
                         throw new NotUpdateableException("questPstnDttm");
-                    if(!requestData.getQuesterNum().equals(post.getQuesterNum()))
+                    if(!requestData.getQuesterNum()
+                                    .equals(post.getQuester().getUserNum()))
                         throw new NotUpdateableException("questerNum");
-                    if(!requestData.getRplyPstnDttm().equals(post.getRplyPstnDttm()))
+                    if(!requestData.getRplyPstnDttm()
+                                    .equals(post.getRplyPstnDttm()))
                         throw new NotUpdateableException("rplyPstnDttm");
-                    if(!requestData.getRplyerNum().equals(post.getRplyerNum()))
+                    if(!requestData.getRplyerNum()
+                                    .equals(post.getRplyer().getUserNum()))
                         throw new NotUpdateableException("rplyerNum");
-                    if(!requestData.getQuestPostNum().equals(post.getQuestPostNum()))
+                    if(!requestData.getQuestPostNum()
+                                    .equals(post.getQuestPost().getPostNum()))
                         throw new NotUpdateableException("questPostNum");
                    
                     post.setTitle(requestData.getTitle())
@@ -112,10 +121,10 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                                                         .title(post.getTitle())
                                                         .cont(post.getCont())
                                                         .questPstnDttm(post.getQuestPstnDttm())
-                                                        .questerNum(post.getQuesterNum())
+                                                        .questerNum(post.getQuester().getUserNum())
                                                         .rplyPstnDttm(post.getRplyPstnDttm())
-                                                        .rplyerNum(post.getRplyerNum())
-                                                        .questPostNum(post.getQuestPostNum())
+                                                        .rplyerNum(post.getRplyer().getUserNum())
+                                                        .questPostNum(post.getQuestPost().getPostNum())
                                                         .build();  
         return postApiResponse;
     }

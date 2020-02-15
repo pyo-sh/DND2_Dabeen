@@ -24,10 +24,10 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private MsgPK msgPK;
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private String cont;
 
 }

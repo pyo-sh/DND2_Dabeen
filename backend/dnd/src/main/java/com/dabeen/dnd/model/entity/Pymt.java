@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Data
@@ -30,6 +34,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
+@ToString(exclude = {"mileageUseHist", "bskt"})
 public class Pymt{
     @Id
     @NotEmpty(message = "is not null")
@@ -50,4 +55,14 @@ public class Pymt{
     private Whether refdWhet; // 환불여부
 
     private LocalDateTime refdDttm; // 환불 일시
+
+
+    /* 연관관계 설정 */
+    @OneToOne(mappedBy = "pymt")
+    private MileageUseHist mileageUseHist;
+
+    @NotEmpty(message = "is not null")
+    @MapsId("pymtNum")
+    @OneToOne
+    private Bskt bskt; // 결제와 식별관계
 }

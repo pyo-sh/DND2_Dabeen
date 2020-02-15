@@ -11,6 +11,10 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -23,6 +27,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Data
@@ -31,6 +36,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
+@ToString(exclude = {"suppler, help"})
 public class HelpSupplComp{
     @EmbeddedId
     @NotNull(message = "is not null")
@@ -49,4 +55,18 @@ public class HelpSupplComp{
     private BigDecimal rate; // 평점
 
     private String astCont; // 평가내용
+
+    
+    /* 연관관계 설정 */
+    @NotNull(message = "is not null")
+    @MapsId("supplNum") // Pk 안의 변수와 매핑됨
+    @JoinColumn(name = "suppl_num")
+    @ManyToOne
+    private User suppler;
+
+    @NotNull(message = "is not null")
+    @MapsId("helplNum") // Pk 안의 변수와 매핑됨
+    @JoinColumn(name = "help_num")
+    @ManyToOne
+    private Help help;
 }

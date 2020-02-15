@@ -7,11 +7,14 @@ package com.dabeen.dnd.model.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -23,6 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
@@ -32,35 +36,36 @@ import lombok.experimental.Accessors;
 @Builder
 @Accessors(chain = true)
 @Table(name = "help")
+@ToString(exclude = {"helpSupplComp"})
 public class Help{
 
     @Id
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String helpNum; // 도움번호
 
-    @NotNull(message = " is not null")
+    @NotNull(message = "is not null")
     private LocalDateTime helpPstnDttm; // 도움게시일시
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String catNum; // 카테고리번호
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String cnsrNum; // 수요자번호
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String title; // 제목
 
-    @NotEmpty(message = " is not empty")
+    @NotEmpty(message = "is not empty")
     private String execLoc; // 이행위치
 
-    @NotNull(message = " is not null")
-    @Min(value = 0, message = "price must be at least 0.")
+    @NotNull(message = "is not null")
+    @Min(value = 0, message = "must be at least 0.")
     private BigDecimal price; // 금액
 
-    @NotNull(message = " is not null")
-    @Min(value = 1, message = "prefSupplNum must be higher than 1.")
+    @NotNull(message = "is not null")
+    @Min(value = 1, message = "must be higher than 1.")
     private Integer prefSupplNum; // 희망공급자수
 
     @NotNull(message = " is not null")
@@ -79,4 +84,9 @@ public class Help{
     @NotEmpty(message = " is not empty")
     private String execSggName; //이행시군구명
     
+    
+    /* 연관관계 설정 */
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
+    private List<HelpSupplComp> helpSupplComp;
+
 }
