@@ -1,3 +1,7 @@
+// Fqa.java
+// Fqa 엔터티
+// 작성자 : 권영인
+
 package com.dabeen.dnd.model.entity;
 
 import java.time.LocalDateTime;
