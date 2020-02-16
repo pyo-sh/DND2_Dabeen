@@ -24,7 +24,7 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
-    @NotEmpty(message = " is not empty")
+    @NotNull(message = " is not null")
     private MsgPK msgPK;
 
     @NotNull(message = " is not null")

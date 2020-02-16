@@ -68,7 +68,7 @@ public class HelpRepositoryTest {
 
         helpMapper.insert(help);
 
-        assertThat(help.getHelpNum(),is("2002130001"));
+        assertThat(help.getHelpNum(),is("2002160001"));
     }
 
     @Test
