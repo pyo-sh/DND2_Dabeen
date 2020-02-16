@@ -9,19 +9,7 @@ const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
 
 const Option = {Select};
 
-// const getBase64 = useCallback((file) => {
-//     return new Promise((resolve, reject) => {
-//       const reader = new FileReader();
-//       reader.readAsDataURL(file);
-//       reader.onload = () => resolve(reader.result);
-//       reader.onerror = error => reject(error);
-//     });
-// }, []);
-
 const PostWrite = () => {
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [fileList, setFileList] = useState([]);
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
     const [postDeadline, setPostDeadline] = useState({date: '', time: ''}); //신청 마감 일시 
@@ -31,7 +19,7 @@ const PostWrite = () => {
     const [location, setLocation] = useState('');   //위치
     const [requirements, onChangeRequirements] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);
-    const [click, setClick] = useState(false);  //주소 검색 클릭
+    const [urls, setUrls] = useState([]);
 
     // const {helpPosts} = useSelector(state => state.posts);
 
@@ -65,18 +53,12 @@ const PostWrite = () => {
         
     }, []);
 
-    const clickButton = useCallback(() => {
-        setClick(true);
-    }, []);
-
-    const onClose = useCallback(() => {
-        setClick(false);
-    }, []);
-
     const addFile = useCallback((e)=> {
-        console.log(e.target.files);
-    }, []);
-
+        setImages([...images, e.target.files]);
+        setUrls([...urls, URL.createObjectURL(e.target.files[0])]); 
+        console.log(e.target.files[0]);
+    }, [images, urls]);
+    console.log(images);
     return (
         <Modal>
             <Form onSubmit={addPost}>
@@ -118,7 +100,7 @@ const PostWrite = () => {
                     </PostSetting>
                     <ContentItem>
                         <div>위치</div>  
-                        <SearchJuso click={click} location={location} getLocation={getLocation} clickButton={clickButton} onClose={onClose}/>
+                        <SearchJuso location={location} getLocation={getLocation}/>
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
@@ -126,7 +108,11 @@ const PostWrite = () => {
                     </ContentItem>
                     <UploadImage>
                         <div style={{width: "5vw"}}>사진첨부</div>
-                        <input type="file" onChange={addFile} />
+                        <label className="uploadImage" for="fileUpload">
+                            <Icon type="upload" />Upload
+                        </label>
+                        <input type="file" id="fileUpload" onChange={addFile}/>
+                        {images.length !== 0 ? urls.map(url => <img src={url} width={100} height={100}/>) : <></>}
                     </UploadImage>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
                 </Content>                  
@@ -140,7 +126,7 @@ const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     position: fixed;
     left: 0;
-    top: 30;
+    top: 0;
     height: 100%;
     width: 100%;
     display: flex;
@@ -153,8 +139,8 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 33vw;
-    height: 87vh;
+    width: 25vw;
+    height: 80vh;
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -164,8 +150,8 @@ const ContentFlex = styled.div`
 `;
 
 const Content = styled.div`
-    width: 29vw;
-    height: 80vh;
+    width: 21vw;
+    height: 78vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -175,11 +161,11 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 29vw;
+    width: 21vw;
 `;
 
 const PostSetting = styled.div`
-    width: 29vw;
+    width: 21vw;
     height: 27vh;
     background: #F0F0F0;
     font-size: 20px;
@@ -196,7 +182,7 @@ const PostSetting = styled.div`
     & .ant-time-picker-icon{
         color: #FF4300;
     }
-
+    
     & > .category {
         display: flex;
         justify-content: space-between;
@@ -234,7 +220,7 @@ const PostSetting = styled.div`
     & input {
         border: 1px solid #d9d9d9;
         border-radius: 4px;
-        width: 128px;
+        width: 118px;
         height: 32px;
         font-size: 14px;
         color: #7a7a7a;
@@ -258,7 +244,7 @@ const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 40px;
-    width: 29vw;
+    width: 21vw;
     ::placeholder{
         color: #BFC7CE;
     }
@@ -270,10 +256,10 @@ const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 20px;
     margin-top: 20px;
-    width: 29vw;
+    width: 21vw;
 
     & > textarea {
-        width: 29vw;
+        width: 21vw;
         height: 15vh;
         resize: none;
         color: #7a7a7a;
@@ -286,7 +272,27 @@ const ContentItem = styled.div`
 const UploadImage = styled.div`
     /* display: flex; */
     margin-top: 20px;
-    width: 29vw;
+    width: 21vw;
+
+    & .uploadImage {
+        font-size: 16px;
+        border: 1px solid #BFC7CE;
+        border-radius: 5px;
+        padding: 5px;
+        width: 10vw;
+        height: 10vh;
+        cursor: pointer;
+    }
+    & input[type="file"] {
+        position:absolute;
+        width:1px;
+        height:1px;
+        padding:0;
+        margin:-1px;
+        overflow:hidden;
+        clip:rect(0,0,0,0);
+        border:0;
+    }
 `;
 
 const UploadButton = styled(Button)`

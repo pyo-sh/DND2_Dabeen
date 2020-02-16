@@ -6,18 +6,22 @@ import DaumPostcode from 'react-daum-postcode';
 
 //location : 검색한 주소를 담을 변수
 //getLocation: 검색한 주소를 location에 저장하는 함수
-//click: 주소 검색 버튼 클릭시 상태가 변하는 변수
-//clickButton: 주소 검색 버튼 클릭시 수행 할 함수
-//onClose: Modal창을 닫거나 주소 검색 후 지도 창을 표시하게 하는 함수
-const SearchJuso = ({location, getLocation, click, clickButton, onClose}) => {
+const SearchJuso = ({location, getLocation}) => {
+
+    const [click, setClick] = useState(false);
+
+    const clickButton = useCallback(() => {
+        setClick(true);
+    }, []);
 
     const handleAddress = useCallback(data => {
         const fullAddress = data.address;
         
         getLocation(fullAddress);
-        onClose();
+        setClick(false);
     }, [])
 
+    console.log(click);
     return (
         <Search>
             <div className="inputAddress">
@@ -29,7 +33,7 @@ const SearchJuso = ({location, getLocation, click, clickButton, onClose}) => {
                 title="도로명 주소"
                 visible={click}
                 footer={null}
-                onClose={onClose}
+                onClose={click}
             >
                 <div className="content">
                 <DaumPostcode 
@@ -76,7 +80,7 @@ const Search = styled.div`
     }
 
     & .content {
-        width: 29vw;
+        width: 21vw;
         height: 20vh;
     }
 `;
