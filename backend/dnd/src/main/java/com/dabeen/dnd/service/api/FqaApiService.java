@@ -1,3 +1,6 @@
+// FqaApiService.java
+// 작성자 : 권영인
+
 package com.dabeen.dnd.service.api;
 
 import com.dabeen.dnd.exception.NotFoundException;
