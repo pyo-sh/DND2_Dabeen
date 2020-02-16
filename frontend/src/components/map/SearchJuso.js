@@ -38,7 +38,9 @@ const SearchJuso = ({location, getLocation, click, clickButton, onClose}) => {
                 />
                 </div>
             </Modal> : 
-            <MyLocation myLocation={location}/>
+            <div className="content">
+                <MyLocation myLocation={location}/>
+            </div>
             } 
         </Search>
     );

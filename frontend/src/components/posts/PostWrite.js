@@ -34,31 +34,6 @@ const PostWrite = () => {
     const [click, setClick] = useState(false);  //주소 검색 클릭
 
     // const {helpPosts} = useSelector(state => state.posts);
-    
-    //밑에 친구들 사진 첨부할 떄 
-    // const handleCancel = useCallback(() => {
-    //     setPreviewVisible(false);
-    // }, []);
-
-    // const handlePreview = useCallback(file => {
-    //     if (!file.url && !file.preview) {
-    //     file.preview = getBase64(file.originFileObj);
-    //     }
-        
-    //     setPreviewImage(file.url || file.priview)
-    //     setPreviewVisible(true);
-    // },[file]);
-
-    const handleChange = useCallback(({ fileList }) => () => {
-        setFileList({fileList});
-    },[fileList]);
-
-    const uploadButton = (
-        <div>
-          <Icon type="plus" />
-          <div className="ant-upload-text">Upload</div>
-        </div>
-    );
 
     //신청 마감 일시 입력
     const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
@@ -96,6 +71,10 @@ const PostWrite = () => {
 
     const onClose = useCallback(() => {
         setClick(false);
+    }, []);
+
+    const addFile = useCallback((e)=> {
+        console.log(e.target.files);
     }, []);
 
     return (
@@ -147,15 +126,7 @@ const PostWrite = () => {
                     </ContentItem>
                     <UploadImage>
                         <div style={{width: "5vw"}}>사진첨부</div>
-                        <Upload
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            listType="picture-card"
-                            fileList={fileList}
-                            // onPreview={handlePreview}
-                            onChange={handleChange}
-                        >
-                            {fileList.length >= 8 ? null : uploadButton}
-                        </Upload>
+                        <input type="file" onChange={addFile} />
                     </UploadImage>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
                 </Content>                  
@@ -310,15 +281,10 @@ const ContentItem = styled.div`
             color: #BFC7CE;
         }
     }
-
-    & > .map {
-        width: 29vw;
-        height: 20vh;
-    }
 `;
 
 const UploadImage = styled.div`
-    display: flex;
+    /* display: flex; */
     margin-top: 20px;
     width: 29vw;
 `;
