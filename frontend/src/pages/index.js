@@ -4,14 +4,7 @@ import PostWrite from "../components/posts/PostWrite";
 
 const Home = () => {
   return (
-<<<<<<< HEAD
       <Main/>
-=======
-    <>
-      {/* <Main/> */}
-      <PostWrite />
-    </>
->>>>>>> choi
   );
 };
 
