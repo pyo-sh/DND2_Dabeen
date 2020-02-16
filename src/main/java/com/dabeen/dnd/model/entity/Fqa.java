@@ -1,3 +1,7 @@
+// Fqa.java
+// Fqa 엔터티
+// 작성자 : 권영인
+
 package com.dabeen.dnd.model.entity;
 
 import java.time.LocalDateTime;
@@ -5,6 +9,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +29,7 @@ public class Fqa{
     @NotEmpty(message = "is not empty")
     private String fqaNum; // 자주묻는질문번호
 
+    @NotNull(message = " is not null")
     private LocalDateTime questPstnDttm; // 질문게시일시
 
     @NotEmpty(message = "is not empty")

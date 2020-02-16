@@ -1,3 +1,7 @@
+// Msg.java
+// Msg 엔터티
+// 작성자 : 권영인
+
 package com.dabeen.dnd.model.entity;
 
 import java.time.LocalDateTime;
@@ -24,10 +28,18 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
+<<<<<<< HEAD
     @NotEmpty(message = "is not empty")
     private MsgPK msgPK;
 
     @NotNull(message = "is not null")
     private String cont;
+=======
+    @NotNull(message = " is not null")
+    private MsgPK msgPK; // Msg PK (chat_num,msg_writer_num,msg_send_dttm)
+
+    @NotNull(message = " is not null")
+    private String cont; // Msg 내용
+>>>>>>> kwon
 
 }

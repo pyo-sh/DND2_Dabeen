@@ -1,3 +1,6 @@
+// MsgApiService.java
+// 작성자 : 권영인
+
 package com.dabeen.dnd.service.api;
 
 import javax.transaction.Transactional;
