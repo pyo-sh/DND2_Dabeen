@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
+import SvgComponent from './SvgComponent';
 import { Button, Input, Icon } from "antd";
 import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
@@ -41,7 +42,7 @@ const Header = () => {
         />
       </sapn>
       <div className="menuLeft">
-        <Link href="/"><a>로고</a></Link>
+        <Link href="/"><a><img width = "150px" src="/images/logo.svg"/></a></Link>
         <Input.Search
           placeholder="도움을 검색하세요!"
           style={{ marginLeft: 10 }}
@@ -120,6 +121,7 @@ const Menubar = styled.nav`
   border-bottom: 1px solid black;
   color: black;
   z-index: 1;
+  opacity : 0.9;
   & .menuToggle {
     position: absolute;
     top: 13px;
