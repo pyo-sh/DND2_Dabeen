@@ -1,3 +1,6 @@
+// BsktComp.java
+// BsktComp 엔터티
+// 작성자 : 권영인
 package com.dabeen.dnd.model.entity;
 
 import java.math.BigDecimal;
@@ -25,20 +28,6 @@ import lombok.experimental.Accessors;
 public class BsktComp {
 
     //Default CRUD 생성 후 종속성 설정 필요
-    // @Id
-    // @NotEmpty(message = " is not empty")
-    // private String bsktNum; // 장바구니번호
-
-    // //Default CRUD 생성 후 종속성 설정 필요
-    // @Id
-    // @NotEmpty(message = " is not empty")
-    // private String helpNum; // 도움번호
-
-    // //Default CRUD 생성 후 종속성 설정 필요
-    // @Id
-    // @NotEmpty(message = " is not empty")
-    // private String supplNum; // 공급자번호
-
     @EmbeddedId
     @NotNull(message = " is not null")
     private BsktCompPK bsktCompPK;

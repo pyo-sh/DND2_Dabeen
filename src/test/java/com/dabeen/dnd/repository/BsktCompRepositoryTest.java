@@ -1,3 +1,7 @@
+// BsktCompRepositoryTest.java
+// BsktComp JPA Repository 단위 테스트를 위한 코드
+// 작성자 : 권영인
+
 package com.dabeen.dnd.repository;
 import org.junit.Test;
 import org.junit.runner.RunWith;

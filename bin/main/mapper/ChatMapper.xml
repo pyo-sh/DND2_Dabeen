@@ -4,13 +4,23 @@
     <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Chat" useGeneratedKeys="false">
         <selectKey order="BEFORE" keyProperty="chatNum" resultType="String" >
 
+        <!-- 키 생성 쿼리
+        
+        1. 특정 테이블에서 식별자(xxx_num)의 MAX 값을 조회하여 yymmdd만 추출한다.
+        2. 해당 추출 값을 금일 날짜와 비교한다
+        3. 
+            CASE
+            1)  금일 날짜와 같은경우 -> 가장 높은 값에 뒷자리 4자리를 NUMBER로 바꾸고 +1 한 후 LPAD로 0000 자리로 맞춘후 원래 값과 COCNAT
+            2)  금일 날짜와 다른경우 -> 금일날짜 yymmdd 추출하고 그 뒤에 0001을 CONCAT
+        -->        
+        
         SELECT
             CASE 
                 WHEN substring(chat_num,1,6) = DATE_FORMAT(sysdate(),'%y%m%d') THEN CONCAT(substring(chat_num,1,6),LPAD(CONVERT(SUBSTRING(chat_num,7,4), SIGNED INTEGER) + 1,4,'0'))
                 ELSE CONCAT(DATE_FORMAT(sysdate(),'%y%m%d'),'0001')  END as chat_num
         from (SELECT IFNULL(MAX(chat_num),DATE_FORMAT(DATE(sysdate()),'%y%m%d')) as chat_num FROM chat) a
 
-<!-- 키 생성 쿼리 -->
+        <!-- 키 생성 쿼리 -->
         </selectKey>
         insert 
             into chat(chat_num,chat_gen_dttm,help_num,cnsr_num,suppl_num)
@@ -19,8 +29,8 @@
 </mapper>
 
 <!--
-    AdminMapper.xml
+    ChatMapper.xml
     식별자를 일련번호롤 생성하기 위한 쿼리문
     
-    작성자 : 이은비
+    작성자 : 권영인
 -->
