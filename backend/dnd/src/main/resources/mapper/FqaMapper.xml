@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.mapper.FqaMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Fqa" useGeneratedKeys="false">
+        <selectKey order="BEFORE" keyProperty="fqaNum" resultType="String" >  
+        SELECT
+            CASE 
+                WHEN substring(fqa_num,1,6) = DATE_FORMAT(sysdate(),'%y%m%d') THEN CONCAT(substring(fqa_num,1,6),LPAD(CONVERT(SUBSTRING(fqa_num,7,4), SIGNED INTEGER) + 1,4,'0'))
+                ELSE CONCAT(DATE_FORMAT(sysdate(),'%y%m%d'),'0001')  END as fqa_num
+        from (SELECT IFNULL(MAX(fqa_num),DATE_FORMAT(DATE(sysdate()),'%y%m%d')) as fqa_num FROM fqa) a
+
+<!-- 키 생성 쿼리 -->
+        </selectKey>
+        insert 
+            into fqa(fqa_num,fqa_rgistrant_num,title,rply_cont)
+            values (#{fqaNum}, #{fqaRgistrantNum}, #{title}, #{rplyCont})
+    </insert>
+</mapper>
+
+<!--
+    AdminMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->

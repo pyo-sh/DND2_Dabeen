@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.dabeen.dnd.repository.mapper.ChatMapper"> <!-- Mapper 클래스주소-->
+    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Chat" useGeneratedKeys="false">
+        <selectKey order="BEFORE" keyProperty="chatNum" resultType="String" >
+
+        SELECT
+            CASE 
+                WHEN substring(chat_num,1,6) = DATE_FORMAT(sysdate(),'%y%m%d') THEN CONCAT(substring(chat_num,1,6),LPAD(CONVERT(SUBSTRING(chat_num,7,4), SIGNED INTEGER) + 1,4,'0'))
+                ELSE CONCAT(DATE_FORMAT(sysdate(),'%y%m%d'),'0001')  END as chat_num
+        from (SELECT IFNULL(MAX(chat_num),DATE_FORMAT(DATE(sysdate()),'%y%m%d')) as chat_num FROM chat) a
+
+<!-- 키 생성 쿼리 -->
+        </selectKey>
+        insert 
+            into chat(chat_num,chat_gen_dttm,help_num,cnsr_num,suppl_num)
+            values (#{chatNum}, #{chatGenDttm}, #{helpNum}, #{cnsrNum}, #{supplNum})
+    </insert>
+</mapper>
+
+<!--
+    AdminMapper.xml
+    식별자를 일련번호롤 생성하기 위한 쿼리문
+    
+    작성자 : 이은비
+-->
