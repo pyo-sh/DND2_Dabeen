@@ -16,11 +16,15 @@ const Dabeen = ({Component, store}) => {
         <Provider store={store}>
         <>
         <style jsx global>{`
+        html, body {
+            height : 100%;
+            overflow: auto;
+        }
         body {
             font-family: 'Yeon Sung', 'Noto Sans KR', sans-serif ;
-            margin : 0;
-            padding : 0;
-            width : 100%;
+        }
+        #__next {
+            height: 100%;
         }
       `}</style>
             <Head>
@@ -28,7 +32,7 @@ const Dabeen = ({Component, store}) => {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"/>
                 <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
                 <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet"/>
-                <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /> 
+                <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" /> 
                 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
             </Head>
                 <AppLayout>

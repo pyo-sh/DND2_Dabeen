@@ -24,8 +24,9 @@ const AppLayout = ({ children }) => {
 };
 
 const AllDiv = styled.div`
-  position: relative;
-  min-height : 100vh;
+  height : 100%;
+  display : flex;
+  flex-direction : column;
 `;
 const ChildrenDiv = styled.div`
   margin-top: 40px;

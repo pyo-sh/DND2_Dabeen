@@ -18,10 +18,11 @@ const Footer = () => {
 };
 
 const FooterBox = styled.div`
-    position: absolute;
+    margin-top: auto;
+    border-top : 1px solid darkgray;
     height : 2.5rem;
     width : 100%;
-    bottom: 0;
+    padding : 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;

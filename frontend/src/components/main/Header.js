@@ -5,20 +5,28 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
 import Link from "next/link";
 import { loginRequestAction, logoutRequestAction } from "../../reducers/user";
+import Login from "../signUp/Login";
 
 const isBrowser = typeof window !== "undefined";
 // const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
 const Header = () => {
   const dispatch = useDispatch();
-  const { userId } = useSelector(state => state.user);
   const divRef = useRef();
+
+  const { userId } = useSelector(state => state.user);
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
+  const [tryLogin, setTryLogin] = useState(false);
+
   const clickMenuIcon = useCallback(() => {
     divRef.current.classList.toggle("active");
   }, []);
   const clickLogout = useCallback(() => {
       dispatch(logoutRequestAction());
       alert('로그아웃 되었습니다.');
+  }, []);
+  
+  const clickLogin = useCallback(() => {
+    setTryLogin(prev => !prev);
   }, []);
 
   useEffect(() => {
@@ -42,7 +50,7 @@ const Header = () => {
         />
       </sapn>
       <div className="menuLeft">
-        <Link href="/"><a><img width = "150px" src="/images/logo.svg"/></a></Link>
+        <Link href="/"><a><img width = "150px" src="/images/logo.svg" alt="다빈로고"/></a></Link>
         <Input.Search
           placeholder="도움을 검색하세요!"
           style={{ marginLeft: 10 }}
@@ -91,9 +99,7 @@ const Header = () => {
           ) : (
             <>
               <div>
-                <Link href="/login">
-                  <a>로그인</a>
-                </Link>
+                <a onClick={clickLogin}>로그인</a>
               </div>
               <div>
                 <Link href="/terms">
@@ -104,6 +110,7 @@ const Header = () => {
           )}
         </div>
       </div>
+      {tryLogin && <Login clickLogin={clickLogin}/>}
     </Menubar>
   );
 };
