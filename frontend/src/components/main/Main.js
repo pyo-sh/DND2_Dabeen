@@ -1,21 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Carousel } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
 import MainDaBeenerProfile from './MainDaBeenerProfile';
-
+const image = [
+    "main1.jpg",
+    "main2.jpg",
+    "main3.jpg"
+];
 const Main = () => {
     return (
         <MainForm>
-            <div className = "mainImage"> {/* 다빈 소개글 적는 부분 */}
-                <div style={{fontSize:"40px"}}>DaBeen</div>
+            {/* <div className = "mainImage"> 다빈 소개글 적는 부분 */}
+                {/* <div style={{fontSize:"40px"}}>DaBeen</div>
                 <p>
                     대충 우리 사이트 설명 어쩌고 저쩌고 다빈이라는 이름 예쁘다
                     나는 딸 가지면 이름을 아영이로 짓고싶다 ^^!
                     <br />
                     배경은 사진 넣으면됩니당.
-                </p>
-            </div>
+                </p> */}
+                <Carousel autoplay dots>
+                    {image.map(img => (
+                            <img key={img} src={`/images/${img}`} alt={img}/>
+                    ))}
+                </Carousel>
+            {/* </div> */}
             <LiveHelpRequestMenuBar>
                 <div className="title">실시간 도움 요청</div>
                 <div className="liveHelpRequestForm">
@@ -37,13 +46,24 @@ const MainForm = styled.div`
     justify-content: center;
     align-items: center;
     width : 100%;
-
+    & .ant-carousel {
+        width : 90%;
+        height : 40vh;
+        margin-top : 30px;
+        & img {
+            width : 100%;
+            height : 40vh;
+        }
+        & .slick-dots li button::before {
+            content : ""
+        }
+    }
     & > .mainImage {
         border: solid 1px gray;
         width: 90%;
-        height: 30vh;
         margin-top: 30px;
         text-align: center;
+        padding : 24px;
     }
 
     & .title {
