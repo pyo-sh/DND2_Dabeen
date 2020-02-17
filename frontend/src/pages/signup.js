@@ -317,7 +317,8 @@ const SignUpUpperDiv = styled.div`
             max-height: 50px;
             min-width: 270px;
             min-height: 35px;
-            background: #FF9644;
+            background: #FF4300;
+            color: white;
         }
     }
 `;
