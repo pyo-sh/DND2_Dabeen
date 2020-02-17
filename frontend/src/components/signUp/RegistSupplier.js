@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
-import { Avatar, Button, Icon } from 'antd';
+import { Avatar, Button, Icon, Upload, message, Modal } from 'antd';
 
 // 공급자 등록 창
 const RegistSupplier = () => {
+    const [previewVisible, setPreviewVisible] = useState(false);
+    const [previewImage, setPreviewImage] = useState('');
+    const [userPicture, setUserPicture] = useState(null);
+    
+    const onChangeDragger = useCallback((info) => {
+        const { status } = info.file;
+        setUserPicture([info.file]);        // 항상 설정해야 한다.
+        if (status !== 'uploading') {
+            setPreviewImage(info.file);
+        }
+        if (status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully.`);
+        }
+        else if (status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    }, [])
+
+    const onPreviewDragger = useCallback(file => {
+        // if (!file.url && !file.preview) {
+        //     file.preview = await getBase64(file.originFileObj);
+        // }
+        console.dir(file)
+        setPreviewVisible(true);
+        setPreviewImage(file.thumbUrl);
+    }, []);
+
+    const handleCancel = useCallback(() => {
+        setPreviewVisible(false);
+    }, []);
+
     return (
         <RegistSupplierUpperDiv>
             <div className="Title">
@@ -35,7 +66,22 @@ const RegistSupplier = () => {
                                 <Icons type="stop"/>
                             </div>
                         </div>
-                        <Avatar className="Table-Profile" size={150} icon="user"/>
+                        <div className="Table-Detail-ImageDragger">
+                            <Upload.Dragger
+                                name={'file'}
+                                action={'https://www.mocky.io/v2/5cc8019d300000980a055e76'}
+                                fileList={userPicture}          // 업로드한 파일 자체를 저장(중복 허용X를 위함)
+                                onChange={onChangeDragger}      
+                                onPreview={onPreviewDragger}
+                                listType={"picture-card"}
+                                multiple={false}
+                                >
+                                <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
+                                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                                </Modal>
+                                <Avatar className="Table-Profile" size={150} icon="user"/>
+                            </Upload.Dragger>
+                        </div>
                     </div>
                 </RegistSupplierLowerDiv>
                 <RegistSupplierLowerDiv>
@@ -123,6 +169,10 @@ const RegistSupplierLowerDiv = styled.div`
             & .Table-Detail-Description-Icon{
                 
             }
+        }
+        & .Table-Detail-ImageDragger{
+            width: 200px;
+            height: 200px;
         }
     }
 `;

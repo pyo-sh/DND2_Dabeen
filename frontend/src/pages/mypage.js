@@ -8,7 +8,7 @@ const myInfomation = {
     totalScore : 4.75,
     totalRevenu : 25000,
     location : "부산 광역시",
-    isDabeener : true,
+    isDabeener : false,
 }
 const evaluation = [
     {

@@ -57,7 +57,7 @@ const Introduce = ({ myInfomation, evaluation }) => {
         </div>
         {!isDabeener && (
           <div className="dabeenerApply">
-            <div>
+            <div onClick={useCallback(() => Router.push('/regist'),[])}>
               <h2>다비너 지원하기</h2>
               <p>이웃을 도우며 소소한 행복을 느껴보세요.</p>
             </div>
