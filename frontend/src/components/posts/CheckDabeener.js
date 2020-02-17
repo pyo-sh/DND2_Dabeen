@@ -4,19 +4,18 @@ import PostDetail from './PostDetail';
 import styled from 'styled-components';
 import { Drawer, Button, Avatar, Rate } from 'antd';
 
-const MyPostClick = () => {
-    const [myPost, setMyPost] = useState(true);
-    const [visible, setVisible] = useState(true);
+const CheckDabeener = ({click, onModal}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
-
-    //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 => helpPosts.needPersonnel 가져옴
+    const [visible, setVisible] = useState(click);
+    //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
 
     const onClose = useCallback(() => {
-        setVisible(false);
-    }, []);
+        onModal(visible);
+        setVisible(!visible);
+    },[visible]);
 
     return (
-        <Drawer1
+        <Dabeener
             title="신청 다비너"
             width={"30vw"}
             onClose={onClose}
@@ -91,11 +90,11 @@ const MyPostClick = () => {
                 </ApplyDabeener>
             </div>
         </DrawerForm>
-        </Drawer1>
+        </Dabeener>
     );
 };
 
-const Drawer1 = styled(Drawer)`
+const Dabeener = styled(Drawer)`
     & .ant-drawer-title {
         color: #424242;
         font-size: 40px;
@@ -208,4 +207,4 @@ const ChoiceButton = styled(Button)`
     }
 `;
 
-export default MyPostClick;
+export default CheckDabeener;

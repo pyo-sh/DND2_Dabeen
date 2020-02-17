@@ -1,10 +1,19 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { Button, Icon } from 'antd';
+import CheckDabeener from './CheckDabeener';
 
-//내가 작성한 도움글 클릭시 myPost == true를 받아옴
-const PostDetail = ({myPost}) => {
+// 내가 쓴 글 / 아닌 글 구분해야함
+const PostDetail = () => {
     
+    //임시로 내가 쓴 글이라고 설정
+    const [myPost, setMyPost] = useState(true);
+    const [click, setClick] = useState(false);
+
+    const onModal = useCallback(() => {
+        setClick(!click);
+    }, [click]);
+
     return (
         <Modal>
             <ContentForm>
@@ -16,7 +25,8 @@ const PostDetail = ({myPost}) => {
                         <div>제목</div>
                         <div className="titleDetail">
                             <div>작성일 : 2020.02.10</div>
-                            <div>작성자 : ysje</div>
+                            <div>작성자 : ysje</div>            
+                            <Edit>Edit</Edit>
                         </div>
                     </Title>
                     <Image>사진사진사진사진사진사진사진</Image>
@@ -30,10 +40,11 @@ const PostDetail = ({myPost}) => {
                             <div className="applicationInfoTextDetail">
                                 {
                                     myPost ? 
-                                    <div style={{display: "flex"}}><div>0/1</div><Button type="link" style={{color: "#7A7A7A"}} size="small">신청 확인</Button></div> 
-                                    :
-                                    <div>0/1</div>  /**여기서 0은 강조색으로하기 */  
+                                    <div style={{display: "flex"}}><div>0/1</div><Button type="link" style={{color: "#7A7A7A"}} size="small" onClick={onModal}>신청 확인</Button></div>
+                                    :   
+                                    <div>0/1</div>  /**여기서 0은 강조색으로하기 */
                                 }
+                                {click&&<CheckDabeener click={click} onModal={onModal}/>}
                                 <div>2020-03-08</div>
                                 <div>2020-03-08, PM 06:19</div>
                             </div>
@@ -42,14 +53,14 @@ const PostDetail = ({myPost}) => {
                             <div>3000원</div>
                             {
                                 myPost ? 
-                                <ClickButton>수정</ClickButton> :
+                                <ClickButton apply>마감</ClickButton> :
                                 <ClickButton apply>신청</ClickButton>
                             }
                         </div>
                     </ApplicationInfo>
                     <ContentItem>
                         <div style={{fontSize: 22}}>위치</div>
-                        <div style={{border: "solid", width: "29vw", height: "30vh"}}>지도지도지도지도지도지도지도지도지도</div>
+                        <div style={{border: "solid", width: "21vw", height: "30vh"}}>지도지도지도지도지도지도지도지도지도</div>
                     </ContentItem>
                     <ContentItem>
                         <div style={{fontSize: 22}}>도움정보</div>
@@ -68,7 +79,7 @@ const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     position: fixed;
     left: 0;
-    top: 30px;
+    top: 0;
     height: 100%;
     width: 100%;
     display: flex;
@@ -81,8 +92,8 @@ const ContentForm = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 33vw;
-    height: 87vh;
+    width: 25vw;
+    height: 80vh;
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -90,16 +101,6 @@ const ContentForm = styled.div`
     overflow: auto;
     ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
 
-    @media only screen and (max-width: 1024px) {
-        width: 47vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 62vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 85vw;
-        height: 60vh;
-    }
 `;
 
 const DeleteIcon = styled.div`
@@ -110,167 +111,74 @@ const DeleteIcon = styled.div`
 `;
 
 const Content = styled.div`
-    width: 29vw;
-    height: 87vh;
+    width: 21vw;
+    height: 78vh;
     display: flex;
     flex-direction: column;
 
-    @media only screen and (max-width: 1024px) {
-        width: 41vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 56vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 79vw;
-        height: 56vh;
-    }
 `;
 
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    width: 29vw;
+    width: 21vw;
     font-size: 40px;
-
-    @media only screen and (max-width: 1024px) {
-        width: 41vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 56vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 79vw;
-        height: 56vh;
-        font-size: 30px;
-    }
 
     & > .titleDetail{
         display: flex;
-        justify-content: space-between;
-        width: 14vw;
-        font-size: 15px;
-
-        @media only screen and (max-width: 1024px) {
-            width: 19vw;
-        }
-        @media only screen and (max-width: 768px) {
-            width: 25vw;
-        }
-        @media only screen and (max-width: 425px) {
-            width: 38vw;
-            font-size: 12px;
-        }
+        justify-content: space-around;
+        width: 15vw;
+        font-size: 0.7vw;
     }
 `;
 
 const Image = styled.div`
-    width: 29vw;
+    width: 21vw;
     height: 30vh;
     background: #BFC7CE;
 
-    @media only screen and (max-width: 1024px) {
-        width: 41vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 56vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 79vw;
-    }
 `;
 
 const ApplicationInfo = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 29vw;
+    width: 21vw;
     margin-top: 20px;
-
-    @media only screen and (max-width: 1024px) {
-        width: 41vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 56vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 79vw;
-    }
 
     & .applicationInfoText {
         display: flex;
         justify-content: space-between;
         border-right: 1px solid #BFC7CE;
-        width: 18vw;
-
-        @media only screen and (max-width: 1024px) {
-            width: 28vw;
-        }
-        @media only screen and (max-width: 768px) {
-            width: 38vw;
-        }
-        @media only screen and (max-width: 425px) {
-            width: 52vw;
-        }
+        width: 14vw;
     }
 
     & .applicationInfoTextTitle {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 7vw;
-        font-size: 20px;
+        width: 8vw;
+        font-size: 18px;
 
-        @media only screen and (max-width: 1024px) {
-            width: 10vw;
-        }
-        @media only screen and (max-width: 768px) {
-            width: 13vw;
-        }
-        @media only screen and (max-width: 425px) {
-            width: 20vw;
-            font-size: 4vw;
-        }
     }
 
     & .applicationInfoTextDetail {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 11vw;
-        font-size: 16px;
+        width: 9vw;
+        font-size: 14px;
 
-        @media only screen and (max-width: 1024px) {
-            width: 15vw;
-        }
-        @media only screen and (max-width: 768px) {
-            width: 21vw;
-        }
-        @media only screen and (max-width: 425px) {
-            width: 30vw;
-            font-size: 3vw;
-        }
     }
 
     & .applicationMoney{
         display: flex;
         flex-direction: column;
-        width: 10vw;
+        width: 6vw;
         justify-content:flex-end;
         color: #FF4300;
-        font-size: 30px;
+        font-size: 25px;
 
-        @media only screen and (max-width: 1024px) {
-            width: 11.5vw;
-        }
-
-        @media only screen and (max-width: 768px) {
-            width: 16vw;
-        }
-        @media only screen and (max-width: 425px) {
-            width: 23vw;
-            font-size: 6vw;
-        }
     }
 `;
 
@@ -280,18 +188,7 @@ const ClickButton = styled(Button)`
     color: ${props => (props.apply ? "#FFFFFF" : "#7A7A7A")};
     font-size: 20px;
     box-shadow: 2px 3px 5px #BFC7CE;
-    width: 10vw;
-    
-    @media only screen and (max-width: 1024px) {
-        width: 11vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 15vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 18vw;
-        font-size: 5vw;
-    }
+    width: 5vw;
 
     :hover {
         opacity: 0.9;
@@ -313,21 +210,21 @@ const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 20px;
     margin-top: 30px;
-    width: 29vw;
+    width: 21vw;
 
-    @media only screen and (max-width: 1024px) {
-        width: 41vw;
-    }
-    @media only screen and (max-width: 768px) {
-        width: 56vw;
-    }
-    @media only screen and (max-width: 425px) {
-        width: 74vw;
-    }
     & > p{
         margin-top: 10px;
         font-size: 18px;
     }
 `;
 
+const Edit = styled(Button)`
+    background: #F0F0F0;
+    border: 1px solid #F0F0F0;
+    border-radius: 7px;
+    color: #7A7A7A;
+    width: 2.7vw;
+    height: 1.8vh;
+    font-size: 0.7vw;
+`;
 export default PostDetail;
