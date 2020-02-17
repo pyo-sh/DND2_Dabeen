@@ -35,7 +35,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"helpSupplComps", "mileageUseHists", "bskts", "quests", "replies"})
+@ToString(exclude = {"helpSupplComps", "mileageUseHists", "bskts", "quests"})
 public class User{
     // 기본 식별자
     @Id
@@ -102,7 +102,4 @@ public class User{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "quester")
     private List<Post> quests;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "rplyer")
-    private List<Post> replies;
 }

@@ -4,7 +4,8 @@
 
 package com.dabeen.dnd.service.api;
 
-import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -12,52 +13,51 @@ import javax.transaction.Transactional;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.Post;
-import com.dabeen.dnd.model.enumclass.PostType;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.PostApiRequest;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
+import com.dabeen.dnd.repository.AdminRepository;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.PostMapper;
 import com.dabeen.dnd.service.BaseService;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Transactional
 @Service
 public class PostApiService extends BaseService<PostApiRequest, PostApiResponse, Post> {
     @Autowired
     private PostMapper postMapper;
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
     public Header<PostApiResponse> create(Header<PostApiRequest> request) {
         PostApiRequest requestData = request.getData();
 
-        Post post = Post.builder()
-                        .postType(requestData.getPostType())
-                        .title(requestData.getTitle())
-                        .cont(requestData.getCont())
-                        .quester(userRepository.findById(requestData.getQuesterNum()).orElse(null))
-                        //.rplyer(userRepository.findById(requestData.getRplyerNum()).orElse(null))
-                        //.questPost(baseRepository.getOne(requestData.getQuestPostNum()))
-                        .build();
+        // Map 객체를 이용하여 쿼리문 생성
+        Map<String, Object> postMap = new HashMap<>();
 
-        // 질문의 타입에 따라 그에 맞는 게시일시를 현재시간으로 저장
-        // 쿼리문으로도 할 수 있으나, response 형태를 맞추기 위해서는 해당 객체를 read해야 하므로 service에서 처리
-        if(post.getPostType().equals(PostType.q))
-            post.setQuestPstnDttm(LocalDateTime.now());
-        else post.setRplyPstnDttm(LocalDateTime.now());
+        postMap.put("postNum", null);
+        postMap.put("postType", requestData.getPostType());
+        postMap.put("title", requestData.getTitle());
+        postMap.put("cont", requestData.getCont());
+        postMap.put("questerNum", requestData.getQuesterNum());
+        postMap.put("rplyerNum", requestData.getRplyerNum());
+        postMap.put("questPostNum", requestData.getQuestPostNum());
 
-        postMapper.insert(post);
+        postMapper.insert(postMap);
         
-        return Header.OK(response(post));
+        return Header.OK(response(baseRepository.findById((String)postMap.get("postNum")) // 생성된 엔터티의 정보를 response 형태로 전달
+                                                .orElseThrow(() -> new NotFoundException("Created entity"))));
     }
 
     @Override
     public Header<PostApiResponse> read(String num) {
+        log.info("{}", num );
         Optional<Post> optional = baseRepository.findById(num);
 
         return  optional.map(this::response)
@@ -70,27 +70,12 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         PostApiRequest requestData = request.getData();
 
         Optional<Post> optional = baseRepository.findById(requestData.getPostNum());
-
+        log.info("{}", optional);
+  
         return optional.map(post -> {
                     // 제목, 내용 외 수정 불가. 수정하려고 할 시 에러 호출
-                    if(!requestData.getPostType().equals(post.getPostType()))
-                        throw new NotUpdateableException("postType");
-                    if(!requestData.getQuestPstnDttm()
-                                    .equals(post.getQuestPstnDttm()))
-                        throw new NotUpdateableException("questPstnDttm");
-                    if(!requestData.getQuesterNum()
-                                    .equals(post.getQuester().getUserNum()))
-                        throw new NotUpdateableException("questerNum");
-                    if(!requestData.getRplyPstnDttm()
-                                    .equals(post.getRplyPstnDttm()))
-                        throw new NotUpdateableException("rplyPstnDttm");
-                    if(!requestData.getRplyerNum()
-                                    .equals(post.getRplyer().getUserNum()))
-                        throw new NotUpdateableException("rplyerNum");
-                    if(!requestData.getQuestPostNum()
-                                    .equals(post.getQuestPost().getPostNum()))
-                        throw new NotUpdateableException("questPostNum");
-                   
+                    unableUpadateable(post, requestData);
+
                     post.setTitle(requestData.getTitle())
                         .setCont(requestData.getCont());
                     
@@ -112,7 +97,7 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                     })
                     .orElseThrow(() -> new NotFoundException("Post"));
     }
-
+    
     // Post > PostApiResponse
     private PostApiResponse response(Post post) {
         PostApiResponse postApiResponse = PostApiResponse.builder()
@@ -121,12 +106,64 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                                                         .title(post.getTitle())
                                                         .cont(post.getCont())
                                                         .questPstnDttm(post.getQuestPstnDttm())
-                                                        .questerNum(post.getQuester().getUserNum())
+                                                        // 연관관계에 있는 객체가 null이라면 해당 변수를 null로 설정
+                                                        .questerNum(post.getQuester() == null ? null : post.getQuester() .getUserNum())
                                                         .rplyPstnDttm(post.getRplyPstnDttm())
-                                                        .rplyerNum(post.getRplyer().getUserNum())
-                                                        .questPostNum(post.getQuestPost().getPostNum())
+                                                        .rplyerNum(post.getRplyer() == null ? null : post.getRplyer().getAdminNum())
+                                                        .questPostNum(post.getQuestPost() == null ? null : post.getQuestPost().getPostNum())
                                                         .build();  
         return postApiResponse;
     }
 
+    // 수정 불가능한 컬럼의 수정 여부를 확인하기 위해
+    private void unableUpadateable(Post post, PostApiRequest requestData){
+        // 게시글 타입
+        if(!requestData.getPostType().equals(post.getPostType()))
+                        throw new NotUpdateableException("postType");
+
+        // 질문 게시일시
+        if(post.getQuestPstnDttm() != null){
+            if(!requestData.getQuestPstnDttm().equals(post.getQuestPstnDttm()))
+                throw new NotUpdateableException("questPstnDttm");
+        } else {
+            if(requestData.getQuestPstnDttm() != null)
+                throw new NotUpdateableException("questPstnDttm");
+        }
+
+        // 질문자
+        if(post.getQuester() != null){
+            if(!requestData.getQuesterNum().equals(post.getQuester().getUserNum()))
+                throw new NotUpdateableException("questerNum");
+        } else {
+            if(requestData.getQuesterNum() != null)
+                throw new NotUpdateableException("questerNum");
+        }
+
+        // 답변 게시 일시
+        if(post.getRplyPstnDttm() != null){
+            if(!requestData.getRplyPstnDttm().equals(post.getRplyPstnDttm()))
+                throw new NotUpdateableException("rplyPstnDttm");
+        } else {
+            if(requestData.getRplyPstnDttm() != null)
+                throw new NotUpdateableException("rplyPstnDttm");
+        }
+
+        // 답변자
+        if(post.getRplyer() != null){    
+            if(!requestData.getRplyerNum().equals(post.getRplyer().getAdminNum()))
+                throw new NotUpdateableException("rplyerNum");
+        } else {
+            if(requestData.getRplyerNum() != null)
+                throw new NotUpdateableException("rplyerNum");
+        }
+
+        // 답변할 질문 게시긑
+        if(post.getQuestPost() != null){
+            if(!requestData.getQuestPostNum().equals(post.getQuestPost().getPostNum()))
+                throw new NotUpdateableException("questPostNum");
+        } else {
+            if(requestData.getQuestPostNum() != null)
+                throw new NotUpdateableException("questPostNum");
+        }
+    }
 }

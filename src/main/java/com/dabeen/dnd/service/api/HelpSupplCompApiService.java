@@ -14,24 +14,38 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
+import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
+import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Transactional
 @Service
+@Slf4j
 public class HelpSupplCompApiService {
     @Autowired
     private HelpSupplCompRepository helpSupplCompRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private HelpRepository helpRepository;
+
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
+        log.info("{}",  requestData);
         // PK 객체 생성
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(),requestData.getSupplNum());
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
-                                                    .helpSupplCompPK(pk)
+                                                    .helpSupplCompPK(new HelpSupplCompPK())
+                                                    .suppler(userRepository.findById(requestData.getSupplNum()).orElse(null))
+                                                    .help(helpRepository.findById(requestData.getHelpNum()).orElse(null))
                                                     .helpAprvWhet(requestData.getHelpAprvWhet())
                                                     .aprvDttm(requestData.getAprvDttm())
                                                     .astDttm(requestData.getAstDttm())
@@ -40,7 +54,7 @@ public class HelpSupplCompApiService {
                                                     .build();
 
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp);
-        
+
         return Header.OK(response(newHelpSupplComp));
     }
 
