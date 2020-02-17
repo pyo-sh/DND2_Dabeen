@@ -20,8 +20,7 @@ const SearchJuso = ({location, getLocation}) => {
         getLocation(fullAddress);
         setClick(false);
     }, [])
-
-    console.log(click);
+    
     return (
         <Search>
             <div className="inputAddress">
@@ -70,6 +69,7 @@ const Search = styled.div`
         background: #FF4300;
         border: 1px solid #FF4300;
         color: #FFFFFF;
+        font-size: 0.8vw;
 
         &:hover, :focus {
             opacity: 0.9;
@@ -80,7 +80,7 @@ const Search = styled.div`
     }
 
     & .content {
-        width: 21vw;
+        width: 29vw;
         height: 20vh;
     }
 `;

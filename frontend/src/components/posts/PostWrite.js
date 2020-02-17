@@ -1,13 +1,12 @@
 import React, { useState, useCallback } from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { Select, DatePicker, TimePicker, Upload, Icon, Button, Form } from 'antd';
+import { Select, DatePicker, TimePicker, Icon, Button, Form } from 'antd';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
+import Upload from '../uploadImages/Upload';
 
-const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
-
-const Option = {Select};
+const categorys = ["심부름", "대여", "잡일"];   //카테고리
 
 const PostWrite = () => {
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
@@ -23,6 +22,9 @@ const PostWrite = () => {
 
     // const {helpPosts} = useSelector(state => state.posts);
 
+    const getCategory = useCallback(category => {
+        setCategory(category);
+    }, []);
     //신청 마감 일시 입력
     const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
         setPostDeadline({...postDeadline, date: dateString});
@@ -53,12 +55,15 @@ const PostWrite = () => {
         
     }, []);
 
-    const addFile = useCallback((e)=> {
-        setImages([...images, e.target.files]);
-        setUrls([...urls, URL.createObjectURL(e.target.files[0])]); 
-        console.log(e.target.files[0]);
-    }, [images, urls]);
-    console.log(images);
+    //일단 이렇게 해놨는데 더 좋게 할 수 있남
+    const getUrls = useCallback(data => {
+        setUrls(data);
+    }, []);
+
+    const getImages = useCallback(data => {
+        setImages(data);
+    }, []);
+
     return (
         <Modal>
             <Form onSubmit={addPost}>
@@ -66,35 +71,31 @@ const PostWrite = () => {
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
+                        <Icon type="close" style={{fontSize: "2vw", color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
-                        <div className="category">
+                        <div className="postSettingTitle">
                             <div>카테고리</div>
-                            <Select style={{width: 128}}>
-                                {categoryValue.map(category => <Option value={category} >{category}</Option>)}
-                            </Select>
-                        </div>
-                        <div className="deadline">
                             <div>신청 마감 일시</div>
-                            <div>
+                            <div>수행 일시</div>
+                            <div>필요인원</div>
+                            <div>금액</div>
+                        </div>
+                        <div className="postSettingDetail">
+                            <div className="category">
+                                <Select style={{width: 128}} onChange={getCategory}>
+                                    {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
+                                </Select>
+                            </div>
+                            <div className="deadline">
                                 <DatePicker style={{marginRight: 5}} onChange={onPostDeadlineDate}/>
                                 <TimePicker use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
                             </div>
-                        </div>
-                        <div className="executionDate">
-                            <div>수행 일시</div>
-                            <div>
+                            <div className="executionDate">
                                 <DatePicker style={{marginRight: 5}} onChange={onExecutionDate}/>
                                 <TimePicker use12Hours format="h:mm a" onChange={onExecutionTime}/>
                             </div>
-                        </div>
-                        <div className="needPersonnel">
-                            <div>필요인원</div>
                             <input type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
-                        </div>
-                        <div className="money">
-                            <div>금액</div>
                             <input type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
                         </div>
                     </PostSetting>
@@ -108,11 +109,10 @@ const PostWrite = () => {
                     </ContentItem>
                     <UploadImage>
                         <div style={{width: "5vw"}}>사진첨부</div>
-                        <label className="uploadImage" for="fileUpload">
-                            <Icon type="upload" />Upload
-                        </label>
-                        <input type="file" id="fileUpload" onChange={addFile}/>
-                        {images.length !== 0 ? urls.map(url => <img src={url} width={100} height={100}/>) : <></>}
+                        <Upload urls={urls} images={images} getUrls={getUrls} getImages={getImages}/>
+                        <div className="previewImage">
+                            {images.length !== 0 ? urls.map((url, i) => <div><img src={url} width={100} height={100} key={i} alt="미리보기" /></div>) : <></>}
+                        </div>
                     </UploadImage>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
                 </Content>                  
@@ -139,7 +139,7 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 25vw;
+    width: 31vw;
     height: 80vh;
     display: flex; 
     flex-direction: column;
@@ -150,7 +150,7 @@ const ContentFlex = styled.div`
 `;
 
 const Content = styled.div`
-    width: 21vw;
+    width: 29vw;
     height: 78vh;
     display: flex;
     flex-direction: column;
@@ -161,56 +161,68 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 21vw;
+    width: 29vw;
 `;
 
 const PostSetting = styled.div`
-    width: 21vw;
+    width: 29vw;
     height: 27vh;
     background: #F0F0F0;
     font-size: 20px;
     padding-top: 10px;
     padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
 
     & .ant-select-arrow{
         color: #FF4300;
     }
     & .ant-calendar-picker-icon{
+        margin-top: -1.2vh;
         color: #FF4300;
     }
 
     & .ant-time-picker-icon{
         color: #FF4300;
+        margin-top: -1.2vh;
+        margin-left: -4vw;  
     }
-    
-    & > .category {
+    & .ant-select-selection{
+        width: 6vw;
+        height: 3vh;
+    }
+    & > .postSettingTitle{
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 10vw;    
+        font-size: 1.2vw;
     }
 
-    & > .deadline {
+    & > .postSettingDetail{
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 19vw;
+
+        & > .category {
         margin-bottom: 1vh;
-        width: 383px;
+        width: 10vw;
+        }
+
+        & > .deadline {
+            display: flex;
+            justify-content: space-between;
+            width: 14vw;
+        }
+
+        & > .executionDate {
+            display: flex;
+            justify-content: space-between;
+            width: 14vw;
+        }
     }
 
-    & > .executionDate {
-        display: flex;
-        justify-content: space-between; 
-        margin-bottom: 1vh;
-        width: 383px;
-    }
-
-    & > .needPersonnel {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
-    }
-    
     /* input type="number"일 경우 생기는 화살표 제거 */
     & input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
@@ -220,9 +232,10 @@ const PostSetting = styled.div`
     & input {
         border: 1px solid #d9d9d9;
         border-radius: 4px;
-        width: 118px;
-        height: 32px;
-        font-size: 14px;
+        width: 6vw;
+        height: 3vh;
+        font-size: 0.7vw;
+        margin-bottom: 1vh;
         color: #7a7a7a;
         :focus{
             outline: none;
@@ -231,22 +244,19 @@ const PostSetting = styled.div`
             color: #BFC7CE;
         }
     }
-
-    & > .money{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
-    }
 `;
 
 const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
-    font-size: 40px;
-    width: 21vw;
+    font-size: 2vw;
+    width: 29vw;
     ::placeholder{
         color: #BFC7CE;
+    }
+
+    :focus{
+        outline: none;  
     }
 `;
 
@@ -254,15 +264,17 @@ const ContentItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 20px;
+    font-size: 1vw;
     margin-top: 20px;
-    width: 21vw;
+    width: 29vw;
 
     & > textarea {
-        width: 21vw;
+        width: 29vw;
         height: 15vh;
         resize: none;
         color: #7a7a7a;
+        border-color: #d9d9d9;
+
         ::placeholder{
             color: #BFC7CE;
         }
@@ -272,7 +284,7 @@ const ContentItem = styled.div`
 const UploadImage = styled.div`
     /* display: flex; */
     margin-top: 20px;
-    width: 21vw;
+    width: 29vw;
 
     & .uploadImage {
         font-size: 16px;
@@ -293,16 +305,25 @@ const UploadImage = styled.div`
         clip:rect(0,0,0,0);
         border:0;
     }
+
+    & .previewImage {
+        display: flex;
+        margin-top: 1vh;
+
+        & div{
+            margin-right: 1vw;
+        }
+    }
 `;
 
 const UploadButton = styled(Button)`
-    width: 15vw;
+    width: 13vw;
+    height: 4vh;
     margin-top: 20px;
     margin-bottom: 20px;
     background: #FF4300;
     border: #FF4300;
     color: white;
-    font-weight: bold;
     font-size: 20px;
     box-shadow: 2px 3px 5px #BFC7CE;
 
