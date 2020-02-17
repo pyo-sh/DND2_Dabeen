@@ -6,6 +6,7 @@ package com.dabeen.dnd.model.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -58,6 +59,6 @@ public class Bskt{
     @JoinColumn(name = "bskt_user_num")
     private User bsktUser; // 장바구니 사용자 번호
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bskt")
-    private List<Pymt> pymt;
+    @OneToOne(mappedBy = "bskt")
+    private Pymt pymt;
 }

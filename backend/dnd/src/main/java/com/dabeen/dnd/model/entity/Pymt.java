@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -65,9 +67,9 @@ public class Pymt{
     @OneToOne(mappedBy = "pymt")
     private MileageUseHist mileageUseHist;
 
-    @NotEmpty(message = "is not null")
-    @MapsId("pymtNum")
+    @NotNull(message = "is not null")
+    @MapsId // (name)은 복합키일 때만
     @JoinColumn(name = "pymt_num")
-    @ManyToOne
+    @OneToOne
     private Bskt bskt; // 결제와 식별관계
 }
