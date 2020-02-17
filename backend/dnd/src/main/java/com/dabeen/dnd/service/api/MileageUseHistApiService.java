@@ -50,6 +50,8 @@ public class MileageUseHistApiService {
                                                                             .orElseThrow(() -> new NotFoundException("User")))
                                                         .useType(requestData.getUseType())
                                                         .usePrice(requestData.getUsePrice())
+                                                        // getOne을 사용할 경우, 객체를 못 찾으면 에러를 호출하므로 findById
+                                                        // 이때 findById의 파라미터가 null이면 오류가 발생하므로 null일 경우 아무 엔터티도 존재하지 않는 '0'으로 대체
                                                         .bskt(bsktRepository.findById(requestData.getBsktNum() == null ? "0" : requestData.getBsktNum())
                                                                             .orElse(null))
                                                         .wdrlAcctNum(requestData.getWdrlAcctNum())
@@ -92,10 +94,10 @@ public class MileageUseHistApiService {
                             throw new NotUpdateableException("pymtNum");
                     } else {
                         if(requestData.getPymtNum() != null)
-                            throw new NotUpdateableException("bsktNum");
-                    }
+                            throw new NotUpdateableException("pymtNum");
+                    }               
                     
-                                           
+                    
                     mileageUseHist.setUseType(requestData.getUseType())
                                 .setUsePrice(requestData.getUsePrice())
                                 .setWdrlAcctNum(requestData.getWdrlAcctNum());
@@ -124,9 +126,9 @@ public class MileageUseHistApiService {
                                                                             .mileageUseDttm(mileageUseHist.getMileageUseHistPK().getMileageUseDttm())
                                                                             .useType(mileageUseHist.getUseType())
                                                                             .usePrice(mileageUseHist.getUsePrice())
-                                                                            .bsktNum(mileageUseHist.getBskt() == null? null : mileageUseHist.getBskt().getBsktNum())
+                                                                            .bsktNum(mileageUseHist.getBskt() == null ? null : mileageUseHist.getBskt().getBsktNum())
                                                                             .wdrlAcctNum(mileageUseHist.getWdrlAcctNum())
-                                                                            .pymtNum(mileageUseHist.getPymt() == null? null : mileageUseHist.getPymt().getPymtNum())
+                                                                            .pymtNum(mileageUseHist.getPymt() == null ? null : mileageUseHist.getPymt().getPymtNum())
                                                                             .build();
         
         return mileageUseHistApiResponse;

@@ -1,3 +1,7 @@
+// BsktCompApiRequest.java
+// BsktComp엔터티의 request에서 전달받을 데이터
+// 작성자 : 권영인
+
 package com.dabeen.dnd.model.network.response;
 
 import java.math.BigDecimal;

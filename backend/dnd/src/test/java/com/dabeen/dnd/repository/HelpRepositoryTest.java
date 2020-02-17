@@ -1,3 +1,7 @@
+// HelpRepositoryTest.java
+// Help JPA Repository 단위 테스트를 위한 코드
+// 작성자 : 권영인
+
 package com.dabeen.dnd.repository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +72,7 @@ public class HelpRepositoryTest {
 
         helpMapper.insert(help);
 
-        assertThat(help.getHelpNum(),is("2002130001"));
+        assertThat(help.getHelpNum(),is("2002160001"));
     }
 
     @Test

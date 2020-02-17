@@ -1,3 +1,6 @@
+// HelpApiController.java
+// 작성자 : 권영인
+
 package com.dabeen.dnd.controller.api;
 
 import javax.validation.Valid;
