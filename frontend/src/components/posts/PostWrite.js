@@ -140,7 +140,7 @@ const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     position: fixed;
     left: 0;
-    top: 30;
+    top: 0;
     height: 100%;
     width: 100%;
     display: flex;
