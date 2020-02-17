@@ -4,6 +4,7 @@ import { Button, Input, Icon } from "antd";
 import { useSelector, useDispatch } from 'react-redux';
 import styled from "styled-components";
 import Link from "next/link";
+import Router from 'next/router';
 import { loginRequestAction, logoutRequestAction } from "../../reducers/user";
 
 const isBrowser = typeof window !== "undefined";
@@ -51,17 +52,17 @@ const Header = () => {
       <div className="menuRight" ref={divRef}>
         <ul>
           <li>
-            <Link href="/postmain">
+            <Link href="/[postmain]" as="/errand">
               <a>심부름</a>
             </Link>
           </li>
           <li>
-            <Link href="rental">
+            <Link href="/[postmain]" as="/rental">
               <a>대여</a>
             </Link>
           </li>
           <li>
-            <Link href="/etc">
+            <Link href="/[postmain]" as="/chores">
               <a>잡일</a>
             </Link>
           </li>

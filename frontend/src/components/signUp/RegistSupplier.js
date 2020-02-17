@@ -11,9 +11,8 @@ const RegistSupplier = () => {
     
     const onChangeDragger = useCallback((info) => {
         const { status } = info.file;
+        setUserPicture([info.file]);        // 항상 설정해야 한다.
         if (status !== 'uploading') {
-            console.dir(info.file);
-            setUserPicture(info.file);
             setPreviewImage(info.file);
         }
         if (status === 'done') {
@@ -71,9 +70,11 @@ const RegistSupplier = () => {
                             <Upload.Dragger
                                 name={'file'}
                                 action={'https://www.mocky.io/v2/5cc8019d300000980a055e76'}
-                                onChange={onChangeDragger}
+                                fileList={userPicture}          // 업로드한 파일 자체를 저장(중복 허용X를 위함)
+                                onChange={onChangeDragger}      
                                 onPreview={onPreviewDragger}
-                                listType={"picture"}
+                                listType={"picture-card"}
+                                multiple={false}
                                 >
                                 <Modal visible={previewVisible} footer={null} onCancel={handleCancel}>
                                     <img alt="example" style={{ width: '100%' }} src={previewImage} />

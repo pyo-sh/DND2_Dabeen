@@ -1,6 +1,36 @@
 import produce from 'immer';
 import { createAction } from './actionFunction';
 
+const dummyHelpPost = {
+    transactionTime: '',                // 통신시간
+    resultCode: '',                     // 응답코드
+    description: '',                    // 비고
+    data: [
+        {
+            help_title: "이런, 튼튼한 오함마",
+            help_num: '1',              // 도움번호
+            help_post_dttm: '',         // 도움게시일시
+            cat_num: '1',               // 카테고리번호
+            price: '2000',              // 금액
+            cont: '오함마 내놔',         // 내용
+            cnsr_num: '12',               // 수요자번호
+            user_name: '표석훈',         // 사용자명
+            address: '',                // 주소
+            phone_num: '01011010100',              // 휴대폰번호
+            id: 'ironman',                     // 아이디
+            email: '',                  // 이메일
+            nickname: '순살치킨',        // 닉네임
+            pic_path: '',               // 사진경로명
+            help_aply_cls_dttm: '2002/02/02',     // 도움신청마감일시
+            help_aprv_whet: 'false',         // 도움승인여부
+            post_num: '3',               // 선호공급자수
+            post_type: '',              // 선호도움이행일시
+            exec_loc: '',                  // 이행장소
+            help_pic_list: '',          // 도움사진목록
+        }
+    ]
+};
+
 export const initialState = {
     helpPosts: [{
         id: 1,
