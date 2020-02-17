@@ -1,6 +1,7 @@
 import React , {useCallback} from 'react';
 import { Modal, Button, Input, Select } from "antd";
 import styled from "styled-components";
+import Banks from './banks';
 const banks = [
   "카카오",
   "신한",
@@ -41,18 +42,8 @@ const RefundWrite = ({visible, setAccountNumber, setRefundPrice, setSelectBank, 
       footer={[<Button onClick={handleOk}>환급하기</Button>]}
     >
       <div>
-        <div className="bankSelectBoX">
-          <select
-            className="bankSelect"
-            placeholder="은행선택"
-            onChange={selectOnChange}
-          >
-            {banks.map((b, i) => (
-              <option key={i} value={b}>
-                {b}
-              </option>
-            ))}
-          </select>
+      <div className ="bankSelectBoX">
+        <Banks selectOnChange={selectOnChange}/>
           <Input
             type="number"
             placeholder="계좌번호"
@@ -81,20 +72,6 @@ const RefundModal = styled(Modal)`
   }
   & .bankSelectBoX {
     display: flex;
-    & .bankSelect {
-      width: 120px;
-      border-radius: 5px;
-      color: tomato;
-      & :focus,
-      :hover {
-        border: 1px solid tomato;
-        box-shadow: none;
-        outline: tomato;
-      }
-    }
-    & span {
-      color: tomato;
-    }
   }
   & input {
     & :focus,
