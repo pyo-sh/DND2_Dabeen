@@ -7,10 +7,10 @@ package com.dabeen.dnd.model.pk;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -20,6 +20,8 @@ import lombok.NoArgsConstructor;
 public class MileageUseHistPK implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "user_num")
     private String userNum; // 사용자 번호
+    
     private LocalDateTime mileageUseDttm; // 마일리지 사용 일시
 }

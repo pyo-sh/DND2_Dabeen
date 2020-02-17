@@ -42,8 +42,10 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         .pymtPrice(requestData.getPymtPrice())
                         .refdWhet(requestData.getRefdWhet())
                         .refdDttm(requestData.getRefdDttm())
+                        .bskt(bsktRepository.findById(requestData.getPymtNum())
+                                            .orElseThrow(() -> new NotFoundException("Bskt")))
                         .build();
-                               
+              
         Pymt newPymt = baseRepository.save(pymt);
    
         return Header.OK(response(newPymt));

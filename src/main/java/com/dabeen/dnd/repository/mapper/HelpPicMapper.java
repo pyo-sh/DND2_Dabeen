@@ -10,8 +10,6 @@ import com.dabeen.dnd.model.pk.HelpPicPK;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-//DB 복구후 MapperXML 작성 예정
-
 @Mapper
 public interface HelpPicMapper{
     void insert(@Param("helpNum") String helpNum, @Param("path") String path);

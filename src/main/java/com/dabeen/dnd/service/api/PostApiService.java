@@ -107,7 +107,7 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                                                         .cont(post.getCont())
                                                         .questPstnDttm(post.getQuestPstnDttm())
                                                         // 연관관계에 있는 객체가 null이라면 해당 변수를 null로 설정
-                                                        .questerNum(post.getQuester() == null ? null : post.getQuester() .getUserNum())
+                                                        .questerNum(post.getQuester() == null ? null : post.getQuester().getUserNum())
                                                         .rplyPstnDttm(post.getRplyPstnDttm())
                                                         .rplyerNum(post.getRplyer() == null ? null : post.getRplyer().getAdminNum())
                                                         .questPostNum(post.getQuestPost() == null ? null : post.getQuestPost().getPostNum())
