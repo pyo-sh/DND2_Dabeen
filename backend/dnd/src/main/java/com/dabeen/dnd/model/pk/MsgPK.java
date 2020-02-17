@@ -1,3 +1,7 @@
+// MsgPK.java
+// Msg 엔터티의 복합키를 구현하기 위한 클래스
+// 작성자 : 권영인
+
 package com.dabeen.dnd.model.pk;
 
 import java.io.Serializable;
