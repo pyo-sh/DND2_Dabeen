@@ -19,6 +19,7 @@ import com.dabeen.dnd.model.pk.MileageUseHistPK;
 import com.dabeen.dnd.repository.BsktRepository;
 import com.dabeen.dnd.repository.MileageUseHistRepository;
 import com.dabeen.dnd.repository.PymtRepository;
+import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ public class MileageUseHistApiService {
     private MileageUseHistRepository mileageUseHistRepository;
    
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private BsktRepository bsktRepository;
 
     @Autowired
@@ -38,15 +42,21 @@ public class MileageUseHistApiService {
     public Header<MileageUseHistApiResponse> create(Header<MileageUseHistApiRequest> request) {
         MileageUseHistApiRequest requestData = request.getData();
         
-        MileageUseHistPK pk = new MileageUseHistPK(requestData.getUserNum(), LocalDateTime.now());
+        MileageUseHistPK pk = new MileageUseHistPK(null, LocalDateTime.now());
 
         MileageUseHist mileageUseHist = MileageUseHist.builder()
                                                         .mileageUseHistPK(pk)
+                                                        .user(userRepository.findById(requestData.getUserNum())
+                                                                            .orElseThrow(() -> new NotFoundException("User")))
                                                         .useType(requestData.getUseType())
                                                         .usePrice(requestData.getUsePrice())
-                                                        .bskt(bsktRepository.getOne(requestData.getBsktNum()))
+                                                        // getOne을 사용할 경우, 객체를 못 찾으면 에러를 호출하므로 findById
+                                                        // 이때 findById의 파라미터가 null이면 오류가 발생하므로 null일 경우 아무 엔터티도 존재하지 않는 '0'으로 대체
+                                                        .bskt(bsktRepository.findById(requestData.getBsktNum() == null ? "0" : requestData.getBsktNum())
+                                                                            .orElse(null))
                                                         .wdrlAcctNum(requestData.getWdrlAcctNum())
-                                                        .pymt(pymtRepository.getOne(requestData.getPymtNum()))
+                                                        .pymt(pymtRepository.findById(requestData.getPymtNum() == null ? "0" : requestData.getPymtNum())
+                                                                            .orElse(null))
                                                         .build();
 
         MileageUseHist newMileageUseHist = mileageUseHistRepository.save(mileageUseHist);
@@ -71,13 +81,23 @@ public class MileageUseHistApiService {
 
         return optional.map(mileageUseHist -> {
                     // 장바구니 번호, 결제 번호는 수정 불가. 수정하려고 한다면 에러 호출
-                    if(!requestData.getBsktNum()
-                                    .equals(mileageUseHist.getBskt().getBsktNum()))
-                        throw new NotUpdateableException("bsktNum");
-                    if(!requestData.getPymtNum()
-                                    .equals(mileageUseHist.getPymt().getPymtNum()))
-                        throw new NotUpdateableException("pymtNum");
-                                           
+                    if(mileageUseHist.getBskt() != null){
+                        if(!requestData.getBsktNum().equals(mileageUseHist.getBskt().getBsktNum()))
+                            throw new NotUpdateableException("bsktNum");
+                    } else {
+                        if(requestData.getBsktNum() != null)
+                            throw new NotUpdateableException("bsktNum");
+                    }
+
+                    if(mileageUseHist.getPymt() != null){
+                        if(!requestData.getPymtNum().equals(mileageUseHist.getPymt().getPymtNum()))
+                            throw new NotUpdateableException("pymtNum");
+                    } else {
+                        if(requestData.getPymtNum() != null)
+                            throw new NotUpdateableException("pymtNum");
+                    }               
+                    
+                    
                     mileageUseHist.setUseType(requestData.getUseType())
                                 .setUsePrice(requestData.getUsePrice())
                                 .setWdrlAcctNum(requestData.getWdrlAcctNum());
@@ -106,9 +126,9 @@ public class MileageUseHistApiService {
                                                                             .mileageUseDttm(mileageUseHist.getMileageUseHistPK().getMileageUseDttm())
                                                                             .useType(mileageUseHist.getUseType())
                                                                             .usePrice(mileageUseHist.getUsePrice())
-                                                                            .bsktNum(mileageUseHist.getBskt().getBsktNum())
+                                                                            .bsktNum(mileageUseHist.getBskt() == null ? null : mileageUseHist.getBskt().getBsktNum())
                                                                             .wdrlAcctNum(mileageUseHist.getWdrlAcctNum())
-                                                                            .pymtNum(mileageUseHist.getPymt().getPymtNum())
+                                                                            .pymtNum(mileageUseHist.getPymt() == null ? null : mileageUseHist.getPymt().getPymtNum())
                                                                             .build();
         
         return mileageUseHistApiResponse;

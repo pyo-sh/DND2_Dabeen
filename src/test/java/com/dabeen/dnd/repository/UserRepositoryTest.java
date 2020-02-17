@@ -28,6 +28,8 @@ public class UserRepositoryTest extends DemoApplicationTests {
 
     @Test
     public void create() {
+        userRepository.findById(null);
+        
         String userName = "이은비";
         String birthDate = "980515";
         String address = "부산시 사하구 낙동대로 486번길 25";
