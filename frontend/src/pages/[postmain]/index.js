@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import styled from 'styled-components';
-import { Modal } from 'antd';
 import PostList from '../../components/posts/PostList';
 import PostWrite from '../../components/posts/PostWrite';
 
@@ -53,10 +52,16 @@ const postmain = () => {
                 <PostList categoryNum={categoryNum}/>
             </div>
             <div className="postmainWrite" onClick={useCallback((e)=>{setPostWriteVisible(true)}, [])}>
-                <img alt="writePost" src={"/images/postIcon.PNG"}/>
-                <Modal visible={postWriteVisible} footer={null} onCancel={useCallback((e)=>{setPostWriteVisible(false)}, [])}>
-                    <PostWrite/>
-                </Modal>
+                <img
+                    className="postmainWriteIcon"
+                    alt="writePost"
+                    src={"/images/postIcon.PNG"}
+                    />
+                {postWriteVisible
+                ?   <PostWrite/>
+                :   null}
+                {/* <Modal visible={postWriteVisible} footer={null} onCancel={useCallback((e)=>{setPostWriteVisible(false)}, [])}>
+                </Modal> */}
             </div>
         </PostUpperDiv>
     );
@@ -87,13 +92,22 @@ const PostUpperDiv = styled.div`
         justify-content: space-between;
     }
     & .postmainWrite{
-        & img{
+        & .postmainWriteIcon{
             width: 86px;
             cursor: pointer;
         }
         position: fixed;
         right: 57px;
         bottom: 100px;
+        & .postmainWriteModal{
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 3;
+        }
     }
 `;
 const PostSearchBox = styled.div`
