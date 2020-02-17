@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"suppler, help"})
+@ToString(exclude = {"suppler", "help"})
 public class HelpSupplComp{
     @EmbeddedId
     @NotNull(message = "is not null")
@@ -59,14 +59,14 @@ public class HelpSupplComp{
     
     /* 연관관계 설정 */
     @NotNull(message = "is not null")
+    @MapsId("helpNum") // Pk 안의 변수와 매핑됨
+    @JoinColumn(name = "help_num")
+    @ManyToOne
+    private Help help;
+
+    @NotNull(message = "is not null")
     @MapsId("supplNum") // Pk 안의 변수와 매핑됨
     @JoinColumn(name = "suppl_num")
     @ManyToOne
     private User suppler;
-
-    @NotNull(message = "is not null")
-    @MapsId("helplNum") // Pk 안의 변수와 매핑됨
-    @JoinColumn(name = "help_num")
-    @ManyToOne
-    private Help help;
 }

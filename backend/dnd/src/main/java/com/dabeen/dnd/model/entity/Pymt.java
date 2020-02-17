@@ -7,11 +7,14 @@ package com.dabeen.dnd.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
@@ -37,6 +40,7 @@ import lombok.experimental.Accessors;
 @ToString(exclude = {"mileageUseHist", "bskt"})
 public class Pymt{
     @Id
+    @Column(name = "pymt_num")
     @NotEmpty(message = "is not null")
     private String pymtNum; // 결제번호
     
@@ -63,6 +67,7 @@ public class Pymt{
 
     @NotEmpty(message = "is not null")
     @MapsId("pymtNum")
-    @OneToOne
+    @JoinColumn(name = "pymt_num")
+    @ManyToOne
     private Bskt bskt; // 결제와 식별관계
 }
