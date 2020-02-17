@@ -15,8 +15,10 @@ import com.dabeen.dnd.model.entity.Pymt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.PymtApiRequest;
 import com.dabeen.dnd.model.network.response.PymtApiResponse;
+import com.dabeen.dnd.repository.BsktRepository;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +26,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse, Pymt> {
+    @Autowired
+    private BsktRepository bsktRepository;
 
     @Override
     public Header<PymtApiResponse> create(Header<PymtApiRequest> request) {
         PymtApiRequest requestData = request.getData();
         
         Pymt pymt = Pymt.builder()
-                        .pymtNum(requestData.getPymtNum())
+                        .pymtNum(null)
+                        .bskt(bsktRepository.findById(requestData.getPymtNum())
+                                            .orElseThrow(() -> new NotFoundException("bskt")))
                         .pymtDttm(LocalDateTime.now())
                         .pymtMthdType(requestData.getPymtMthdType())
                         .pymtPrice(requestData.getPymtPrice())

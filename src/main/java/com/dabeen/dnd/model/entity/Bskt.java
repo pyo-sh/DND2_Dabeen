@@ -58,6 +58,6 @@ public class Bskt{
     @JoinColumn(name = "bskt_user_num")
     private User bsktUser; // 장바구니 사용자 번호
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bskt")
-    private List<Pymt> pymt;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "bskt")
+    private Pymt pymt;
 }

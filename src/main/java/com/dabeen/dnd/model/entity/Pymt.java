@@ -65,9 +65,9 @@ public class Pymt{
     @OneToOne(mappedBy = "pymt")
     private MileageUseHist mileageUseHist;
 
-    @NotEmpty(message = "is not null")
-    @MapsId("pymtNum")
+    @NotNull(message = "is not null")
+    @MapsId
     @JoinColumn(name = "pymt_num")
-    @ManyToOne
+    @OneToOne
     private Bskt bskt; // 결제와 식별관계
 }
