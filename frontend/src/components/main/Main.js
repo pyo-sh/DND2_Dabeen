@@ -45,15 +45,13 @@ const MainForm = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top : 35px;
     width : 100%;
     & .ant-carousel {
-        width : 90%;
-        height : 40vh;
-        margin-top : 26px;
+        width : 100%;
+        height : 50vh;
         & img {
             width : 100%;
-            height : 40vh;
+            height : 50vh;
         }
         & .slick-dots li button::before {
             content : ""

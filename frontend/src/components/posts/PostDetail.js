@@ -4,7 +4,7 @@ import { Button, Icon } from 'antd';
 import CheckDabeener from './CheckDabeener';
 
 // 내가 쓴 글 / 아닌 글 구분해야함
-const PostDetail = () => {
+const PostDetail = ({setVisible}) => {
     
     //임시로 내가 쓴 글이라고 설정
     const [myPost, setMyPost] = useState(true);
@@ -19,7 +19,7 @@ const PostDetail = () => {
             <ContentForm>
                 <Content>     
                     <DeleteIcon>
-                        <Icon type="close" />
+                        <Icon onClick={setVisible} type="close"/>
                     </DeleteIcon>
                     <Title>
                         <div>제목</div>
@@ -85,6 +85,7 @@ const Modal = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 `;
 
 const ContentForm = styled.div`

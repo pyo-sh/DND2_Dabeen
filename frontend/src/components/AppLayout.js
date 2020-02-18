@@ -16,7 +16,7 @@ const AppLayout = ({ children }) => {
     <>
       <Hedaer />
       <AllDiv>
-        {children}
+        <div className="childrenWrapper">{children}</div>
         <Footer />
       </AllDiv>
     </>
@@ -27,6 +27,9 @@ const AllDiv = styled.div`
   height : 100%;
   display : flex;
   flex-direction : column;
+  & .childrenWrapper {
+    margin-top : 10vh;
+  }
 `;
 
 export default AppLayout;

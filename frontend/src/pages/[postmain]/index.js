@@ -1,12 +1,24 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import styled from 'styled-components';
+import { Input, DatePicker } from 'antd';
 import PostList from '../../components/posts/PostList';
 import PostWrite from '../../components/posts/PostWrite';
 
+const dateFormat = 'YYYY/MM/DD';
+
 const postmain = () => {
-    const categoryNum = useRouter().query.postmain;
+    const categoryNum = useRouter().query.postmain;     // 어떤 카테고리를 선택했는지에 대한 props
     const [postWriteVisible, setPostWriteVisible] = useState(false);
+    // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 없애기 위함이다
+    useEffect(() => {
+        setPostWriteVisible(false);
+    }, [categoryNum]);
+
+    const setVisible = useCallback((e) => {
+        setPostWriteVisible(prev => !prev);
+    }, []);
+    
     const getTitle = useCallback(() => {
         switch(categoryNum){
             case "errand": return {
@@ -30,53 +42,70 @@ const postmain = () => {
 
     return (
         <PostUpperDiv>
-            <div className="postmainTitle">
-                <div className="postmainTitleMain">{getTitle().mainTitle}</div>
-                <div className="postmainTitleSub">{getTitle().subTitle}</div>
-            </div>
-            <div className="postmainSearch">
-                <PostSearchBox>
-                    <div className="postsearchboxTitle">지역</div>
-                </PostSearchBox>
-                <PostSearchBox>
-                    <div className="postsearchboxTitle">신청 마감 일시</div>
-                </PostSearchBox>
-                <PostSearchBox>
-                    <div className="postsearchboxTitle">게시글 마감 일시</div>
-                </PostSearchBox>
-                <PostSearchBox>
-                    <div className="postsearchboxTitle">가격대</div>
-                </PostSearchBox>
-            </div>
-            <div className="postmainContent">
-                <PostList categoryNum={categoryNum}/>
-            </div>
-            <div className="postmainWrite" onClick={useCallback((e)=>{setPostWriteVisible(true)}, [])}>
-                <img
-                    className="postmainWriteIcon"
-                    alt="writePost"
-                    src={"/images/postIcon.PNG"}
-                    />
+            <div className="postmainWrapper">
+                <div className="postmainTitle">
+                    <div className="postmainTitleMain">{getTitle().mainTitle}</div>
+                    <div className="postmainTitleSub">{getTitle().subTitle}</div>
+                </div>
+                <div className="postmainSearch">
+                    <PostSearchBox>
+                        <div className="postsearchboxTitle">지역</div>
+                        <Input className="postsearchboxInput"/>
+                    </PostSearchBox>
+                    <PostSearchBox>
+                        <div className="postsearchboxTitle">신청 마감 일시</div>
+                        <DatePicker className="postsearchboxDatePicker" format={dateFormat} />{/*defaultValue={moment('2015/01/01', dateFormat)}}*/}
+                    </PostSearchBox>
+                    <PostSearchBox>
+                        <div className="postsearchboxTitle">게시글 마감 일시</div>
+                        <DatePicker className="postsearchboxDatePicker" format={dateFormat} />{/*defaultValue={moment('2015/01/01', dateFormat)}}*/}
+                    </PostSearchBox>
+                    <PostSearchBox>
+                        <div className="postsearchboxTitle">가격대</div>
+                        <Input className="postsearchboxInput"/>
+                    </PostSearchBox>
+                </div>
+                <div className="postmainContent">
+                    <PostList categoryNum={categoryNum}/>
+                </div>
+                <div className="postmainWrite" onClick={useCallback((e)=>{setPostWriteVisible(true)}, [])}>
+                    <img
+                        className="postmainWriteIcon"
+                        alt="writePost"
+                        src={"/images/postIcon.PNG"}
+                        />
+                </div>
                 {postWriteVisible
-                ?   <PostWrite/>
+                ?   <PostWrite setVisible={setVisible}/>
                 :   null}
-                {/* <Modal visible={postWriteVisible} footer={null} onCancel={useCallback((e)=>{setPostWriteVisible(false)}, [])}>
-                </Modal> */}
             </div>
         </PostUpperDiv>
     );
 };
 
 const PostUpperDiv = styled.div`
-    padding: 70px 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & .postmainWrapper{
+        width: 100%;
+        max-width: 1200px;
+        min-width: 320px;
+        padding: 0 10px;
+    }
     & .postmainTitle{
         font-weight: bold;
         display: flex;
         align-items: flex-end;
+        flex-wrap: wrap;
+        padding: 0 10px;
         & .postmainTitleMain{
+            min-width: 100px;
             font-size: 50px;
         }
         & .postmainTitleSub{
+            padding-left: 10px;
             font-size: 28px;
         }
     }
@@ -115,7 +144,13 @@ const PostSearchBox = styled.div`
     display: flex;
     align-items: flex-end;
     & .postsearchboxTitle{
-
+        width: 120px;
+    }
+    & .postsearchboxInput{
+        width : 150px;
+    }
+    & .postsearchboxDatePicker{
+        
     }
 `;
 
