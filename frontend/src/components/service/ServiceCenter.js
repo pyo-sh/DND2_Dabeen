@@ -98,10 +98,6 @@ const ServiceCenter = () => {
   // }, []);
   return (
     <ServiceWrapper>
-      <div className="serviceTitle">
-        <h1>고객센터</h1>
-      </div>
-      <div className="serviceBox">
         <h2>내 문의</h2>
         <div className="serviceQuestion">
           <ul>
@@ -123,38 +119,25 @@ const ServiceCenter = () => {
             ))}
           </ul>
         </div>
-      </div>
     </ServiceWrapper>
   );
 };
 
 const ServiceWrapper = styled.div`
   width: 100%;
-  margin-top: 65px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  
-  & > div {
-    padding: 10px;
-  }
-  & .serviceTitle {
-    width : 60%;
-    display : flex;
-    justify-content : flex-start;
-    padding-bottom : 0px;
-  }
-  & .serviceBox {
-    border: 1px solid grey;
-    width: 60%;
-  }
+  justify-content : flex-start;
+  align-items: flex-start; */
   & .serviceQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
     & ul {
       margin : 0;
       padding : 0;
+      display : flex;
+      flex-direction : column;
+      & > div:last-child {
+        border-bottom : 1px solid black;
+      }
     }
   }
   & .btnBox {
@@ -174,15 +157,19 @@ const ServiceWrapper = styled.div`
       }
     }
   & .frequentQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
     & ul {
       margin : 0;
       padding : 0;
+      display : flex;
+      flex-direction : column;
+      & > div:last-child {
+        border-bottom : 1px solid black;
+      }
     }
+    margin-bottom : 10px;
   }
   @media screen and (max-width: 768px) { /* 768보다 작을 때는 화면 크게 만들거임!!*/
-    & .serviceTitle, .serviceBox {
+    & .serviceBox {
       width : 100%;
       max-width : 612px;
     }

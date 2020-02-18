@@ -48,12 +48,12 @@ const MainForm = styled.div`
     margin-top : 35px;
     width : 100%;
     & .ant-carousel {
-        width : 90%;
-        height : 40vh;
+        width : 100%;
+        height : 50vh;
         margin-top : 26px;
         & img {
             width : 100%;
-            height : 40vh;
+            height : 50vh;
         }
         & .slick-dots li button::before {
             content : ""

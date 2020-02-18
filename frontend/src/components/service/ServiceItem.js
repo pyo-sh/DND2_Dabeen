@@ -7,7 +7,7 @@ const ServiceItem = memo(({ service }) => {
     setIsClick(prev => !prev);
   }, []);
   return (
-    <ServiceItemBox>
+    <ServiceItemBox isClick={isClick}>
       <div className="question">
         <a onClick={questionOnClick}>
           <b>Q.</b> {service.title}
@@ -24,8 +24,12 @@ const ServiceItem = memo(({ service }) => {
 
 const ServiceItemBox = styled.div`
   & .question, .answer {
-    border-bottom: 1px solid black;
+    border: 1px solid black;
+    border-bottom : none;
     width: 100%;
+  }
+  & .answer {
+    display : ${props=> props.isClick ? "block" : "none"}
   }
   & .question {
     padding : 5px;
