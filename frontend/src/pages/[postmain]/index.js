@@ -14,6 +14,10 @@ const postmain = () => {
     useEffect(() => {
         setPostWriteVisible(false);
     }, [categoryNum]);
+
+    const setVisible = useCallback((e) => {
+        setPostWriteVisible(prev => !prev);
+    }, []);
     
     const getTitle = useCallback(() => {
         switch(categoryNum){
@@ -71,7 +75,7 @@ const postmain = () => {
                         src={"/images/postIcon.PNG"}
                         />
                     {postWriteVisible
-                    ?   <PostWrite/>
+                    ?   <PostWrite setVisible={setVisible}/>
                     :   null}
                 </div>
             </div>
