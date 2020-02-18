@@ -20,6 +20,7 @@ const Login = ({clickLogin}) => {
     const submitForm = useCallback((e) => {
         e.preventDefault();
         dispatch(loginRequestAction({id, password, loginMaintain}));
+        clickLogin();
     },[id, password]);
 
     useEffect(() => {
