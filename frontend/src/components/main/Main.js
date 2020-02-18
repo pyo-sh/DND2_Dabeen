@@ -45,12 +45,10 @@ const MainForm = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top : 35px;
     width : 100%;
     & .ant-carousel {
         width : 100%;
         height : 50vh;
-        margin-top : 26px;
         & img {
             width : 100%;
             height : 50vh;

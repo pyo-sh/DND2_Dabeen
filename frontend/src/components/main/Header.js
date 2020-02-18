@@ -32,7 +32,6 @@ const Header = () => {
   }, []);
 
   const clickMy = useCallback(() => {
-    setSelected("userpage");
     setIsClickMy(prev => !prev);
   }, []);
   const clickSignUp = useCallback(() => setSelected("signup"), []);
@@ -117,7 +116,7 @@ const Header = () => {
                 >
                   <b>MY</b>
                 </a>
-                {isClickMy ? (
+                {isClickMy && (
                   <div className="userPageList">
                     <ul>
                       <li>
@@ -125,15 +124,15 @@ const Header = () => {
                         &nbsp;
                         <span>25000</span>원
                       </li>
-                      <li><Link href="/basketmain"><a>장바구니</a></Link></li>
+                      <li><Link href="/basketmain"><a onClick={clickMy}>장바구니</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/ansrjsdn/userinfo`}><a>마이페이지</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/ansrjsdn/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
                       <li><Link href="/chat"><a>채팅하기</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/ansrjsdn/service`}><a>고객센터</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/ansrjsdn/service`}><a onClick={clickMy}>고객센터</a></Link></li>
                     </ul>
                   </div>
-                ) : null}
+                )}
                 {/* </Link> */}
               </div>
               <div>
@@ -168,6 +167,7 @@ const Menubar = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;
+  height : 10vh;
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
@@ -180,7 +180,7 @@ const Menubar = styled.nav`
   opacity : 0.9;
   & .menuToggle {
     position: absolute;
-    top: 13px;
+    top: 18px;
     right: 20px;
     cursor: pointer;
     color: black;
@@ -256,7 +256,7 @@ const Menubar = styled.nav`
       & a {
         color: black;
       }
-      & a.click{
+      & a.click, a:hover{
           color : #ff4300;
         }
     }

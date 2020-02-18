@@ -42,14 +42,12 @@ const UserPage = () => {
 };
 
 const UserPageWrapper = styled.article`
-    margin-top : 30px;
     width : 100%;
     display : flex;
     justify-content : center;
     align-items : center;
     @media screen and (max-width: 768px) {
         flex-direction : column;
-        margin-top : 60px;
     }
     & a {
         color : black;
