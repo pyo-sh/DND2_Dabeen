@@ -77,6 +77,7 @@ public class HelpRepositoryTest {
 
         Map<String,Object> helpMap = new HashMap<>();
 
+
         helpMap.put("helpPstnDttm",helpPstnDttm);
         helpMap.put("catNum",catNum);
         helpMap.put("cnsrNum", cnsrNum);
@@ -91,18 +92,18 @@ public class HelpRepositoryTest {
                             
         helpMapper.insert(helpMap);
 
-        assertThat(helpMap.get("helpNum"),is("2002180001"));
+        assertThat(helpMap.get("helpNum"),is("2002180002"));
     }
 
     @Test
     public void read(){
         Optional<Help> help = helpRepository.findById("2002180001");
-        Assert.assertNotNull(help.isPresent());
+        assertThat(help.get().getHelpNum(),is("2002180001"));
     }
 
     @Test
     public void update(){
-        Optional<Help> help = helpRepository.findById("200203001");
+        Optional<Help> help = helpRepository.findById("2002180001");
 
         help.ifPresent(selectorUser -> {
             selectorUser.setExecLoc("부산광역시");
