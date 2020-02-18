@@ -1,52 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Icon, Divider } from 'antd';
+import PostDetail from './PostDetail';
 
-const PostCapsule = ({ index }) => {
+const PostCapsule = ({ data }) => {
+    const [postDetailVisible, setPostDetailVisible] = useState(false);      // 카테고리 클릭에 대한 상세 정보
     
     return (
-        <PostCapsuleUpperDiv>
-            <div className="Capsule-Main">
-                <div className="Capsule-Main-Location">
+        <PostCapsuleUpperDiv onClick={useCallback((e)=>{setPostDetailVisible(true)}, [])}>
+            <div className="CapsuleMain">
+                <div className="CapsuleMainLocation">
                     <LocationIcon
                         type="environment"/>
-                     ~~~~시 ~~~구
+                     {data.address}
                 </div>
-                <div className="Capsule-Main-Profile">
+                <div className="CapsuleMainProfile">
                     <Divider orientation="left">
-                        <div className="Capsule-Main-Picture">
-                            사진
+                        <div className="CapsuleMainPicture">
+                            사진{data.help_pic_list}
                         </div>
                     </Divider>
-                    <div className="Capsule-Main-UserInfo">
-                        <div className="Capsule-Main-Nickname">
-                            닉네임
+                    <div className="CapsuleMainUserInfo">
+                        <div className="CapsuleMainNickname">
+                            {data.nickname}
                         </div>
-                        <div className="Capsule-Main-Id">
-                            @아이디
+                        <div className="CapsuleMainId">
+                            @{data.id}
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="Capsule-Title">
-                튼튼 오함마 망치가 필요해요
-                <div className="Capsule-Title-Check">신청 중</div>
+            <div className="CapsuleTitle">
+                {data.help_title}
+                {data.help_aprv_whet==="true"
+                ?   <div className="CapsuleTitleCheck">신청 중</div>
+                :   <div className="CapsuleTitleCheck">마감</div>
+                }
             </div>
-            <div className="Capsule-FinishTime">
-                신청 마감일 : 20~~년 ~월 ~일
+            <div className="CapsuleFinishTime">
+                신청 마감일 : {data.help_aply_cls_dttm}
             </div>
-            <div className="Capsule-DoingTime">
-                수행일 : 20~~년 ~월 ~일
+            <div className="CapsuleDoingTime">
+                수행일 : {data.post_type}
             </div>
+            {postDetailVisible
+            ?   <PostDetail/>
+            :   null}
         </PostCapsuleUpperDiv>
     );
 };
 
 const PostCapsuleUpperDiv = styled.div` 
-    width: 350px;
+    width: 100%;
+    max-width: 500px;
+    min-width: 300px;
     cursor: pointer;
-    & .Capsule-Main{
+    & .CapsuleMain{
         width: 100%;
         height: 240px;
         border: solid 1px #d0d0d0;
@@ -59,38 +69,38 @@ const PostCapsuleUpperDiv = styled.div`
         & :hover{
             border: solid 1px #FF4300;
         }
-        & .Capsule-Main-Location{
+        & .CapsuleMainLocation{
             align-self: flex-end;
             padding: 5px 10px;
         }
-        & .Capsule-Main-Picture{
-            width: 70px;
-            height: 70px;
-            border: solid 1px #d0d0d0;
-            border-radius: 50%;
-            text-align: center;
-        }
-
-        & .Capsule-Main-UserInfo{
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            width: 100%;
-            margin-top: -45px;
-            margin-left: -25px;
-            & .Capsule-Main-Nickname{
-                font-size: 18px;
+        & .CapsuleMainProfile{
+            & .CapsuleMainPicture{
+                width: 70px;
+                height: 70px;
+                border: solid 1px #d0d0d0;
+                border-radius: 50%;
+                text-align: center;
             }
-            & .Capsule-Main-Id{
-                padding-left: 10px;
+            & .CapsuleMainUserInfo{
+                display: flex;
+                align-items: flex-end;
+                text-align: start;
+                margin-top: -40px;
+                padding-left: 110px;
+                & .CapsuleMainNickname{
+                    font-size: 18px;
+                }
+                & .CapsuleMainId{
+                    padding-left: 10px;
+                }
             }
         }
     }
 
-    & .Capsule-Title{
+    & .CapsuleTitle{
         display: flex;
         font-size: 25px;
-        & .Capsule-Title-Check{
+        & .CapsuleTitleCheck{
             width: 50px;
             padding: 2px;
             color: white;
