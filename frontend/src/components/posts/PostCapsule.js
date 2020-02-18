@@ -7,6 +7,10 @@ import PostDetail from './PostDetail';
 const PostCapsule = ({ data }) => {
     const [postDetailVisible, setPostDetailVisible] = useState(false);      // 카테고리 클릭에 대한 상세 정보
     
+    const setVisible = useCallback((e) => {
+        setPostDetailVisible(prev => !prev);
+    }, []);
+
     return (
         <PostCapsuleUpperDiv onClick={useCallback((e)=>{setPostDetailVisible(true)}, [])}>
             <div className="CapsuleMain">
@@ -45,7 +49,7 @@ const PostCapsule = ({ data }) => {
                 수행일 : {data.post_type}
             </div>
             {postDetailVisible
-            ?   <PostDetail/>
+            ?   <PostDetail setVisible={setVisible}/>
             :   null}
         </PostCapsuleUpperDiv>
     );

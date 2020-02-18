@@ -5,8 +5,8 @@ import PostDetail from "../components/posts/PostDetail";
 
 const Home = () => {
   return (
-      // <Main/>
-      <PostDetail />
+      <Main/>
+      // <PostDetail />
   );
 };
 
