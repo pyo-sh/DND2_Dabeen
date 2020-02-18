@@ -12,46 +12,48 @@ const PostCapsule = ({ data }) => {
     }, []);
 
     return (
-        <PostCapsuleUpperDiv onClick={useCallback((e)=>{setPostDetailVisible(true)}, [])}>
-            <div className="CapsuleMain">
-                <div className="CapsuleMainLocation">
-                    <LocationIcon
-                        type="environment"/>
-                     {data.address}
-                </div>
-                <div className="CapsuleMainProfile">
-                    <Divider orientation="left">
-                        <div className="CapsuleMainPicture">
-                            사진{data.help_pic_list}
-                        </div>
-                    </Divider>
-                    <div className="CapsuleMainUserInfo">
-                        <div className="CapsuleMainNickname">
-                            {data.nickname}
-                        </div>
-                        <div className="CapsuleMainId">
-                            @{data.id}
+        <>
+            <PostCapsuleUpperDiv onClick={useCallback((e)=>{setPostDetailVisible(true)}, [])}>
+                <div className="CapsuleMain">
+                    <div className="CapsuleMainLocation">
+                        <LocationIcon
+                            type="environment"/>
+                        {data.address}
+                    </div>
+                    <div className="CapsuleMainProfile">
+                        <Divider orientation="left">
+                            <div className="CapsuleMainPicture">
+                                사진{data.help_pic_list}
+                            </div>
+                        </Divider>
+                        <div className="CapsuleMainUserInfo">
+                            <div className="CapsuleMainNickname">
+                                {data.nickname}
+                            </div>
+                            <div className="CapsuleMainId">
+                                @{data.id}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="CapsuleTitle">
-                {data.help_title}
-                {data.help_aprv_whet==="true"
-                ?   <div className="CapsuleTitleCheck">신청 중</div>
-                :   <div className="CapsuleTitleCheck">마감</div>
-                }
-            </div>
-            <div className="CapsuleFinishTime">
-                신청 마감일 : {data.help_aply_cls_dttm}
-            </div>
-            <div className="CapsuleDoingTime">
-                수행일 : {data.post_type}
-            </div>
+                <div className="CapsuleTitle">
+                    {data.help_title}
+                    {data.help_aprv_whet==="true"
+                    ?   <div className="CapsuleTitleCheck">신청 중</div>
+                    :   <div className="CapsuleTitleCheck">마감</div>
+                    }
+                </div>
+                <div className="CapsuleFinishTime">
+                    신청 마감일 : {data.help_aply_cls_dttm}
+                </div>
+                <div className="CapsuleDoingTime">
+                    수행일 : {data.post_type}
+                </div>
+            </PostCapsuleUpperDiv>
             {postDetailVisible
             ?   <PostDetail setVisible={setVisible}/>
             :   null}
-        </PostCapsuleUpperDiv>
+        </>
     );
 };
 

@@ -74,10 +74,10 @@ const postmain = () => {
                         alt="writePost"
                         src={"/images/postIcon.PNG"}
                         />
-                    {postWriteVisible
-                    ?   <PostWrite setVisible={setVisible}/>
-                    :   null}
                 </div>
+                {postWriteVisible
+                ?   <PostWrite setVisible={setVisible}/>
+                :   null}
             </div>
         </PostUpperDiv>
     );
