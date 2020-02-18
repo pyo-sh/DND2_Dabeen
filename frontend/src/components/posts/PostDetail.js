@@ -10,7 +10,7 @@ const PostDetail = ({myPost}) => {
             <ContentForm>
                 <Content>     
                     <DeleteIcon>
-                        <Icon type="close" />
+                        <Icon type="close"/>
                     </DeleteIcon>
                     <Title>
                         <div>제목</div>
