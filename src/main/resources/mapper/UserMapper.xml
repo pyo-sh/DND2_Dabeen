@@ -26,13 +26,14 @@
             <when test="value != null">
                 SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
-                WHERE blon_sgg_name = #{blonSggName}
+                WHERE blon_sgg_name = #{blonSggName} AND avg_rate IS NOT NULL
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </when>
             <otherwise>
                 SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
+                WHERE avg_rate IS NOT NULL
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </otherwise>
