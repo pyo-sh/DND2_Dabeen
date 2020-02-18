@@ -15,10 +15,11 @@ const PostWrite = () => {
     const [dateofExecution, setDateofExecution] = useState({date: '', time: ''});   //수행 일시 
     const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
-    const [location, setLocation] = useState('');   //위치
+    const [location, setLocation] = useState('');   //이행위치
+    const [sigungu, setSigungu] = useState('');     //이행시군구명
     const [requirements, onChangeRequirements] = inputChangeHook('');   //요구사항
-    const [images, setImages] = useState([]);
-    const [urls, setUrls] = useState([]);
+    const [images, setImages] = useState([]);       //도움 이미지
+    const [urls, setUrls] = useState([]);           //도움 이미지 미리보기 위한 url
 
     // const {helpPosts} = useSelector(state => state.posts);
 
@@ -43,10 +44,12 @@ const PostWrite = () => {
         setDateofExecution({...dateofExecution, time: timeString});
     }, [dateofExecution]);
 
-    const getLocation = useCallback(data => {
-        setLocation(data);
+    const getLocation = useCallback((fullAddress, sigunguName) => {
+        setLocation(fullAddress);
+        setSigungu(sigunguName);
     }, []);
             
+    console.log(sigungu);
     const addPost = useCallback(() => {
         e.preventDefault();
         // if(!postTitle || !postTitle.trim()){
@@ -108,10 +111,10 @@ const PostWrite = () => {
                         <textarea placeholder="요구사항을 입력하세요." required  value={requirements} onChange={onChangeRequirements}/>
                     </ContentItem>
                     <UploadImage>
-                        <div style={{width: "5vw"}}>사진첨부</div>
+                        <div>사진첨부</div>
                         <Upload urls={urls} images={images} getUrls={getUrls} getImages={getImages}/>
                         <div className="previewImage">
-                            {images.length !== 0 ? urls.map((url, i) => <div><img src={url} width={100} height={100} key={i} alt="미리보기" /></div>) : <></>}
+                            {images.length !== 0 ? urls.map((url, i) => <div className="imgBorder"><Icon type="close" /><img src={url} key={i} alt="미리보기" /></div>) : <></>}
                         </div>
                     </UploadImage>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
@@ -282,9 +285,9 @@ const ContentItem = styled.div`
 `;
 
 const UploadImage = styled.div`
-    /* display: flex; */
     margin-top: 20px;
     width: 29vw;
+    font-size: 1vw;
 
     & .uploadImage {
         font-size: 16px;
@@ -310,8 +313,23 @@ const UploadImage = styled.div`
         display: flex;
         margin-top: 1vh;
 
-        & div{
+        & .imgBorder{
+            width: 6vw;
+            height: 12vh;
+            border: 1px solid #BFC7CE;
+            border-radius: 4px;
             margin-right: 1vw;
+        }
+
+        & img{
+            margin: 0.7vh 0.5vw;
+            width: 5vw;
+            height: 10.5vh;
+
+            :hover {
+                background: #F0F0F0;
+                opacity: 0.3;
+            }
         }
     }
 `;

@@ -33,7 +33,7 @@ const dummyHelpPost = {
 
 export const initialState = {
     helpPosts: [{
-        id: 1,
+        id: 1,          
         postName: '망치 빌려주세요.',   //게시글 제목
         category: '심부름',            //카테고리
         postDeadline: {               //신청 마감 일시
@@ -142,6 +142,10 @@ const reducer = (state = initialState, action) => {
                 draft.removeHelpPostErrorReason = action.data.error;
                 break;
             }
+            default:
+                break;
         }
-    })
-}
+    });
+};
+
+export default reducer;
