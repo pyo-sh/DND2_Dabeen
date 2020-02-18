@@ -51,7 +51,7 @@ public class HelpPicRepositoryTest {
 
         HelpPic helpPic = HelpPic.builder().helpPicPK(helpPicPK).path(path).build();
 
-        helpPicMapper.insert(helpPic.getHelpPicPK().getHelpNum(),helpPic.getPath());
+        // helpPicMapper.insert(helpPic.getHelpPicPK().getHelpNum(),helpPic.getPath());
         // helpPicMapper.insert(helpPic);
         // HelpPicMapper.insert(helpPic,helpPic.getHelpPicPK().getHelpNum());
 

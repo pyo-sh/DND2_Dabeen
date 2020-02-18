@@ -15,7 +15,6 @@ import com.dabeen.dnd.service.BaseService;
 import org.springframework.stereotype.Service;
 
 
-@Transactional
 @Service
 public class CategoryApiService extends BaseService<CategoryApiRequest, CategoryApiResponse, Category> {
 
@@ -24,7 +23,7 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         // TODO Auto-generated method stub
         CategoryApiRequest categoryApiRequest = request.getData();
 
-        Category category = Category.builder().catName(categoryApiRequest.getCatName())
+        Category category = Category.builder().catNum(categoryApiRequest.getCatNum()).catName(categoryApiRequest.getCatName())
                                                 .catDesc(categoryApiRequest.getCatDesc())
                                                 .highCatNum(categoryApiRequest.getHighCatNum()).build();
         
