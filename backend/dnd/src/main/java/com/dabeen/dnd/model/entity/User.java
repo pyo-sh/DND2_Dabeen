@@ -105,4 +105,8 @@ public class User{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rplyer")
     private List<Post> replies;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Help> helps;
+    
 }

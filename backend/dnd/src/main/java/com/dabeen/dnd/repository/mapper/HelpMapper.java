@@ -4,11 +4,11 @@
 
 package com.dabeen.dnd.repository.mapper;
 
-import com.dabeen.dnd.model.entity.Help;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface HelpMapper{
-    void insert(Help help);
+    void insert(Map<String,Object> helpMap);
 }
