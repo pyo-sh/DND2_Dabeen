@@ -5,10 +5,10 @@ function addHelpPostAPI() { //게시글 업로드
 
 };
 
-function* addHelpPost() {
+function* addHelpPost(data) {
     try{
         yield call(addPostAPI);
-        yield put(AddHelpPostSuccessAction());
+        yield put(AddHelpPostSuccessAction(data));
     }
     catch(e) {
         console.log(e);

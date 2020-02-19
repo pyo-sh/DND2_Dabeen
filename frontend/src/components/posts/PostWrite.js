@@ -1,10 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { Select, DatePicker, TimePicker, Icon, Button, Form } from 'antd';
+import { Select, DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import Upload from '../uploadImages/Upload';
+import { AddHelpPostSuccessAction } from '../../reducers/posts';
 
 const categorys = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -21,7 +22,8 @@ const PostWrite = ({setInvisible}) => {
     const [images, setImages] = useState([]);       //도움 이미지
     const [urls, setUrls] = useState([]);           //도움 이미지 미리보기 위한 url
 
-    // const {helpPosts} = useSelector(state => state.posts);
+    const {helpPosts} = useSelector(state => state.posts);
+    const dispatch = useDispatch();
 
     const getCategory = useCallback(category => {
         setCategory(category);
@@ -48,15 +50,24 @@ const PostWrite = ({setInvisible}) => {
         setLocation(fullAddress);
         setSigungu(sigunguName);
     }, []);
-            
-    console.log(sigungu);
+    
+    //게시글 업로드
     const addPost = useCallback(() => {
         e.preventDefault();
-        // if(!postTitle || !postTitle.trim()){
-        //     // antd로 경고창 만드셈
-        // } 
-        
-    }, []);
+        if(!postTitle || !postTitle.trim()){
+            message.error('제목을 입력해주세요!');
+        } 
+        dispatch(AddHelpPostSuccessAction({
+            help_title: postTitle,
+            cat_num: category,
+            help_aply_cls_dttm: postDeadline,
+            post_type: dateofExecution,
+            post_num: needPersonnel,
+            price: money,
+            exec_loc: location,
+            sigungu: sigungu
+        }));
+    }, [postTitle]);
 
     //일단 이렇게 해놨는데 더 좋게 할 수 있남
     const getUrls = useCallback(data => {
@@ -66,6 +77,12 @@ const PostWrite = ({setInvisible}) => {
     const getImages = useCallback(data => {
         setImages(data);
     }, []);
+
+    //이미지 삭제
+    const deleteImage = useCallback(key => e =>{
+        setUrls(urls.filter(url => url.key !== key));
+        setImages(images.filter(image => image.key !== key));
+    }, [urls, images]);
 
     return (
         <Modal>
@@ -114,7 +131,12 @@ const PostWrite = ({setInvisible}) => {
                         <div>사진첨부</div>
                         <Upload urls={urls} images={images} getUrls={getUrls} getImages={getImages}/>
                         <div className="previewImage">
-                            {images.length !== 0 ? urls.map((url, i) => <div className="imgBorder"><Icon type="close" /><img src={url} key={i} alt="미리보기" /></div>) : <></>}
+                            {images.length !== 0 ? 
+                                urls.map((url, i) => {
+                                    return(
+                                    <div className="imgBorder"><div className="deleteIcon"><Icon type="close" onClick={deleteImage(url.key)}/></div><img src={url.url} key={i} alt="미리보기"/></div>
+                                    )
+                                }) : <></>}
                         </div>
                     </UploadImage>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
@@ -185,10 +207,10 @@ const PostSetting = styled.div`
         color: #FF4300;
     }
 
-    & .ant-time-picker-icon{
+    & .ant-time-picker-clock-icon{
         color: #FF4300;
-        margin-top: -1.2vh;
-        margin-left: -4vw;  
+        margin-top: -0.5vh;
+        margin-left: -1.5vw;  
     }
     & .ant-select-selection{
         width: 6vw;
@@ -315,21 +337,33 @@ const UploadImage = styled.div`
 
         & .imgBorder{
             width: 6vw;
-            height: 12vh;
+            height: 13.5vh;
             border: 1px solid #BFC7CE;
             border-radius: 4px;
             margin-right: 1vw;
-        }
 
-        & img{
-            margin: 0.7vh 0.5vw;
-            width: 5vw;
-            height: 10.5vh;
+            & .deleteIcon{
+                font-size: 1vw;
+                text-align: right;
+                margin-left: 1vw;
+                opacity: 0;
+
+                :hover {
+                    opacity: 0.7;
+                }
+            }
 
             :hover {
                 background: #F0F0F0;
-                opacity: 0.3;
+                opacity: 0.7;
+                z-index: 1;
             }
+        }
+
+        & img{
+            margin: 0.05vh 0.5vw;
+            width: 5vw;
+            height: 10vh;
         }
     }
 `;

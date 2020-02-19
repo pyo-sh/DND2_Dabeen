@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Geocode from 'react-geocode';    //주소를 위도, 경도로 계산해서 나타내줌
 import apiKeys from '../../api/apiKeys';
 import GoogleMapReact from 'google-map-react';
 
 const MyLocation = ({myLocation}) => {
-    //임시로 부경대학교 위치가 제일 처음 뜨게 설정했다.
+    // //임시로 부경대학교 위치가 제일 처음 뜨게 설정했다.
     const [lat, setLat] = useState(35.135);
     const [lng, setLng] = useState(129.107);
     const Marker = ({ image }) => <img src={image} width="30px" height="30px" alt="지도 핀"/> ;
@@ -21,7 +21,7 @@ const MyLocation = ({myLocation}) => {
             console.error(error);
         }
     )
-
+    
     return (
         <div style={{height: '100%', width: '100%'}}>
             <GoogleMapReact
