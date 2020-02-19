@@ -154,4 +154,16 @@ const PostSearchBox = styled.div`
     }
 `;
 
+postmain.getInitialProps = async (context) => {
+    // context.store.dispatch({
+
+    // })
+    
+    // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
+    // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.
+    // 처음 들어가자마자 있어야 하는 정보들은 여기서 아니면 useEffect 같은 곳에서
+    // 리덕스 말고 다른 정보를 props로 주려면
+    // return { } 여기 안에 주면 props로 받을 수 있음.
+}
+
 export default postmain;

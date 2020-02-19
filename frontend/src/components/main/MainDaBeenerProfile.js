@@ -12,7 +12,7 @@ const defaultDabeener = [
     {
         userId: "adf",
         nickname : "123",
-        userRate : 4,
+        userRate : 4.5,
         profile : ""
     },
     {
@@ -43,7 +43,7 @@ const MainDaBeenerProfile = () => {
                 <Avatar size = {100} icon="user"/>
                 <div>@{user.nickname}</div>
                 <div style={{fontSize: 12}}>{user.userId}</div>
-                <Rate disabled defaultValue={user.userRate} style={{fontSize: 12}}/>
+                <Rate allowHalf disabled defaultValue={user.userRate} style={{fontSize: 12}}/>
             </MainDaBeenerProfileInfo>
             ))}
         </MainDaBeenerProfileForm>
@@ -72,6 +72,9 @@ const MainDaBeenerProfileInfo = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 2vh; 
+    & .ant-rate {
+        color: #ff4300;
+    }
 `;
 
 export default MainDaBeenerProfile;

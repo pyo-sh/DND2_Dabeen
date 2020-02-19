@@ -1,12 +1,8 @@
 //도움말
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import ServiceItem from './ServiceItem';
 import ServiceQuestion from './ServiceQuestion';
-import Charge from "../money/Charge";
-import Refund from "../money/Refund";
-import Axios from "axios";
-
 const dummyMyQuestion = [
   {
     fqa_num : 1,
@@ -110,7 +106,7 @@ const ServiceCenter = () => {
           <button onClick={showModal}>문의하기</button>
         </div>
         {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
-        <Refund visible={visible} setVisible={setVisible} />
+        <ServiceQuestion visible={visible} setVisible={setVisible} />
         <h2>자주 묻는 질문</h2>
         <div className="frequentQuestion">
           <ul>

@@ -115,8 +115,8 @@ const GivHelpWrapper = styled.div`
 `;
 const HelpBox = styled.div`
   display: flex;
-  width: 40%;
-  min-width: 250px;
+  width: 35%;
+  min-width: 210px;
   justify-content: space-around;
   border: 2px solid ${props => props.done ? "darkgrey" : "#ff4300"};
   padding: 15px;

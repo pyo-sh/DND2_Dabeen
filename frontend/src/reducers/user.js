@@ -32,6 +32,14 @@ export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST"; // 서버쪽에 갔다 와야 
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 
+// export const FIND_ID_REQUEST = "FIND_ID_REQUEST";
+// export const FIND_ID_SUCCESS = "FIND_ID_SUCCESS";
+// export const FIND_ID_FAILURE = "FIND_ID_FAILURE";
+
+// export const FIND_PASSWORD_REQUEST = "FIND_PASSWORD_REQUEST";
+// export const FIND_PASSWORD_SUCCESS = "FIND_PASSWORD_SUCCESS";
+// export const FIND_PASSWORD_FAILURE = "FIND_PASSWORD_FAILURE";
+
 // export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 // export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 // export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
@@ -60,6 +68,13 @@ export const logoutFailureAction = createAction(LOG_OUT_FAILURE);
 // export const loadUserSuccessAction = createAction(LOAD_USER_SUCCESS);
 // export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
 
+// export const findUserIdRequestAction = createAction(FIND_ID_REQUEST);
+// export const findUserIdSuccessAction = createAction(FIND_ID_SUCCESS);
+// export const findUserIdFailureAction = createAction(FIND_ID_FAILURE);
+
+// export const findUserPasswordRequestAction = createAction(FIND_PASSWORD_REQUEST);
+// export const findUserPasswordSuccessAction = createAction(FIND_PASSWORD_SUCCESS);
+// export const findUserPasswordFailureAction = createAction(FIND_PASSWORD_FAILURE);
 // 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
 export const editUserInfoRequestAction = ({
   profile,
@@ -167,6 +182,24 @@ const reducer = (state = initialState, action) => {
         draft.updateError = action.data.error;
         break;
       }
+  //     case FIND_ID_REQUEST : {
+  //       break;        
+  //     }
+  //     case FIND_ID_SUCCESS: {
+  //       break;
+  //     }
+  //     case FIND_ID_FAILURE : {
+  //       break;
+  //     }
+  //     case FIND_PASSWORD_REQUEST : {
+  //       break;
+  //     }
+  //     case FIND_PASSWORD_SUCCESS: {
+  //       break;
+  //     }
+  //     case FIND_PASSWORD_FAILURE : {
+  // break;        
+  //     }
       default:
         break;
     }
