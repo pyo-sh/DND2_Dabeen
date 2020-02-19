@@ -148,7 +148,6 @@ const PostUpperDiv = styled.div`
   }
 `;
 
-<<<<<<< HEAD
 postmain.getInitialProps = async (context) => {
     // context.store.dispatch({
 
@@ -162,6 +161,3 @@ postmain.getInitialProps = async (context) => {
 }
 
 export default postmain;
-=======
-export default postmain;
->>>>>>> pyo
