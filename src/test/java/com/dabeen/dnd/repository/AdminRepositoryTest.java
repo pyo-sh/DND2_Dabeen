@@ -3,16 +3,21 @@
 
 package com.dabeen.dnd.repository;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import junit.framework.Assert;
+import java.util.Optional;
 
 import com.dabeen.dnd.DemoApplicationTests;
 import com.dabeen.dnd.repository.mapper.AdminMapper;
 import com.dabeen.dnd.model.entity.Admin;
     
 public class AdminRepositoryTest extends DemoApplicationTests{
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    
     @Autowired
     private AdminRepository adminRepository;
 
@@ -39,6 +44,12 @@ public class AdminRepositoryTest extends DemoApplicationTests{
         AdminMapper.insert(admin);
 
         Assert.assertNotNull(adminRepository.findById(admin.getAdminNum()));
+    }
+
+    @Test
+    public void read(){
+        Optional<Admin> admin = adminRepository.findById("2002160001");
+        Assert.assertNotNull(admin.isPresent());
     }
 }
     

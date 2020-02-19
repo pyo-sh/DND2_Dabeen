@@ -41,6 +41,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         
         Map<String,Object> helpMap = new HashMap<>();
 
+        helpMap.put("helpNum",null);
         helpMap.put("helpPstnDttm",helpApiRequest.getHelpPstnDttm());
         helpMap.put("catNum",helpApiRequest.getCatNum());
         helpMap.put("cnsrNum", helpApiRequest.getCnsrNum());
@@ -80,7 +81,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         return baseRepository.findById(helpApiRequest.getHelpNum()).map(help -> help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm())
                                                                                     .setCatNum(helpApiRequest.getCatNum())
-                                                                                    .setUser(userRepository.getOne(helpApiRequest.getCnsrNum()))
+                                                                                    .setCnsrNum(helpApiRequest.getCnsrNum())
                                                                                     .setTitle(helpApiRequest.getTitle())
                                                                                     .setExecLoc(helpApiRequest.getExecLoc())
                                                                                     .setPrice(helpApiRequest.getPrice())
@@ -112,7 +113,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
                                                                     .helpPstnDttm(help.getHelpPstnDttm())
                                                                     .catNum(help.getCatNum())
-                                                                    .cnsrNum(help.getUser().getUserNum())
+                                                                    .cnsrNum(help.getCnsrNum())
                                                                     .title(help.getTitle())
                                                                     .execLoc(help.getExecLoc())
                                                                     .price(help.getPrice())

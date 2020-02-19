@@ -33,7 +33,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"quester", "rplyer", "quest", "rply"})
+@ToString(exclude = {"quester", "rplyer", "questPost", "rplyPost"})
 public class Post{
     @Id
     @NotEmpty(message = "is not null")
@@ -61,7 +61,7 @@ public class Post{
 
     @ManyToOne
     @JoinColumn(name = "rplyer_num")
-    private User rplyer;
+    private Admin rplyer;
 
     @ManyToOne
     @JoinColumn(name = "quest_post_num")

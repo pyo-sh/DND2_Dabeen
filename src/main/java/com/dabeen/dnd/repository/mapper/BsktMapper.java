@@ -3,11 +3,10 @@
 // 작성자 : 이은비
 package com.dabeen.dnd.repository.mapper;
 
-import com.dabeen.dnd.model.entity.Bskt;
-
+import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface BsktMapper{
-    void insert(Bskt bskt);
+    void insert(Map<String, Object> bsktMap);
 }
