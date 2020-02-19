@@ -54,7 +54,7 @@ public class HelpSupplCompApiService {
                                                     .helpSupplCompPK(new HelpSupplCompPK())
                                                     .suppler(userRepository.findById(requestData.getSupplNum()).orElse(null))
                                                     .help(helpRepository.findById(requestData.getHelpNum()).orElse(null))
-                                                    .helpAprvWhet(requestData.getHelpAprvWhet())
+                                                    // .helpAprvWhet(requestData.getHelpAprvWhet())
                                                     .aprvDttm(requestData.getAprvDttm())
                                                     .astDttm(requestData.getAstDttm())
                                                     .rate(requestData.getRate())

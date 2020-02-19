@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace= "com.dabeen.dnd.repository.mapper.HelpPicMapper"> <!-- Mapper 클래스주소-->
-    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.HelpPic" useGeneratedKeys="false">
+    <insert id="insert" parameterType="map" useGeneratedKeys="false">
         <selectKey order="BEFORE" keyProperty="picOrnu" resultType="Integer" > 
             <!--
                 helpNum을 변수로 받아서 해당 변수를 사용하여 help_pic 테이블의 특정 변수의 pic_ornu가 몇 까지 생성되어있는 지를 확인한다.

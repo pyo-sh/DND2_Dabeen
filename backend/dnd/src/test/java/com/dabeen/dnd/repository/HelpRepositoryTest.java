@@ -15,6 +15,8 @@ import static org.hamcrest.core.Is.is;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -31,7 +33,10 @@ import org.junit.Before;
 public class HelpRepositoryTest {
 
     @Autowired
-    HelpRepository helpRepository;
+    private HelpRepository helpRepository;
+
+    @Autowired
+    private UserRepository userRepository; 
 
     @Autowired
     private HelpMapper helpMapper;
@@ -56,34 +61,49 @@ public class HelpRepositoryTest {
         // Whether helpAprvWhet = Whether.N; (by Trigger)
         String execSggName = "성북구";
 
-        Help help = Help.builder().helpPstnDttm(helpPstnDttm)
-                                    .catNum(catNum)
-                                    .cnsrNum(cnsrNum)
-                                    .title(title)
-                                    .execLoc(execLoc)
-                                    .price(price)
-                                    .prefSupplNum(prefSupplNum)
-                                    .prefHelpExecDttm(prefHelpExecDttm)
-                                    .helpAplyClsDttm(helpAplyClsDttm)
-                                    .cont(cont)
-                                    .execSggName(execSggName)
-                                    .build();
+        // Help help = Help.builder().helpPstnDttm(helpPstnDttm)
+        //                             .catNum(catNum)
+        //                             .user(userRepository.getOne(cnsrNum))
+        //                             .title(title)
+        //                             .execLoc(execLoc)
+        //                             .price(price)
+        //                             .prefSupplNum(prefSupplNum)
+        //                             .prefHelpExecDttm(prefHelpExecDttm)
+        //                             .helpAplyClsDttm(helpAplyClsDttm)
+        //                             .cont(cont)
+        //                             .execSggName(execSggName)
+        //                             .build();
 
 
-        helpMapper.insert(help);
+        Map<String,Object> helpMap = new HashMap<>();
 
-        assertThat(help.getHelpNum(),is("2002160001"));
+
+        helpMap.put("helpPstnDttm",helpPstnDttm);
+        helpMap.put("catNum",catNum);
+        helpMap.put("cnsrNum", cnsrNum);
+        helpMap.put("title",title);
+        helpMap.put("execLoc",execLoc);
+        helpMap.put("price",price);
+        helpMap.put("prefSupplNum",prefSupplNum);
+        helpMap.put("prefHelpExecDttm",prefHelpExecDttm);
+        helpMap.put("helpAplyClsDttm",helpAplyClsDttm);
+        helpMap.put("cont",cont);
+        helpMap.put("execSggName",execSggName);
+                            
+        helpMapper.insert(helpMap);
+
+        assertThat(helpMap.get("helpNum"),is("2002180002"));
     }
 
     @Test
     public void read(){
-        Optional<Help> help = helpRepository.findById("2002130001");
-        Assert.assertNotNull(help.isPresent());
+        Optional<Help> help = helpRepository.findById("2002180001");
+        assertThat(help.get().getHelpNum(),is("2002180001"));
     }
 
     @Test
     public void update(){
-        Optional<Help> help = helpRepository.findById("200203001");
+        Optional<Help> help = helpRepository.findById("2002180001");
 
         help.ifPresent(selectorUser -> {
             selectorUser.setExecLoc("부산광역시");
