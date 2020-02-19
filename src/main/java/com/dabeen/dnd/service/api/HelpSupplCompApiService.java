@@ -4,6 +4,10 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -12,6 +16,7 @@ import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
+import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
 import com.dabeen.dnd.repository.HelpRepository;
@@ -35,6 +40,9 @@ public class HelpSupplCompApiService {
 
     @Autowired
     private HelpRepository helpRepository;
+
+    @Autowired
+    private UserApiService userApiService;
 
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
@@ -94,6 +102,27 @@ public class HelpSupplCompApiService {
                     helpSupplCompRepository.delete(HelpSupplComp);
                     return Header.OK();
                 }).orElseThrow(() -> new NotFoundException("HelpSupplComp"));
+    }
+
+    // 해당 도움에 신청한 공급자의 목록을 보여주는 API
+    public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
+        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
+        List<HelpCompUserInfoApiResponse> userInfos = new ArrayList<>();
+        
+        for(HelpSupplComp helpSupplComp : helpSupplComps){
+            HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
+                                                                                .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                                .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                                .astDttm(helpSupplComp.getAstDttm())
+                                                                                .rate(helpSupplComp.getRate())
+                                                                                .astCont(helpSupplComp.getAstCont())
+                                                                                .user(userApiService.response(helpSupplComp.getSuppler()))
+                                                                                .build();
+
+            userInfos.add(response);                                                                   
+        }
+       
+        return Header.OK(userInfos);
     }
 
     // HelpSupplComp > HelpSupplCompApiResponse

@@ -13,6 +13,7 @@ import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
+import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.api.UserApiService;
 
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Slf4j
 @RestController
@@ -54,4 +57,9 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
         return userApiService.searchHighRateUser(ssgName);
     }
 
+    // 내 문의 APi
+    @GetMapping("{userNum}/quests")
+    public Header<List<PostApiResponse>> searchQuests(@PathVariable String userNum){
+        return userApiService.searchQuests(userNum);
+    } 
 }
