@@ -102,7 +102,6 @@ public class User{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "quester")
     private List<Post> quests;
-<<<<<<< HEAD
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rplyer")
     private List<Post> replies;
@@ -110,6 +109,4 @@ public class User{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Help> helps;
     
-=======
->>>>>>> 4f2c5e71e12b9b824a2e36175fba2d8b63963e68
 }
