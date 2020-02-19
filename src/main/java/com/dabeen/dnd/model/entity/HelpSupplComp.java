@@ -7,6 +7,7 @@ package com.dabeen.dnd.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -42,7 +44,7 @@ public class HelpSupplComp{
     @NotNull(message = "is not null")
     private HelpSupplCompPK helpSupplCompPK; // 복합키를 구현하기 위한 PK 객체
 
-    @NotNull(message = "is not null")
+    // @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING) // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     private Whether helpAprvWhet; // 도움승인여부
 
@@ -69,4 +71,10 @@ public class HelpSupplComp{
     @JoinColumn(name = "suppl_num")
     @ManyToOne
     private User suppler;
+
+    //https://dotoridev.tistory.com/6 
+    @PrePersist
+    public void prePersist(){
+        this.helpAprvWhet = this.helpAprvWhet == null ? Whether.n : this.helpAprvWhet;
+    }
 }

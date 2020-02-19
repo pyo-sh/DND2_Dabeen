@@ -26,7 +26,7 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         Category category = Category.builder().catNum(categoryApiRequest.getCatNum())
                                                 .catName(categoryApiRequest.getCatName())
                                                 .catDesc(categoryApiRequest.getCatDesc())
-                                                .highCatNum(categoryApiRequest.getHighCatNum()).build();
+                                                .highCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())).build();
         
         Category newCategory = baseRepository.save(category);
         
@@ -51,7 +51,7 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         return baseRepository.findById(categoryApiRequest.getCatNum()).map(category -> category.setCatNum(categoryApiRequest.getCatNum())
                                                                                                 .setCatName(categoryApiRequest.getCatName())
                                                                                                 .setCatDesc(categoryApiRequest.getCatDesc())
-                                                                                                .setHighCatNum(categoryApiRequest.getHighCatNum()))
+                                                                                                .setHighCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())))
                                                                                     .map(
                                                                                         newCategory -> baseRepository.save(newCategory)
                                                                                     ).map(
@@ -76,7 +76,7 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
                                                                         .catNum(category.getCatNum())
                                                                         .catName(category.getCatName())
                                                                         .catDesc(category.getCatDesc())
-                                                                        .highCatNum(category.getHighCatNum()).build();
+                                                                        .highCatNum(category.getHighCategory() == null ? null : category.getHighCategory().getCatNum()).build();
         
         return categoryApiResponse;
 

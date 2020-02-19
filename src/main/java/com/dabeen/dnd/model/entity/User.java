@@ -108,5 +108,14 @@ public class User{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Help> helps;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cnsrUser")
+    private List<Chat> cnsrChats;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplUser")
+    private List<Chat> supplChats;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "writerUser")
+    private List<Msg> msgs;
     
 }
