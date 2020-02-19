@@ -100,11 +100,6 @@ const Header = () => {
               </a>
             </Link>
           </li>
-          <li>
-            <Link href="/basketmain">
-              <a>장바구니</a>
-            </Link>
-          </li>
         </ul>
         <div className="loginBox">
           {userId ? (

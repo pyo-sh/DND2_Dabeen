@@ -21,8 +21,8 @@ const dummyLiveHelp = [
         pic_path: '',   // 사진경로명
         help_aply_cls_dttm: '2020-02-29',   // 도움신청마감일시
         help_aprv_whet: 'false',    // 도움승인여부
-        post_num: '1',  // 선호공급자수
-        post_type: '2020-03-23',  // 선호도움이행일시
+        pref_suppl_num: '1',  // 선호공급자수
+        pref_help_exec_dttm: '2020-03-23',  // 선호도움이행일시
         exec_loc: '부산광역시 남구 대연1동', // 이행장소
         help_pic_list: '',  // 도움사진목록
     },
@@ -43,8 +43,8 @@ const dummyLiveHelp = [
         pic_path: '',
         help_aply_cls_dttm: '2020-02-20',
         help_aprv_whet: 'false',
-        post_num: '1',
-        post_type: '2020-02-21',
+        pref_suppl_num: '1',
+        pref_help_exec_dttm: '2020-02-21',
         exec_loc: '부산광역시 남구 남천동',
         help_pic_list: '',
     },
@@ -65,8 +65,8 @@ const dummyLiveHelp = [
         pic_path: '',
         help_aply_cls_dttm: '2020-02-22',
         help_aprv_whet: 'false',
-        post_num: '3',
-        post_type: '2020-02-23',
+        pref_suppl_num: '3',
+        pref_help_exec_dttm: '2020-02-23',
         exec_loc: '부산광역시 남구 대연1동',
         help_pic_list: '',
     },
@@ -87,8 +87,8 @@ const dummyLiveHelp = [
         pic_path: '',
         help_aply_cls_dttm: '2020-02-20',
         help_aprv_whet: 'false',
-        post_num: '5',
-        post_type: '2020-02-29',
+        pref_suppl_num: '5',
+        pref_help_exec_dttm: '2020-02-29',
         exec_loc: '부산광역시 남구 대연3동',
         help_pic_list: '',
     },
@@ -109,8 +109,8 @@ const dummyLiveHelp = [
         pic_path: '',
         help_aply_cls_dttm: '2020-02-20',
         help_aprv_whet: 'false',
-        post_num: '5',
-        post_type: '2020-02-29',
+        pref_suppl_num: '5',
+        pref_help_exec_dttm: '2020-02-29',
         exec_loc: '부산광역시 남구 대연3동',
         help_pic_list: '',
     },
@@ -131,8 +131,8 @@ const dummyLiveHelp = [
         pic_path: '',
         help_aply_cls_dttm: '2020-02-20',
         help_aprv_whet: 'true',
-        post_num: '1',
-        post_type: '2020-02-20',
+        pref_suppl_num: '1',
+        pref_help_exec_dttm: '2020-02-20',
         exec_loc: '부산광역시 남구 대연3동',
         help_pic_list: '',
     },

@@ -39,15 +39,15 @@ const PostCapsule = ({ data }) => {
                 <div className="CapsuleTitle">
                     {data.help_title}
                     {data.help_aprv_whet==="true"
-                    ?   <div className="CapsuleTitleCheck">신청 중</div>
-                    :   <div className="CapsuleTitleCheck">마감</div>
+                    ?   <div className="CapsuleTitleCheckTrue">마감</div>
+                    :   <div className="CapsuleTitleCheckFalse">신청 중</div>
                     }
                 </div>
                 <div className="CapsuleFinishTime">
                     신청 마감일 : {data.help_aply_cls_dttm}
                 </div>
                 <div className="CapsuleDoingTime">
-                    수행일 : {data.post_type}
+                    수행일 : {data.pref_help_exec_dttm}
                 </div>
             </PostCapsuleUpperDiv>
             {postDetailVisible
@@ -106,16 +106,22 @@ const PostCapsuleUpperDiv = styled.div`
     & .CapsuleTitle{
         display: flex;
         font-size: 25px;
-        & .CapsuleTitleCheck{
+        & div{
             width: 50px;
             padding: 2px;
-            color: white;
-            background: #FF4300;
             border-radius: 10px;
             margin: 10px 10px;
 
             font-size: 14px;
             text-align: center;
+        }
+        & .CapsuleTitleCheckTrue{
+            color: #7A7A7A;
+            background: #F0F0F0;
+        }
+        & .CapsuleTitleCheckFalse{
+            color: white;
+            background: #FF4300;
         }
     }
 `;
