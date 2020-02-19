@@ -53,12 +53,12 @@ public class Help{
     private String catNum; // 카테고리번호
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    // @NotEmpty(message = "is not empty")
-    // private String cnsrNum; // 수요자번호
-    @ManyToOne
-    @NotNull(message = "is not null")
-    @JoinColumn(name = "cnsr_num")
-    private User user;
+    @NotEmpty(message = "is not empty")
+    private String cnsrNum; // 수요자번호
+    // @ManyToOne
+    // @NotNull(message = "is not null")
+    // @JoinColumn(name = "cnsr_num")
+    // private User user;
 
     @NotEmpty(message = "is not empty")
     private String title; // 제목
@@ -92,7 +92,7 @@ public class Help{
     
     
     /* 연관관계 설정 */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
-    private List<HelpSupplComp> helpSupplComp;
+    // @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
+    // private List<HelpSupplComp> helpSupplComp;
 
 }

@@ -53,7 +53,7 @@ public class MileageUseHist {
     /* 연관관계 설정 */
     @NotNull(message = "is not null")
     @MapsId("userNum")
-    @JoinColumn(name = "use_num")
+    @JoinColumn(name = "user_num")
     @ManyToOne
     private User user; // 사용자, 사용자 번호로서 매핑
 

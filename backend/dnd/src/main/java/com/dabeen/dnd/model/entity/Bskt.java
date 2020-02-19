@@ -6,6 +6,7 @@ package com.dabeen.dnd.model.entity;
 import java.math.BigDecimal;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +35,7 @@ import lombok.experimental.Accessors;
 @Builder
 @Entity
 @Accessors(chain = true)
-@ToString(exclude = {"mileageUseHists", "baskUser", "pymt"})
+@ToString(exclude = {"mileageUseHists", "bsktUser", "pymt"})
 public class Bskt{
     @Id
     @NotEmpty(message = "is not Empty")
@@ -53,7 +54,7 @@ public class Bskt{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bskt")
     private List<MileageUseHist> mileageUseHists; // 마일리지 사용이력과 양방향 연관관계
 
-    @NotEmpty(message = "is not Empty")
+    @NotNull(message = "is not Empty")
     @ManyToOne
     @JoinColumn(name = "bskt_user_num")
     private User bsktUser; // 장바구니 사용자 번호
