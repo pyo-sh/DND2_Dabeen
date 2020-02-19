@@ -14,7 +14,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -35,8 +38,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-@Table(name = "help")
-@ToString(exclude = {"helpSupplComp"})
+// @Table(name = "help")
+@ToString(exclude = {"helpSupplComp","user","category","helpPics","chats"})
 public class Help{
 
     @Id
@@ -47,12 +50,14 @@ public class Help{
     private LocalDateTime helpPstnDttm; // 도움게시일시
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = "is not empty")
-    private String catNum; // 카테고리번호
+    // @NotEmpty(message = "is not empty")
+    // private String catNum; // 카테고리번호
+
+    // @NotEmpty(message = "is not empty")
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = "is not empty")
-    private String cnsrNum; // 수요자번호
+    // @NotEmpty(message = "is not empty")
+    // private String cnsrNum; // 수요자번호
 
     @NotEmpty(message = "is not empty")
     private String title; // 제목
@@ -84,9 +89,23 @@ public class Help{
     @NotEmpty(message = " is not empty")
     private String execSggName; //이행시군구명
     
-    
     /* 연관관계 설정 */
+    
+    @ManyToOne
+    @JoinColumn(name = "cnsr_num")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="cat_num")
+    private Category category;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
     private List<HelpSupplComp> helpSupplComp;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
+    private List<HelpPic> helpPics;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "help")
+    private Chat chat;
 
 }

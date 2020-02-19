@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace= "com.dabeen.dnd.repository.mapper.HelpMapper"> <!-- Mapper 클래스주소-->
-    <insert id="insert" parameterType="com.dabeen.dnd.model.entity.Help" useGeneratedKeys="false">
+    <insert id="insert" parameterType="map" useGeneratedKeys="false">
         <selectKey order="BEFORE" keyProperty="helpNum" resultType="String" >  
 
         <!-- 키 생성 쿼리
@@ -17,7 +17,7 @@
         SELECT
             CASE 
                 WHEN substring(help_num,1,6) = DATE_FORMAT(sysdate(),'%y%m%d') THEN CONCAT(substring(help_num,1,6),LPAD(CONVERT(SUBSTRING(help_num,7,4), SIGNED INTEGER) + 1,4,'0'))
-                ELSE CONCAT(DATE_FORMAT(sysdate(),'%y%m%d'),'0001')  END as help_num
+                ELSE CONCAT(DATE_FORMAT(sysdate(),'%y%m%d'),'0001') END as help_num
         from (SELECT IFNULL(MAX(help_num),DATE_FORMAT(DATE(sysdate()),'%y%m%d')) as help_num FROM help) a
 
 <!-- 키 생성 쿼리 -->

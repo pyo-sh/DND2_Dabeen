@@ -18,19 +18,20 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/help-pic")
+@RequestMapping("/api/help-pic/")
 public class HelpPicApiController{
 
     @Autowired
     HelpPicApiService helpPicApiService;
 
     @PostMapping("")
-    public Header<HelpPicApiResponse> create(@RequestParam @Valid Header<HelpPicApiRequest> request){
+    public Header<HelpPicApiResponse> create(@RequestBody @Valid Header<HelpPicApiRequest> request){
         return helpPicApiService.create(request);
     }
 
@@ -46,7 +47,7 @@ public class HelpPicApiController{
     }
     
     @PutMapping("")
-    public Header<HelpPicApiResponse> update(@RequestParam @Valid Header<HelpPicApiRequest> request){
+    public Header<HelpPicApiResponse> update(@RequestBody @Valid Header<HelpPicApiRequest> request){
         return helpPicApiService.update(request);
     }
 

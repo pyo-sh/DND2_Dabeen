@@ -4,11 +4,11 @@
 
 package com.dabeen.dnd.repository.mapper;
 
-import com.dabeen.dnd.model.entity.Chat;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ChatMapper{
-    void insert(Chat chat);
+    void insert(Map<String,Object> chatMap);
 }

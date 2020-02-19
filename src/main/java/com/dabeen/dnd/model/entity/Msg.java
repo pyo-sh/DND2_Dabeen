@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -28,10 +31,24 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
-    @NotEmpty(message = "is not empty")
-    private MsgPK msgPK;
+    @NotNull(message = " is not null")
+    private MsgPK msgPK; // Msg PK (chat_num,msg_writer_num,msg_send_dttm)
 
-    @NotNull(message = "is not null")
-    private String cont;
+    @NotNull(message = " is not null")
+    private String cont; // Msg 내용
+
+    /* 연관관계 설정 */
+
+    @ManyToOne
+    @JoinColumn(name = "chat_num")
+    @MapsId("chatNum")
+    @NotNull(message = " is not null")
+    private Chat chat;
+
+    @ManyToOne
+    @JoinColumn(name ="msg_writer_num")
+    @MapsId("msgWriterNum")
+    @NotNull(message = " is not null")
+    private User writerUser;
 
 }

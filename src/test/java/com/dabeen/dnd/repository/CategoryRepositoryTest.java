@@ -44,15 +44,15 @@ public class CategoryRepositoryTest {
         String catDesc = "설명";
         String highCatNum = null;
 
-        Category category = Category.builder()
-                                    .catNum(catNum)
-                                    .catName(catName)
-                                    .catDesc(catDesc)
-                                    .highCatNum(highCatNum).build();
+        // Category category = Category.builder()
+        //                             .catNum(catNum)
+        //                             .catName(catName)
+        //                             .catDesc(catDesc)
+        //                             .highCatNum(highCatNum).build();
 
-        Category newCategory= categoryRepository.save(category);
+        // Category newCategory= categoryRepository.save(category);
 
-        assertThat(newCategory.getCatNum(),is("1000"));
+        // assertThat(newCategory.getCatNum(),is("1000"));
 
     }
 
