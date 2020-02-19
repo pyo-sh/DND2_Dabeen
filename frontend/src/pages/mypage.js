@@ -28,7 +28,7 @@ const evaluation = [
         comment : "으어어어어!!"
     }
 ]
-const mypage = () => {
+const MyPage = () => {
     // 다비인지 아닌지 체크..! useEffect 같은거 사용해서!
     return (
         <>
@@ -37,4 +37,4 @@ const mypage = () => {
     );
 };
 
-export default mypage;
+export default MyPage;

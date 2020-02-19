@@ -5,7 +5,7 @@ import { Input, Button, Select } from 'antd';
 import { signUpRequestAction } from '../reducers/user';
 import Router from 'next/router';
 // 회원가입 창
-const signupMain = () => {
+const SignUpMain = () => {
   
     const dispatch = useDispatch(); // 디스패치
     const { isSigningup, signUpSuccess } = useSelector(state => state.user);
@@ -379,4 +379,4 @@ const SignUpGetDataDiv = styled.div`
     }
 `;
 
-export default signupMain;
+export default SignUpMain;

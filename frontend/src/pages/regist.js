@@ -1,7 +1,7 @@
 import React from 'react';
 import RegistSupplier from '../components/signUp/RegistSupplier';
 
-const regist = () => {
+const Regist = () => {
     return (
         <RegistSupplier>
             
@@ -9,4 +9,4 @@ const regist = () => {
     );
 };
 
-export default regist;
+export default Regist;
