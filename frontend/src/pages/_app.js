@@ -1,7 +1,7 @@
 import React from "react";
 import AppLayout from "../components/AppLayout";
-import { Container } from "next/app";
 import Head from "next/head";
+import Helmet from 'react-helmet';
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
 import { Provider } from "react-redux";
@@ -15,43 +15,56 @@ axios.defaults.baseURL = "http://localhost:3065/api";
 
 const Dabeen = ({ Component, store, pageProps }) => {
   return (
-    <Container>
       <Provider store={store}>
-        <>
-          <Head>
-            <title>Dabeen</title>
-            <link
-              rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"
-            />
-            <link
-              rel="shortcut icon"
-              href="/images/favicon.ico"
-              type="image/x-icon"
-            />
-            <link
-              href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap"
-              rel="stylesheet"
-            />
-            <link
-              rel="stylesheet"
-              type="text/css"
-              charSet="UTF-8"
-              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-            />
-            <link
-              rel="stylesheet"
-              type="text/css"
-              href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-            />
-          </Head>
+        <Helmet
+          title = "Dabeen"
+          htmlAttributes={{lang : 'ko'}}
+          meta={[
+              {
+                  charset: "UTF-8"
+              },
+              {
+                  name: "viewport",
+                  content: "width=device-witdh, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"
+              },
+              {
+                "http-equiv": "X-UA-Compatible",
+                content: "IE=edge"
+              },
+          ]}
+          link={[{},
+            {
+              rel: "stylesheet",
+              href:
+                "https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"
+            },
+            {
+                rel: "shortcut icon",
+                href: "/images/favicon.ico",
+                type: "image/x-icon"
+            },
+            {
+              rel: "stylesheet",
+              href:
+                "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+            },
+            {
+              rel: "stylesheet",
+              href:
+                "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+            },
+            {
+              href: "https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap",
+              rel: "stylesheet"
+            }
+          ]}
+        >
+        </Helmet>
           <AppLayout>
             <Component {...pageProps} />
           </AppLayout>
-        </>
-      </Provider>{" "}
+      </Provider>
       // 컴포넌트가 AppLayout의 props로 듶어감
-    </Container>
   );
 };
 
