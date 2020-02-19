@@ -185,7 +185,7 @@ const RegistButton = styled(Button)`
     height: 50px;
     margin-top: 20px;
     color: white;
-    background: #FF9644;
+    background: #ff4300;
 `;
 
 export default RegistSupplier;

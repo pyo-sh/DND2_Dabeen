@@ -99,11 +99,6 @@ const Header = () => {
               </a>
             </Link>
           </li>
-          <li>
-            <Link href="/basketmain">
-              <a>장바구니</a>
-            </Link>
-          </li>
         </ul>
         <div className="loginBox">
           {userId ? (
@@ -181,7 +176,7 @@ const Menubar = styled.nav`
   & .menuToggle {
     position: absolute;
     top: 18px;
-    right: 20px;
+    right: 22px;
     cursor: pointer;
     color: black;
     font-size: 24px;
@@ -212,13 +207,14 @@ const Menubar = styled.nav`
     align-items: center;
     justify-content: center;
     position: absolute;
-    font-size: 20px;
+    font-size: 22px;
     top: 62px;
     right: 5px;
-    background: rgba(255, 99, 71, 0.9);
+    background: white;
+    border: 1px solid darkgrey;
     border-radius: 5px;
     & a {
-      color: white;
+      color: black;
     }
     & ul {
       display: flex;
@@ -228,12 +224,25 @@ const Menubar = styled.nav`
       justify-content: center;
       align-items: center;
       list-style: none;
+      }
+    & .userPageList {
+      font-size: 13px;
+      & span, i {
+        color : #ff4300;
+      }
+      & hr {
+        width : 80%;
+      }
+    }
     & ::before {
       content: "";
       width: 10px;
       height: 10px;
       position: absolute;
-      background: rgba(255, 99, 71, 0.9);
+      background: white;
+      border-width : 1px 0 0 1px;
+      border-style : solid;
+      border-color : darkgrey;
       top: -5px;
       left: 50%;
       transform: translate(-50%) rotate(45deg);
@@ -268,6 +277,7 @@ const Menubar = styled.nav`
       list-style: none;
       font-size: 22px;
       margin: 0;
+      font-weight : bold;
       }
       & a[name=${props => props.selected}]{
       color : #ff4300;

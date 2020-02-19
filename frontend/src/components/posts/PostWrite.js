@@ -8,7 +8,7 @@ import Upload from '../uploadImages/Upload';
 
 const categorys = ["심부름", "대여", "잡일"];   //카테고리
 
-const PostWrite = ({setVisible}) => {
+const PostWrite = ({setInvisible}) => {
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
     const [postDeadline, setPostDeadline] = useState({date: '', time: ''}); //신청 마감 일시 
@@ -74,7 +74,7 @@ const PostWrite = ({setVisible}) => {
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setVisible} type="close" style={{fontSize: "2vw", color:"#BFC7CE"}}/>
+                        <Icon onClick={setInvisible} type="close" style={{fontSize: "2vw", color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
                         <div className="postSettingTitle">

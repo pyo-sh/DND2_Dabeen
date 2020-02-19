@@ -22,6 +22,7 @@ const FooterBox = styled.div`
     border-top : 1px solid darkgray;
     height : 2.5rem;
     width : 100%;
+    margin-top : 30px;
     padding : 30px;
     display: flex;
     flex-direction: column;

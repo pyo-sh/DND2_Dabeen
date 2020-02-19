@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import Router from 'next/router';
 import GiveHelp from '../../../../components/myPage/GiveHelp';
 import TakeHelp from '../../../../components/myPage/TakeHelp';
 import UserInfo from '../../../../components/myPage/UserInfo';
 import ServiceCenter from '../../../../components/service/ServiceCenter';
 import StarScore from '../../../../components/myPage/StarScore';
+import { Rate } from 'antd';
 
-const UserPage = () => {
-    const router = useRouter();
-    const {userid, pagename} = router.query;
+const UserPage = ({userid, pagename}) => {
+    // const router = useRouter();
+    // const {userid, pagename} = router.query;
+    const dabeenerRegist = useCallback(() => {
+        Router.push('/regist');
+    }, []);
     return (
         <UserPageWrapper>
             <section className="profileSection">
@@ -18,8 +22,8 @@ const UserPage = () => {
                 </div>
                 <div>안녕하세요 ~ 입니다</div>
                 <div>총 평점</div>
-                <div><StarScore score={4.5}/>{4.5}</div>
-                <button>다비너 신청</button>
+                <div><Rate allowHalf disabled defaultValue={4.2} style={{fontSize: 12}}/></div>
+                <button onClick={dabeenerRegist}>다비너 신청</button>
             </section>
             <section className="contentSection">
                 <ul className="contentNavbar">
@@ -45,9 +49,9 @@ const UserPageWrapper = styled.article`
     width : 100%;
     display : flex;
     justify-content : center;
-    align-items : center;
     @media screen and (max-width: 768px) {
         flex-direction : column;
+        align-items : center;
     }
     & a {
         color : black;
@@ -86,11 +90,14 @@ const UserPageWrapper = styled.article`
             }
         }
     }
+   & .ant-rate {
+       color : #ff4300;
+   }
    & .contentSection {
        display: flex;
        flex-direction : column;
        align-items : center;
-       width : 55%;
+       width : 60%;
        height : 100%;
        & .contentNavbar {
            display : flex;
@@ -109,4 +116,14 @@ const UserPageWrapper = styled.article`
        }
    }
 `;
+
+UserPage.getInitialProps = async context => {
+    const { pagename, userid } = context.query;
+    // 페이지네임에 따라 다른 정보를 가지고 온다..
+    // context.store.dispatch({
+//     type: LOAD_POST_REQUEST,
+//     data: context.query.id
+//   });
+    return { pagename, userid }
+}
 export default UserPage;
