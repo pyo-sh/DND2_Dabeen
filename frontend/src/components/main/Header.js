@@ -32,6 +32,7 @@ const Header = () => {
   }, []);
 
   const clickMy = useCallback(() => {
+    setSelected("userpage");
     setIsClickMy(prev => !prev);
   }, []);
   const clickSignUp = useCallback(() => setSelected("signup"), []);
@@ -111,7 +112,7 @@ const Header = () => {
                 >
                   <b>MY</b>
                 </a>
-                {isClickMy && (
+                {isClickMy ? (
                   <div className="userPageList">
                     <ul>
                       <li>
@@ -119,15 +120,15 @@ const Header = () => {
                         &nbsp;
                         <span>25000</span>원
                       </li>
-                      <li><Link href="/basketmain"><a onClick={clickMy}>장바구니</a></Link></li>
+                      <li><Link href="/basketmain"><a>장바구니</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/ansrjsdn/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/ansrjsdn/userinfo`}><a>마이페이지</a></Link></li>
                       <li><Link href="/chat"><a>채팅하기</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/ansrjsdn/service`}><a onClick={clickMy}>고객센터</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/ansrjsdn/service`}><a>고객센터</a></Link></li>
                     </ul>
                   </div>
-                )}
+                ) : null}
                 {/* </Link> */}
               </div>
               <div>
@@ -162,7 +163,6 @@ const Menubar = styled.nav`
   position: fixed;
   top: 0;
   width: 100%;
-  height : 10vh;
   padding: 10px 0;
   display: flex;
   justify-content: space-between;
@@ -175,8 +175,8 @@ const Menubar = styled.nav`
   opacity : 0.9;
   & .menuToggle {
     position: absolute;
-    top: 18px;
-    right: 22px;
+    top: 13px;
+    right: 20px;
     cursor: pointer;
     color: black;
     font-size: 24px;
@@ -207,14 +207,13 @@ const Menubar = styled.nav`
     align-items: center;
     justify-content: center;
     position: absolute;
-    font-size: 22px;
+    font-size: 20px;
     top: 62px;
     right: 5px;
-    background: white;
-    border: 1px solid darkgrey;
+    background: rgba(255, 99, 71, 0.9);
     border-radius: 5px;
     & a {
-      color: black;
+      color: white;
     }
     & ul {
       display: flex;
@@ -224,25 +223,12 @@ const Menubar = styled.nav`
       justify-content: center;
       align-items: center;
       list-style: none;
-      }
-    & .userPageList {
-      font-size: 13px;
-      & span, i {
-        color : #ff4300;
-      }
-      & hr {
-        width : 80%;
-      }
-    }
     & ::before {
       content: "";
       width: 10px;
       height: 10px;
       position: absolute;
-      background: white;
-      border-width : 1px 0 0 1px;
-      border-style : solid;
-      border-color : darkgrey;
+      background: rgba(255, 99, 71, 0.9);
       top: -5px;
       left: 50%;
       transform: translate(-50%) rotate(45deg);
@@ -265,7 +251,7 @@ const Menubar = styled.nav`
       & a {
         color: black;
       }
-      & a.click, a:hover{
+      & a.click{
           color : #ff4300;
         }
     }
@@ -277,7 +263,6 @@ const Menubar = styled.nav`
       list-style: none;
       font-size: 22px;
       margin: 0;
-      font-weight : bold;
       }
       & a[name=${props => props.selected}]{
       color : #ff4300;
