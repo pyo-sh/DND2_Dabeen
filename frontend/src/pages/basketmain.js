@@ -1,7 +1,7 @@
 import React from 'react';
 import PostBasket from '../components/posts/PostBasket';
 
-const basketmain = () => {
+const Basketmain = () => {
     return (
         <PostBasket>
             
@@ -9,4 +9,4 @@ const basketmain = () => {
     );
 };
 
-export default basketmain;
+export default Basketmain;

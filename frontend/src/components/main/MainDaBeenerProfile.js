@@ -39,7 +39,7 @@ const MainDaBeenerProfile = () => {
     return (
         <MainDaBeenerProfileForm>
             {defaultDabeener.map(user => (
-                <MainDaBeenerProfileInfo>
+                <MainDaBeenerProfileInfo key={user.userId}>
                 <Avatar size = {100} icon="user"/>
                 <div>@{user.nickname}</div>
                 <div style={{fontSize: 12}}>{user.userId}</div>

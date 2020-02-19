@@ -91,7 +91,7 @@ const LiveHelpRequest = () => {
       nextArrow = {<SampleNextArrow/>}
       prevArrow = {<SamplePrevArrow/>}>
           {dummyLiveHelp.map(help => (
-              <div className="liveHelpRequestFlex">
+              <div key = {help.userId} className="liveHelpRequestFlex">
               <LiveHelpRequestContent>
                 {help.picture}
                 <Divider orientation="left" style={{ marginTop: "42%" }}/>

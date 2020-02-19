@@ -14,6 +14,19 @@ const AppLayout = ({ children }) => {
   }, []);
   return (
     <>
+    <style jsx global>{`
+            html,
+            body {
+              height: 100%;
+              overflow: auto;
+            }
+            body {
+              font-family: "Noto Sans KR", sans-serif;
+            }
+            #__next {
+              height: 100%;
+            }
+          `}</style>
       <Hedaer />
       <AllDiv>
         <div className="childrenWrapper">{children}</div>

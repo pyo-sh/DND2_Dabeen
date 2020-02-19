@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Input, Button } from 'antd';
 import Router from 'next/router';
 
-const modifyuser = () => {
+const Modifyuser = () => {
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
@@ -326,4 +326,4 @@ const ModifyUserGetDataDiv = styled.div`
     }
 `;
 
-export default modifyuser;
+export default Modifyuser;
