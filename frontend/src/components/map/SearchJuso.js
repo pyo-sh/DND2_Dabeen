@@ -24,7 +24,7 @@ const SearchJuso = ({location, getLocation}) => {
         getLocation(fullAddress, sigunguName);
         setClick(false);
     }, [])
-
+    console.log(location);
     return (
         <Search>
             <div className="inputAddress">

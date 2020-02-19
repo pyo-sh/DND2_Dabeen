@@ -1,7 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 import { Button, Icon } from 'antd';
 import CheckDabeener from './CheckDabeener';
+import MyLocation from '../map/MyLocation';
 
 // 내가 쓴 글 / 아닌 글 구분해야함
 const PostDetail = ({setVisible}) => {
@@ -9,11 +11,13 @@ const PostDetail = ({setVisible}) => {
     //임시로 내가 쓴 글이라고 설정
     const [myPost, setMyPost] = useState(true);
     const [click, setClick] = useState(false);
+    const {helpPosts} = useSelector(state => state.posts);
 
     const onModal = useCallback(() => {
         setClick(!click);
     }, [click]);
 
+    console.log(helpPosts[0].exec_loc);
     return (
         <Modal>
             <ContentForm>
@@ -29,7 +33,7 @@ const PostDetail = ({setVisible}) => {
                             <Edit>Edit</Edit>
                         </div>
                     </Title>
-                    <Image>사진사진사진사진사진사진사진</Image>
+                    <Image>근데 여기에 무슨 사진을 넣나요</Image>
                     <ApplicationInfo>
                         <div className="applicationInfoText">
                             <div className="applicationInfoTextTitle">
@@ -60,7 +64,7 @@ const PostDetail = ({setVisible}) => {
                     </ApplicationInfo>
                     <ContentItem>
                         <div style={{fontSize: 22}}>위치</div>
-                        <div style={{border: "solid", width: "21vw", height: "30vh"}}>지도지도지도지도지도지도지도지도지도</div>
+                        <MyLocation myLocation={helpPosts[0].exec_loc}/>
                     </ContentItem>
                     <ContentItem>
                         <div style={{fontSize: 22}}>도움정보</div>
@@ -136,9 +140,8 @@ const Title = styled.div`
 
 const Image = styled.div`
     width: 21vw;
-    height: 30vh;
+    height: 20vh;
     background: #BFC7CE;
-
 `;
 
 const ApplicationInfo = styled.div`
