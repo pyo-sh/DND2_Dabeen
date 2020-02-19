@@ -19,6 +19,7 @@ import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
+import com.dabeen.dnd.model.entity.Post;
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
@@ -26,6 +27,7 @@ import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
+import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.BaseService;
 import com.dabeen.dnd.service.JwtService;
@@ -34,9 +36,13 @@ import com.dabeen.dnd.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Service
+@Slf4j
 public class UserApiService extends BaseService<UserApiRequest, UserApiResponse, User>{
     @Autowired 
     private UserRepository userRepository; // 추가로 정의된 메소드를 사용하기 위해 userRepository 사용 x
@@ -52,6 +58,10 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private PostApiService postApiService;
+
 
     // 사용자 생성, 회원가입
 	@Override
@@ -92,7 +102,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 	public Header<UserApiResponse> read(String num) {
         Optional<User> optional = userRepository.findById(num);
         
-        return optional.map(this::response)
+        return optional.map(user -> response(user))
                         .map(Header::OK)
                         .orElseThrow(() -> new NotFoundException("User"));
 	}
@@ -144,28 +154,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                     return Header.OK();
                 })
                 .orElseThrow(() -> new NotFoundException("User"));
-    }
-
-    // User > UserApiResponse 를 위한 메소드
-	private UserApiResponse response(User user) {
-        UserApiResponse userApiResponse = UserApiResponse.builder()
-                                                        .userNum(user.getUserNum())
-                                                        .userName(user.getUserName())
-                                                        .birthDate(user.getBirthDate())
-                                                        .address(user.getAddress())
-                                                        .phoneNum(user.getPhoneNum())
-                                                        .userId(user.getUserId())
-                                                        .email(user.getEmail())
-                                                        .nickname(user.getNickname())
-                                                        .itdcCont(user.getItdcCont())
-                                                        .supplWhet(user.getSupplWhet())
-                                                        .blonSggName(user.getBlonSggName())
-                                                        .picPath(user.getPicPath())
-                                                        .avgRate(user.getAvgRate())
-                                                        .ownMileage(user.getOwnMileage())
-                                                        .build();
-        
-        return userApiResponse;
     }
 
     // 로그인을 위한 메소드
@@ -240,4 +228,41 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         return Header.OK(users);
     }
 
+     // 내 문의 APi
+     public Header<List<PostApiResponse>> searchQuests(@PathVariable String userNum){
+        Optional<User> optional = userRepository.findById(userNum);
+
+         return optional.map(user -> {
+                        List<PostApiResponse> responses = new ArrayList<>();
+            
+                        for(Post quest : user.getQuests())
+                            responses.add(postApiService.response(quest));
+            
+                        return responses;
+                    })
+                    .map(Header::OK)
+                    .orElseThrow(() -> new NotFoundException("User"));
+     }
+     
+         // User > UserApiResponse 를 위한 메소드
+	public UserApiResponse response(User user) {
+        UserApiResponse userApiResponse = UserApiResponse.builder()
+                                                        .userNum(user.getUserNum())
+                                                        .userName(user.getUserName())
+                                                        .birthDate(user.getBirthDate())
+                                                        .address(user.getAddress())
+                                                        .phoneNum(user.getPhoneNum())
+                                                        .userId(user.getUserId())
+                                                        .email(user.getEmail())
+                                                        .nickname(user.getNickname())
+                                                        .itdcCont(user.getItdcCont())
+                                                        .supplWhet(user.getSupplWhet())
+                                                        .blonSggName(user.getBlonSggName())
+                                                        .picPath(user.getPicPath())
+                                                        .avgRate(user.getAvgRate())
+                                                        .ownMileage(user.getOwnMileage())
+                                                        .build();
+        
+        return userApiResponse;
+    }
 }

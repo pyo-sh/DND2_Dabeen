@@ -99,7 +99,7 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
     }
     
     // Post > PostApiResponse
-    private PostApiResponse response(Post post) {
+    public PostApiResponse response(Post post) {
         PostApiResponse postApiResponse = PostApiResponse.builder()
                                                         .postNum(post.getPostNum())
                                                         .postType(post.getPostType())
@@ -111,6 +111,7 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                                                         .rplyPstnDttm(post.getRplyPstnDttm())
                                                         .rplyerNum(post.getRplyer() == null ? null : post.getRplyer().getAdminNum())
                                                         .questPostNum(post.getQuestPost() == null ? null : post.getQuestPost().getPostNum())
+                                                        .rplyPost(post.getRplyPost() == null ? null : response(post.getRplyPost()))
                                                         .build();  
         return postApiResponse;
     }

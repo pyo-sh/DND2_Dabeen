@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -63,10 +64,10 @@ public class Post{
     @JoinColumn(name = "rplyer_num")
     private Admin rplyer;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "quest_post_num")
     private Post questPost;
     
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "questPost")
-    private List<Post> rplyPost;
+    @OneToOne(mappedBy = "questPost")
+    private Post rplyPost;
 }

@@ -5,10 +5,14 @@
 
 package com.dabeen.dnd.controller.api;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
+import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
 import com.dabeen.dnd.service.api.HelpSupplCompApiService;
@@ -16,6 +20,7 @@ import com.dabeen.dnd.service.api.HelpSupplCompApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,4 +65,9 @@ public class HelpSupplCompApiController{
         return helpSupplCompApiService.delete(pk);
     }
 
+     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
+    @GetMapping("{helpNum}/supplers")
+    public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(@PathVariable String helpNum){
+        return helpSupplCompApiService.searchSupplers(helpNum);
+    }
 }
