@@ -37,8 +37,8 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-@Table(name = "help")
-@ToString(exclude = {"helpSupplComp","user"})
+// @Table(name = "help")
+@ToString(exclude = {"helpSupplComp","user","category"})
 public class Help{
 
     @Id
@@ -49,16 +49,21 @@ public class Help{
     private LocalDateTime helpPstnDttm; // 도움게시일시
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = "is not empty")
-    private String catNum; // 카테고리번호
+    // @NotEmpty(message = "is not empty")
+    // private String catNum; // 카테고리번호
+
+    // @NotEmpty(message = "is not empty")
+    @ManyToOne
+    @JoinColumn(name="cat_num")
+    private Category category;
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
-    @NotEmpty(message = "is not empty")
-    private String cnsrNum; // 수요자번호
-    // @ManyToOne
+    // @NotEmpty(message = "is not empty")
+    // private String cnsrNum; // 수요자번호
+    @ManyToOne
     // @NotNull(message = "is not null")
-    // @JoinColumn(name = "cnsr_num")
-    // private User user;
+    @JoinColumn(name = "cnsr_num")
+    private User user;
 
     @NotEmpty(message = "is not empty")
     private String title; // 제목
@@ -92,7 +97,7 @@ public class Help{
     
     
     /* 연관관계 설정 */
-    // @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
-    // private List<HelpSupplComp> helpSupplComp;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
+    private List<HelpSupplComp> helpSupplComp;
 
 }

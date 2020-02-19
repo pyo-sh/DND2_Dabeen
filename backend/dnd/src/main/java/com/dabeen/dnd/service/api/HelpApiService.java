@@ -5,6 +5,7 @@ package com.dabeen.dnd.service.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -13,6 +14,7 @@ import com.dabeen.dnd.model.entity.Help;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
+import com.dabeen.dnd.repository.CategoryRepository;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.HelpMapper;
 import com.dabeen.dnd.service.BaseService;
@@ -30,6 +32,9 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private HelpMapper helpMapper;
@@ -79,24 +84,34 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         
         HelpApiRequest helpApiRequest = request.getData();
 
-        return baseRepository.findById(helpApiRequest.getHelpNum()).map(help -> help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm())
-                                                                                    .setCatNum(helpApiRequest.getCatNum())
-                                                                                    .setCnsrNum(helpApiRequest.getCnsrNum())
-                                                                                    .setTitle(helpApiRequest.getTitle())
-                                                                                    .setExecLoc(helpApiRequest.getExecLoc())
-                                                                                    .setPrice(helpApiRequest.getPrice())
-                                                                                    .setPrefSupplNum(helpApiRequest.getPrefSupplNum())
-                                                                                    .setPrefHelpExecDttm(helpApiRequest.getPrefHelpExecDttm())
-                                                                                    .setHelpAplyClsDttm(helpApiRequest.getHelpAplyClsDttm())
-                                                                                    .setCont(helpApiRequest.getCont())
-                                                                                    .setHelpAprvWhet(helpApiRequest.getHelpAprvWhet())
-                                                                                    .setExecSggName(helpApiRequest.getExecSggName()))
-                                                                                    .map(
-                                                                                        newHelp -> baseRepository.save(newHelp)
-                                                                                    ).map(
-                                                                                        h -> Header.OK(response(h))
-                                                                                    ).orElseThrow(() -> new NotFoundException("Help"));
-        
+        Optional<Help> optional = baseRepository.findById(helpApiRequest.getHelpNum());
+        log.info("{}", optional);
+        // log.info("{}", optional.get().getHelpNum());
+  
+        return optional.map(help -> {
+                    help.setHelpNum(helpApiRequest.getHelpNum());    
+                    help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm());
+                    // help.setCatNum(helpApiRequest.getCatNum());
+                    // help.setCnsrNum(helpApiRequest.getCnsrNum());
+                    help.setCategory(categoryRepository.getOne(helpApiRequest.getCatNum()));
+                    help.setUser(userRepository.getOne(helpApiRequest.getCnsrNum()));
+                    help.setTitle(helpApiRequest.getTitle());
+                    help.setExecLoc(helpApiRequest.getExecLoc());
+                    help.setPrice(helpApiRequest.getPrice());
+                    help.setPrefSupplNum(helpApiRequest.getPrefSupplNum());
+                    help.setPrefHelpExecDttm(helpApiRequest.getPrefHelpExecDttm());
+                    help.setHelpAplyClsDttm(helpApiRequest.getHelpAplyClsDttm());
+                    help.setCont(helpApiRequest.getCont());
+                    help.setExecSggName(helpApiRequest.getExecSggName());
+
+                    log.info("{}",help.getHelpNum());
+
+                    return help;
+                })
+                .map(baseRepository::save)
+                .map(this::response)
+                .map(Header::OK)
+                .orElseThrow(() -> new NotFoundException("Help"));
     }
 
     @Override
@@ -112,8 +127,10 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
                                                                     .helpPstnDttm(help.getHelpPstnDttm())
-                                                                    .catNum(help.getCatNum())
-                                                                    .cnsrNum(help.getCnsrNum())
+                                                                    // .catNum(help.getCatNum())
+                                                                    // .cnsrNum(help.getCnsrNum())
+                                                                    .catNum(help.getCategory().getCatNum())
+                                                                    .cnsrNum(help.getUser().getUserNum())
                                                                     .title(help.getTitle())
                                                                     .execLoc(help.getExecLoc())
                                                                     .price(help.getPrice())

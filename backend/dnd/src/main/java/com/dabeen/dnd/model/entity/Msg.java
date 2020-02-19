@@ -28,18 +28,10 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
-<<<<<<< HEAD
     @NotNull(message = " is not null")
     private MsgPK msgPK; // Msg PK (chat_num,msg_writer_num,msg_send_dttm)
 
     @NotNull(message = " is not null")
     private String cont; // Msg 내용
-=======
-    @NotEmpty(message = "is not empty")
-    private MsgPK msgPK;
-
-    @NotNull(message = "is not null")
-    private String cont;
->>>>>>> 4f2c5e71e12b9b824a2e36175fba2d8b63963e68
 
 }

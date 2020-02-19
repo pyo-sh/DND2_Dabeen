@@ -23,7 +23,8 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         // TODO Auto-generated method stub
         CategoryApiRequest categoryApiRequest = request.getData();
 
-        Category category = Category.builder().catNum(categoryApiRequest.getCatNum()).catName(categoryApiRequest.getCatName())
+        Category category = Category.builder().catNum(categoryApiRequest.getCatNum())
+                                                .catName(categoryApiRequest.getCatName())
                                                 .catDesc(categoryApiRequest.getCatDesc())
                                                 .highCatNum(categoryApiRequest.getHighCatNum()).build();
         

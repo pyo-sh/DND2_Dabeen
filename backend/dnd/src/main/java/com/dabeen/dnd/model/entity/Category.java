@@ -44,7 +44,7 @@ public class Category{
     //FK로서 Category로 종속성 대칭 필요
     private String highCatNum; //상위카테고리번호
 
-    // @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    // private List<Help> helps;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    private List<Help> helps;
 
 }
