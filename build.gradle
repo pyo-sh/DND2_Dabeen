@@ -46,11 +46,3 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-context-support
 	compile group: 'org.springframework', name: 'spring-context-support', version: '3.2.2.RELEASE'
 }
-<<<<<<< HEAD
-
-test {
-	useJUnitPlatform()
-}
-
-=======
->>>>>>> backend
