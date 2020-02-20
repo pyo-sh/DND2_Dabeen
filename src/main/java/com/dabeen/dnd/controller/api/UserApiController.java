@@ -12,12 +12,16 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
+import com.dabeen.dnd.model.network.response.HelpApiResponse;
+import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.api.UserApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,4 +66,16 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     public Header<List<PostApiResponse>> searchQuests(@PathVariable String userNum){
         return userApiService.searchQuests(userNum);
     } 
+
+    // 내가 작성한 도움 API, 페이징 처리
+    @GetMapping("{userNum}/written-helps")
+    public Header<List<HelpApiResponse>> searchWrittenHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+        return userApiService.searchWrittenHelps(userNum, pageable);
+    }
+    
+    // 내가 받은 평점 API
+    @GetMapping("{userNum}/provided-helps")
+    public Header<List<HelpSupplCompApiResponse>> searchProvidedHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+        return userApiService.searchProvidedHelps(userNum, pageable);
+    }
 }

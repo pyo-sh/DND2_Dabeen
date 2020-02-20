@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
-import javax.transaction.Transactional.TxType;
 import javax.validation.Valid;
 
 import com.dabeen.dnd.repository.UserRepository;
@@ -19,13 +19,15 @@ import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
-import com.dabeen.dnd.model.entity.Post;
+import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
+import com.dabeen.dnd.model.network.response.HelpApiResponse;
+import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
@@ -34,9 +36,9 @@ import com.dabeen.dnd.service.JwtService;
 import com.dabeen.dnd.service.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -62,6 +64,11 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     @Autowired
     private PostApiService postApiService;
 
+    @Autowired
+    private HelpApiService helpApiService;
+
+    @Autowired
+    private HelpSupplCompApiService helpSupplCompApiService;
 
     // 사용자 생성, 회원가입
 	@Override
@@ -229,22 +236,59 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     }
 
      // 내 문의 APi
-     public Header<List<PostApiResponse>> searchQuests(@PathVariable String userNum){
+     public Header<List<PostApiResponse>> searchQuests(String userNum){
         Optional<User> optional = userRepository.findById(userNum);
 
-         return optional.map(user -> {
-                        List<PostApiResponse> responses = new ArrayList<>();
-            
-                        for(Post quest : user.getQuests())
-                            responses.add(postApiService.response(quest));
-            
+        return optional.map(user -> {
+                        List<PostApiResponse> responses = user.getQuests()
+                                                                .stream()
+                                                                .map(quest -> postApiService.response(quest))
+                                                                .collect(Collectors.toList());
                         return responses;
                     })
                     .map(Header::OK)
                     .orElseThrow(() -> new NotFoundException("User"));
      }
      
-         // User > UserApiResponse 를 위한 메소드
+    // 내가 작성한 도움 API
+    public Header<List<HelpApiResponse>> searchWrittenHelps(String userNum, Pageable pageable){
+        Optional<User> optional = userRepository.findById(userNum);
+        log.info("{}", pageable.getPageNumber());
+        return optional.map(user -> {
+                        List<HelpApiResponse> responses = new ArrayList<>();
+
+                        Integer page = pageable.getPageNumber() - 1;
+                        Integer size = pageable.getPageSize();
+
+                        // pageable의 정보를 이용하여 페이지 처리
+                        for(int i = page; (i < page + size)&&(i < user.getHelps().size()); i++){
+                            responses.add(helpApiService.response(user.getHelps().get(i)));
+                        }
+                                                                
+                        return responses;
+                    })
+                    .map(Header::OK)
+                    .orElseThrow(() -> new NotFoundException("User"));
+    } 
+
+    // 내가 받은 평점 API
+    public Header<List<HelpSupplCompApiResponse>> searchProvidedHelps(String userNum, Pageable pageable){
+        log.info("{}", userNum);
+        Optional<User> optional = userRepository.findById(userNum);
+
+        return optional.map(user -> {
+            List<HelpSupplCompApiResponse> responses = new ArrayList<>();
+
+            for(HelpSupplComp helpSupplComp : user.getHelpSupplComps())
+                responses.add(helpSupplCompApiService.response(helpSupplComp));
+
+            return responses;
+        })
+        .map(Header::OK)
+        .orElseThrow(() -> new NotFoundException("User"));
+    }
+
+    // User > UserApiResponse 를 위한 메소드
 	public UserApiResponse response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
                                                         .userNum(user.getUserNum())

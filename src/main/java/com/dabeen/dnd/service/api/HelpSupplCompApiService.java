@@ -4,11 +4,9 @@
 
 package com.dabeen.dnd.service.api;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -107,26 +105,28 @@ public class HelpSupplCompApiService {
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
         List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
-        List<HelpCompUserInfoApiResponse> userInfos = new ArrayList<>();
-        
-        for(HelpSupplComp helpSupplComp : helpSupplComps){
-            HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
-                                                                                .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
-                                                                                .aprvDttm(helpSupplComp.getAprvDttm())
-                                                                                .astDttm(helpSupplComp.getAstDttm())
-                                                                                .rate(helpSupplComp.getRate())
-                                                                                .astCont(helpSupplComp.getAstCont())
-                                                                                .user(userApiService.response(helpSupplComp.getSuppler()))
-                                                                                .build();
 
-            userInfos.add(response);                                                                   
-        }
+        // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
+        List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
+                                                                    .map(helpSupplComp -> {
+                                                                        HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
+                                                                                                                    .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                                                                    .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                                                                    .astDttm(helpSupplComp.getAstDttm())
+                                                                                                                    .rate(helpSupplComp.getRate())
+                                                                                                                    .astCont(helpSupplComp.getAstCont())
+                                                                                                                    .user(userApiService.response(helpSupplComp.getSuppler()))
+                                                                                                                    .build();
+                                                                        return response;
+                                                                    })
+                                                                    .collect(Collectors.toList());
+    
        
         return Header.OK(userInfos);
     }
 
     // HelpSupplComp > HelpSupplCompApiResponse
-    private HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
+    public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
         HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
                                                                                     .helpNum(helpSupplComp.getHelpSupplCompPK().getHelpNum())
                                                                                     .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
