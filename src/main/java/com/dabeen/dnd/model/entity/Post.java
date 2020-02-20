@@ -5,11 +5,17 @@
 package com.dabeen.dnd.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +25,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Data
@@ -27,6 +34,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
+@ToString(exclude = {"quester", "rplyer", "questPost", "rplyPost"})
 public class Post{
     @Id
     @NotEmpty(message = "is not null")
@@ -44,11 +52,22 @@ public class Post{
     
     private LocalDateTime questPstnDttm; // 질문게시일시
 
-    private String questerNum; // 답변게시일시
-
     private LocalDateTime rplyPstnDttm; // 답변게시일시
 
-    private String rplyerNum; // 답변자 번호
 
-    private String questPostNum; // 질문 게시글 번호
+    /* 연관관계 설정 */
+    @ManyToOne
+    @JoinColumn(name = "quester_num")
+    private User quester;
+
+    @ManyToOne
+    @JoinColumn(name = "rplyer_num")
+    private Admin rplyer;
+
+    @OneToOne
+    @JoinColumn(name = "quest_post_num")
+    private Post questPost;
+    
+    @OneToOne(mappedBy = "questPost")
+    private Post rplyPost;
 }

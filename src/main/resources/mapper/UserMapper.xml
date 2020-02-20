@@ -21,24 +21,19 @@
                     #{userId}, #{pwd}, #{email}, #{nickname}, #{itdcCont}, #{supplWhet}, 
                     #{blonSggName}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
     </insert>
-    <select id="selectFiveOderByRate" resultType="com.dabeen.dnd.model.entity.User" parameterType="string">
+    <select id="selectFiveOderByRate" resultType="map" parameterType="string">
         <choose>
             <when test="value != null">
-                SELECT user_num AS userNum, user_name As UserName, birth_date AS birthDate, address,
-                        phone_num AS phoneNum, id AS userId, email, itdc_cont AS itdcCont, 
-                        suppl_whet AS supplwhet, blon_sgg_name AS blonSggName, pic_path AS picPath, 
-                        rrn_rear AS rrnRear, avg_rate AS avgRate, own_mileage AS ownMileage
+                SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
-                WHERE blon_sgg_name = #{blonSggName}
+                WHERE blon_sgg_name = #{blonSggName} AND avg_rate IS NOT NULL
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </when>
             <otherwise>
-                SELECT user_num AS userNum, user_name As UserName, birth_date AS birthDate, address,
-                        phone_num AS phoneNum, id AS userId, email, itdc_cont AS itdcCont, 
-                        suppl_whet AS supplwhet, blon_sgg_name AS blonSggName, pic_path AS picPath, 
-                        rrn_rear AS rrnRear, avg_rate AS avgRate, own_mileage AS ownMileage
+                SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
+                WHERE avg_rate IS NOT NULL
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </otherwise>

@@ -23,8 +23,9 @@ public class PostApiResponse {
     private String title; // 제목
     private String cont;
     private LocalDateTime questPstnDttm; // 질문게시일시
-    private String questerNum; // 답변게시일시
+    private String questerNum; // 질문자 번호
     private LocalDateTime rplyPstnDttm; // 답변게시일시
     private String rplyerNum; // 답변자 번호
     private String questPostNum; // 질문 게시글 번호
+    private PostApiResponse rplyPost; // 답변
 }
