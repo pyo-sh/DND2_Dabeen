@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"replies"})
+@ToString(exclude = {"replies","fqas"})
 public class Admin{
     @Id
     @NotEmpty(message = "is not null")
@@ -53,4 +53,7 @@ public class Admin{
     /* 연관관계 설정 */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "rplyer")
     private List<Post> replies;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
+    private List<Fqa> fqas;
 }

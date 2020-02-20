@@ -11,7 +11,9 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.MsgApiRequest;
 import com.dabeen.dnd.model.network.response.MsgApiResponse;
 import com.dabeen.dnd.model.pk.MsgPK;
+import com.dabeen.dnd.repository.ChatRepository;
 import com.dabeen.dnd.repository.MsgRepository;
+import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +23,27 @@ import org.springframework.stereotype.Service;
 public class MsgApiService{
 
     @Autowired
-    MsgRepository msgRepository;
+    private MsgRepository msgRepository;
 
+    @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+ 
     public Header<MsgApiResponse> create(Header<MsgApiRequest> request){
         
         MsgApiRequest msgApiRequest = request.getData();
+
         MsgPK msgPK = new MsgPK(msgApiRequest.getChatNum(), msgApiRequest.getMsgWriterNum(), msgApiRequest.getMsgSendDttm());
 
-        Msg msg = Msg.builder().msgPK(msgPK).cont(msgApiRequest.getCont()).build();
+        //검토 필요
+        Msg msg = Msg.builder()
+                    .msgPK(msgPK)
+                    .cont(msgApiRequest.getCont())
+                    .chat(chatRepository.findById(msgApiRequest.getChatNum()).orElse(null))
+                    .writerUser(userRepository.findById(msgApiRequest.getMsgWriterNum()).orElse(null))
+                    .build();
 
         Msg newMsg = msgRepository.save(msg);
 
@@ -45,11 +60,14 @@ public class MsgApiService{
         
         MsgPK msgPK = new MsgPK(msgApiRequest.getChatNum(), msgApiRequest.getMsgWriterNum(), msgApiRequest.getMsgSendDttm());
 
-        return msgRepository.findById(msgPK)
-                            .map(msg -> msg.setCont(msgApiRequest.getCont()))
-                            .map(msg -> msgRepository.save(msg))
-                            .map(msg -> Header.OK(response(msg)))
-                            .orElseThrow(()-> new NotFoundException("Msg"));
+        return msgRepository.findById(msgPK).map(msg -> {
+                        msg.setCont(msgApiRequest.getCont());
+                        return msg;
+                    })
+                    .map(msg -> msgRepository.save(msg))
+                    .map(msg -> response(msg))
+                    .map(msg -> Header.OK(msg))
+                    .orElseThrow(()-> new NotFoundException("Msg"));
     }
 
     public Header delete(MsgPK msgPK){
