@@ -13,11 +13,12 @@ const PostDetail = ({setVisible, data}) => {
     //임시로 내가 쓴 글이라고 설정
     const [myPost, setMyPost] = useState(true);
     const [click, setClick] = useState(false);
-    const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때
+    const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.help_title);
     const [editPost_num, setEditPost_num] = inputChangeHook(data.post_num);
     const [editHelp_aply_cls_dttm, setEditHelp_aply_cls_dttm] = useState(data.help_aply_cls_dttm);
     const [editPost_type, setEditPost_type] = useState('');
+    const [editPrice, setEditPrice] = useState(data.price);
     const [editExec_loc, setEditExec_loc] = useState('');
     const [editCont, setEditCont] = useState('');
     const dateFormat = 'YYYY-MM-DD';
@@ -27,6 +28,7 @@ const PostDetail = ({setVisible, data}) => {
     const onModal = useCallback((e) => {
         setClick(prev => !prev);
     }, []);
+
     return (
         <Modal>
             <ContentForm>
@@ -36,7 +38,7 @@ const PostDetail = ({setVisible, data}) => {
                     </DeleteIcon>
                     <Title>
                         {
-                            !edit ? <div>{data.help_title}</div> : <Input value={editTitle} onChange={setEditTitle}/>
+                            edit ? <div>{data.help_title}</div> : <EditTitle value={editTitle} onChange={setEditTitle}/>
                         }
                         <div className="titleDetail">
                             <div>작성일 : {data.help_post_dttm}</div>
@@ -54,17 +56,17 @@ const PostDetail = ({setVisible, data}) => {
                             </div>
                             <div className="applicationInfoTextDetail">
                                 {
-                                    !edit ? 
+                                    edit ? 
                                     <>
                                         {/*여기서 0은 강조색으로하기  */}
-                                        <div style={{display: "flex"}}><div>0/{data.post_num}</div><Button type="link" style={{color: "#7A7A7A"}} size="small" onClick={onModal}>신청 확인</Button></div>
+                                        <div style={{display: "flex"}}><div><span>0</span>/{data.post_num}</div><button onClick={onModal}>신청 확인</button></div>
                                         {click&&<CheckDabeener click={click} onModal={onModal}/>}
                                         <div>{data.help_aply_cls_dttm}</div>
                                         <div>{data.post_type}, PM 06:19</div>
                                     </>
                                     :
                                     <>
-                                        <div style={{display: "flex"}}><div>0/</div><input value={editPost_num} onChange={setEditPost_num}/></div>
+                                        <div style={{display: "flex"}}><div><span>0</span>/<input className="needPersonnel" value={editPost_num} onChange={setEditPost_num}/></div></div>
                                         <DatePicker style={{marginRight: 5}} defaultValue={moment(data.help_aply_cls_dttm, dateFormat)}/>
                                         <DatePicker style={{marginRight: 5}} defaultValue={moment(data.post_type, dateFormat)}/>
                                     </>
@@ -72,12 +74,17 @@ const PostDetail = ({setVisible, data}) => {
                             </div>
                         </div>
                         <div className="applicationMoney">
-                            <div>{data.price}원</div>
-                            {
-                                myPost ? 
-                                <ClickButton apply>마감</ClickButton> :
-                                <ClickButton apply>신청</ClickButton>   //신청 누르면... 신청자의 닉네임, 아이디, 자기소개, 평점, 총 도움수 얻어와서 저장.....
-                            }
+                            {/* { !edit ? 
+                                <div>{data.price}원</div>
+                                <>{myPost ? 
+                                    <ClickButton apply>마감</ClickButton> 
+                                    :
+                                    <ClickButton apply>신청</ClickButton>   //신청 누르면... 신청자의 닉네임, 아이디, 자기소개, 평점, 총 도움수 얻어와서 저장.....
+                                }</>
+                                :
+                                <input value={}
+                            } */}
+                            
                         </div>
                     </ApplicationInfo>
                     <ContentItem>
@@ -119,95 +126,132 @@ const ContentForm = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 25vw;
-    height: 80vh;
+    width: 34vw;
+    height: 84vh;
     display: flex; 
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: auto;
     ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
-
 `;
 
 const DeleteIcon = styled.div`
     text-align: right;
     margin-top: 1vh;
-    font-size: 25px;
+    font-size: 1.2vw;
     color: #BFC7CE;
 `;
 
 const Content = styled.div`
-    width: 21vw;
-    height: 78vh;
+    width: 30vw;
+    height: 81vh;
     display: flex;
     flex-direction: column;
-
 `;
 
 const Title = styled.div`
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 21vw;
-    font-size: 40px;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
+    width: 30vw;
+    font-size: 1.5vw;
 
     & > .titleDetail{
         display: flex;
-        justify-content: space-around;
-        width: 15vw;
-        font-size: 0.7vw;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 18vw;
+        font-size: 0.6vw;
+    }
+`;
+
+const EditTitle = styled(Input)`
+    border: none;
+    color: #7a7a7a;
+    font-size: 1.5vw;
+    width: 30vw;
+
+    :focus{
+        outline: none;  
     }
 `;
 
 const Image = styled.div`
-    width: 21vw;
+    width: 30vw;
     height: 20vh;
     background: #BFC7CE;
+    margin-top: 0.5vh;
 `;
 
 const ApplicationInfo = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 21vw;
+    width: 30vw;
     margin-top: 20px;
 
     & .applicationInfoText {
         display: flex;
         justify-content: space-between;
         border-right: 1px solid #BFC7CE;
-        width: 14vw;
+        width: 18vw;
     }
 
     & .applicationInfoTextTitle {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 8vw;
-        font-size: 18px;
-
+        width: 7vw;
+        font-size: 0.9vw;
     }
 
     & .applicationInfoTextDetail {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        width: 9vw;
-        font-size: 14px;
+        width: 12vw;
+        font-size: 0.7vw;
 
-        & > span{
+        & span{
             color: #FF4300;
+            font-size: 1.2vw;
+        }
+
+        & button{
+            border: none;
+            background: none;
+            color: #7A7A7A;
+            cursor: pointer;
+
+            :focus{
+                outline: none;
+            }
+        }
+
+        & .needPersonnel {
+            font-size: 0.8vw;
+            border: none;
+            width: 5vw;
+        }
+
+        & .ant-input{
+            width: 7vw;
+
+            & .ant-calendar-picker-clear .ant-calendar-picker-icon{
+                display: initial;
+                margin-right: 20vw;
+            }
         }
     }
 
     & .applicationMoney{
         display: flex;
         flex-direction: column;
-        width: 6vw;
+        width: 11vw;
         justify-content:flex-end;
         color: #FF4300;
-        font-size: 25px;
-
+        font-size: 1.5vw;
     }
 `;
 
@@ -215,9 +259,9 @@ const ClickButton = styled(Button)`
     background: ${props => (props.apply ? "#FF4300" : "#F0F0F0")};
     border: ${props => (props.apply ? "#FF4300" : "#F0F0F0")};
     color: ${props => (props.apply ? "#FFFFFF" : "#7A7A7A")};
-    font-size: 20px;
+    font-size: 1vw;
     box-shadow: 2px 3px 5px #BFC7CE;
-    width: 5vw;
+    width: 11vw;
 
     :hover {
         opacity: 0.9;
@@ -239,7 +283,7 @@ const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 20px;
     margin-top: 30px;
-    width: 21vw;
+    width: 30vw;
 
     & > p{
         margin-top: 10px;
@@ -247,18 +291,28 @@ const ContentItem = styled.div`
     }
 
     & .map{
-        width: 21vw;
-        height: 16vh
+        width: 30vw;
+        height: 22vh
     }
 `;
 
-const Edit = styled(Button)`
-    background: #F0F0F0;
+const Edit = styled.button`
+    background: #F0F0F0;  
     border: 1px solid #F0F0F0;
     border-radius: 7px;
     color: #7A7A7A;
-    width: 2.7vw;
-    height: 1.8vh;
+    width: 3vw;
+    height: 2vh;  
     font-size: 0.7vw;
+    cursor: pointer;
+
+    :focus{
+        outline: none;
+    }
+
+    :hover{
+        opacity: 0.7;
+    }
 `;
+
 export default PostDetail;

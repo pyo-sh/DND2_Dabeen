@@ -49,7 +49,7 @@ export const initialState = {
         location: '창원시 의창구',  //이행 위치
         sigungu: '의창구',          //이행 시군구
         requirements: '열정페이로 일하실분 우대합니다!',    //요구사항
-        images:[]   //사진 첨부, 여러개 올릴 수 있음
+        imagesPaths:[]   //사진 첨부, 여러개 올릴 수 있음
     }],
     maxId: 1,
     addHelpPostErrorReason: '', //도움 게시글 업로드 실패 사유
@@ -63,6 +63,10 @@ export const initialState = {
     helpPostRemoved: false          //도움 게시글 삭제 성공
 };
 
+export const UPLOAD_IMAGE_REQUEST = 'UPLOAD_IMAGE_REQUEST';
+export const UPLOAD_IMAGE_SUCCESS = 'UPLOAD_IMAGE_SUCCESS';
+export const UPLOAD_IMAGE_FAILURE = 'UPLOAD_IMAGE_FAILURE';
+
 export const ADD_HELPPOST_REQUEST = 'ADD_HELPPOST_REQUEST';
 export const ADD_HELPPOST_SUCCESS = 'ADD_HELPPOST_SUCCESS';
 export const ADD_HELPPOST_FAILURE = 'ADD_HELPPOST_FAILURE';
@@ -74,6 +78,10 @@ export const UPDATE_HELPPOST_FAILURE = 'UPDATE_HELPPOST_FAILURE';
 export const REMOVE_HELPPOST_REQUEST = 'REMOVE_HELPPOST_REQUEST';
 export const REMOVE_HELPPOST_SUCCESS = 'REMOVE_HELPPOST_SUCCESS';
 export const REMOVE_HELPPOST_FAILURE = 'REMOVE_HELPPOST_FAILURE';
+
+export const UploadImageRequestAction = createAction(UPLOAD_IMAGE_REQUEST);
+export const UploadImageSuccessAction = createAction(UPLOAD_IMAGE_SUCCESS);
+export const UploadImageFailureAction = createAction(UPLOAD_IMAGE_FAILURE);
 
 export const AddHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const AddHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
