@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import PostBasketCapsule from './PostBasketCapsule';
 
 const dummyBasketData = {
@@ -92,26 +92,33 @@ const PostBasket = () => {
         return (basketArray.map(index => {
             const arrayData = dummyBasketHelp.data[index];
             if(arrayData){
-                return (<PostBasketCapsule post={arrayData} key={index}/>);
+                return (
+                    <Col lg={24} xl={12} xxl={12} key={index}>
+                        <PostBasketCapsule post={arrayData}/>
+                    </Col>
+                );
             }
         }));
     }
 
     return (
         <PostBasketUpperDiv>
-            <div className="Basket-Title">
-                <div className="Basket-Title-Sort">
-                    <div className="Basket-Title-Name">장바구니</div>
-                    <div className="Basket-Title-Money">총 {allPrice}원</div>
+            <div className="BasketTitle">
+                <div className="BasketTitleMain">
+                    <div className="BasketTitleName">장바구니</div>
+                    <div className="BasketTitleMoney">총 {allPrice}원</div>
                 </div>
-                <div className="Basket-Title-Sort">
-                <div className="Basket-Title-People">2/{helpCount}</div>
-                    <Button className="Basket-Title-Btn">결제</Button>
+                <div className="BasketTitleSort">
+                    <div className="BasketTitlePeople">2/{helpCount}</div>
+                    <Button className="BasketTitleBtn">결제</Button>
                 </div>
             </div>
-            <div className="Basket-Content">
+            <Row
+                className="BasketContent"
+                gutter={10}
+                >
                 {renderPostBasketCapsule()}
-            </div>
+            </Row>
         </PostBasketUpperDiv>
     );
 };
@@ -122,40 +129,47 @@ const PostBasketUpperDiv = styled.div`
     flex-direction: column;
     align-items: center;
 
-    & .Basket-Title{
-        width: 500px;
-        padding-bottom: 30px;
-
+    & .BasketTitle{
+        width: 100%;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #BFC7CE;
         display: flex;
-        justify-content: space-between;
         align-items: flex-end;
-        & .Basket-Title-Sort{
+        flex-wrap: wrap;
+        & .BasketTitleMain{
             display: flex;
             align-items: flex-end;
         }
-        & .Basket-Title-Name{
+        & .BasketTitleSort{
+            margin: 10px 0 0 auto;
+            display: flex;
+            align-items: flex-end;
+        }
+        & .BasketTitleName{
+            width: 150px;
             font-size: 40px;
             font-weight: bold;
         }
-        & .Basket-Title-Money{
+        & .BasketTitleMoney{
+            width: 87px;
             font-size: 25px;
             padding-left: 20px;
         }
-        & .Basket-Title-People{
+        & .BasketTitlePeople{
             font-size: 20px;
             padding-right: 15px;
         }
-        & .Basket-Title-Btn{
+        & .BasketTitleBtn{
             width: 80px;
             height: 27.5px;
             color: white;
             background: #FF4300;
             border-radius: 10px;
+            justify-self: flex-end;
         }
     }
-    & .Basket-Content{
-        display: flex;
-        flex-direction: column;
+    & .BasketContent{
+        
     }
 `;
 

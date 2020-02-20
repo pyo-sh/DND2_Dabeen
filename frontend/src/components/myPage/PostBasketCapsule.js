@@ -25,7 +25,7 @@ const PostBasketCapsule = ({ post }) => {
             <div className="PostBasketContentInfoMoney">{post.price}</div>
             <div className="PostBasketContentInfoTimeWrapper">
               <div className="PostBasketContentInfoFinishTime">
-                신청 마감 : {post.help_aply_cls_dttm}
+                신청마감 : {post.help_aply_cls_dttm}
               </div>
               <div className="PostBasketContentInfoDoingTime">
                 수행일 : {post.pref_help_exec_dttm}
@@ -47,18 +47,24 @@ const PostBasketCapsule = ({ post }) => {
 
 const PostBasketCapsuleWrapper = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
 `;
 const PostBasketCapsuleUpperDiv = styled.div`
-  width: 500px;
-  padding: 40px 0;
-  border-top: 1px solid #d9d9d9;
+  width: 100%;
+  max-width: 500px;
+  min-width: 260px;
+  padding: 20px 0;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   & .BasketCapsuleCapture {
-    width: 225px;
+    flex: 1;
+    max-width: 200px;
+    min-width: 150px;
     height: 150px;
-    margin-right: 10px;
+    margin: 0 10px;
     border: 1px solid #d9d9d9;
     border-radius: 10px;
     & :hover {
@@ -68,25 +74,33 @@ const PostBasketCapsuleUpperDiv = styled.div`
 `;
 const PostBasketCheckIcon = styled(Icon)`
   font-size: 20px;
-  margin-left: -30px;
-  margin-right: 10px;
   color: ${props => (props.setcolor ? "#FF3400" : "none")};
   cursor: pointer;
 `;
 const PostBasketContent = styled.div`
   margin-left: 10px;
   & .PostBasketContentTitle {
+    width: 205px;
+    height: 30px;
+    margin-bottom: 5px;
     font-size: 20px;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   & .PostBasketContentInfo {
     display: flex;
     padding-bottom: 10px;
     & .PostBasketContentInfoMoney {
-      padding-right: 10px;
-      border-right: 1px solid #d9d9d9;
+      width: 45px;
+      margin-right: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     & .PostBasketContentInfoTimeWrapper {
+      border-left: 1px solid #d9d9d9;
       padding-left: 10px;
       & .PostBasketContentInfoFinishTime {
       }

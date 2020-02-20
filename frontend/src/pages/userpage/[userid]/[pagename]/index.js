@@ -2,12 +2,34 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import Router from 'next/router';
-import GiveHelp from '../../../../components/myPage/GiveHelp';
-import TakeHelp from '../../../../components/myPage/TakeHelp';
 import UserInfo from '../../../../components/myPage/UserInfo';
+import MyHelp from '../../../../components/myPage/MyHelp';
+import PostBasket from '../../../../components/myPage/PostBasket';
 import ServiceCenter from '../../../../components/service/ServiceCenter';
 import StarScore from '../../../../components/myPage/StarScore';
 import { Rate } from 'antd';
+
+const dummyUserData = {
+    transaction_time: "xxxx-xx-xx",
+    result_code: "OK",
+    description: "OK",
+    data: {
+        user_num: 1,
+        id: "dabeen2005",
+        user_name: "홍길동",
+        email: "AdminUser1@gmail.com",
+        brith_date: "xxxx-xx-xx",
+        nickname: "다빈",
+        address: "xx시 xxx대로 xxxx",
+        blon_sgg_name: "xxxx",
+        phone_num: "010-1111-1111",
+        suppl_whet: "Y",
+        pic_path: "xxxxxxxx",
+        rrn_rear: "xxxxxxxx",
+        avg_rate: 3.45,
+        own_milege: 5000
+    }
+};
 
 const UserPage = ({userid, pagename}) => {
     // const router = useRouter();
@@ -21,19 +43,21 @@ const UserPage = ({userid, pagename}) => {
                 <div className="userInfomation">
                     <img className="userImage"></img>
                     <div className="userIntroduce">
-                        <h1 className="userNickname">유저 닉네임</h1>
-                        {/* <div className="userRate">
-                            <div>
-                                <Rate allowHalf disabled defaultValue={4.2} style={{fontSize: 12}}/>
+                        <h1 className="userNickname">{dummyUserData.data.nickname}</h1>
+                        {dummyUserData.data.suppl_whet === "Y"
+                        ?   <div className="userRate">
+                                <div>
+                                    <Rate allowHalf disabled defaultValue={4.2} style={{fontSize: 12}}/>
+                                </div>
+                                <div className="userRateTitle">(3.8)</div>
                             </div>
-                            <div className="userRateTitle">(3.8)</div>
-                        </div> */}
-                        <button
-                            onClick={dabeenerRegist}
-                            className="userRegistButton"
-                            >
-                            다비너 신청
-                        </button>
+                        :   <button
+                                onClick={dabeenerRegist}
+                                className="userRegistButton"
+                                >
+                                다비너 신청
+                            </button>
+                        }
                         <div className="userParagraph">안녕하세요 ~ 입니다</div>
                     </div>
                 </div>
@@ -42,16 +66,18 @@ const UserPage = ({userid, pagename}) => {
                     <li className={pagename==="userinfo" ? "click" : ""}><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userid}/userinfo`}><a>상세정보</a></Link></li>
                     <li className={pagename==="takehelp" ? "click" : ""}><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userid}/takehelp`}><a>받은 도움</a></Link></li>
                     <li className={pagename==="givehelp" ? "click" : ""}><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userid}/givehelp`}><a>준 도움</a></Link></li>
+                    <li className={pagename==="basket" ? "click" : ""}><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userid}/basket`}><a>장바구니</a></Link></li>
                     <li className={pagename==="service" ? "click" : ""}><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userid}/service`}><a>고객센터</a></Link></li>
                 </ul>
             </section>
             <section className="contentSection">
                 <div>
                     {
-                      pagename === "userinfo" ? <UserInfo/> :
-                      pagename === "takehelp" ? <TakeHelp/> :
-                      pagename === "givehelp" ? <GiveHelp/> : 
-                      pagename === "service" ? <ServiceCenter/> : null
+                      pagename === "userinfo" ? <UserInfo userInf={dummyUserData}/> :
+                      pagename === "takehelp" ? <MyHelp helpType="take"/> :
+                      pagename === "givehelp" ? <MyHelp helpType="give"/> :
+                      pagename === "service" ? <ServiceCenter/> : 
+                      pagename === "basket" ? <PostBasket/> : null
                     }
                 </div>
             </section>
@@ -61,6 +87,7 @@ const UserPage = ({userid, pagename}) => {
 
 const UserPageWrapper = styled.article`
     width : 100%;
+    margin: 25px 0;
     display : flex;
     justify-content : center;
     @media screen and (max-width: 768px) {
@@ -72,11 +99,11 @@ const UserPageWrapper = styled.article`
         cursor: pointer;
     }
     & .profileSection {
-        width : 20vw;
+        width : 80%;
         min-width : 200px;
         max-width : 300px;
         height : 100%;
-
+        margin: 0 20px;
         display : flex;
         flex-direction : column;
         align-items : center;
@@ -154,14 +181,12 @@ const UserPageWrapper = styled.article`
        color : #ff4300;
    }
    & .contentSection {
+       width: 75vw;
+       max-width: 900px;
+       min-width: 280px;
+       margin: 0 20px;
        display: flex;
        flex-direction : column;
-       align-items : center;
-       width : 60%;
-       height : 100%;
-       & > div {
-           width : 80%;
-       }
    }
 `;
 

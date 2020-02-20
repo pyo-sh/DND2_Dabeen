@@ -19,7 +19,7 @@ const Footer = () => {
 
 const FooterBox = styled.div`
     margin-top: auto;
-    border-top : 1px solid darkgray;
+    border-top : 1px solid #BFC7CE;
     height : 2.5rem;
     width : 100%;
     margin-top : 30px;

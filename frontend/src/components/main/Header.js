@@ -171,7 +171,7 @@ const Menubar = styled.nav`
   align-items: center;
   background: white;
   text-align: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #BFC7CE;
   color: black;
   z-index: 1;
   opacity : 0.9;

@@ -107,7 +107,8 @@ const PostCapsuleUpperDiv = styled.div`
         display: flex;
         font-size: 25px;
         & div{
-            width: 50px;
+            width: 60px;
+            height: 25px;
             padding: 2px;
             border-radius: 10px;
             margin: 10px 10px;

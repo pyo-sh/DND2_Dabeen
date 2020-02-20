@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Hedaer from "./main/Header";
+import Header from "./main/Header";
 import Footer from "./main/Footer";
 import styled from "styled-components";
 import { maintainLoginAction } from "../reducers/user";
@@ -15,7 +15,7 @@ const AppLayout = ({ children }) => {
   }, []);
   return (
     <>
-      <Hedaer />
+      <Header />
       <AllDiv>
         <div className="childrenWrapper">{children}</div>
         <Footer />
@@ -28,7 +28,7 @@ const AllDiv = styled.div`
   display: flex;
   flex-direction: column;
   & .childrenWrapper {
-    margin-top: 10vh;
+    margin-top: 12vh;
   }
 `;
 
