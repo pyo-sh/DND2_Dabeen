@@ -104,7 +104,8 @@ const SignUpMain = () => {
     
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickSignUp = useCallback((e) => {
-        if(isNicknameCorrect && isIdCorrect && isPasswordCorrect && isPasswordChecked && isRegistrationCorrect){
+        // if(isNicknameCorrect && isIdCorrect && isPasswordCorrect && isPasswordChecked && isRegistrationCorrect)
+        if(true){
             const userLog = {
                 id,
                 password,
@@ -239,7 +240,7 @@ const SignUpMain = () => {
                     <div className="Sign-Title">이메일 *</div>
                     <Input
                         placeholder="이메일 입력"
-                        onChange={onChangeInput(setEmail, [check_eng, check_num, /[@]/g])}
+                        onChange={onChangeInput(setEmail, [check_eng, check_num, /[@.]/g])}
                         value={email}
                     />
                     {isEmailCorrect

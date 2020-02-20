@@ -24,7 +24,7 @@ function* watchLogout() {
 // 로그인
 
 function loginAPI(data) { 
-    return axios.post('/api/user/login', {id: data.id, pwd: data.password});
+    // return axios.post('/api/user/login', {id: data.id, pwd: data.password});
 };
 
 function* login(action) {
@@ -42,10 +42,36 @@ function* watchLogin() {
 };
 
 // 회원가입 
-function signUpAPI() {
-
+// id,
+// password,
+// nickname,
+// name,
+// birthYear,
+// birthMonth,
+// birthDay,
+// email,
+// telephone,
+// mainAddress,
+// subAddress,
+function signUpAPI(data) {
+    const reqData = {
+        data : {
+            user_id : data.id,
+            pwd : data.password,
+            user_name : data.name,
+            nickname : data.nickname,
+            email : data.email,
+            birth_date : data.birthYear + data.birthMonth + data.birthDay,
+            address : data.mainAddress,
+            blon_sgg_name : data.subAddress,
+            phone_num : data.telephone,
+            itdc_cont : `반갑습니다. ${data.nickname}입니다`,
+            suppl_whet : "n"
+        }
+    }
+    console.log(reqData);
+    return axios.post('/user', reqData);
 }
-
 function* signUp(action) {
     try {
         yield call(signUpAPI, action.data);

@@ -1,6 +1,5 @@
 import React from "react";
 import AppLayout from "../components/AppLayout";
-import Head from "next/head";
 import Helmet from 'react-helmet';
 import withRedux from "next-redux-wrapper";
 import withReduxSaga from "next-redux-saga";
@@ -10,8 +9,6 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import reducer from "../reducers";
 import axios from "axios";
-
-axios.defaults.baseURL = "http://localhost:3065/api";
 
 const Dabeen = ({ Component, store, pageProps }) => {
   return (
@@ -52,12 +49,7 @@ const Dabeen = ({ Component, store, pageProps }) => {
               rel: "stylesheet",
               href:
                 "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-            },
-            {
-              href: "https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap",
-              rel: "preload",
-              as :"font" 
-            } // font를 최대한 빨리 불러오기 위해 preload
+            }
           ]}
         >
         </Helmet>
@@ -73,7 +65,8 @@ Dabeen.getInitialProps = async context => {
   const { ctx, Component } = context;
   let pageProps = {};
   // const state = ctx.store.getState(); 리덕스의 스토어 안에 있는 state 불러오기 가능
-
+  const user = await axios.get("http://15.164.2.26:3307/api/user/2002170001");
+  console.log(user);
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }

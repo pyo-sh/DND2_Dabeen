@@ -1,11 +1,56 @@
 import produce from "immer";
 import { createAction } from './actionFunction';
+const dummyState = {
+  userInfo: {
+    userNum: 123, // 유저번호
+    userId: "ansrjsdn", 
+    userName: "문건우",
+    email: "ansejrrhkd@naver.com",
+    birthDate: "1995-06-01",
+    nickName: "moon",
+    address: "부산광역시 남구",
+    phoneNumber: "010xxxxxxxx",
+    blonSggName : "부산광역시 남구", // 소속시군구명
+    isDabeener: false, // 다비너 여부
 
+    // 공급자일 경우 필수
+    picPath: null, // 프로필사진 주소
+    rrnRear: null, // 주민 번호 뒷자리
+    avgRate: null, // 평점 평균
+    ownMilege: null // 소유 마일리지
+
+  },// 유저정보를 저장해야함.
+  isLoggingOut: false, // 로그아웃 시도중
+  logoutError: "", // 로그아웃 실패 사유
+  isLoggingIn: false, // 로그인 시도중
+  isLoginSuccess: false, // 로그인 성공 여부
+  loginError: "", // 로그인 실패 사유
+  isSigningup: false, //회원가입 시도중
+  signUpSuccess : false, // 회원가입 성공 여부
+  signUpError: "", // 회원 가입 실패
+  isUpdatingInfo: false, // 정보 업데이트중
+  updateError: "",
+}
 export const initialState = {
-  userId : null, // 유저 아이디
-  userNum : null, // 유저 번호
-  userInfo: { id: 1, nickname: "ansrjsdn" }, // 유저정보를 저장해야함.
+  userInfo: {
+    userNum: null, // 유저번호
+    userId: null, 
+    userName: null,
+    email: null,
+    birthDate: null,
+    nickName: null,
+    address: null,
+    phoneNumber: null,
+    blonSggName : null, // 소속시군구명
+    isDabeener: false, // 다비너 여부
 
+    // 공급자일 경우 필수
+    picPath: null, // 프로필사진 주소
+    rrnRear: null, // 주민 번호 뒷자리
+    avgRate: null, // 평점 평균
+    ownMilege: null // 소유 마일리지
+
+  },// 유저정보를 저장해야함.
   isLoggingOut: false, // 로그아웃 시도중
   logoutError: "", // 로그아웃 실패 사유
   isLoggingIn: false, // 로그인 시도중
@@ -106,7 +151,7 @@ export const editUserInfoFailureAction = () => ({
   type: EDIT_USERINFO_FAILURE
 });
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = dummyState, action) => {
   return produce(state, draft => {
     switch (action.type) {
       case CHECK_MAINTAIN_LOGIN : {
@@ -121,12 +166,11 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LOG_IN_SUCCESS: { // 로그인 토큰이 내려온다 -> 토큰 local 또는 session에 저장하고 토큰 해석해서 id 저장.
-        draft.isLoggingIn = false;
-        draft.isLoginSuccess = true;
-        action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
+        draft.isLoggingIn = false;        
+        // action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
+        draft.userInfo = dummyState.userInfo;
         // 토큰 해석해서 userId, userNum 저장하는 방식!!
-        draft.userId = "adfs";
-        draft.userNum = 1;
+        // 토큰에 여러개 정보 다 들어 있을지 아니면 한번더 불러야 하는지
         break;
       }
       case LOG_IN_FAILURE: {
@@ -146,8 +190,7 @@ const reducer = (state = initialState, action) => {
         // 로그아웃 성공 했을 때 토큰 삭제
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
-        draft.userId = null;
-        draft.userNum = null;
+        draft.userInfo = null;
         break;
       }
       case LOG_OUT_FAILURE: {
@@ -165,7 +208,7 @@ const reducer = (state = initialState, action) => {
       }
       case SIGN_UP_FAILURE: {
         draft.isSigningup = false;
-        draft.signUpError = action.data.error;
+        draft.signUpError = action.data;
         break;
       }
       case EDIT_USERINFO_REQUEST: {
