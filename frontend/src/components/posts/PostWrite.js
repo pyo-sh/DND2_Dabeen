@@ -70,15 +70,6 @@ const PostWrite = ({setInvisible}) => {
         }));
     }, [postTitle]);
 
-    //일단 이렇게 해놨는데 더 좋게 할 수 있남
-    const getUrls = useCallback(data => {
-        setUrls(data);
-    }, []);
-
-    const getImages = useCallback(data => {
-        setImages(data);
-    }, []);
-
     //이미지 삭제
     const deleteImage = useCallback(key => e =>{
         setUrls(urls.filter(url => url.key !== key));
@@ -131,7 +122,7 @@ const PostWrite = ({setInvisible}) => {
                     </ContentItem>
                     <UploadImage>
                         <div>사진첨부</div>
-                        <Upload urls={urls} images={images} getUrls={getUrls} getImages={getImages}/>
+                        <Upload urls={urls} images={images} getUrls={setUrls} getImages={setImages}/>
                         <div className="previewImage">
                             {images.length !== 0 ? 
                                 urls.map((url, i) => {
@@ -159,6 +150,7 @@ const Modal = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
 `;
 
 const ContentFlex = styled.div`
@@ -166,8 +158,8 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 31vw;
-    height: 80vh;
+    width: 34vw;
+    height: 84vh;
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -177,8 +169,8 @@ const ContentFlex = styled.div`
 `;
 
 const Content = styled.div`
-    width: 29vw;
-    height: 78vh;
+    width: 30vw;
+    height: 81vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -188,11 +180,11 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 29vw;
+    width: 30vw;
 `;
 
 const PostSetting = styled.div`
-    width: 29vw;
+    width: 30vw;
     height: 27vh;
     background: #F0F0F0;
     font-size: 20px;
@@ -277,7 +269,7 @@ const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 2vw;
-    width: 29vw;
+    width: 30vw;
     ::placeholder{
         color: #BFC7CE;
     }
@@ -293,10 +285,10 @@ const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 1vw;
     margin-top: 20px;
-    width: 29vw;
+    width: 30vw;
 
     & > textarea {
-        width: 29vw;
+        width: 30vw;
         height: 15vh;
         resize: none;
         color: #7a7a7a;
@@ -310,7 +302,7 @@ const ContentItem = styled.div`
 
 const UploadImage = styled.div`
     margin-top: 20px;
-    width: 29vw;
+    width: 30vw;
     font-size: 1vw;
 
     & .uploadImage {

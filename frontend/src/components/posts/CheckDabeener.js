@@ -1,17 +1,16 @@
 import React, { useState, useCallback } from 'react';
 import { useSeletor } from 'react-redux';
-import PostDetail from './PostDetail';
 import styled from 'styled-components';
 import { Drawer, Button, Avatar, Rate } from 'antd';
 
-const CheckDabeener = ({click, onModal}) => {
+const CheckDabeener = ({click, onModal, needPersonnel}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
     const [visible, setVisible] = useState(click);
     //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
 
     const onClose = useCallback(() => {
         onModal(visible);
-        setVisible(!visible);
+        setVisible(!visible)
     },[visible]);
 
     return (
@@ -32,7 +31,7 @@ const CheckDabeener = ({click, onModal}) => {
                 <div className="drawerTopMargin">|</div>
                 <div className="drawerTopFlex">
                     <div className="drawerTopMargin">확정인원</div>
-                    <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>1</span>/2</div>
+                    <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>1</span>/{needPersonnel}</div>
                 </div>
             </div>
             <div className="drawerMiddle">
