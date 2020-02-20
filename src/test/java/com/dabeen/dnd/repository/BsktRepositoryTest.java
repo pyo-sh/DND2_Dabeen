@@ -27,7 +27,7 @@ public class BsktRepositoryTest extends DemoApplicationTests{
     @Autowired
     private BsktMapper bsktMapper;
 
-    @Test
+    // @Test
     public void create() {
         String bsktUserNum = "2002160001";
         BigDecimal totalPrice = BigDecimal.valueOf(10000);

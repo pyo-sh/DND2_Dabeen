@@ -26,7 +26,7 @@ public class UserRepositoryTest extends DemoApplicationTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Test
+    // @Test
     public void create() {
         userRepository.findById(null);
         
@@ -78,7 +78,7 @@ public class UserRepositoryTest extends DemoApplicationTests {
         });
     }
 
-    @Test
+    // @Test
     public void delete(){
         Optional<User> user = userRepository.findById("200203002");
 

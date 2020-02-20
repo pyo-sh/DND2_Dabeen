@@ -35,7 +35,7 @@ public class BsktCompRepositoryTest {
 
     }
         
-    @Test
+    // @Test
     public void create() {
         
         String bsktNum = "2002150001";

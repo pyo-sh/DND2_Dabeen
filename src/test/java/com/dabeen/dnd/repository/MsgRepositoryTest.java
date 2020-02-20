@@ -34,7 +34,7 @@ public class MsgRepositoryTest {
 
     }
         
-    @Test
+    // @Test
     public void create() {
 
         String chatNum = "2002160001";

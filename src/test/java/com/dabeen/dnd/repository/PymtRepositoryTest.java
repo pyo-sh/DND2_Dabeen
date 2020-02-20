@@ -25,7 +25,7 @@ public class PymtRepositoryTest extends DemoApplicationTests {
     @Autowired
     private BsktRepository bsktRepository;
     
-    @Test
+    // @Test
     public void create() {
         String bsktNum = "2002170006";
         PymtMthdType type = PymtMthdType.c;

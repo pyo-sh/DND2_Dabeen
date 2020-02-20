@@ -23,7 +23,7 @@ public class PostRepositoryTest extends DemoApplicationTests{
     @Autowired
     private PostMapper postMapper;
     
-    @Test
+    // @Test
     public void create() {
         PostType postType = PostType.q;
         String questerNum = "2002160001";
