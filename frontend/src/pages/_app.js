@@ -55,8 +55,9 @@ const Dabeen = ({ Component, store, pageProps }) => {
             },
             {
               href: "https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap",
-              rel: "stylesheet"
-            }
+              rel: "preload",
+              as :"font" 
+            } // font를 최대한 빨리 불러오기 위해 preload
           ]}
         >
         </Helmet>

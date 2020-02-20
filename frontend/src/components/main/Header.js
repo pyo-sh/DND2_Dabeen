@@ -161,6 +161,8 @@ const Header = () => {
 
 const Menubar = styled.nav`
   position: fixed;
+  height : 10vh;
+  min-height : 50px;
   top: 0;
   width: 100%;
   padding: 10px 0;
@@ -176,7 +178,7 @@ const Menubar = styled.nav`
   & .menuToggle {
     position: absolute;
     top: 13px;
-    right: 20px;
+    right: 24px;
     cursor: pointer;
     color: black;
     font-size: 24px;
@@ -207,7 +209,7 @@ const Menubar = styled.nav`
     align-items: center;
     justify-content: center;
     position: absolute;
-    font-size: 20px;
+    font-size: 17px;
     top: 62px;
     right: 5px;
     background: rgba(255, 99, 71, 0.9);
@@ -228,7 +230,7 @@ const Menubar = styled.nav`
       width: 10px;
       height: 10px;
       position: absolute;
-      background: rgba(255, 99, 71, 0.9);
+      background: rgba(255, 99, 71);
       top: -5px;
       left: 50%;
       transform: translate(-50%) rotate(45deg);
