@@ -80,7 +80,6 @@ const PostUpperDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 70px;
   & .postmainWrapper {
     width: 100%;
     max-width: 1200px;
