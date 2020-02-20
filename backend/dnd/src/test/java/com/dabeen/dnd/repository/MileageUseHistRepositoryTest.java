@@ -23,7 +23,7 @@ public class MileageUseHistRepositoryTest extends DemoApplicationTests {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
+    // @Test
     public void create() {
         String userNum = "2002160001";
         MileageUseType type = MileageUseType.w;

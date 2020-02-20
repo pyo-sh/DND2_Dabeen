@@ -37,7 +37,7 @@ public class FqaRepositoryTest {
 
     }
         
-    @Test
+    // @Test
     public void create() {
         
         String fqaRgistrantNum = "2001180001";

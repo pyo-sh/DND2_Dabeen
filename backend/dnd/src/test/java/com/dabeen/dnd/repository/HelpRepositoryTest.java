@@ -45,7 +45,7 @@ public class HelpRepositoryTest {
     @Before
     public void setup(){
     }
-    @Test
+    // @Test
     public void create() {
 
         LocalDateTime helpPstnDttm = LocalDateTime.now();
@@ -95,7 +95,7 @@ public class HelpRepositoryTest {
         assertThat(helpMap.get("helpNum"),is("2002180002"));
     }
 
-    @Test
+    // @Test
     public void read(){
         Optional<Help> help = helpRepository.findById("2002180001");
         assertThat(help.get().getHelpNum(),is("2002180001"));
