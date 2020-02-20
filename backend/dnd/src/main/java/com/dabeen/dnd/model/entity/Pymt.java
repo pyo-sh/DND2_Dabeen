@@ -7,10 +7,18 @@ package com.dabeen.dnd.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,6 +30,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Data
@@ -30,8 +39,10 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
+@ToString(exclude = {"mileageUseHist", "bskt"})
 public class Pymt{
     @Id
+    @Column(name = "pymt_num")
     @NotEmpty(message = "is not null")
     private String pymtNum; // 결제번호
     
@@ -50,4 +61,15 @@ public class Pymt{
     private Whether refdWhet; // 환불여부
 
     private LocalDateTime refdDttm; // 환불 일시
+
+
+    /* 연관관계 설정 */
+    @OneToOne(mappedBy = "pymt")
+    private MileageUseHist mileageUseHist;
+
+    @NotNull(message = "is not null")
+    @MapsId // (name)은 복합키일 때만
+    @JoinColumn(name = "pymt_num")
+    @OneToOne
+    private Bskt bskt; // 결제와 식별관계
 }

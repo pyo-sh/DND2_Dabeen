@@ -3,9 +3,12 @@
 package com.dabeen.dnd.repository;
 
 import com.dabeen.dnd.repository.UserRepository;
+import com.dabeen.dnd.repository.mapper.UserMapper;
+
 import org.junit.Test;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -17,9 +20,16 @@ public class UserRepositoryTest extends DemoApplicationTests {
     @Autowired
     private UserRepository userRepository;
   
+    @Autowired 
+    private UserMapper userMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void create() {
-        String userNum = "200203002";
+        userRepository.findById(null);
+        
         String userName = "이은비";
         String birthDate = "980515";
         String address = "부산시 사하구 낙동대로 486번길 25";
@@ -29,31 +39,31 @@ public class UserRepositoryTest extends DemoApplicationTests {
         String email = "test!@ASd.ca";
         String nickname = "Lihess";
         String itdcCont = "안녕하세요";
-        Whether supplWhet = Whether.N;
+        Whether supplWhet = Whether.n;
         String blonSggName = "사하구";
 
         User user = User.builder()
-                        .userNum(userNum)
                         .userName(userName)
                         .birthDate(birthDate)
                         .address(address)
                         .phoneNum(phoneNum)
                         .userId(id)
-                        .pwd(pwd)
+                        .pwd(passwordEncoder.encode(pwd))
                         .email(email)
                         .nickname(nickname)
                         .itdcCont(itdcCont)
                         .supplWhet(supplWhet)
                         .blonSggName(blonSggName)
                         .build();
-        User newUser = userRepository.save(user);
+        
+        userMapper.insert(user);
 
-        Assert.assertNotNull(newUser);
+        Assert.assertNotNull(userRepository.findById(user.getUserNum()));
     }
 
     @Test
     public void read(){
-        Optional<User> user = userRepository.findById("20020301");
+        Optional<User> user = userRepository.findById("2002160001");
         Assert.assertNotNull(user.isPresent());
     }
 
@@ -62,7 +72,7 @@ public class UserRepositoryTest extends DemoApplicationTests {
         Optional<User> user = userRepository.findById("200203002");
 
         user.ifPresent(selectorUser -> {
-            selectorUser.setPwd("test02");
+            selectorUser.setPwd(passwordEncoder.encode("test02"));
 
             userRepository.save(selectorUser);
         });
