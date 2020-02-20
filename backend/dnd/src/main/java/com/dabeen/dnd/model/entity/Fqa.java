@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Entity
@@ -23,6 +26,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
+@ToString(exclude = {"admin"})
 public class Fqa{
 
     @Id
@@ -39,7 +43,12 @@ public class Fqa{
     private String rplyCont; // 답변내용
 
     //Default CRUD 생성 후 종속성 연결 작업 필요
-    @NotEmpty(message = "is not empty")
-    private String fqaRgistrantNum; // 자주묻는질문등록자번호
+    // @NotEmpty(message = "is not empty")
+    // private String fqaRgistrantNum; // 자주묻는질문등록자번호
+
+    /* 연관관계 설정 */
+    @ManyToOne
+    @JoinColumn(name = "fqa_rgistrant_num")
+    private Admin admin;
 
 }

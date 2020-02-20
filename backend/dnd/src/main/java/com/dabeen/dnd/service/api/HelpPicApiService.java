@@ -73,12 +73,10 @@ public class HelpPicApiService  {
 
         HelpPicPK pk = new HelpPicPK(helpPicApiRequest.getHelpNum(), helpPicApiRequest.getPicOrnu());
 
-        return helpPicRepository.findById(pk).map(helpPic -> helpPic.setPath(helpPicApiRequest.getPath()))
-                                                                                    .map(
-                                                                                        newHelpPic -> helpPicRepository.save(newHelpPic)
-                                                                                    ).map(
-                                                                                        hp -> Header.OK(response(hp))
-                                                                                    ).orElseThrow(() -> new NotFoundException("HelpPic"));
+        return helpPicRepository.findById(pk)
+                                .map(helpPic -> helpPic.setPath(helpPicApiRequest.getPath()))
+                                .map(newHelpPic -> helpPicRepository.save(newHelpPic))
+                                .map(hp -> Header.OK(response(hp))).orElseThrow(() -> new NotFoundException("HelpPic"));
     }
 
     public Header delete(HelpPicPK helpPicPK){

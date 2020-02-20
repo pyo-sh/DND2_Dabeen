@@ -91,8 +91,8 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         .pwd(encryPwd)
                         .email(userApiRequset.getEmail())
                         .nickname(userApiRequset.getNickname())
-                        .itdcCont(userApiRequset.getItdcCont())
-                        .supplWhet(userApiRequset.getSupplWhet())
+                        // .itdcCont(userApiRequset.getItdcCont()) Default 값 설정
+                        // .supplWhet(userApiRequset.getSupplWhet()) Default 값 설정
                         .blonSggName(userApiRequset.getBlonSggName())
                         .picPath(userApiRequset.getPicPath())
                         .rrnRear(userApiRequset.getRrnRear())

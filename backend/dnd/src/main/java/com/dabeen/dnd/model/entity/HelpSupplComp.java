@@ -6,16 +6,19 @@ package com.dabeen.dnd.model.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -38,7 +41,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"suppler", "help"})
+@ToString(exclude = {"suppler", "help","bsktComps"})
 public class HelpSupplComp{
     @EmbeddedId
     @NotNull(message = "is not null")
@@ -72,6 +75,10 @@ public class HelpSupplComp{
     @ManyToOne
     private User suppler;
 
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "helpSupplComp")
+    private List<BsktComp> bsktComps;
+
+    /* 디폴트 값 설정 */
     //https://dotoridev.tistory.com/6 
     @PrePersist
     public void prePersist(){

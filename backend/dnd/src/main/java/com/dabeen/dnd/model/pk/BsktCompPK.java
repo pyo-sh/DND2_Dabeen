@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import com.dabeen.dnd.model.entity.HelpSupplComp;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +25,10 @@ public class BsktCompPK implements Serializable{
     
     private String bsktNum; // 장바구니번호
 
-    private String helpNum; // 도움번호
+    // private String helpNum; // 도움번호
 
-    private String supplNum; // 공급자번호
+    // private String supplNum; // 공급자번호
+
+    private HelpSupplCompPK helpSupplCompPK;
 
 }

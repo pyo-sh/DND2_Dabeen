@@ -8,9 +8,15 @@ import com.dabeen.dnd.model.entity.Fqa;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FqaApiRequest;
 import com.dabeen.dnd.model.network.response.FqaApiResponse;
+import com.dabeen.dnd.repository.AdminRepository;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fqa> {
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Override
     public Header<FqaApiResponse> create(Header<FqaApiRequest> request) {
@@ -21,7 +27,7 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                     .questPstnDttm(fqaApiRequest.getQuestPstnDttm())
                     .title(fqaApiRequest.getTitle())
                     .rplyCont(fqaApiRequest.getRplyCont())
-                    .fqaRgistrantNum(fqaApiRequest.getFqaRgistrantNum())
+                    .admin(adminRepository.getOne(fqaApiRequest.getFqaRgistrantNum()))
                     .build();
 
         Fqa newFqa = baseRepository.save(fqa);
@@ -47,7 +53,7 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                             .map(fqa -> fqa.setQuestPstnDttm(fqaApiRequest.getQuestPstnDttm())
                                             .setTitle(fqaApiRequest.getTitle())
                                             .setRplyCont(fqaApiRequest.getRplyCont())
-                                            .setFqaRgistrantNum(fqaApiRequest.getFqaRgistrantNum())
+                                            .setAdmin(adminRepository.getOne(fqaApiRequest.getFqaRgistrantNum()))
                                 )
                             .map(fqa -> baseRepository.save(fqa))
                             .map(fqa -> Header.OK(response(fqa)))
@@ -73,7 +79,7 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                                                     .questPstnDttm(fqa.getQuestPstnDttm())
                                                     .title(fqa.getTitle())
                                                     .rplyCont(fqa.getRplyCont())
-                                                    .fqaRgistrantNum(fqa.getFqaRgistrantNum()).build();
+                                                    .fqaRgistrantNum(fqa.getAdmin().getAdminNum()).build();
         
         return fqaApiResponse;
     }

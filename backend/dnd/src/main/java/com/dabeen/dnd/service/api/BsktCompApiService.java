@@ -11,7 +11,10 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktCompApiRequest;
 import com.dabeen.dnd.model.network.response.BsktCompApiResponse;
 import com.dabeen.dnd.model.pk.BsktCompPK;
+import com.dabeen.dnd.model.pk.HelpSupplCompPK;
 import com.dabeen.dnd.repository.BsktCompRepository;
+import com.dabeen.dnd.repository.BsktRepository;
+import com.dabeen.dnd.repository.HelpSupplCompRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +24,23 @@ import org.springframework.stereotype.Service;
 public class BsktCompApiService{
 
     @Autowired
-    BsktCompRepository bsktCompRepository;
+    private BsktCompRepository bsktCompRepository;
+
+    @Autowired
+    private BsktRepository bsktRepository;
+
+    @Autowired
+    private HelpSupplCompRepository helpSupplCompRepository;
 
     public Header<BsktCompApiResponse> create(Header<BsktCompApiRequest> request){
         BsktCompApiRequest bsktCompApiRequest = request.getData();
 
-        BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
+        // BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
 
         BsktComp bsktComp = BsktComp.builder()
-                                    .bsktCompPK(bsktCompPK)
+                                    .bsktCompPK(new BsktCompPK())
+                                    .bskt(bsktRepository.findById(bsktCompApiRequest.getBsktNum()).orElse(null))
+                                    .helpSupplComp(helpSupplCompRepository.findById(new HelpSupplCompPK(bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum())).orElse(null))
                                     .indvHelpPrice(bsktCompApiRequest.getIndvHelpPrice()).build();
     
         BsktComp newBsktComp = bsktCompRepository.save(bsktComp);
@@ -49,7 +60,9 @@ public class BsktCompApiService{
 
         BsktCompApiRequest bsktCompApiRequest = request.getData();
 
-        BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), bsktCompApiRequest.getHelpNum(),bsktCompApiRequest.getSupplNum());
+        HelpSupplCompPK helpSupplCompPK = new HelpSupplCompPK(bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
+
+        BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), helpSupplCompPK);
 
         return bsktCompRepository.findById(bsktCompPK).map(bsktComp -> bsktComp.setIndvHelpPrice(bsktCompApiRequest.getIndvHelpPrice()))
                                                 .map(newBsktComp -> bsktCompRepository.save(newBsktComp))
@@ -72,8 +85,8 @@ public class BsktCompApiService{
 
         BsktCompApiResponse bsktCompApiResponse = BsktCompApiResponse.builder()
                                                                     .bsktNum(bsktComp.getBsktCompPK().getBsktNum())
-                                                                    .helpNum(bsktComp.getBsktCompPK().getHelpNum())
-                                                                    .supplNum(bsktComp.getBsktCompPK().getSupplNum())
+                                                                    .helpNum(bsktComp.getBsktCompPK().getHelpSupplCompPK().getHelpNum())
+                                                                    .supplNum(bsktComp.getBsktCompPK().getHelpSupplCompPK().getSupplNum())
                                                                     .indvHelpPrice(bsktComp.getIndvHelpPrice()).build();
 
         return bsktCompApiResponse;

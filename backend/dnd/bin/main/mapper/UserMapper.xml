@@ -15,10 +15,11 @@
             WHERE substr(user_num, 1, 6) = date_format(now(), "%y%m%d")  <!-- 해당 테이블 엔터티 중 오늘 생성된 엔터티가 있는지-->
             <!-- 키 생성 쿼리 -->
         </selectKey>
+        <!-- 공급자 여부, 자기소개 Default 값 적용을 위한 user 테이블 컬럼 명시적으로 표현 -->
         insert 
-            into user
+            into user(user_num,user_name,birth_date,address,phone_num,id,pwd,email,nickname,blon_sgg_name,pic_path,rrn_rear,avg_rate,own_mileage)
             values (#{userNum}, #{userName}, #{birthDate}, #{address}, #{phoneNum}, 
-                    #{userId}, #{pwd}, #{email}, #{nickname}, #{itdcCont}, #{supplWhet}, 
+                    #{userId}, #{pwd}, #{email}, #{nickname},
                     #{blonSggName}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
     </insert>
     <select id="selectFiveOderByRate" resultType="map" parameterType="string">

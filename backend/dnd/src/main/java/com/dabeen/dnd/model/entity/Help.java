@@ -39,7 +39,7 @@ import lombok.experimental.Accessors;
 @Builder
 @Accessors(chain = true)
 // @Table(name = "help")
-@ToString(exclude = {"helpSupplComp","user","category","helpPics","chats"})
+@ToString(exclude = {"helpSupplComps","user","category","helpPics","chat"})
 public class Help{
 
     @Id
@@ -100,7 +100,7 @@ public class Help{
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
-    private List<HelpSupplComp> helpSupplComp;
+    private List<HelpSupplComp> helpSupplComps;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "help")
     private List<HelpPic> helpPics;

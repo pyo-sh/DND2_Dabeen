@@ -35,7 +35,7 @@ import lombok.experimental.Accessors;
 @Builder
 @Entity
 @Accessors(chain = true)
-@ToString(exclude = {"mileageUseHists", "bsktUser", "pymt"})
+@ToString(exclude = {"mileageUseHists", "bsktUser", "pymt","bsktComps"})
 public class Bskt{
     @Id
     @NotEmpty(message = "is not Empty")
@@ -61,4 +61,7 @@ public class Bskt{
 
     @OneToOne(mappedBy = "bskt")
     private Pymt pymt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bskt")
+    private List<BsktComp> bsktComps;
 }

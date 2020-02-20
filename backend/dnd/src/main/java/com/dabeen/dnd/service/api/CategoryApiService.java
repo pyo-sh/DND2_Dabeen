@@ -38,7 +38,10 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
     public Header<CategoryApiResponse> read(String num) {
         // TODO Auto-generated method stub
         
-        return baseRepository.findById(num).map(category -> response(category)).map(category -> Header.OK(category)).orElseThrow(() -> new NotFoundException("category"));
+        return baseRepository.findById(num)
+                            .map(category -> response(category))
+                            .map(category -> Header.OK(category))
+                            .orElseThrow(() -> new NotFoundException("category"));
 
     }
 
@@ -48,25 +51,26 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
         
         CategoryApiRequest categoryApiRequest = request.getData();
 
-        return baseRepository.findById(categoryApiRequest.getCatNum()).map(category -> category.setCatNum(categoryApiRequest.getCatNum())
-                                                                                                .setCatName(categoryApiRequest.getCatName())
-                                                                                                .setCatDesc(categoryApiRequest.getCatDesc())
-                                                                                                .setHighCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())))
-                                                                                    .map(
-                                                                                        newCategory -> baseRepository.save(newCategory)
-                                                                                    ).map(
-                                                                                        c -> Header.OK(response(c))
-                                                                                    ).orElseThrow(() -> new NotFoundException("Category"));
+        return baseRepository.findById(categoryApiRequest.getCatNum())
+                            .map(category -> category.setCatNum(categoryApiRequest.getCatNum())
+                                                    .setCatName(categoryApiRequest.getCatName())
+                                                    .setCatDesc(categoryApiRequest.getCatDesc())
+                                                    .setHighCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())))
+                            .map(newCategory -> baseRepository.save(newCategory))
+                            .map(c -> Header.OK(response(c)))
+                            .orElseThrow(() -> new NotFoundException("Category"));
         
     }
 
     @Override
     public Header delete(String num) {
         // TODO Auto-generated method stub
-        return baseRepository.findById(num).map(category -> {
-            baseRepository.delete(category);
-            return Header.OK();
-            }).orElseThrow( () -> new NotFoundException("Category"));
+        return baseRepository.findById(num)
+                            .map(category -> {
+                                    baseRepository.delete(category);
+                                    return Header.OK();
+                                })
+                            .orElseThrow( () -> new NotFoundException("Category"));
     }
 
 
