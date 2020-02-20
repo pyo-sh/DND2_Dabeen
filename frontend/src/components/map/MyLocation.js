@@ -9,19 +9,22 @@ const MyLocation = ({myLocation}) => {
     const [lng, setLng] = useState(129.107);
     const Marker = ({ image }) => <img src={image} width="30px" height="30px" alt="지도 핀"/> ;
 
-    Geocode.setApiKey(apiKeys.geocoding);
-    Geocode.setLanguage("kr");
-    Geocode.fromAddress(myLocation).then(
-        response => {
-            setLat(response.results[0].geometry.location.lat)
-            setLng(response.results[0].geometry.location.lng)
-            console.log(response.results[0].geometry.location)
-        },
-        error => {
-            console.error(error);
-        }
-    )
-    
+    useEffect(()=>{
+        Geocode.setApiKey(apiKeys.geocoding);
+        Geocode.setLanguage("kr");
+        Geocode.fromAddress(myLocation).then(
+            response => {
+                setLat(response.results[0].geometry.location.lat)
+                setLng(response.results[0].geometry.location.lng)
+                console.log(response.results[0].geometry.location)
+            },
+            error => {
+                console.error(error);
+            }
+        )
+        
+    }, [myLocation]);
+
     return (
         <div style={{height: '100%', width: '100%'}}>
             <GoogleMapReact

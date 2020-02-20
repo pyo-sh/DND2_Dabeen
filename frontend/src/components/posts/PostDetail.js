@@ -1,23 +1,32 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { Button, Icon } from 'antd';
+import { Button, Icon, Input, TimePicker, DatePicker } from 'antd';
 import CheckDabeener from './CheckDabeener';
 import MyLocation from '../map/MyLocation';
+import inputChangeHook from '../../hooks/inputChangeHook';
+import moment from 'moment';
 
 // 내가 쓴 글 / 아닌 글 구분해야함
-const PostDetail = ({setVisible}) => {
-    
+const PostDetail = ({setVisible, data}) => {
+
     //임시로 내가 쓴 글이라고 설정
     const [myPost, setMyPost] = useState(true);
     const [click, setClick] = useState(false);
+    const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때
+    const [editTitle, setEditTitle] = inputChangeHook(data.help_title);
+    const [editPost_num, setEditPost_num] = inputChangeHook(data.post_num);
+    const [editHelp_aply_cls_dttm, setEditHelp_aply_cls_dttm] = useState(data.help_aply_cls_dttm);
+    const [editPost_type, setEditPost_type] = useState('');
+    const [editExec_loc, setEditExec_loc] = useState('');
+    const [editCont, setEditCont] = useState('');
+    const dateFormat = 'YYYY-MM-DD';
     const {helpPosts} = useSelector(state => state.posts);
 
-    const onModal = useCallback(() => {
-        setClick(!click);
-    }, [click]);
-
-    console.log(helpPosts[0].exec_loc);
+    //신청 다비너 창 여닫을떄
+    const onModal = useCallback((e) => {
+        setClick(prev => !prev);
+    }, []);
     return (
         <Modal>
             <ContentForm>
@@ -26,11 +35,13 @@ const PostDetail = ({setVisible}) => {
                         <Icon onClick={setVisible} type="close"/>
                     </DeleteIcon>
                     <Title>
-                        <div>제목</div>
+                        {
+                            !edit ? <div>{data.help_title}</div> : <Input value={editTitle} onChange={setEditTitle}/>
+                        }
                         <div className="titleDetail">
-                            <div>작성일 : 2020.02.10</div>
-                            <div>작성자 : ysje</div>            
-                            <Edit>Edit</Edit>
+                            <div>작성일 : {data.help_post_dttm}</div>
+                            <div>작성자 : {data.id}</div>            
+                            <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                         </div>
                     </Title>
                     <Image>근데 여기에 무슨 사진을 넣나요</Image>
@@ -43,34 +54,45 @@ const PostDetail = ({setVisible}) => {
                             </div>
                             <div className="applicationInfoTextDetail">
                                 {
-                                    myPost ? 
-                                    <div style={{display: "flex"}}><div>0/1</div><Button type="link" style={{color: "#7A7A7A"}} size="small" onClick={onModal}>신청 확인</Button></div>
-                                    :   
-                                    <div>0/1</div>  /**여기서 0은 강조색으로하기 */
+                                    !edit ? 
+                                    <>
+                                        {/*여기서 0은 강조색으로하기  */}
+                                        <div style={{display: "flex"}}><div>0/{data.post_num}</div><Button type="link" style={{color: "#7A7A7A"}} size="small" onClick={onModal}>신청 확인</Button></div>
+                                        {click&&<CheckDabeener click={click} onModal={onModal}/>}
+                                        <div>{data.help_aply_cls_dttm}</div>
+                                        <div>{data.post_type}, PM 06:19</div>
+                                    </>
+                                    :
+                                    <>
+                                        <div style={{display: "flex"}}><div>0/</div><input value={editPost_num} onChange={setEditPost_num}/></div>
+                                        <DatePicker style={{marginRight: 5}} defaultValue={moment(data.help_aply_cls_dttm, dateFormat)}/>
+                                        <DatePicker style={{marginRight: 5}} defaultValue={moment(data.post_type, dateFormat)}/>
+                                    </>
                                 }
-                                {click&&<CheckDabeener click={click} onModal={onModal}/>}
-                                <div>2020-03-08</div>
-                                <div>2020-03-08, PM 06:19</div>
                             </div>
                         </div>
                         <div className="applicationMoney">
-                            <div>3000원</div>
+                            <div>{data.price}원</div>
                             {
                                 myPost ? 
                                 <ClickButton apply>마감</ClickButton> :
-                                <ClickButton apply>신청</ClickButton>
+                                <ClickButton apply>신청</ClickButton>   //신청 누르면... 신청자의 닉네임, 아이디, 자기소개, 평점, 총 도움수 얻어와서 저장.....
                             }
                         </div>
                     </ApplicationInfo>
                     <ContentItem>
-                        <div style={{fontSize: 22}}>위치</div>
-                        <MyLocation myLocation={helpPosts[0].exec_loc}/>
+                        <div>
+                            <div style={{fontSize: 22}}>위치</div>
+                            <div>{data.exec_loc}</div>
+                        </div>
+                        <div className="map">
+                            <MyLocation myLocation={helpPosts[0].exec_loc}/>
+                        </div>
                     </ContentItem>
                     <ContentItem>
                         <div style={{fontSize: 22}}>도움정보</div>
                         <p>
-                            못 잘 박을 수 있는 망치가 필요합니다.<br/>
-                            거기에다가 빌려주시는 분이 망치질을 잘 하셨으면 좋겠습니다.
+                            {data.cont}
                         </p>
                     </ContentItem>
                 </Content>
@@ -173,6 +195,9 @@ const ApplicationInfo = styled.div`
         width: 9vw;
         font-size: 14px;
 
+        & > span{
+            color: #FF4300;
+        }
     }
 
     & .applicationMoney{
@@ -219,6 +244,11 @@ const ContentItem = styled.div`
     & > p{
         margin-top: 10px;
         font-size: 18px;
+    }
+
+    & .map{
+        width: 21vw;
+        height: 16vh
     }
 `;
 

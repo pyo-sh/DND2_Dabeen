@@ -36,6 +36,9 @@ const CheckDabeener = ({click, onModal}) => {
                 </div>
             </div>
             <div className="drawerMiddle">
+                {/* 얘도 map으로 줘야함.... 
+                    아이디, 닉네임, 총 도움수, 평점, 자기소개 받아와서 출력
+                */}
                 <ApplyDabeener>
                     <Avatar size={90} icon="user"/>
                     <div className="content">
