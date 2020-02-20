@@ -24,7 +24,7 @@ public class AdminRepositoryTest extends DemoApplicationTests{
     @Autowired
     private AdminMapper AdminMapper;
 
-    @Test
+    // @Test
     public void create() {
         String adminName = "이은비";
         String address = "부산시 사하구 낙동대로 486번길 25";
