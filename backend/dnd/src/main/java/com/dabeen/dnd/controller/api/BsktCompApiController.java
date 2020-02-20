@@ -9,6 +9,7 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktCompApiRequest;
 import com.dabeen.dnd.model.network.response.BsktCompApiResponse;
 import com.dabeen.dnd.model.pk.BsktCompPK;
+import com.dabeen.dnd.model.pk.HelpSupplCompPK;
 import com.dabeen.dnd.service.api.BsktCompApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,9 @@ public class BsktCompApiController{
         @RequestParam(name = "help_num") String helpNum,
         @RequestParam(name = "suppl_num") String supplNum ){
             
-        BsktCompPK bsktCompPK = new BsktCompPK(bsktNum, helpNum, supplNum);
+        HelpSupplCompPK helpSupplCompPK = new HelpSupplCompPK(helpNum,supplNum);
+
+        BsktCompPK bsktCompPK = new BsktCompPK(bsktNum, helpSupplCompPK);
 
         return bsktCompApiService.read(bsktCompPK);
     }
@@ -56,8 +59,10 @@ public class BsktCompApiController{
         @RequestParam(name = "help_num") String helpNum,
         @RequestParam(name = "suppl_num") String supplNum){
 
-        BsktCompPK bsktCompPK = new BsktCompPK(bsktNum, helpNum, supplNum);
+        HelpSupplCompPK helpSupplCompPK = new HelpSupplCompPK(helpNum,supplNum);
 
+        BsktCompPK bsktCompPK = new BsktCompPK(bsktNum, helpSupplCompPK);
+    
         return bsktCompApiService.delete(bsktCompPK);
     }
 
