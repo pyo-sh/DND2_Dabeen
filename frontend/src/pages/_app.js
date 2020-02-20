@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 import reducer from '../reducers';
 import axios from 'axios';
+import "react-datepicker/dist/react-datepicker.css";
 
 axios.defaults.baseURL = "http://localhost:3065/api";
 

@@ -51,7 +51,7 @@ const PostCapsule = ({ data }) => {
                 </div>
             </PostCapsuleUpperDiv>
             {postDetailVisible
-            ?   <PostDetail setVisible={setVisible}/>
+            ?   <PostDetail setVisible={setVisible} data={data}/>
             :   null}
         </>
     );

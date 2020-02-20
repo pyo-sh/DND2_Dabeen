@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { Select, DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
+import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
+// import DatePicker from 'react-datepicker';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import Upload from '../uploadImages/Upload';
@@ -108,7 +109,8 @@ const PostWrite = ({setInvisible}) => {
                                 </Select>
                             </div>
                             <div className="deadline">
-                                <DatePicker style={{marginRight: 5}} onChange={onPostDeadlineDate}/>
+                                {/* <DatePicker selected={postDeadline.date} onChange={onPostDeadlineDate}/> */}
+                                <DatePicker style={{marginRight: 5}}  onChange={onPostDeadlineDate}/>
                                 <TimePicker use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
                             </div>
                             <div className="executionDate">

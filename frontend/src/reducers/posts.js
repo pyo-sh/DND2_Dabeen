@@ -33,23 +33,23 @@ const dummyHelpPost = {
 
 export const initialState = {
     helpPosts: [{
-        help_num: 1,          
-        help_title: '망치 빌려주세요.',   //게시글 제목
+        id: 1,
+        postName: '망치 빌려주세요.',   //게시글 제목
         category: '심부름',            //카테고리
-        help_aply_cls_dttm: {               //신청 마감 일시
+        postDeadline: {               //신청 마감 일시
             date: '2020-03-07',
             time: '06:19'
         },
-        post_type: {             //수행 일시
+        executionDate: {             //수행 일시
             date: '2020-03-08',
             time: '06:19'
         },
-        post_num: 3,           //필요 인원
-        price: 3000,                //금액
-        exec_loc: '부산 남구 용소로 45',  //이행 위치
-        sigungu: '의창구',        //이행 시군구
-        cont: '열정페이로 일하실분 우대합니다!',    //요구사항
-        help_pic_list:[]   //사진 첨부, 여러개 올릴 수 있음
+        needPersonnel: 3,           //필요 인원
+        money: 3000,                //금액
+        location: '창원시 의창구',  //이행 위치
+        sigungu: '의창구',          //이행 시군구
+        requirements: '열정페이로 일하실분 우대합니다!',    //요구사항
+        images:[]   //사진 첨부, 여러개 올릴 수 있음
     }],
     maxId: 1,
     addHelpPostErrorReason: '', //도움 게시글 업로드 실패 사유
