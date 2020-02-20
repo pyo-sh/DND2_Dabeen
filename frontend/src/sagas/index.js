@@ -4,7 +4,7 @@ import opponent from './opponent';
 import posts from './posts';
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:3065/api";
+axios.defaults.baseURL = "http://15.164.2.26:3307/api";
 
 export default function* rootSaga() {
     yield all([

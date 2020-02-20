@@ -23,7 +23,7 @@ const PostCapsule = ({ data }) => {
                     <div className="CapsuleMainProfile">
                         <Divider orientation="left">
                             <div className="CapsuleMainPicture">
-                                사진{data.help_pic_list}
+                                사진{data.helpPickList}
                             </div>
                         </Divider>
                         <div className="CapsuleMainUserInfo">
@@ -37,17 +37,17 @@ const PostCapsule = ({ data }) => {
                     </div>
                 </div>
                 <div className="CapsuleTitle">
-                    {data.help_title}
-                    {data.help_aprv_whet==="true"
-                    ?   <div className="CapsuleTitleCheckTrue">마감</div>
-                    :   <div className="CapsuleTitleCheckFalse">신청 중</div>
+                    {data.helpTitle}
+                    {data.isHelpApprove ?
+                        <div className="CapsuleTitleCheckTrue">마감</div> : 
+                        <div className="CapsuleTitleCheckFalse">신청 중</div>
                     }
                 </div>
                 <div className="CapsuleFinishTime">
-                    신청 마감일 : {data.help_aply_cls_dttm}
+                    신청 마감일 : {data.helpDeadLine}
                 </div>
                 <div className="CapsuleDoingTime">
-                    수행일 : {data.pref_help_exec_dttm}
+                    수행일 : {data.helpExecDate}
                 </div>
             </PostCapsuleUpperDiv>
             {postDetailVisible

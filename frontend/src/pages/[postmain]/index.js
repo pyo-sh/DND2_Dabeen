@@ -4,8 +4,9 @@ import styled from "styled-components";
 import PostList from "../../components/posts/PostList";
 import PostWrite from "../../components/posts/PostWrite";
 import PostSearch from "../../components/posts/PostSearch";
+import { loadHelpPostRequestAction } from "../../reducers/posts";
 
-const postmain = () => {
+const Postmain = () => {
   const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
 
@@ -147,10 +148,8 @@ const PostUpperDiv = styled.div`
   }
 `;
 
-postmain.getInitialProps = async (context) => {
-    // context.store.dispatch({
-
-    // })
+Postmain.getInitialProps = async (context) => {
+    context.store.dispatch(loadHelpPostRequestAction());
     
     // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
     // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.
@@ -159,4 +158,4 @@ postmain.getInitialProps = async (context) => {
     // return { } 여기 안에 주면 props로 받을 수 있음.
 }
 
-export default postmain;
+export default Postmain;

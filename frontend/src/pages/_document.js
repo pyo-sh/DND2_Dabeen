@@ -1,9 +1,10 @@
 import React from "react";
-import Document, { Main, NextScript } from "next/document";
+import Document, { Main, NextScript, Head } from "next/document";
 import Helmet from "react-helmet";
 import { ServerStyleSheet, createGlobalStyle } from "styled-components";
+
 const GlobalStyles = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=fallback');
+/* @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean'); */
        html, body {
             height: 100%;
             overflow: auto;
@@ -33,10 +34,11 @@ class MyDocument extends Document {
     const bodyAttrs = bodyAttributes.toComponent();
     return (
       <html {...htmlAttrs}>
-        <head>
+        <Head>
+          <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean" rel="stylesheet"/>
           {this.props.styleTags}
           {Object.values(helmet).map(el => el.toComponent())}
-        </head>
+        </Head>
         <body {...bodyAttrs}>
           <Main />
           <NextScript />

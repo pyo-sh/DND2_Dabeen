@@ -256,6 +256,9 @@ const Menubar = styled.nav`
       & a.click{
           color : #ff4300;
         }
+      & a:hover{
+          color : #ff4300;
+        }
     }
     & .menuRight ul {
       display: flex;

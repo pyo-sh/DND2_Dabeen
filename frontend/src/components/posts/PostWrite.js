@@ -6,7 +6,7 @@ import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'an
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import Upload from '../uploadImages/Upload';
-import { AddHelpPostSuccessAction } from '../../reducers/posts';
+import { addHelpPostSuccessAction } from '../../reducers/posts';
 
 const categorys = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -58,7 +58,7 @@ const PostWrite = ({setInvisible}) => {
         if(!postTitle || !postTitle.trim()){
             message.error('제목을 입력해주세요!');
         } 
-        dispatch(AddHelpPostSuccessAction({
+        dispatch(addHelpPostSuccessAction({
             help_title: postTitle,
             cat_num: category,
             help_aply_cls_dttm: postDeadline,

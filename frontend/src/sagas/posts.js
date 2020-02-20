@@ -1,5 +1,5 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
-import { AddHelpPostSuccessAction, AddHelpPostFailureAction, UpdateHelpPostFailureAction, ADD_HELPPOST_REQUEST, UPDATE_HELPPOST_REQUEST, REMOVE_HELPPOST_REQUEST, RemoveHelpPostSuccessAction, REMOVE_HELPPOST_FAILURE, RemoveHelpPostFailureAction } from '../reducers/posts';
+import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST } from '../reducers/posts';
 
 function addHelpPostAPI() { //게시글 업로드
 
@@ -8,11 +8,11 @@ function addHelpPostAPI() { //게시글 업로드
 function* addHelpPost(data) {
     try{
         yield call(addPostAPI);
-        yield put(AddHelpPostSuccessAction(data));
+        yield put(addHelpPostSuccessAction(data));
     }
     catch(e) {
         console.log(e);
-        yield put(AddHelpPostFailureAction(e));
+        yield put(addHelpPostFailureAction(e));
     }
 };
 
@@ -27,10 +27,10 @@ function updateHelpPostAPI() {
 function* updateHelpPost() {
     try{
         yield call(updateHelpPostAPI);
-        yield call(UpdateHelpPostSuccessAction());
+        yield put(updateHelpPostSuccessAction());
     } catch(e) {
         console.log(e);
-        yield call(UpdateHelpPostFailureAction(e));
+        yield put(updateHelpPostFailureAction(e));
     }
 }
 
@@ -45,10 +45,10 @@ function removeHelpPostAPI() {
 function* removeHelpPost() {
     try{
         yield call(removeHelpPostAPI);
-        yield call(RemoveHelpPostSuccessAction());
+        yield put(removeHelpPostSuccessAction());
     } catch(e) {
         console.log(e);
-        yield call(RemoveHelpPostFailureAction(e));
+        yield put(removeHelpPostFailureAction(e));
     }
 };
 
@@ -56,8 +56,26 @@ function* watchRemoveHelpPost() {
     yield takeLatest(REMOVE_HELPPOST_REQUEST, removeHelpPost);
 };
 
+function loadHelpPostAPI() {
+   
+};
+
+function* loadHelpPost() {
+    try{
+        yield call(loadHelpPostAPI);
+        yield put(loadHelpPostSuccessAction());
+    } catch(e) {
+        console.log(e);
+        yield put(loadHelpPostFailureAction(e));
+    }
+};
+
+function* watchLoadHelpPost() {
+    yield takeLatest(LOAD_HELPPOST_REQUEST, loadHelpPost);
+};
+
 export default function* postsSaga() {
     yield all([
-        // fork()
+        fork(watchLoadHelpPost),
     ]);
 };
