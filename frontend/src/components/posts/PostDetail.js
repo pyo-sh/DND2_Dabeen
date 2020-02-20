@@ -18,7 +18,7 @@ const PostDetail = ({setVisible, data}) => {
     const [editPost_num, setEditPost_num] = inputChangeHook(data.post_num);
     const [editHelp_aply_cls_dttm, setEditHelp_aply_cls_dttm] = useState(data.help_aply_cls_dttm);
     const [editPost_type, setEditPost_type] = useState('');
-    const [editPrice, setEditPrice] = useState(data.price);
+    const [editPrice, setEditPrice] = inputChangeHook(data.price);
     const [editExec_loc, setEditExec_loc] = useState('');
     const [editCont, setEditCont] = useState('');
     const dateFormat = 'YYYY-MM-DD';
@@ -74,17 +74,19 @@ const PostDetail = ({setVisible, data}) => {
                             </div>
                         </div>
                         <div className="applicationMoney">
-                            {/* { !edit ? 
+                            { edit ? 
+                                <>
                                 <div>{data.price}원</div>
-                                <>{myPost ? 
+                                <>
+                                {myPost ? 
                                     <ClickButton apply>마감</ClickButton> 
                                     :
                                     <ClickButton apply>신청</ClickButton>   //신청 누르면... 신청자의 닉네임, 아이디, 자기소개, 평점, 총 도움수 얻어와서 저장.....
                                 }</>
+                                </>
                                 :
-                                <input value={}
-                            } */}
-                            
+                                <><input value={editPrice} onChange={setEditPrice} /></>
+                            } 
                         </div>
                     </ApplicationInfo>
                     <ContentItem>
