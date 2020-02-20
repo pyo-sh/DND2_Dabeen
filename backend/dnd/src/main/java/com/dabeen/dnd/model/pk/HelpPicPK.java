@@ -22,4 +22,5 @@ public class HelpPicPK implements Serializable{
     
     private String helpNum; // 도움 번호
     private Integer picOrnu; // 사진순번
+    
 }

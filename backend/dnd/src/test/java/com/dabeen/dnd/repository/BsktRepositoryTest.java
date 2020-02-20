@@ -6,11 +6,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import com.dabeen.dnd.DemoApplicationTests;
 import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.enumclass.Whether;
+import com.dabeen.dnd.repository.mapper.BsktMapper;
 
 import org.junit.Assert;   
     
@@ -18,27 +21,33 @@ public class BsktRepositoryTest extends DemoApplicationTests{
     @Autowired
     private BsktRepository bsktRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BsktMapper bsktMapper;
+
     @Test
     public void create() {
-        String bsktNum = "200205001";
-        String bsktUserNum = "200204001";
+        String bsktUserNum = "2002160001";
         BigDecimal totalPrice = BigDecimal.valueOf(10000);
-        Whether milegeUseWhet = Whether.Y;
+        Whether milegeUseWhet = Whether.y;
 
-        Bskt bskt = Bskt.builder()
-                        .bsktNum(bsktNum)
-                        .bsktUserNum(bsktUserNum)
-                        .totalPrice(totalPrice)
-                        .mileageUseWhet(milegeUseWhet)
-                        .build();
-        Bskt newBskt = bsktRepository.save(bskt);
+        Map<String, Object> bsktMap = new HashMap<>();
 
-        Assert.assertNotNull(newBskt);
+        bsktMap.put("bsktNum", null);
+        bsktMap.put("bsktUserNum", bsktUserNum);
+        bsktMap.put("totalPrice", totalPrice);
+        bsktMap.put("mileageUseWhet", milegeUseWhet);
+
+        bsktMapper.insert(bsktMap); 
+
+        Assert.assertNotNull(Optional.of(bsktRepository.findById((String) bsktMap.get("bsktNum"))));
     }
 
     @Test
     public void read(){
-        Optional<Bskt> bskt = bsktRepository.findById("200205001");
+        Optional<Bskt> bskt = bsktRepository.findById("2002160001");
         Assert.assertNotNull(bskt);
     }
 }

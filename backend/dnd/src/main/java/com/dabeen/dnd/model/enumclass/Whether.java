@@ -10,8 +10,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Whether{
-    Y(0, "예", "해당 여부에 대해서 예"),
-    N(1, "아니오", "해당 여부에 대해서 아니오");
+    y(0, "예", "해당 여부에 대해서 예"),
+    n(1, "아니오", "해당 여부에 대해서 아니오");
 
     private Integer id;
     private String title;

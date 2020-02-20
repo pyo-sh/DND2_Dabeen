@@ -4,7 +4,9 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,27 +14,45 @@ import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
+import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
+import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
+import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Transactional
 @Service
+@Slf4j
 public class HelpSupplCompApiService {
     @Autowired
     private HelpSupplCompRepository helpSupplCompRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private HelpRepository helpRepository;
+
+    @Autowired
+    private UserApiService userApiService;
+
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
+        log.info("{}",  requestData);
         // PK 객체 생성
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(),requestData.getSupplNum());
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
-                                                    .helpSupplCompPK(pk)
-                                                    .helpAprvWhet(requestData.getHelpAprvWhet())
+                                                    .helpSupplCompPK(new HelpSupplCompPK())
+                                                    .suppler(userRepository.findById(requestData.getSupplNum()).orElse(null))
+                                                    .help(helpRepository.findById(requestData.getHelpNum()).orElse(null))
+                                                    // .helpAprvWhet(requestData.getHelpAprvWhet())
                                                     .aprvDttm(requestData.getAprvDttm())
                                                     .astDttm(requestData.getAstDttm())
                                                     .rate(requestData.getRate())
@@ -40,7 +60,7 @@ public class HelpSupplCompApiService {
                                                     .build();
 
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp);
-        
+
         return Header.OK(response(newHelpSupplComp));
     }
 
@@ -82,8 +102,31 @@ public class HelpSupplCompApiService {
                 }).orElseThrow(() -> new NotFoundException("HelpSupplComp"));
     }
 
+    // 해당 도움에 신청한 공급자의 목록을 보여주는 API
+    public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
+        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
+
+        // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
+        List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
+                                                                    .map(helpSupplComp -> {
+                                                                        HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
+                                                                                                                    .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                                                                    .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                                                                    .astDttm(helpSupplComp.getAstDttm())
+                                                                                                                    .rate(helpSupplComp.getRate())
+                                                                                                                    .astCont(helpSupplComp.getAstCont())
+                                                                                                                    .user(userApiService.response(helpSupplComp.getSuppler()))
+                                                                                                                    .build();
+                                                                        return response;
+                                                                    })
+                                                                    .collect(Collectors.toList());
+    
+       
+        return Header.OK(userInfos);
+    }
+
     // HelpSupplComp > HelpSupplCompApiResponse
-    private HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
+    public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
         HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
                                                                                     .helpNum(helpSupplComp.getHelpSupplCompPK().getHelpNum())
                                                                                     .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
