@@ -1,11 +1,12 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { Button, Icon, Input, TimePicker, DatePicker } from 'antd';
+import { Button, Icon, Input, TimePicker, DatePicker, Popconfirm, Row, Col } from 'antd';
 import CheckDabeener from './CheckDabeener';
 import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import moment from 'moment';
+import SearchJuso from '../map/SearchJuso';
 
 // 내가 쓴 글 / 아닌 글 구분해야함
 const PostDetail = ({setVisible, data}) => {
@@ -18,89 +19,131 @@ const PostDetail = ({setVisible, data}) => {
     const [editPost_num, setEditPost_num] = inputChangeHook(data.post_num);
     const [editHelp_aply_cls_dttm, setEditHelp_aply_cls_dttm] = useState(data.help_aply_cls_dttm);
     const [editPost_type, setEditPost_type] = useState('');
-    const [editPrice, setEditPrice] = useState(data.price);
-    const [editExec_loc, setEditExec_loc] = useState('');
-    const [editCont, setEditCont] = useState('');
+    const [editPrice, setEditPrice] = inputChangeHook(data.price);
+    const [editExec_loc, setEditExec_loc] = useState(data.exec_loc);
+    const [editCont, setEditCont] = inputChangeHook(data.cont);
     const dateFormat = 'YYYY-MM-DD';
     const {helpPosts} = useSelector(state => state.posts);
 
     //신청 다비너 창 여닫을떄
-    const onModal = useCallback((e) => {
+    const onModal = useCallback(() => {
         setClick(prev => !prev);
+    }, []);
+
+    const onConfirm = useCallback(() => {
+        //dispatch 수정 정보들
+        setEdit(prev => !prev);
     }, []);
 
     return (
         <Modal>
             <ContentForm>
                 <Content>     
-                    <DeleteIcon>
+                    <Icons>
+                        {edit&&
+                        <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])} onCancel={edit} okText="네" cancelText="아니요">
+                        <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
+                        </Popconfirm>
+                        }
                         <Icon onClick={setVisible} type="close"/>
-                    </DeleteIcon>
+                    </Icons>
                     <Title>
                         {
-                            edit ? <div>{data.help_title}</div> : <EditTitle value={editTitle} onChange={setEditTitle}/>
+                            !edit ? <div>{data.help_title}</div> : <EditTitle value={editTitle} onChange={setEditTitle}/>
                         }
                         <div className="titleDetail">
                             <div>작성일 : {data.help_post_dttm}</div>
-                            <div>작성자 : {data.id}</div>            
-                            <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
+                            <div>작성자 : {data.id}</div>  
+                            {
+                                !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
+                                : 
+                                <Popconfirm placement="topLeft" title="수정하시겠습니까?" onConfirm={onConfirm} onCancel={edit} okText="네" cancelText="아니요">
+                                    <Edit>완료</Edit>
+                                </Popconfirm>
+                            }         
                         </div>
                     </Title>
                     <Image>근데 여기에 무슨 사진을 넣나요</Image>
                     <ApplicationInfo>
-                        <div className="applicationInfoText">
-                            <div className="applicationInfoTextTitle">
-                                <div>신청인원</div>
-                                <div>신청 마감 일시</div>
-                                <div>수행 일시</div>
-                            </div>
-                            <div className="applicationInfoTextDetail">
-                                {
-                                    edit ? 
-                                    <>
-                                        {/*여기서 0은 강조색으로하기  */}
-                                        <div style={{display: "flex"}}><div><span>0</span>/{data.post_num}</div><button onClick={onModal}>신청 확인</button></div>
-                                        {click&&<CheckDabeener click={click} onModal={onModal}/>}
-                                        <div>{data.help_aply_cls_dttm}</div>
-                                        <div>{data.post_type}, PM 06:19</div>
-                                    </>
-                                    :
-                                    <>
-                                        <div style={{display: "flex"}}><div><span>0</span>/<input className="needPersonnel" value={editPost_num} onChange={setEditPost_num}/></div></div>
-                                        <DatePicker style={{marginRight: 5}} defaultValue={moment(data.help_aply_cls_dttm, dateFormat)}/>
-                                        <DatePicker style={{marginRight: 5}} defaultValue={moment(data.post_type, dateFormat)}/>
-                                    </>
-                                }
-                            </div>
-                        </div>
-                        <div className="applicationMoney">
-                            {/* { !edit ? 
-                                <div>{data.price}원</div>
-                                <>{myPost ? 
-                                    <ClickButton apply>마감</ClickButton> 
-                                    :
-                                    <ClickButton apply>신청</ClickButton>   //신청 누르면... 신청자의 닉네임, 아이디, 자기소개, 평점, 총 도움수 얻어와서 저장.....
-                                }</>
-                                :
-                                <input value={}
-                            } */}
-                            
-                        </div>
+                        <Row>
+                            <Col xd={24} sm={21}>
+                                <Col xd={24} sm={21}>
+                                    <ApplicationInfoBox>
+                                    <div className="applicationInfoBoxTitle">신청인원</div>
+                                    { !edit ?
+                                        <>
+                                        <div style={{display: "flex"}} className="applicationInfoBoxDetail"><div><span>0</span>/{data.post_num}</div><button onClick={onModal}>신청 확인</button></div>      
+                                        {click &&<CheckDabeener click ={click} onModal ={onModal} needPersonnel={data.post_num}/>}
+                                        </>
+                                        :
+                                        <div style ={{display:"flex"}}><div><span>0</span>/<input className ="needPersonnel" value={editPost_num} onChange={setEditPost_num}/></div></div>
+                                    }
+                                    </ApplicationInfoBox>
+                                    <ApplicationInfoBox>
+                                    <div className="applicationInfoBoxTitle">신청 마감 일시</div>
+                                    {
+                                        !edit ?
+                                        <div className="applicationInfoBoxDetail">{data.help_aply_cls_dttm}</div>
+                                        : 
+                                        <DatePicker defaultValue ={moment(data .help_aply_cls_dttm, dateFormat)}/>
+                                    }
+                                    </ApplicationInfoBox>
+                                    <ApplicationInfoBox>
+                                    <div className="applicationInfoBoxTitle">신청인원</div>
+                                    {
+                                        !edit ?
+                                        <div className="applicationInfoBoxDetail">{data.post_type}, PM 06:19</div>
+                                        :
+                                        <DatePicker defaultValue ={moment (data .post_type , dateFormat )}/>
+                                    }
+                                    </ApplicationInfoBox>
+                                </Col>
+                                <Col xs={24} sm={3}>
+                                    <div className="applicationMoney">
+                                        {
+                                            !edit ?
+                                            <>
+                                            <div>{data.price}원</div>
+                                            <ClickButton apply>마감</ClickButton>
+                                            </>
+                                            :  
+                                            <>      
+                                            <div style ={{color:"#424242", fontSize:"1.1vw"}}>금액 수정 </div>
+                                            <div><input value ={editPrice} onChange ={setEditPrice}/></div>
+                                            </>
+                                        }
+                                    </div>
+                                </Col>
+                            </Col>
+                        </Row>
+                        
                     </ApplicationInfo>
                     <ContentItem>
                         <div>
-                            <div style={{fontSize: 22}}>위치</div>
-                            <div>{data.exec_loc}</div>
+                            <div className="contentTitle">위치</div>
                         </div>
                         <div className="map">
-                            <MyLocation myLocation={helpPosts[0].exec_loc}/>
+                            {
+                                !edit ?
+                                <>
+                                <div>{data.exec_loc}</div>
+                                <MyLocation myLocation={data.exec_loc}/>
+                                </>
+                                :
+                                <SearchJuso location={editExec_loc} getLocation={setEditExec_loc}/>
+                            }
                         </div>
                     </ContentItem>
                     <ContentItem>
-                        <div style={{fontSize: 22}}>도움정보</div>
-                        <p>
+                        <div className="contentTitle">도움정보</div>
+                        {
+                            !edit ?       
+                            <p>
                             {data.cont}
-                        </p>
+                            </p>
+                            :
+                            <textarea required  value={editCont} onChange={setEditCont}/>
+                        }
                     </ContentItem>
                 </Content>
             </ContentForm>
@@ -126,8 +169,8 @@ const ContentForm = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 34vw;
-    height: 84vh;
+    width: 590px;
+    height: 870px;
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -136,16 +179,15 @@ const ContentForm = styled.div`
     ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
 `;
 
-const DeleteIcon = styled.div`
+const Icons = styled.div`
     text-align: right;
-    margin-top: 1vh;
-    font-size: 1.2vw;
+    font-size: 35px;
     color: #BFC7CE;
 `;
 
 const Content = styled.div`
-    width: 30vw;
-    height: 81vh;
+    width: 550px;
+    height: 850px;
     display: flex;
     flex-direction: column;
 `;
@@ -155,23 +197,23 @@ const Title = styled.div`
     flex-direction: column;
     justify-content: left;
     align-items: flex-start;
-    width: 30vw;
-    font-size: 1.5vw;
+    width: 550px;
+    font-size: 40px;
 
     & > .titleDetail{
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        width: 18vw;
-        font-size: 0.6vw;
+        width: 350px;
+        font-size: 15px;
     }
 `;
 
 const EditTitle = styled(Input)`
     border: none;
     color: #7a7a7a;
-    font-size: 1.5vw;
-    width: 30vw;
+    font-size: 40px;
+    width: 550px;
 
     :focus{
         outline: none;  
@@ -179,23 +221,81 @@ const EditTitle = styled(Input)`
 `;
 
 const Image = styled.div`
-    width: 30vw;
-    height: 20vh;
+    width: 550px;
+    height: 300px;
     background: #BFC7CE;
     margin-top: 0.5vh;
 `;
 
-const ApplicationInfo = styled.div`
+const ApplicationInfoBox = styled.div`
     display: flex;
-    justify-content: space-between;
-    width: 30vw;
-    margin-top: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90%;
 
+    & button{
+        border: none;
+        background: none;
+        color: #7A7A7A;
+        cursor: pointer;
+
+        :focus{
+            outline: none;
+        }
+    }
+    
+    & .applicationInfoBoxTitle {
+        width: 200px;
+        padding-left: 10px;
+    }
+    & .applicationInfoBoxDetail{
+        width: 170px;
+        font-size: 15px;
+        padding-left: 10px;
+    }
+    & .applicationMoney{
+        display: flex;
+        flex-wrap: wrap;
+        color: #FF4300;
+        font-size: 15px;
+
+        & input{
+            border: none;
+            width: 5vw;
+            font-size: 15px;
+        }
+    }
+ 
+  
+`;
+const ApplicationInfo = styled.div`
+    width: 550px;
+    margin-top: 20px;
+    
+    & span{
+        color: #FF4300;
+        font-size: 1.2vw;
+    }
+
+    & .needPersonnel {
+        font-size: 0.8vw;
+        border: none;
+        width: 5vw;
+    }
+
+    & .ant-calendar-picker {
+        width: 7vw;
+
+        & .ant-calendar-picker-icon {
+            display: none;
+        }
+    }
     & .applicationInfoText {
         display: flex;
         justify-content: space-between;
         border-right: 1px solid #BFC7CE;
         width: 18vw;
+        height: 12vh;
     }
 
     & .applicationInfoTextTitle {
@@ -203,14 +303,16 @@ const ApplicationInfo = styled.div`
         flex-direction: column;
         justify-content: space-around;
         width: 7vw;
+        height: 12vh;
         font-size: 0.9vw;
     }
 
-    & .applicationInfoTextDetail {
+    /* & .applicationInfoTextDetail {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         width: 12vw;
+        height: 12vh;
         font-size: 0.7vw;
 
         & span{
@@ -235,15 +337,14 @@ const ApplicationInfo = styled.div`
             width: 5vw;
         }
 
-        & .ant-input{
+        & .ant-calendar-picker {
             width: 7vw;
 
-            & .ant-calendar-picker-clear .ant-calendar-picker-icon{
-                display: initial;
-                margin-right: 20vw;
+            & .ant-calendar-picker-icon {
+                display: none;
             }
         }
-    }
+    } */
 
     & .applicationMoney{
         display: flex;
@@ -252,6 +353,12 @@ const ApplicationInfo = styled.div`
         justify-content:flex-end;
         color: #FF4300;
         font-size: 1.5vw;
+
+        & input{
+            border: none;
+            width: 5vw;
+            font-size: 1.1vw;
+        }
     }
 `;
 
@@ -259,9 +366,9 @@ const ClickButton = styled(Button)`
     background: ${props => (props.apply ? "#FF4300" : "#F0F0F0")};
     border: ${props => (props.apply ? "#FF4300" : "#F0F0F0")};
     color: ${props => (props.apply ? "#FFFFFF" : "#7A7A7A")};
-    font-size: 1vw;
+    font-size: 15px;
     box-shadow: 2px 3px 5px #BFC7CE;
-    width: 11vw;
+    width: 100px;
 
     :hover {
         opacity: 0.9;
@@ -281,9 +388,13 @@ const ContentItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 20px;
-    margin-top: 30px;
-    width: 30vw;
+    font-size: 18px;
+    margin-top: 4vh;
+    width: 550px;
+
+    & .contentTitle{
+        font-size: 20px;
+    }
 
     & > p{
         margin-top: 10px;
@@ -291,8 +402,21 @@ const ContentItem = styled.div`
     }
 
     & .map{
-        width: 30vw;
-        height: 22vh
+        width: 550px;
+        height: 200px;
+    }
+
+    & > textarea {
+        width: 550px;
+        height: 100px;
+        resize: none;
+        color: #7a7a7a;
+        border-color: #d9d9d9;
+        ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
+
+        ::placeholder{
+            color: #BFC7CE;
+        }
     }
 `;
 
@@ -301,9 +425,9 @@ const Edit = styled.button`
     border: 1px solid #F0F0F0;
     border-radius: 7px;
     color: #7A7A7A;
-    width: 3vw;
-    height: 2vh;  
-    font-size: 0.7vw;
+    width: 40px;
+    height: 20px;  
+    font-size: 10px;
     cursor: pointer;
 
     :focus{

@@ -84,7 +84,7 @@ const Search = styled.div`
     }
 
     & .content {
-        width: 29vw;
+        width: 30vw;
         height: 20vh;
     }
 `;
