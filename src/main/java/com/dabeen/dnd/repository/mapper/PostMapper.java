@@ -3,11 +3,10 @@
 // 작성자 : 이은비
 package com.dabeen.dnd.repository.mapper;
 
-import com.dabeen.dnd.model.entity.Post;
-
+import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface PostMapper{
-    void insert(Post post);
+    void insert(Map<String, Object> postMap);
 }

@@ -4,6 +4,8 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -14,6 +16,8 @@ import com.dabeen.dnd.model.entity.Bskt;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.BsktApiRequest;
 import com.dabeen.dnd.model.network.response.BsktApiResponse;
+import com.dabeen.dnd.repository.BsktRepository;
+import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
@@ -30,15 +34,18 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
     public Header<BsktApiResponse> create(Header<BsktApiRequest> request) {
         BsktApiRequest requestData  = request.getData();
 
-        Bskt bskt = Bskt.builder()
-                        .bsktUserNum(requestData.getBsktUserNum())
-                        .totalPrice(requestData.getTotalPrice())
-                        .mileageUseWhet(requestData.getMileageUseWhet())
-                        .build();
+        // Map 객체를 이용하여 쿼리문 생성
+        Map<String, Object> bsktMap = new HashMap<>();
 
-        bsktMapper.insert(bskt); // 식별자를 "생성일자 + 순번"으로 하기 위해 mybatis 이용
+        bsktMap.put("bsktNum", requestData.getBsktNum());
+        bsktMap.put("bsktUserNum", requestData.getBsktUserNum());
+        bsktMap.put("totalPrice", requestData.getTotalPrice());
+        bsktMap.put("mileageUseWhet", requestData.getMileageUseWhet());
 
-        return Header.OK(response(bskt));
+        bsktMapper.insert(bsktMap); 
+
+        return Header.OK(response(baseRepository.findById((String) bsktMap.get("bsktNum")) // 생성된 엔터티의 정보를 response 형태로 전달
+                                                .orElseThrow(() -> new NotFoundException("Created entity"))));
     }
 
     @Override
@@ -58,7 +65,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
         
         return optional.map(bskt -> {
                     // 장바구니 사용자 번호는 수정 불가, 수정하려고 할 시 에러 호출
-                    if(!requestData.getBsktUserNum().equals(bskt.getBsktUserNum()))
+                    if(!requestData.getBsktUserNum().equals(bskt.getBsktUser().getUserNum()))
                         throw new NotUpdateableException("bsktUserNum");
 
                     bskt.setBsktNum(requestData.getBsktNum())
@@ -87,7 +94,7 @@ public class BsktApiService extends BaseService<BsktApiRequest, BsktApiResponse,
     private BsktApiResponse response(Bskt bskt) {
         BsktApiResponse bsktApiResponse = BsktApiResponse.builder()
                                                         .bsktNum(bskt.getBsktNum())
-                                                        .bsktUserNum(bskt.getBsktUserNum())
+                                                        .bsktUserNum(bskt.getBsktUser().getUserNum())
                                                         .totalPrice(bskt.getTotalPrice())
                                                         .mileageUseWhet(bskt.getMileageUseWhet())
                                                         .build();

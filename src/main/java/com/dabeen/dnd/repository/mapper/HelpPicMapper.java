@@ -4,13 +4,16 @@
 
 package com.dabeen.dnd.repository.mapper;
 
+import java.util.Map;
+
 import com.dabeen.dnd.model.entity.HelpPic;
+import com.dabeen.dnd.model.pk.HelpPicPK;
 
 import org.apache.ibatis.annotations.Mapper;
-
-//DB 복구후 MapperXML 작성 예정
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface HelpPicMapper{
-    void insert(HelpPic helpPic);
+    // void insert(@Param("helpNum") String helpNum, @Param("path") String path);
+    void insert(Map<String,Object> helpPicMapper);
 }
