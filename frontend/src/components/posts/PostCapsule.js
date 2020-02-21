@@ -37,10 +37,10 @@ const PostCapsule = ({ data }) => {
                     </div>
                 </div>
                 <div className="CapsuleTitle">
-                    {data.helpTitle}
+                    <div className="CapsuleTitleMain">{data.helpTitle}</div>
                     {data.isHelpApprove ?
-                        <div className="CapsuleTitleCheckTrue">마감</div> : 
-                        <div className="CapsuleTitleCheckFalse">신청 중</div>
+                        <div setcolor="true" className="CapsuleTitleCheck">마감</div> : 
+                        <div setcolor="false" className="CapsuleTitleCheck">신청 중</div>
                     }
                 </div>
                 <div className="CapsuleFinishTime">
@@ -105,24 +105,28 @@ const PostCapsuleUpperDiv = styled.div`
 
     & .CapsuleTitle{
         display: flex;
-        font-size: 25px;
-        & div{
-            width: 60px;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        & .CapsuleTitleMain{
+            font-size: 25px;
+            margin: 0px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        & .CapsuleTitleCheck{
+            min-width: 60px;
             height: 25px;
             padding: 2px;
             border-radius: 10px;
-            margin: 10px 10px;
+            margin: 10px 10px 2px 10px;
 
             font-size: 14px;
             text-align: center;
-        }
-        & .CapsuleTitleCheckTrue{
-            color: #7A7A7A;
-            background: #F0F0F0;
-        }
-        & .CapsuleTitleCheckFalse{
-            color: white;
-            background: #FF4300;
+
+            color: ${props => props.setcolor === "true" ? "#7A7A7A" : "white"};
+            background: ${props => props.setcolor === "false" ? "#F0F0F0" : "#FF4300"};
         }
     }
 `;

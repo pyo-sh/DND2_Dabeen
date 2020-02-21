@@ -52,9 +52,9 @@ const Postmain = () => {
           <div className="postmainTitleMain">{getTitle().mainTitle}</div>
           <div className="postmainTitleSub">{getTitle().subTitle}</div>
         </div>
-        <PostSearch categoryNum={categoryNum}/>
+        <PostSearch categoryNum={categoryNum} />
         <div className="postmainContent">
-          <PostList categoryNum={categoryNum}/>
+          <PostList categoryNum={categoryNum} />
         </div>
         <div
           className="postmainWrite"
@@ -87,31 +87,9 @@ const PostUpperDiv = styled.div`
     min-width: 320px;
     padding: 0 10px;
   }
-    & .postmainTitle{
-        font-weight: bold;
-        display: flex;
-        align-items: flex-end;
-        flex-wrap: wrap;
-        padding: 0 10px;
-        & .postmainTitleMain{
-            min-width: 100px;
-            font-size: 50px;
-        }
-        & .postmainTitleSub{
-            padding-left: 10px;
-            font-size: 28px;
-        }
-    }
-    & .postmainSearch{
-        padding: 10px;
-        margin: 10px 0;
-        border-radius: 8px;
-        background: #F0F0F0;
-        font-size: 18px;
-    }
-    & .postmainContent{
-        display: flex;
-        justify-content: space-between;
+  & .postmainTitle {
+    font-weight: bold;
+    display: flex;
     align-items: flex-end;
     flex-wrap: wrap;
     padding: 0 10px;
@@ -124,9 +102,15 @@ const PostUpperDiv = styled.div`
       font-size: 28px;
     }
   }
+  & .postmainSearch {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background: #f0f0f0;
+    font-size: 18px;
+  }
   & .postmainContent {
-    display: flex;
-    justify-content: space-between;
+    padding: 0 10px;
   }
   & .postmainWrite {
     & .postmainWriteIcon {
@@ -148,14 +132,14 @@ const PostUpperDiv = styled.div`
   }
 `;
 
-Postmain.getInitialProps = async (context) => {
-    context.store.dispatch(loadHelpPostRequestAction());
-    
-    // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
-    // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.
-    // 처음 들어가자마자 있어야 하는 정보들은 여기서 아니면 useEffect 같은 곳에서
-    // 리덕스 말고 다른 정보를 props로 주려면
-    // return { } 여기 안에 주면 props로 받을 수 있음.
-}
+Postmain.getInitialProps = async context => {
+  context.store.dispatch(loadHelpPostRequestAction());
+
+  // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
+  // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.
+  // 처음 들어가자마자 있어야 하는 정보들은 여기서 아니면 useEffect 같은 곳에서
+  // 리덕스 말고 다른 정보를 props로 주려면
+  // return { } 여기 안에 주면 props로 받을 수 있음.
+};
 
 export default Postmain;
