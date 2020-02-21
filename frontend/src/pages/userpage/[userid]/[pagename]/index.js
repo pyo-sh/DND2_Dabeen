@@ -114,7 +114,7 @@ const UserPageWrapper = styled.article`
         }
         & .userImage{
             width: 100%;
-            height : 20vw;
+            height : 80vw;
             min-height : 200px;
             max-height : 300px;
             border-radius: 5px;

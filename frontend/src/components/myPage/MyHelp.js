@@ -1,6 +1,7 @@
 import React from "react";
+import { Row, Col } from 'antd';
 import styled from "styled-components";
-import MyHelpCapsule from './MyHelpCapsule';
+import MyHelpCapsule from "./MyHelpCapsule";
 
 const takeHelp = [
   {
@@ -34,9 +35,9 @@ const takeHelp = [
 const takenHelp = [
   {
     help_num: 1,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "아무거나",
+    title: "이거는 테스트야 이름이 너무 길면 사라지는지 안사라지는지",
+    price: 2000000000000,
+    cont: "이거는 테스트야 이름이 너무 길면 사라지는지 안사라지는지",
     help_pstn_dttm: "2020-02-01",
     done: true,
     payment: true
@@ -65,19 +66,31 @@ const MyHelp = ({ helpType }) => {
   return (
     <MyHelpUpperDiv>
       <div className="Myhelp">
-        <div className="MyhelpTitle">{helpType === "take" ? "받을 도움" : "줄 도움"}</div>
-        <div className="MyhelpsBox">
-          {takeHelp.map(t => (
-            <MyHelpCapsule key={t.help_num} helpData={t}/>
-          ))}
+        <div className="MyhelpTitle">
+          {helpType === "take" ? "받을 도움" : "줄 도움"}
+        </div>
+        <div className="MyhelpContent">
+          <Row gutter={[12, 12]}>
+            {takeHelp.map((element, index) => (
+              <MyHelpCol md={24} lg={12} xl={8} key={index}>
+                <MyHelpCapsule key={element.help_num} helpData={element} />
+              </MyHelpCol>
+            ))}
+          </Row>
         </div>
       </div>
       <div className="Myhelp">
-        <div className="MyhelpTitle">{helpType === "take" ? "받은 도움" : "준 도움"}</div>
-        <div className="MyhelpsBox">
-          {takenHelp.map(t => (
-            <MyHelpCapsule key={t.help_num} helpData={t}/>
-          ))}
+        <div className="MyhelpTitle">
+          {helpType === "take" ? "받은 도움" : "준 도움"}
+        </div>
+        <div className="MyhelpContent">
+          <Row gutter={[12, 12]}>
+            {takenHelp.map((element, index) => (
+              <MyHelpCol md={24} lg={12} xl={8} key={index}>
+                <MyHelpCapsule key={element.help_num} helpData={element} />
+              </MyHelpCol>
+            ))}
+          </Row>
         </div>
       </div>
     </MyHelpUpperDiv>
@@ -93,14 +106,16 @@ const MyHelpUpperDiv = styled.div`
       font-size: 40px;
       font-weight: bold;
       padding-bottom: 25px;
-      border-bottom: 1px solid #BFC7CE;
+      border-bottom: 1px solid #bfc7ce;
     }
-    & .MyhelpsBox {
-      margin: 15px 0 30px 0;
-      display: flex;
-      flex-wrap: wrap;
-      
+    & .MyhelpContent{
+      padding: 20px 0;
     }
   }
+`;
+const MyHelpCol = styled(Col)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 export default MyHelp;
