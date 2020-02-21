@@ -14,6 +14,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -117,5 +118,10 @@ public class User{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "writerUser")
     private List<Msg> msgs;
-    
+
+    @PrePersist
+    public void prePersist(){
+        this.supplWhet = (this.supplWhet == null ? Whether.n : this.supplWhet);
+        this.itdcCont = (this.itdcCont == null ? "안녕하세요" : this.itdcCont);
+    }
 }

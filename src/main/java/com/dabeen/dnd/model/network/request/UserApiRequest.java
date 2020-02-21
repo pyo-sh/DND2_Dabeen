@@ -6,6 +6,9 @@ package com.dabeen.dnd.model.network.request;
 import java.math.BigDecimal;
 
 import com.dabeen.dnd.model.enumclass.Whether;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,6 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonDeserialize
 public class UserApiRequest {
     // requset에서 전달될 데이터
     private String userNum; // 사용자 번호
@@ -30,7 +34,7 @@ public class UserApiRequest {
     private String itdcCont; // 소개 내용
     private Whether supplWhet; // 공급자 여부
     private String blonSggName; // 소속시군구명
-    private String picPath; // 사진 경로명
+    private MultipartFile pic; // 사진 경로명
     private String rrnRear; // 주민번호 뒷자리
     private BigDecimal avgRate; // 평점
     private BigDecimal ownMileage; // 보유 마일리지
