@@ -3,7 +3,7 @@
 // 사용자 관련 API가 많아 나눕니다.
 // 작성자 : 이은비
 
-package com.dabeen.dnd.controller.api;
+package com.dabeen.dnd.service.api;
 
 import java.util.List;
 import javax.transaction.Transactional;
