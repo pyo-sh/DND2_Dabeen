@@ -33,10 +33,8 @@ import lombok.experimental.Accessors;
 public class Msg{
 
     @EmbeddedId
-    @NotNull(message = " is not null")
     private MsgPK msgPK; // Msg PK (chat_num,msg_writer_num,msg_send_dttm)
 
-    @NotNull(message = " is not null")
     private String cont; // Msg 내용
 
     /* 연관관계 설정 */
@@ -44,13 +42,11 @@ public class Msg{
     @ManyToOne
     @JoinColumn(name = "chat_num")
     @MapsId("chatNum")
-    @NotNull(message = " is not null")
     private Chat chat;
 
     @ManyToOne
     @JoinColumn(name ="msg_writer_num")
     @MapsId("msgWriterNum")
-    @NotNull(message = " is not null")
     private User writerUser;
 
 }
