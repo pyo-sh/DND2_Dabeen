@@ -83,7 +83,7 @@ const PostWrite = ({setInvisible}) => {
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setInvisible} type="close" style={{fontSize: "2vw", color:"#BFC7CE"}}/>
+                        <Icon onClick={setInvisible} type="close" style={{fontSize: "25", color:"#BFC7CE", textAlign: 'right', marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <Row className="postSettingBowRow">
@@ -166,18 +166,18 @@ const ContentFlex = styled.div`
     background: white;
     padding: 1rem;
     width: 590px;
-    height: 870px;
+    height: 87vh;
     display: flex; 
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    overflow: scroll;
+    overflow: auto;
     ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
 `;
 
 const Content = styled.div`
     width: 550px;
-    height: 850px;
+    height: 85vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -276,7 +276,7 @@ const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 40px;
-    width: 550px;
+    width: 400px;
     ::placeholder{
         color: #BFC7CE;
     }

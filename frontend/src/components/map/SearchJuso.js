@@ -59,7 +59,7 @@ const Search = styled.div`
         margin-bottom: 1vh;
     }
     & .ant-input {
-        width: 100px;
+        width: 300px;
         margin-right: 0.5vw;
 
         & :hover, :focus{
@@ -69,7 +69,7 @@ const Search = styled.div`
     }
 
     & .ant-btn {
-        width: 5vw;
+        width: 100px;
         background: #FF4300;
         border: 1px solid #FF4300;
         color: #FFFFFF;

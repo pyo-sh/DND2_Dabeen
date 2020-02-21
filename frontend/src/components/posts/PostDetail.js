@@ -169,7 +169,7 @@ const ContentForm = styled.div`
     background: white;
     padding: 1rem;
     width: 590px;
-    height: 870px;
+    height: 87vh;
     display: flex; 
     flex-direction: column;
     justify-content: center;
@@ -186,7 +186,7 @@ const Icons = styled.div`
 
 const Content = styled.div`
     width: 550px;
-    height: 850px;
+    height: 85vh;
     display: flex;
     flex-direction: column;
 `;
