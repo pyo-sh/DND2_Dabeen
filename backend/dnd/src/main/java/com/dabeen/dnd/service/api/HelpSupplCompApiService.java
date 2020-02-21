@@ -4,6 +4,7 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,8 +13,10 @@ import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
+import com.dabeen.dnd.model.network.response.HelpCompHelpInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
@@ -22,6 +25,7 @@ import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +45,9 @@ public class HelpSupplCompApiService {
 
     @Autowired
     private UserApiService userApiService;
+
+    @Autowired
+    private HelpApiService helpApiService;
 
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
@@ -125,6 +132,35 @@ public class HelpSupplCompApiService {
         return Header.OK(userInfos);
     }
 
+    // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
+    public Header<List<HelpCompHelpInfoApiResponse>> searchHelps(String userNum, Pageable pageable){
+        List<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(userNum, Whether.y);
+        List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
+
+        log.info("{}", helpSupplComps);
+
+        Integer page = pageable.getPageNumber() - 1;
+        Integer size = pageable.getPageSize();
+        
+
+        // pageable의 정보를 이용하여 페이지 처리
+        for (int i = page; (i < page + size) && (i < helpSupplComps.size()); i++) {
+            HelpSupplComp helpSupplComp = helpSupplComps.get(i);
+
+            HelpCompHelpInfoApiResponse response = HelpCompHelpInfoApiResponse.builder()
+                                                                            .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                            .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                            .astDttm(helpSupplComp.getAstDttm())
+                                                                            .rate(helpSupplComp.getRate())
+                                                                            .astCont(helpSupplComp.getAstCont())
+                                                                            .help(helpApiService.response(helpSupplComp.getHelp()))
+                                                                            .build();
+            responses.add(response);
+        }
+
+        return Header.OK(responses);
+    }
+
     // HelpSupplComp > HelpSupplCompApiResponse
     public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
         HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
@@ -139,5 +175,4 @@ public class HelpSupplCompApiService {
 
         return helpSupplCompApiResponse;
     }
-
 }

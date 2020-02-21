@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HelpSupplCompRepository extends JpaRepository<HelpSupplComp, HelpSupplCompPK>{
     List<HelpSupplComp> findByHelpSupplCompPK_helpNum(String helpNum);
-    List<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(String helpNum, Whether whet);
+    List<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(String userNum, Whether whet);
 }
