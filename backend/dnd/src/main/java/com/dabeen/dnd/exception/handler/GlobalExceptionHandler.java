@@ -12,16 +12,18 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.EmailWrongException;
 import com.dabeen.dnd.exception.FailedMailSendException;
 import com.dabeen.dnd.exception.FileSaveFailedException;
-import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.transaction.TransactionSystemException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -39,9 +41,9 @@ public class GlobalExceptionHandler {
     }
 
     // 사용자, 관리자 생성 시 해당 아이디가 이미 존재하는 경우 발생되는 에러 처리    
-    @ExceptionHandler(IdExistedException.class)
+    @ExceptionHandler(AlreadyExistedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Header<?> handlerIdExistedException(IdExistedException ex){
+    public Header<?> handlerIdExistedException(AlreadyExistedException ex){
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
@@ -68,17 +70,13 @@ public class GlobalExceptionHandler {
 
     // Min, Max 등의 @Valid 에러 처리함수
     // TransactionSystemException 안에 해당 에러가 발생하는 형태이므로 TransactionSystemException를 받아서 처리
-    @ExceptionHandler(TransactionSystemException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Header<?> handlerVaildException(Exception ex) {
-        Throwable cause = ((TransactionSystemException) ex).getRootCause();
-        if (cause instanceof ConstraintViolationException) { // TransactionSystemException 안에 ConstraintViolationException가 존재한다면
-            ConstraintViolation<?> conEx = (((ConstraintViolationException) cause).getConstraintViolations()).iterator().next();
-            String message = conEx.getPropertyPath() + " " + conEx.getMessage(); // 에러발생 변수 + 메세지
-
-            return Header.ERROR(HttpStatus.BAD_REQUEST, message);
-        }
-        else return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Interanl Server Error");
+    public Header<?> handlerVaildException(MethodArgumentNotValidException ex) {
+        String message = ex.getBindingResult().getFieldError().getDefaultMessage();
+        String subject = ex.getBindingResult().getFieldError().getField().substring(5);
+        
+        return Header.ERROR(HttpStatus.BAD_REQUEST, subject + " " + message);
     }
 
     // 쿼리문을 이용한 create 시, 에러 처리
@@ -96,7 +94,7 @@ public class GlobalExceptionHandler {
         String subject = ex.getTargetType().getSimpleName();
         subject = subject.substring(0, 1).toLowerCase() + subject.substring(1);
         
-        String message = subject + " not one of declared enum istance name.";
+        String message = subject + "의 값이 사전에 정의된 값들 중 하나가 아닙니다.";
         
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }
@@ -108,12 +106,19 @@ public class GlobalExceptionHandler {
         return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // 메일 전송에 실패할 경우 발생되는 에러 처리
+    // 파일 저장에 실패할 경우 발생되는 에러 처리
     @ExceptionHandler(FileSaveFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Header<?> handlerFileSaveFailedException(FileSaveFailedException ex) {
         return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
+
+    // MultipartFile로 받아야할 변수의 형식이 다를 경우
+    //@ExceptionHandler(HttpMessageConversionException.class)
+    //@ResponseStatus(HttpStatus.BAD_REQUEST)
+    //public Header<?> handlerHttpMessageConversionException(HttpMessageConversionException ex) {
+    //    return Header.ERROR(HttpStatus.BAD_REQUEST, "파일의 request 형식이 잘못되었습니다.");
+    //}
 
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)

@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class FileSaveFailedException extends RuntimeException {
-    private String message = "File save failed.";
+    private String message = "파일 저장에 실패하였습니다.";
 
     public FileSaveFailedException() {
         log.error(this.message);

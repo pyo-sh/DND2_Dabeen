@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class NotFoundException extends RuntimeException{
-    private String message = " entity not found.";
+    private String message = " 데이터를 찾을 수 없습니다.";
 
     public NotFoundException(String subject){
         this.message = subject + this.message;
