@@ -14,6 +14,7 @@ import com.dabeen.dnd.repository.AdminRepository;
 import com.dabeen.dnd.repository.mapper.AdminMapper;
 import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.EmailWrongException;
+import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
@@ -146,35 +147,27 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
     public Header<LoginApiResponse> login(Header<LoginApiRequest> request){
         LoginApiRequest requestData = request.getData();
         Admin admin = adminRepository.findByAdminId(requestData.getId())
-                                    .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' ID"));
+                                    .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 관리자를"));
       
         if(!passwordEncoder.matches(requestData.getPwd(), admin.getPwd()))
             throw new PasswordWrongException();
       
         return Header.OK(
                 LoginApiResponse.builder()
-                                .token(jwtService.createToken(admin.getAdminNum(), admin.getAdminId(),"admin"))
+                                .token(jwtService.createToken(admin.getAdminNum(), admin.getAdminId(), null, "admin"))
                                 .build()
                 );
     }
 
     public Header<?> findId(Header<FindApiRequest> request){
         FindApiRequest requestData = request.getData();
-        List<Admin> admins = adminRepository.findByAdminNameAndEmail(requestData.getName(), requestData.getEmail());
+        Admin admin = adminRepository.findByEmail(requestData.getEmail())
+                                    .orElseThrow(() -> new NotFoundException("해당 이메일을 가진 관리자의"));
                    
-        if(admins.isEmpty())
-            throw new NotFoundException("Admin");
+        if(!admin.getAdminName().equals(requestData.getName()))
+            throw new NameWrongException();
 
-       // 해당 사용자의 아이디 목록 생성
-       String ids = "";
-       for(int i = 0; i < admins.size(); i++){
-           ids += admins.get(i).getAdminId();
-
-           if(i != admins.size() - 1)
-               ids += ", ";
-       }
-
-        mailService.sendMail(requestData.getEmail(), "아이디를 알려드립니다.", requestData.getName(), "고객님의 아이디는 [ " + ids + " ] 입니다.");
+        mailService.sendMail(requestData.getEmail(), "아이디를 알려드립니다.", requestData.getName(), "고객님의 아이디는 \'" + admin.getAdminId() + "\' 입니다.");
         
         return Header.OK();
     }
@@ -183,7 +176,7 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
     public Header<?> findPwd(Header<FindApiRequest> request){
         FindApiRequest requestData = request.getData();
         Admin admin = adminRepository.findByAdminId(requestData.getId())
-                                .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() +"\' user"));
+                                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 관리자를"));
 
         // 입력된 메일과 사용자의 메일이 동일하지 않은 경우
         if(!admin.getEmail().equals(requestData.getEmail()))
