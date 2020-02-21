@@ -94,7 +94,7 @@ const PostDetail = ({setVisible, data}) => {
                                         !edit ?
                                         <div className="applicationInfoBoxDetail">{data.post_type}, PM 06:19</div>
                                         :
-                                        <DatePicker defaultValue ={moment (data .post_type , dateFormat )}/>
+                                        <DatePicker defaultValue ={moment(data.post_type ,dateFormat)}/>
                                     }
                                     </ApplicationInfoBox>
                                 </Col>
@@ -116,7 +116,6 @@ const PostDetail = ({setVisible, data}) => {
                                 </Col>
                             </Col>
                         </Row>
-                        
                     </ApplicationInfo>
                     <ContentItem>
                         <div>
@@ -222,7 +221,7 @@ const EditTitle = styled(Input)`
 
 const Image = styled.div`
     width: 550px;
-    height: 300px;
+    height: 200px;
     background: #BFC7CE;
     margin-top: 0.5vh;
 `;
@@ -244,6 +243,11 @@ const ApplicationInfoBox = styled.div`
         }
     }
     
+    & span{
+        color: #FF4300;
+        font-size: 1.2vw;
+    }
+
     & .applicationInfoBoxTitle {
         width: 200px;
         padding-left: 10px;
@@ -252,29 +256,26 @@ const ApplicationInfoBox = styled.div`
         width: 170px;
         font-size: 15px;
         padding-left: 10px;
-    }
-    & .applicationMoney{
-        display: flex;
-        flex-wrap: wrap;
-        color: #FF4300;
-        font-size: 15px;
-
-        & input{
-            border: none;
-            width: 5vw;
-            font-size: 15px;
-        }
-    }
- 
-  
+    }  
 `;
+
 const ApplicationInfo = styled.div`
     width: 550px;
     margin-top: 20px;
     
-    & span{
+    & .applicationMoney{
+        display: flex;
+        flex-direction: column;
+        width: 400px;
+        justify-content:flex-end;
         color: #FF4300;
-        font-size: 1.2vw;
+        font-size: 20px;
+
+        & input{
+            border: none;
+            width: 5vw;
+            font-size: 1.1vw;
+        }
     }
 
     & .needPersonnel {
@@ -288,76 +289,6 @@ const ApplicationInfo = styled.div`
 
         & .ant-calendar-picker-icon {
             display: none;
-        }
-    }
-    & .applicationInfoText {
-        display: flex;
-        justify-content: space-between;
-        border-right: 1px solid #BFC7CE;
-        width: 18vw;
-        height: 12vh;
-    }
-
-    & .applicationInfoTextTitle {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 7vw;
-        height: 12vh;
-        font-size: 0.9vw;
-    }
-
-    /* & .applicationInfoTextDetail {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 12vw;
-        height: 12vh;
-        font-size: 0.7vw;
-
-        & span{
-            color: #FF4300;
-            font-size: 1.2vw;
-        }
-
-        & button{
-            border: none;
-            background: none;
-            color: #7A7A7A;
-            cursor: pointer;
-
-            :focus{
-                outline: none;
-            }
-        }
-
-        & .needPersonnel {
-            font-size: 0.8vw;
-            border: none;
-            width: 5vw;
-        }
-
-        & .ant-calendar-picker {
-            width: 7vw;
-
-            & .ant-calendar-picker-icon {
-                display: none;
-            }
-        }
-    } */
-
-    & .applicationMoney{
-        display: flex;
-        flex-direction: column;
-        width: 11vw;
-        justify-content:flex-end;
-        color: #FF4300;
-        font-size: 1.5vw;
-
-        & input{
-            border: none;
-            width: 5vw;
-            font-size: 1.1vw;
         }
     }
 `;

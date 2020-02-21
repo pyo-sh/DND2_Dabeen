@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
+import { Select,  DatePicker, TimePicker, Icon, Button, Form, message, Row, Col } from 'antd';
 // import DatePicker from 'react-datepicker';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
@@ -86,31 +86,38 @@ const PostWrite = ({setInvisible}) => {
                         <Icon onClick={setInvisible} type="close" style={{fontSize: "2vw", color:"#BFC7CE"}}/>
                     </Title>
                     <PostSetting>
-                        <div className="postSettingTitle">
-                            <div>카테고리</div>
-                            <div>신청 마감 일시</div>
-                            <div>수행 일시</div>
-                            <div>필요인원</div>
-                            <div>금액</div>
-                        </div>
-                        <div className="postSettingDetail">
-                            <div className="category">
-                                <Select style={{width: 128}} onChange={getCategory}>
-                                    {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
-                                </Select>
-                            </div>
-                            <div className="deadline">
-                                {/* <DatePicker selected={postDeadline.date} onChange={onPostDeadlineDate}/> */}
-                                <DatePicker style={{marginRight: 5}}  onChange={onPostDeadlineDate}/>
-                                <TimePicker use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
-                            </div>
-                            <div className="executionDate">
-                                <DatePicker style={{marginRight: 5}} onChange={onExecutionDate}/>
-                                <TimePicker use12Hours format="h:mm a" onChange={onExecutionTime}/>
-                            </div>
-                            <input type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
-                            <input type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
-                        </div>
+                        <Row className="postSettingBowRow">
+                            <Col xd={24} sm={21}>
+                                <PostSettingBox>
+                                    <div className="postSettingTitle">카테고리</div>
+                                    <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
+                                        {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
+                                    </Select>
+                                </PostSettingBox>
+                                <PostSettingBox>
+                                    <div className="postSettingTitle">신청 마감 일시</div>
+                                    <div className="postSettingGetData">
+                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onPostDeadlineDate}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
+                                    </div>
+                                </PostSettingBox>
+                                <PostSettingBox>
+                                    <div className="postSettingTitle">수행 일시</div>
+                                    <div className="postSettingGetData">
+                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onExecutionDate}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" onChange={onExecutionTime}/>
+                                    </div>
+                                </PostSettingBox>
+                                <PostSettingBox>
+                                    <div className="postSettingTitle">필요인원</div>
+                                    <input className="postSettingInput" type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
+                                </PostSettingBox>
+                                <PostSettingBox>
+                                    <div className="postSettingTitle">금액</div>
+                                    <input className="postSettingInput" type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
+                                </PostSettingBox>
+                            </Col>
+                        </Row>
                     </PostSetting>
                     <ContentItem>
                         <div>위치</div>  
@@ -158,8 +165,8 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 34vw;
-    height: 84vh;
+    width: 590px;
+    height: 870px;
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -169,8 +176,8 @@ const ContentFlex = styled.div`
 `;
 
 const Content = styled.div`
-    width: 30vw;
-    height: 81vh;
+    width: 550px;
+    height: 850px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -180,80 +187,74 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 30vw;
+    width: 550px;
+    font-size: 40px;
 `;
 
 const PostSetting = styled.div`
-    width: 30vw;
-    height: 27vh;
+    width: 550px;
+    height: 350px;
     background: #F0F0F0;
+    border-radius: 8px;
     font-size: 20px;
-    padding-top: 10px;
-    padding-left: 20px;
     display: flex;
-    justify-content: space-between;
 
+  & .postSettingBowRow{
+      display: flex;
+      align-items: flex-end;
+      flex-wrap: wrap;
+  }
+`;
+
+const PostSettingBox = styled.div`
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 550px;
+
+    & .postSettingTitle {
+        width: 50%;
+        min-width: 120px;
+        max-width: 160px;
+        padding-left: 10px;
+    }
+    & .postSettingSelect{
+        width: 130px;
+    }
     & .ant-select-arrow{
         color: #FF4300;
     }
     & .ant-calendar-picker-icon{
-        margin-top: -1.2vh;
         color: #FF4300;
     }
 
     & .ant-time-picker-clock-icon{
-        color: #FF4300;
-        margin-top: -0.5vh;
-        margin-left: -1.5vw;  
+        color: #FF4300; 
     }
-    & .ant-select-selection{
-        width: 6vw;
-        height: 3vh;
-    }
-    & > .postSettingTitle{
+    & .postSettingGetData{
         display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 10vw;    
-        font-size: 1.2vw;
     }
-
-    & > .postSettingDetail{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 19vw;
-
-        & > .category {
-        margin-bottom: 1vh;
-        width: 10vw;
-        }
-
-        & > .deadline {
-            display: flex;
-            justify-content: space-between;
-            width: 14vw;
-        }
-
-        & > .executionDate {
-            display: flex;
-            justify-content: space-between;
-            width: 14vw;
-        }
+    & .postSettingDatePicker{
+        width: 100%;
+        min-width: 100px;
+        max-width: 130px;
     }
-
-    /* input type="number"일 경우 생기는 화살표 제거 */
-    & input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+    & .postSettingTimePicker{
+        width: 100%;
+        min-width: 90px;
+        max-width: 120px;
+        margin-left: 10px;
     }
-    & input {
+    & .postSettingInput{
         border: 1px solid #d9d9d9;
         border-radius: 4px;
-        width: 6vw;
-        height: 3vh;
-        font-size: 0.7vw;
+        width: 100%;
+        min-width: 100px;
+        max-width: 130px;
+        height: 32px;
+        padding-left: 2px;
+        font-size: 15px;
         margin-bottom: 1vh;
         color: #7a7a7a;
         :focus{
@@ -263,13 +264,19 @@ const PostSetting = styled.div`
             color: #BFC7CE;
         }
     }
+    /* input type="number"일 경우 생기는 화살표 제거 */
+    & input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 `;
 
 const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
-    font-size: 2vw;
-    width: 30vw;
+    font-size: 40px;
+    width: 550px;
     ::placeholder{
         color: #BFC7CE;
     }
@@ -283,17 +290,19 @@ const ContentItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 1vw;
+    font-size: 25px;
     margin-top: 20px;
-    width: 30vw;
+    width: 550px;
+    height: 300px;
 
     & > textarea {
-        width: 30vw;
-        height: 15vh;
+        width: 550px;
+        height: 200px;
         resize: none;
         color: #7a7a7a;
         border-color: #d9d9d9;
-
+        border-radius: 8px;
+        font-size: 20px;
         ::placeholder{
             color: #BFC7CE;
         }
@@ -302,8 +311,8 @@ const ContentItem = styled.div`
 
 const UploadImage = styled.div`
     margin-top: 20px;
-    width: 30vw;
-    font-size: 1vw;
+    width: 550px;
+    font-size: 25px;
 
     & .uploadImage {
         font-size: 16px;

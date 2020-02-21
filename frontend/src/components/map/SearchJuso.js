@@ -59,7 +59,7 @@ const Search = styled.div`
         margin-bottom: 1vh;
     }
     & .ant-input {
-        width: 15vw;
+        width: 100px;
         margin-right: 0.5vw;
 
         & :hover, :focus{
@@ -73,7 +73,7 @@ const Search = styled.div`
         background: #FF4300;
         border: 1px solid #FF4300;
         color: #FFFFFF;
-        font-size: 0.8vw;
+        font-size: 15px;
 
         &:hover, :focus {
             opacity: 0.9;
@@ -84,8 +84,8 @@ const Search = styled.div`
     }
 
     & .content {
-        width: 30vw;
-        height: 20vh;
+        width: 550px;
+        height: 200px;
     }
 `;
 
