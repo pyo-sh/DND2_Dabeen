@@ -68,14 +68,15 @@ public class HelpSupplCompApiController{
         return helpSupplCompApiService.delete(pk);
     }
 
-     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
+    // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     @GetMapping("{helpNum}/supplers")
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(@PathVariable String helpNum){
         return helpSupplCompApiService.searchSupplers(helpNum);
     }
 
-    //@GetMapping("{userNum}/helps")
-    //public Header<List<HelpCompHelpInfoApiResponse>> searchHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
-    //    return helpSupplCompApiService.searchHelps(userNum, pageable);
-    //}
+    // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
+    @GetMapping("{userNum}/helps")
+    public Header<List<HelpCompHelpInfoApiResponse>> searchHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+        return helpSupplCompApiService.searchHelps(userNum, pageable);
+    }
 }
