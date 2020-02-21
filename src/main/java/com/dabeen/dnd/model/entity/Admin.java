@@ -26,27 +26,19 @@ import lombok.experimental.Accessors;
 @ToString(exclude = {"replies","fqas"})
 public class Admin{
     @Id
-    @NotEmpty(message = "is not null")
     private String adminNum; // 관리자 번호
 
-    @NotEmpty(message = "is not null")
     private String adminName; // 관리자 이름
 
-    @NotEmpty(message = "is not null")
     private String address; // 관리자 주소
 
-    @NotEmpty(message = "is not null")
     private String phoneNum; // 관리자 전화번호
 
     @Column(name = "id") // 레파지토리를 이용하여 find하기 위해서 속성 이름 변경
-    @NotEmpty(message = "is not null")
     private String adminId; // 아이디
 
-    @NotEmpty(message = "is not null")
     private String pwd; // 비밀번호
-
-    @NotEmpty(message = "is not null")
-    @Email(message = "is not formatted")
+    
     private String email; // 이메일
 
 

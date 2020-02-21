@@ -16,6 +16,9 @@ import com.dabeen.dnd.model.pk.MileageUseHistPK;
 import com.dabeen.dnd.service.api.MileageUseHistApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +34,16 @@ public class MileageUseHistApiController {
     @Autowired
     private MileageUseHistApiService mileageUseHistApiService;
     
+    @Autowired
+    private Validator validator;
+    
     @PostMapping("")
     public Header<MileageUseHistApiResponse> create(@RequestBody @Valid Header<MileageUseHistApiRequest> request) {
+        MileageUseHistApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+
         return mileageUseHistApiService.create(request);
     }
 
@@ -49,6 +60,11 @@ public class MileageUseHistApiController {
 
     @PutMapping("")
     public Header<MileageUseHistApiResponse> update(@RequestBody @Valid Header<MileageUseHistApiRequest> request) {
+        MileageUseHistApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return mileageUseHistApiService.update(request);
     }
 

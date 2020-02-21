@@ -38,14 +38,10 @@ import lombok.experimental.Accessors;
 @ToString(exclude = {"mileageUseHists", "bsktUser", "pymt","bsktComps"})
 public class Bskt{
     @Id
-    @NotEmpty(message = "is not Empty")
     private String bsktNum; // 장바구니 번호
 
-    @NotNull(message = "is not null.")
-    @Min(value = 0, message = "must be at least 0.")
     private BigDecimal totalPrice; // 합계 금액
 
-    @NotNull(message = "is not null.")
     @Enumerated(EnumType.STRING)
     private Whether mileageUseWhet; // 마일리지 사용 여부
 
@@ -54,7 +50,6 @@ public class Bskt{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bskt")
     private List<MileageUseHist> mileageUseHists; // 마일리지 사용이력과 양방향 연관관계
 
-    @NotNull(message = "is not Empty")
     @ManyToOne
     @JoinColumn(name = "bskt_user_num")
     private User bsktUser; // 장바구니 사용자 번호

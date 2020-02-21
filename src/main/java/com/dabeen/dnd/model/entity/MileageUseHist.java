@@ -33,25 +33,20 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"user, bskt, pymt"})
+@ToString(exclude = {"user", "bskt", "pymt"})
 public class MileageUseHist {
     @EmbeddedId
-    @NotNull(message = "is not null")
     private MileageUseHistPK mileageUseHistPK; // 복합 PK, userNum/MileageUseDttm
     
-    @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING)
     private MileageUseType useType; // 사용구분
 
-    @NotNull(message = "is not null")
-    @Min(value = 0, message = "must be at least 0.")
     private BigDecimal usePrice; // 사용 금액
 
     private String wdrlAcctNum; // 인출계좌 번호
 
 
     /* 연관관계 설정 */
-    @NotNull(message = "is not null")
     @MapsId("userNum")
     @JoinColumn(name = "user_num")
     @ManyToOne

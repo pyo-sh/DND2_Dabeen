@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import com.dabeen.dnd.repository.AdminRepository;
 import com.dabeen.dnd.repository.mapper.AdminMapper;
+import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.EmailWrongException;
-import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
@@ -53,9 +54,15 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
     public Header<AdminApiResponse> create(Header<AdminApiRequest> request) {
         AdminApiRequest requestData = request.getData();
 
-        // 이미 존재하는 ID일 경우, 에러 호출
-        if(adminRepository.findByAdminId(requestData.getAdminId()).isPresent())
-            throw new IdExistedException(requestData.getAdminId());
+                // 이미 존재하는 ID일 경우, 에러 호출
+            if (adminRepository.findByAdminId(requestData.getAdminId()).isPresent())
+                throw new AlreadyExistedException("\'" + requestData.getAdminId() + "\' 아이디가");
+            // 이미 존재하는 EMAIL일 경우, 에러 호출
+            if (adminRepository.findByEmail(requestData.getEmail()).isPresent())
+                throw new AlreadyExistedException("\'" + requestData.getEmail() + "\' 이메일이");
+            // 이미 존재하는 PHONE_NUM일 경우, 에러 호출
+            if (adminRepository.findByPhoneNum(requestData.getPhoneNum()).isPresent())
+                throw new AlreadyExistedException("해당 휴대폰번호가 ");
 
         // 비밀번호 암호화
         String encryPwd = passwordEncoder.encode(requestData.getPwd());

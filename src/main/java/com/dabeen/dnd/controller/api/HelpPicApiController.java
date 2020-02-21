@@ -5,6 +5,7 @@ package com.dabeen.dnd.controller.api;
 
 import javax.validation.Valid;
 
+
 import com.dabeen.dnd.controller.CrudController;
 import com.dabeen.dnd.model.entity.HelpPic;
 import com.dabeen.dnd.model.network.Header;
@@ -14,6 +15,9 @@ import com.dabeen.dnd.model.pk.HelpPicPK;
 import com.dabeen.dnd.service.api.HelpPicApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +34,16 @@ public class HelpPicApiController{
     @Autowired
     HelpPicApiService helpPicApiService;
 
+    @Autowired
+    private Validator validator;
+
     @PostMapping("")
     public Header<HelpPicApiResponse> create(@RequestBody @Valid Header<HelpPicApiRequest> request){
+        HelpPicApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return helpPicApiService.create(request);
     }
 
@@ -48,6 +60,11 @@ public class HelpPicApiController{
     
     @PutMapping("")
     public Header<HelpPicApiResponse> update(@RequestBody @Valid Header<HelpPicApiRequest> request){
+        HelpPicApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return helpPicApiService.update(request);
     }
 

@@ -6,6 +6,8 @@ package com.dabeen.dnd.model.network.response;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.Min;
+
 import com.dabeen.dnd.model.enumclass.Whether;
 
 import lombok.AllArgsConstructor;

@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/admin")
 public class AdminApiController extends CrudController<AdminApiRequest, AdminApiResponse, Admin>{
     @Autowired
-    
     private AdminApiService adminApiService;
     
     @PostMapping("/login")
