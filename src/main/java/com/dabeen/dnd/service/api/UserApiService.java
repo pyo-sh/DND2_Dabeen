@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.UserMapper;
+import com.dabeen.dnd.exception.FileSaveFailedException;
 import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
@@ -31,6 +32,7 @@ import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -121,8 +123,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         try {
                             picPath = awsS3Service.upload(userApiRequset.getPic(), "user", user.getUserNum());
                         } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            throw new FileSaveFailedException();
                         }
                         
                         user.setBirthDate(userApiRequset.getBirthDate())
