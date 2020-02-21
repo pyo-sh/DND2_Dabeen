@@ -155,9 +155,6 @@ const PostList = ({ categoryNum }) => {
 };
 
 const PostListUpperDiv = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   padding: 20px 0;
 `;
 const ColCapsule = styled(Col)`
