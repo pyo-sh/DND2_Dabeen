@@ -3,19 +3,21 @@ import { useDispatch } from "react-redux";
 import Header from "./main/Header";
 import Footer from "./main/Footer";
 import styled from "styled-components";
-import { maintainLoginAction } from "../reducers/user";
+import { maintainLoginAction, loginSuccessAction } from "../reducers/user";
 
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children, asPath }) => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      dispatch(maintainLoginAction());
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      dispatch(loginSuccessAction({token, loginMaintain : true}));
     }
   }, []);
   return (
     <>
-      <Header />
+      <Header asPath={asPath} />
       <AllDiv>
         <div className="childrenWrapper">{children}</div>
         <Footer />

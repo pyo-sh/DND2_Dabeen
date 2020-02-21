@@ -1,19 +1,19 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import { Button, Input, Icon } from "antd";
+import { Input, Icon } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import Link from "next/link";
-import Router from "next/router";
-import { loginRequestAction, logoutRequestAction } from "../../reducers/user";
+import { logoutRequestAction } from "../../reducers/user";
 import Login from "../signUp/Login";
 
 const isBrowser = typeof window !== "undefined";
-// const isLogin = false; // 로그인 됐는지 나중에 리덕스에서 가져올 예정
-const Header = () => {
+
+const Header = ({asPath}) => {
   const dispatch = useDispatch();
   const divRef = useRef();
-
-  const { userId } = useSelector(state => state.user);
+  console.log(asPath);
+  
+  const { userInfo } = useSelector(state => state.user);
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
   const [tryLogin, setTryLogin] = useState(false);
   const [selected, setSelected] = useState("/"); // 선택 된 메뉴가 무엇인지.
@@ -32,10 +32,12 @@ const Header = () => {
   }, []);
 
   const clickMy = useCallback(() => {
-    setSelected("userpage");
     setIsClickMy(prev => !prev);
   }, []);
-  const clickSignUp = useCallback(() => setSelected("signup"), []);
+
+  useEffect(() => { // asPath에 따라서 header 부분 색 바뀌게
+    setSelected(asPath.split('/')[1]);
+  }, [asPath]);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -50,13 +52,13 @@ const Header = () => {
 
   return (
     <Menubar selected={selected}>
-      <sapn className="menuToggle">
+      <span className="menuToggle">
         <Icon
           type="menu"
           onClick={clickMenuIcon}
           style={{ color: "#FF4300" }}
         />
-      </sapn>
+      </span>
       <div className="menuLeft">
         <Link href="/">
           <a onClick={useCallback(() => setSelected("/"), [])}>
@@ -74,7 +76,6 @@ const Header = () => {
             <Link href="/[postmain]" as="/errand">
               <a
                 name="errand"
-                onClick={useCallback(() => setSelected("errand"), [])}
               >
                 심부름
               </a>
@@ -84,7 +85,6 @@ const Header = () => {
             <Link href="/[postmain]" as="/rental">
               <a
                 name="rental"
-                onClick={useCallback(() => setSelected("rental"), [])}
               >
                 대여
               </a>
@@ -94,7 +94,6 @@ const Header = () => {
             <Link href="/[postmain]" as="/chores">
               <a
                 name="chores"
-                onClick={useCallback(() => setSelected("chores"), [])}
               >
                 잡일
               </a>
@@ -102,7 +101,7 @@ const Header = () => {
           </li>
         </ul>
         <div className="loginBox">
-          {userId ? (
+          {userInfo && userInfo.userNum ? (
             <>
               <div className="userPageBox">
                 {/* <Link href="/mypage"> */}
@@ -120,16 +119,15 @@ const Header = () => {
                         &nbsp;
                         <span>25000</span>원
                       </li>
-                      <li><Link href="/basketmain"><a>장바구니</a></Link></li>
+                      <li><Link href="/basketmain"><a onClick={clickMy}>장바구니</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/ansrjsdn/userinfo`}><a>마이페이지</a></Link></li>
-                      <li><Link href="/chat"><a>채팅하기</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/${userInfo.userId}/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
+                      <li><Link href="/chat"><a onClick={clickMy}>채팅하기</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/ansrjsdn/service`}><a>고객센터</a></Link></li>
+                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userInfo.userId}/service`}><a onClick={clickMy}>고객센터</a></Link></li>
                     </ul>
                   </div>
                 ) : null}
-                {/* </Link> */}
               </div>
               <div>
                 <a onClick={clickLogout}>로그아웃</a>
@@ -143,8 +141,7 @@ const Header = () => {
               <div>
                 <Link href="/terms">
                   <a
-                    name="signup"
-                    onClick={clickSignUp}
+                    name="terms signup"
                   >
                     회원가입
                   </a>
@@ -269,7 +266,7 @@ const Menubar = styled.nav`
       font-size: 22px;
       margin: 0;
       }
-      & a[name=${props => props.selected}]{
+      & a[name~=${props => props.selected}]{
       color : #ff4300;
       }
     & .loginBox {

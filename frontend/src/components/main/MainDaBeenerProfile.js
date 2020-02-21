@@ -35,15 +35,15 @@ const defaultDabeener = [
     },
 ]
 
-const MainDaBeenerProfile = () => {
+const MainDaBeenerProfile = ({recommendOpponents}) => {
     return (
         <MainDaBeenerProfileForm>
-            {defaultDabeener.map(user => (
-                <MainDaBeenerProfileInfo key={user.userId}>
+            {recommendOpponents.map(user => (
+                 <MainDaBeenerProfileInfo key={user.userId}>
                 <Avatar size = {100} icon="user"/>
                 <div>@{user.nickname}</div>
                 <div style={{fontSize: 12}}>{user.userId}</div>
-                <Rate allowHalf disabled defaultValue={user.userRate} style={{fontSize: 12}}/>
+                <Rate allowHalf disabled defaultValue={Math.round(user.avgRate + 0.5) === Math.round(user.avgRate) ? user.avgRate : Math.floor(user.avgRate) + 0.5} style={{fontSize: 12}}/>
             </MainDaBeenerProfileInfo>
             ))}
         </MainDaBeenerProfileForm>

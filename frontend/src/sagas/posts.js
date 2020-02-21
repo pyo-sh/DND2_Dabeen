@@ -1,5 +1,6 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
-import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST } from '../reducers/posts';
+import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction } from '../reducers/posts';
+import axios from 'axios';
 
 function addHelpPostAPI() { //게시글 업로드
 
@@ -74,8 +75,28 @@ function* watchLoadHelpPost() {
     yield takeLatest(LOAD_HELPPOST_REQUEST, loadHelpPost);
 };
 
+function loadLivePostAPI(data) {
+   return axios.get(`/help/${data}/main-page`);
+};
+
+function* loadLivePost(action) {
+    try{
+        const result = yield call(loadLivePostAPI, action.data);
+        console.log(result.data.data);
+        yield put(loadLivePostSuccessAction(result.data.data));
+    } catch(e) {
+        console.log(e);
+        yield put(loadLivePostFailureAction(e));
+    }
+};
+
+function* watchLoadLivePost() {
+    yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
+};
+
 export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
+        fork(watchLoadLivePost),
     ]);
 };

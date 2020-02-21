@@ -103,6 +103,7 @@ const dummyHelpPost2 = {
 };
 
 export const initialState = {
+  livePosts : [],
   helpPosts: [
     {
       id: 1,
@@ -140,6 +141,10 @@ export const initialState = {
   isRemovingHelpPost: false, //도움 게시글 삭제 중
   helpPostRemoved: false //도움 게시글 삭제 성공
 };
+// 실시간 도움 요청
+export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
+export const LOAD_LIVEPOST_SUCCESS = "LOAD_LIVEPOST_SUCCESS";
+export const LOAD_LIVEPOST_FAILURE = "LOAD_LIVEPOST_FAILURE";
 
 export const LOAD_HELPPOST_REQUEST = "LOAD_HELPPOST_REQUEST";
 export const LOAD_HELPPOST_SUCCESS = "LOAD_HELPPOST_SUCCESS";
@@ -160,6 +165,10 @@ export const UPDATE_HELPPOST_FAILURE = "UPDATE_HELPPOST_FAILURE";
 export const REMOVE_HELPPOST_REQUEST = "REMOVE_HELPPOST_REQUEST";
 export const REMOVE_HELPPOST_SUCCESS = "REMOVE_HELPPOST_SUCCESS";
 export const REMOVE_HELPPOST_FAILURE = "REMOVE_HELPPOST_FAILURE";
+
+export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
+export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
+export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
 
 export const loadHelpPostRequestAction = createAction(LOAD_HELPPOST_REQUEST);
 export const loadHelpPostSuccessAction = createAction(LOAD_HELPPOST_SUCCESS);
@@ -264,6 +273,16 @@ const reducer = (state = initialState, action) => {
       case REMOVE_HELPPOST_FAILURE: {
         draft.isRemovingHelpPost = false;
         draft.removeHelpPostErrorReason = action.data.error;
+        break;
+      }
+      case LOAD_LIVEPOST_REQUEST: {
+        break;
+      }
+      case LOAD_LIVEPOST_SUCCESS: {
+        break;
+      }
+      case LOAD_LIVEPOST_FAILURE: {
+
         break;
       }
       default:

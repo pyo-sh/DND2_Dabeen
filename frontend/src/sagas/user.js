@@ -1,36 +1,50 @@
 import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccessAction, logoutFailureAction, logoutSuccessAction, LOG_OUT_REQUEST, LOG_IN_REQUEST, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction } from '../reducers/user';
+import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction } from '../reducers/user';
+import jwt_decode from 'jwt-decode';
 
-function logoutAPI() { // 로그 아웃
-    
+function loadUserAPI(userNum) { // 유저 정보를 가져온다!
+    return axios.get(`/user/${userNum}`);
 };
 
-function* logout() {
+function* loadUser(action) {
     try {
-        yield call(logoutAPI);
-        yield put(logoutSuccessAction());
+        const result = yield call(loadUserAPI, action.data);
+        yield put(loadUserSuccessAction(result.data.data));
     }
     catch(e) {
         console.error(e);
-        yield put(logoutFailureAction(e));
+        yield put(loadUserFailureAction(e));
     }
 };
 
-function* watchLogout() {
-    yield takeLatest(LOG_OUT_REQUEST, logout);
+function* watchLoadUser() {
+    yield takeLatest(LOAD_USER_REQUEST, loadUser);
 };
 
 // 로그인
 
 function loginAPI(data) { 
-    // return axios.post('/api/user/login', {id: data.id, pwd: data.password});
+    const reqData = {
+        data : {
+            id: data.id,
+            pwd: data.password
+        }
+    }
+    return axios.post('/user/login', reqData);
 };
 
 function* login(action) {
     try {
         const result = yield call(loginAPI, action.data);
-        yield put(loginSuccessAction({token : result.data.token, loginMaintain : action.data.loginMaintain}));
+        action.data.loginMaintain ? localStorage.setItem("token", result.data.data.token) : sessionStorage.setItem("token", result.data.data.token)
+        const tokenResult = jwt_decode(result.data.data.token);
+        const userNum = tokenResult.userNum;
+        const userId = tokenResult.id;
+        const userRole = tokenResult.role;
+        // yield put(loginSuccessAction({token : result.data.data.token, loginMaintain : action.data.loginMaintain}));
+        yield put(loginSuccessAction({userNum, userId, userRole}));
+        yield put(loadUserRequestAction(userNum));
     }catch(e){
         console.error(e);
         yield put(loginFailureAction(e));
@@ -142,7 +156,7 @@ function* watchEditUserInfo() {
 export default function* userSaga() {
     yield all([
         fork(watchLogin),
-        fork(watchLogout),
+        fork(watchLoadUser),
         fork(watchSignUp),
         fork(watchEditUserInfo),
         // fork(watchFindId),
