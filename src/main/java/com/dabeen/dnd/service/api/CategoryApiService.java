@@ -10,23 +10,34 @@ import com.dabeen.dnd.model.entity.Category;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.CategoryApiRequest;
 import com.dabeen.dnd.model.network.response.CategoryApiResponse;
+import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.service.BaseService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @Service
 public class CategoryApiService extends BaseService<CategoryApiRequest, CategoryApiResponse, Category> {
+
+    // @Autowired
+    // private HelpRepository helpRepository;
 
     @Override
     public Header<CategoryApiResponse> create(Header<CategoryApiRequest> request) {
         // TODO Auto-generated method stub
         CategoryApiRequest categoryApiRequest = request.getData();
 
+        log.info("{}",categoryApiRequest);
+
         Category category = Category.builder().catNum(categoryApiRequest.getCatNum())
                                                 .catName(categoryApiRequest.getCatName())
                                                 .catDesc(categoryApiRequest.getCatDesc())
-                                                .highCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())).build();
+                                                .highCategory(categoryApiRequest.getHighCatNum() == null ? null :  baseRepository.getOne(categoryApiRequest.getHighCatNum()))
+                                                .build();
         
         Category newCategory = baseRepository.save(category);
         
@@ -55,7 +66,9 @@ public class CategoryApiService extends BaseService<CategoryApiRequest, Category
                             .map(category -> category.setCatNum(categoryApiRequest.getCatNum())
                                                     .setCatName(categoryApiRequest.getCatName())
                                                     .setCatDesc(categoryApiRequest.getCatDesc())
-                                                    .setHighCategory(baseRepository.getOne(categoryApiRequest.getHighCatNum())))
+                                                    .setHighCategory(
+                                                        categoryApiRequest.getHighCatNum() == null ? null : baseRepository.getOne(categoryApiRequest.getHighCatNum())
+                                                        ))
                             .map(newCategory -> baseRepository.save(newCategory))
                             .map(c -> Header.OK(response(c)))
                             .orElseThrow(() -> new NotFoundException("Category"));

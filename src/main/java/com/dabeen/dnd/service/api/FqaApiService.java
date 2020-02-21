@@ -3,12 +3,16 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Fqa;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FqaApiRequest;
 import com.dabeen.dnd.model.network.response.FqaApiResponse;
 import com.dabeen.dnd.repository.AdminRepository;
+import com.dabeen.dnd.repository.mapper.FqaMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +22,34 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private FqaMapper fqaMapper; 
+
     @Override
     public Header<FqaApiResponse> create(Header<FqaApiRequest> request) {
         // TODO Auto-generated method stub
         FqaApiRequest fqaApiRequest = request.getData();
 
-        Fqa fqa = Fqa.builder()
-                    .questPstnDttm(fqaApiRequest.getQuestPstnDttm())
-                    .title(fqaApiRequest.getTitle())
-                    .rplyCont(fqaApiRequest.getRplyCont())
-                    .admin(adminRepository.getOne(fqaApiRequest.getFqaRgistrantNum()))
-                    .build();
+        // Fqa fqa = Fqa.builder()
+        //             .questPstnDttm(fqaApiRequest.getQuestPstnDttm())
+        //             .title(fqaApiRequest.getTitle())
+        //             .rplyCont(fqaApiRequest.getRplyCont())
+        //             .admin(adminRepository.getOne(fqaApiRequest.getFqaRgistrantNum()))
+        //             .build();
 
-        Fqa newFqa = baseRepository.save(fqa);
+        // Fqa newFqa = baseRepository.save(fqa);
 
-        return Header.OK(response(newFqa));
+        Map<String,Object> fqaMap = new HashMap<>();
+
+        fqaMap.put("fqaNum",null);
+        fqaMap.put("fqaRgistrantNum",fqaApiRequest.getFqaRgistrantNum());
+        fqaMap.put("title",fqaApiRequest.getTitle());
+        fqaMap.put("rplyCont",fqaApiRequest.getRplyCont());
+
+        fqaMapper.insert(fqaMap);        
+
+        return Header.OK(response(baseRepository.findById((String)fqaMap.get("fqaNum")) // 생성된 엔터티의 정보를 response 형태로 전달
+                                                .orElseThrow(() -> new NotFoundException("Created entity"))));
     }
 
     @Override
@@ -58,8 +75,6 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                             .map(fqa -> baseRepository.save(fqa))
                             .map(fqa -> Header.OK(response(fqa)))
                             .orElseThrow(() -> new NotFoundException("Fqa"));
-
-
     }
 
     @Override
