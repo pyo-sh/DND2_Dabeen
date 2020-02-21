@@ -177,7 +177,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     // 내가 작성한 도움 API
     public Header<List<HelpApiResponse>> searchWrittenHelps(String userNum, Pageable pageable) {
         Optional<User> optional = userRepository.findById(userNum);
-        log.info("{}", pageable.getPageNumber());
+   
         return optional.map(user -> {
             List<HelpApiResponse> responses = new ArrayList<>();
 
