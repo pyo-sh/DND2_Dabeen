@@ -16,6 +16,7 @@ import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.EmailWrongException;
 import com.dabeen.dnd.exception.FailedMailSendException;
 import com.dabeen.dnd.exception.FileSaveFailedException;
+import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.PasswordWrongException;
@@ -44,6 +45,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyExistedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Header<?> handlerIdExistedException(AlreadyExistedException ex){
+        return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    // 입력된 이름 틀린 경우 발생되는 에러 처리 
+    @ExceptionHandler(NameWrongException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Header<?> handlerEmailWrongException(NameWrongException ex){
         return Header.ERROR(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

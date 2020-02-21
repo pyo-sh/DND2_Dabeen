@@ -21,10 +21,11 @@ public class JwtService{
     }
 
     // 아이디, 역할(수요자 / 공급자 / 관리자)를 claim으로 사용
-    public String createToken(String userNum, String id, String role){
+    public String createToken(String userNum, String id, String nickname, String role){
         String token = Jwts.builder()
                                     .claim("userNum", userNum)
                                     .claim("id", id)
+                                    .claim("nickname", nickname)
                                     .claim("role", role)
                                     .signWith(key, SignatureAlgorithm.HS256)
                                     .compact();
