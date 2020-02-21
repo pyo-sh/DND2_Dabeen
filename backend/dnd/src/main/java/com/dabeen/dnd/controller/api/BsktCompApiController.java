@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BsktCompApiController{
 
     @Autowired
-    BsktCompApiService bsktCompApiService;
+    private BsktCompApiService bsktCompApiService;
 
     @PostMapping("")
     public Header<BsktCompApiResponse> create(@RequestBody @Valid Header<BsktCompApiRequest> request){

@@ -19,6 +19,9 @@ import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Transactional
 @Service
 public class BsktCompApiService{
@@ -36,6 +39,11 @@ public class BsktCompApiService{
         BsktCompApiRequest bsktCompApiRequest = request.getData();
 
         // BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getBsktNum(), bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
+
+        log.info("{}",bsktCompApiRequest);
+
+        HelpSupplCompPK helpSupplCompPK = new HelpSupplCompPK(bsktCompApiRequest.getHelpNum(), bsktCompApiRequest.getSupplNum());
+        BsktCompPK bsktCompPK = new BsktCompPK(bsktCompApiRequest.getHelpNum() , helpSupplCompPK); 
 
         BsktComp bsktComp = BsktComp.builder()
                                     .bsktCompPK(new BsktCompPK())
