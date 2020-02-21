@@ -7,7 +7,7 @@ const MyLocation = ({myLocation}) => {
     // //임시로 부경대학교 위치가 제일 처음 뜨게 설정했다.
     const [lat, setLat] = useState(35.135);
     const [lng, setLng] = useState(129.107);
-    const Marker = ({ image }) => <img src={image} width="30px" height="30px" alt="지도 핀"/> ;
+    const Marker = ({ image }) => <img src={image} width="30px" height="30px" alt="지도 핀"/>;
 
     useEffect(()=>{
         Geocode.setApiKey(apiKeys.geocoding);

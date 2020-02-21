@@ -98,14 +98,14 @@ const PostWrite = ({setInvisible}) => {
                                     <div className="postSettingTitle">신청 마감 일시</div>
                                     <div className="postSettingGetData">
                                         <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onPostDeadlineDate}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" onChange={onPostDeadlineTime}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onPostDeadlineTime}/>
                                     </div>
                                 </PostSettingBox>
                                 <PostSettingBox>
                                     <div className="postSettingTitle">수행 일시</div>
                                     <div className="postSettingGetData">
                                         <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onExecutionDate}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" onChange={onExecutionTime}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onExecutionTime}/>
                                     </div>
                                 </PostSettingBox>
                                 <PostSettingBox>
@@ -172,7 +172,7 @@ const ContentFlex = styled.div`
     align-items: center;
     justify-content: center;
     overflow: auto;
-    ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
+    ::-webkit-scrollbar{display:none;}  /* 스크롤바 안보이게 */
 `;
 
 const Content = styled.div`
@@ -303,6 +303,8 @@ const ContentItem = styled.div`
         border-color: #d9d9d9;
         border-radius: 8px;
         font-size: 20px;
+        ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
+
         ::placeholder{
             color: #BFC7CE;
         }
