@@ -8,9 +8,8 @@ import { createStore, compose, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import reducer from "../reducers";
-import axios from "axios";
 
-const Dabeen = ({ Component, store, pageProps }) => {
+const Dabeen = ({ Component, store, pageProps, asPath }) => {
   return (
       <Provider store={store}>
         <Helmet
@@ -53,7 +52,7 @@ const Dabeen = ({ Component, store, pageProps }) => {
           ]}
         >
         </Helmet>
-          <AppLayout>
+          <AppLayout asPath={asPath}>
             <Component {...pageProps} />
           </AppLayout>
       </Provider>
@@ -64,14 +63,13 @@ const Dabeen = ({ Component, store, pageProps }) => {
 Dabeen.getInitialProps = async context => {
   const { ctx, Component } = context;
   let pageProps = {};
-  // const state = ctx.store.getState(); 리덕스의 스토어 안에 있는 state 불러오기 가능
-  const user = await axios.get("http://15.164.2.26:3307/api/user/2002170001");
-  console.log(user);
+ // 리덕스의 스토어 안에 있는 state 불러오기 가능
+  const asPath = ctx.asPath;
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
   // 만약에 localstroage에 토큰이 있으면 로그인 하는 로직을 추가합시다!!
-  return { pageProps };
+  return { pageProps, asPath };
 };
 
 const configureStore = (initialState, options) => {

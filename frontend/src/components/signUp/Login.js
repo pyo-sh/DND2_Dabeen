@@ -21,7 +21,7 @@ const Login = ({clickLogin}) => {
         e.preventDefault();
         dispatch(loginRequestAction({id, password, loginMaintain}));
         clickLogin();
-    },[id, password]);
+    },[id, password, loginMaintain]);
 
     useEffect(() => {
         if(isLoginSuccess){
@@ -38,7 +38,7 @@ const Login = ({clickLogin}) => {
                     </div>
                     <div className="loginForm">
                         <InputUser onChange={onChangeId} value ={id} placeholder="아이디"/>
-                        <InputUser onChange={onChangePassword} value={password} placeholder="비밀번호"/> 
+                        <InputUser type="password" onChange={onChangePassword} value={password} placeholder="비밀번호"/> 
                         <div className = "loginKeeping">
                             <div>
                             <Icon type="check-circle" onClick ={onClickMaintain} style = {{fontSize: '16px', color : loginMaintain ? "green" : "gray"}}/> 로그인 상태 유지

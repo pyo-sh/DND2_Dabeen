@@ -63,6 +63,7 @@ const dummyState = {
 export const initialState = {
   // 다른사람의 정보
   opponents: {},
+  recommendOpponents : [],
   // UserData를 받았는지
   loadedUserData: false,
   isLoadingUserData: false,
@@ -81,6 +82,10 @@ export const LOAD_USERDATA_REQUEST = "LOAD_USERDATA_REQUEST";
 export const LOAD_USERDATA_SUCCESS = "LOAD_USERDATA_SUCCESS";
 export const LOAD_USERDATA_FAILURE = "LOAD_USERDATA_FAILURE";
 
+export const LOAD_RECOMMEND_REQUEST ="LOAD_RECOMMEND_REQUEST";
+export const LOAD_RECOMMEND_SUCCESS ="LOAD_RECOMMEND_SUCCESS";
+export const LOAD_RECOMMEND_FAILURE ="LOAD_RECOMMEND_FAILURE";
+
 // export const UPDATE_USERDATA_REQUEST = "UPDATE_USERDATA_REQUEST";
 // export const UPDATE_USERDATA_SUCCESS = "UPDATE_USERDATA_SUCCESS";
 // export const UPDATE_USERDATA_FAILURE = "UPDATE_USERDATA_FAILURE";
@@ -90,6 +95,11 @@ export const LOAD_USERDATA_FAILURE = "LOAD_USERDATA_FAILURE";
 // export const DELETE_USERDATA_FAILURE = "DELETE_USERDATA_FAILURE";
 
 // UserData에 대한 Actions
+
+export const loadRecommendRequest = createAction(LOAD_RECOMMEND_REQUEST);
+export const loadRecommendSuccess = createAction(LOAD_RECOMMEND_SUCCESS);
+export const loadRecommendFailure = createAction(LOAD_RECOMMEND_FAILURE);
+
 // export const AddUserDataRequest = createAction(ADD_USERDATA_REQUEST);
 // export const AddUserDataSuccess = createAction(ADD_USERDATA_SUCCESS);
 // export const AddUserDataFailure = createAction(ADD_USERDATA_FAILURE);
@@ -105,9 +115,29 @@ export const LOAD_USERDATA_FAILURE = "LOAD_USERDATA_FAILURE";
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
     switch (action.type) {
+      case LOAD_RECOMMEND_REQUEST: {
+        break;
+      }
+      case LOAD_RECOMMEND_SUCCESS: {
+        draft.recommendOpponents = action.data.map(recommend => (
+            {
+            userId : recommend.id,
+            userNum : recommend.user_num,
+            userName : recommend.user_name,
+            nickname : recommend.nickName,
+            avgRate : recommend.avg_rate,
+            picPath : recommend.pic_path,
+          }
+        ))
+        break;
+      }
+      case LOAD_RECOMMEND_FAILURE: {
+        draft.loadUserDataErrorReason = action.data;
+        break;
+      }
       case LOAD_USERDATA_REQUEST: {
         draft.loadedUserData = false;
-        draft.isAddingUserData = true;
+        draft.isLoadingUserData = true;
         break;
       }
       case LOAD_USERDATA_SUCCESS: {
@@ -117,7 +147,7 @@ const reducer = (state = initialState, action) => {
       }
       case LOAD_USERDATA_FAILURE: {
         draft.isLoadingUserData = false;
-        draft.loadUserDataErrorReason = action.data.error;
+        draft.loadUserDataErrorReason = action.data;
         break;
       }
     //   case UPDATE_USERDATA_REQUEST: {

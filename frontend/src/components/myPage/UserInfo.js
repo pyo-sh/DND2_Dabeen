@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ModifyUser from './ModifyUser';
 // useRouter를 사용해서 id를 가지고 와서 그 정보를 보여준다!!
 
-const UserInfo = ({ userInf }) => {
+const UserInfo = ({ userInfo }) => {
     const [isChanging, setIsChanging] = useState(false);
     // useSelector로 정보를 가져온다. 나일 때랑 다른 사람일 때?..
     const onClickEdit = useCallback((e) => {
@@ -28,37 +28,37 @@ const UserInfo = ({ userInf }) => {
                     <div className="userinfoContentName">
                         <Icon className="icon" type="user"/> 닉네임
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.nickname}</div>
+                    <div className="userinfoContentValue">{userInfo.nickName}</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="form"/> 소개
                     </div>
-                    <div className="userinfoContentValue">이건진테스트내가소개를엄청길게쓸수도있잖아이건진테스트내가소개를엄 청길게쓸수도있잖아이건진테스트내가소개를엄청길게쓸수도있잖아</div>
+                    <div className="userinfoContentValue">{userInfo.introduce}</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="idcard"/> 아이디
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.id}</div>
+                    <div className="userinfoContentValue">{userInfo.userId}</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="mail"/> 이메일
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.email}</div>
+                    <div className="userinfoContentValue">{userInfo.email}</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="mobile"/> 전화번호
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.phone_num}</div>
+                    <div className="userinfoContentValue">{userInfo.phoneNumber}</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="environment" /> 주소
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.address}</div>
+                    <div className="userinfoContentValue">{userInfo.address}</div>
                 </div>
             </div>
         </UserInfoWrapper>

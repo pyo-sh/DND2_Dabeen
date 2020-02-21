@@ -1,4 +1,5 @@
 import produce from "immer";
+import jwt_decode from 'jwt-decode';
 import { createAction } from './actionFunction';
 const dummyState = {
   userInfo: {
@@ -37,12 +38,13 @@ export const initialState = {
     userId: null, 
     userName: null,
     email: null,
+    introduce : "",
     birthDate: null,
     nickName: null,
     address: null,
     phoneNumber: null,
     blonSggName : null, // 소속시군구명
-    isDabeener: false, // 다비너 여부
+    userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
     picPath: null, // 프로필사진 주소
@@ -61,9 +63,8 @@ export const initialState = {
   signUpError: "", // 회원 가입 실패
   isUpdatingInfo: false, // 정보 업데이트중
   updateError: "",
+  loadUserError : ""
 };
-
-export const CHECK_MAINTAIN_LOGIN = "CHECK_MAINTAIN_LOGIN";
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
 export const SIGN_UP_SUCCESS = "SIGN_UP_SUCCESS";
@@ -85,15 +86,14 @@ export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 // export const FIND_PASSWORD_SUCCESS = "FIND_PASSWORD_SUCCESS";
 // export const FIND_PASSWORD_FAILURE = "FIND_PASSWORD_FAILURE";
 
-// export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
-// export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
-// export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
+export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
+export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
+export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 
 export const EDIT_USERINFO_REQUEST = "EDIT_USERINFO_REQUEST";
 export const EDIT_USERINFO_SUCCESS = "EDIT_USERINFO_SUCCESS";
 export const EDIT_USERINFO_FAILURE = "EDIT_USERINFO_FAILURE";
 
-export const maintainLoginAction = createAction(CHECK_MAINTAIN_LOGIN);
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
 export const signUpRequestAction = createAction(SIGN_UP_REQUEST);
 export const signUpSuccessAction = createAction(SIGN_UP_SUCCESS);
@@ -106,12 +106,12 @@ export const loginFailureAction = createAction(LOG_IN_FAILURE);
 
 // 회원 정보를 바탕으로 서버에 로그아웃 요청을 보낸다 -> 성공한다 : 유저 정보 null로 or 실패한다 : 에러 이유
 export const logoutRequestAction = createAction(LOG_OUT_REQUEST);
-export const logoutSuccessAction = createAction(LOG_OUT_SUCCESS);
-export const logoutFailureAction = createAction(LOG_OUT_FAILURE);
+// export const logoutSuccessAction = createAction(LOG_OUT_SUCCESS);
+// export const logoutFailureAction = createAction(LOG_OUT_FAILURE);
 
-// export const loadUserRequestAction = createAction(LOAD_USER_REQUEST);
-// export const loadUserSuccessAction = createAction(LOAD_USER_SUCCESS);
-// export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
+export const loadUserRequestAction = createAction(LOAD_USER_REQUEST);
+export const loadUserSuccessAction = createAction(LOAD_USER_SUCCESS);
+export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
 
 // export const findUserIdRequestAction = createAction(FIND_ID_REQUEST);
 // export const findUserIdSuccessAction = createAction(FIND_ID_SUCCESS);
@@ -151,24 +151,20 @@ export const editUserInfoFailureAction = () => ({
   type: EDIT_USERINFO_FAILURE
 });
 
-const reducer = (state = dummyState, action) => {
+const reducer = (state = initialState, action) => {
   return produce(state, draft => {
     switch (action.type) {
-      case CHECK_MAINTAIN_LOGIN : {
-        // 처음 들어왔을 때 로그인 유지여서 로컬스토리지에 있을 때 바로 저장.
-        // 로컬 스토리지에서 get해서 해석해서  그 정보를 저장!
-        draft.userId = "123";
-        draft.userNum = 1
-        break;
-      }
       case LOG_IN_REQUEST: {
         draft.isLoggingIn = true;
         break;
       }
       case LOG_IN_SUCCESS: { // 로그인 토큰이 내려온다 -> 토큰 local 또는 session에 저장하고 토큰 해석해서 id 저장.
-        draft.isLoggingIn = false;        
+        draft.isLoggingIn = false;   
         // action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
-        draft.userInfo = dummyState.userInfo;
+        // const tokenResult = jwt_decode(action.data.token);
+        draft.userInfo.userNum = action.data.userNum;
+        draft.userInfo.userId = action.data.userId;
+        draft.userInfo.userRole = action.data.userRole;
         // 토큰 해석해서 userId, userNum 저장하는 방식!!
         // 토큰에 여러개 정보 다 들어 있을지 아니면 한번더 불러야 하는지
         break;
@@ -176,26 +172,15 @@ const reducer = (state = dummyState, action) => {
       case LOG_IN_FAILURE: {
         draft.isLoggingIn = false;
         draft.isLoginSuccess = false;
-        draft.loginError = action.data.error;
+        draft.loginError = action.data;
         break;
       }
       case LOG_OUT_REQUEST: {
-        draft.isLoggingOut = true;
-        break;
-      }
-      case LOG_OUT_SUCCESS: {
-        draft.isLoggingOut = false;
-        draft.isLoginSuccess = false;
-        // draft.userInfo = null;
+         // draft.userInfo = null;
         // 로그아웃 성공 했을 때 토큰 삭제
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
-        draft.userInfo = null;
-        break;
-      }
-      case LOG_OUT_FAILURE: {
-        draft.isLoggingOut = false;
-        draft.logoutError = action.data.error;
+        draft.userInfo = {};
         break;
       }
       case SIGN_UP_REQUEST: {
@@ -223,6 +208,32 @@ const reducer = (state = dummyState, action) => {
       case EDIT_USERINFO_FAILURE: {
         draft.isUpdatingInfo = false;
         draft.updateError = action.data.error;
+        break;
+      }
+      case LOAD_USER_REQUEST : {
+        break;
+      }
+      case LOAD_USER_SUCCESS : {
+        draft.userInfo.userNum = action.data.user_num;
+        draft.userInfo.userName = action.data.user_name;
+        draft.userInfo.userId = action.data.user_id;
+        draft.userInfo.nickName = action.data.nickname;
+        draft.userInfo.email = action.data.email;
+        draft.userInfo.birthDate = action.data.birth_date;
+        draft.userInfo.introduce = action.data.itdc_cont;
+        draft.userInfo.address = action.data.address;
+        draft.userInfo.phoneNumber = action.data.phone_num;
+
+        draft.userInfo.blonSggName = action.data.blon_sgg_name;
+        draft.userInfo.userRole = action.data.suppl_whet;
+        draft.userInfo.picPath = action.data.pic_path;
+        draft.userInfo.avgRate = action.data.avg_rate;
+        draft.userInfo.rrnRear = action.data.rrn_rear;
+        draft.userInfo.ownMilege = action.data.own_mileage;
+        break;
+      }
+      case LOAD_USER_FAILURE : {
+        draft.loadUserError = action.data;
         break;
       }
   //     case FIND_ID_REQUEST : {
