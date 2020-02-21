@@ -34,7 +34,7 @@ const UserInfo = ({ userInf }) => {
                     <div className="userinfoContentName">
                         <Icon className="icon" type="form"/> 소개
                     </div>
-                    <div className="userinfoContentValue">{userInf.data.nickname}</div>
+                    <div className="userinfoContentValue">이건진테스트내가소개를엄청길게쓸수도있잖아이건진테스트내가소개를엄 청길게쓸수도있잖아이건진테스트내가소개를엄청길게쓸수도있잖아</div>
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
@@ -50,7 +50,7 @@ const UserInfo = ({ userInf }) => {
                 </div>
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
-                        <Icon className="icon" type="phone"/> 전화번호
+                        <Icon className="icon" type="mobile"/> 전화번호
                     </div>
                     <div className="userinfoContentValue">{userInf.data.phone_num}</div>
                 </div>
@@ -88,19 +88,22 @@ const UserInfoWrapper = styled.div`
         padding: 20px;
     }
     & .userinfoContent{
-        padding: 0 20px;
         font-size: 20px;
         display: flex;
         & .userinfoContentName{
-            width: 150px;
-            padding: 20px;
+            min-width: 120px;
+            padding: 20px 0;
             border-right: 1px solid #F0F0F0;
             & .icon {
                 color : #FF4300;
             }
         }
         & .userinfoContentValue{
+            word-wrap: break-word;
+            white-space: normal;
+            min-width: 120px;
             padding: 20px;
+            padding-right: 0;
         }
     }
 `;

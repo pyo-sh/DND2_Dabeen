@@ -8,13 +8,11 @@ const ServiceItem = memo(({ service }) => {
   }, []);
   return (
     <ServiceItemBox isClick={isClick}>
-      <div className="question">
-        <a onClick={questionOnClick}>
-          <b>Q.</b> {service.title}
-        </a>
+      <div className="ServiceItemQuestion" onClick={questionOnClick}>
+        <b>Q.</b>{service.title}
       </div>
       {isClick && (
-        <div className="answer">
+        <div className="ServiceItemAnswer">
           <b>A.</b>  {service.rply_const ? service.rply_const : "아직 답변이 달리지 않았습니다."}
         </div>
       )}
@@ -24,31 +22,30 @@ const ServiceItem = memo(({ service }) => {
 
 const ServiceItemBox = styled.div`
   & .question, .answer {
-    border: 1px solid black;
-    border-bottom : none;
+    border-bottom: 1px solid #bfc7ce;
     width: 100%;
   }
-  & .answer {
+  & .ServiceItemQuestion, .ServiceItemAnswer{
+    width: 100%;
+    padding : 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #bfc7ce;
+    &:hover {
+      color: #FF4300;
+    }
+  }
+  & .ServiceItemAnswer{
+    color: black;
+    background : rgb(240,240,240);
+    padding-left : 27.5px;
     display : ${props=> props.isClick ? "block" : "none"}
   }
-  & .question {
-    padding : 5px;
-  }
-  & a {
-    color: black;
-  }
   & b {
+    margin-right: 10px;
       color: #FF4300;
       font-size: 20px;
     }
-  & a:hover {
-    color: #FF4300;
-  }
-  & .answer {
-    color: black;
-    background : rgb(240,240,240);
-    padding-left : 20px;
-  }
 `;
 
 export default ServiceItem;

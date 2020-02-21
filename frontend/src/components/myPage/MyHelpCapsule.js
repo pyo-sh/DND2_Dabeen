@@ -1,55 +1,68 @@
-import React from 'react';
+import React from "react";
 import styled from "styled-components";
 
 const MyHelpCapsule = ({ helpData }) => {
-    return (
-        <MyHelpCapsuleUpperDiv done={helpData.done}>
-            <div className="MyhelpCapsuleTitle">
-                <div className="MyhelpCapsuleTitleMain">{helpData.title}</div>
-                <div  className="MyhelpCapsuleContent">{helpData.cont}</div>
-                </div>
-            <div className="MyhelpCapsuleInfo">
-                <div>{helpData.price}원</div>
-                <div>{helpData.help_pstn_dttm}</div>
-                <div className={helpData.payment ? "done" : "doing"}>
-                    {helpData.payment ? "결제완료" : "결제필요"}
-                </div>
-            </div>
-        </MyHelpCapsuleUpperDiv>
-    );
+  return (
+    <MyHelpCapsuleUpperDiv done={helpData.done}>
+      <div className="MyhelpCapsuleTitle">
+        <div className="MyhelpCapsuleTitleMain">{helpData.title}</div>
+        <div className="MyhelpCapsuleContent">{helpData.cont}</div>
+      </div>
+      <div className="MyhelpCapsuleInfo">
+        <section className="MyhelpCapsuleInfoPrice">
+          <div className="MyhelpCapsuleInfoPriceValue">
+            {helpData.price}
+          </div>
+          원
+        </section>
+        <div>{helpData.help_pstn_dttm}</div>
+        <div className={helpData.payment ? "done" : "doing"}>
+          {helpData.payment ? "결제완료" : "결제필요"}
+        </div>
+      </div>
+    </MyHelpCapsuleUpperDiv>
+  );
 };
 
 const MyHelpCapsuleUpperDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
+  flex: 1;
   width: 100%;
-  max-width: 360px;
-  min-width: 270px;
+  max-width: 350px;
+  min-width: 280px;
   padding: 15px;
-  margin: 15px;
-  border: 2px solid ${props => (props.done ? "#BFC7CE" : "#ff4300")};
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  border: 1.5px solid ${props => (props.done ? "#BFC7CE" : "#ff4300")};
   border-radius: 5px;
-  & .MyhelpCapsuleTitle{
+  & .MyhelpCapsuleTitle {
+    width: -webkit-calc(100% - 88px);
     display: flex;
     flex-direction: column;
-    & .MyhelpCapsuleTitleMain{
-        font-size: 22px;
-        font-weight: bold;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    & .MyhelpCapsuleTitleMain {
+      font-size: 22px;
+      font-weight: bold;
     }
-    & .MyhelpCapsuleContent{
-        font-size: 15px;
+    & .MyhelpCapsuleContent {
+      font-size: 15px;
     }
   }
-  & .MyhelpCapsuleInfo{
-    width: 80px;
+  & .MyhelpCapsuleInfo {
+    min-width: 80px;
     padding-left: 7px;
-    border-left: 1px solid #F0F0F0;
+    border-left: 1px solid #f0f0f0;
+    & .MyhelpCapsuleInfoPrice{
+      display: flex;
+    }
   }
 
+  & .MyhelpCapsuleTitleMain, .MyhelpCapsuleContent, .MyhelpCapsuleInfoPriceValue{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   & .doing,
   .done {
     width: 60px;
@@ -62,7 +75,7 @@ const MyHelpCapsuleUpperDiv = styled.div`
     color: white;
   }
   & .done {
-    background: darkgrey;
+    background: #BFC7CE;
   }
 `;
 
