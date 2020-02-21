@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class FailedMailSendException extends RuntimeException {
-    String message = "Failed to send mail.";
+    String message = "메일 전송에 실패하였습니다.";
 
     public FailedMailSendException() {
         log.error(this.message);
