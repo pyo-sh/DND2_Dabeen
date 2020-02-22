@@ -89,11 +89,11 @@ const PostDetail = ({setVisible, data}) => {
                                 <div className="applicationInfoBoxTitle">신청인원</div>
                                 { !edit ?
                                     <>
-                                    <div style={{display: "flex"}} className="applicationInfoBoxDetail"><div><span>0</span>/{data.postNum}</div><button onClick={onModal}>신청 확인</button></div>      
+                                    <div style={{display: "flex"}} className="applicationInfoBoxDetail"><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/{data.postNum}</div><button className="applyCheck" onClick={onModal}>신청 확인</button></div>      
                                     {click &&<CheckDabeener click ={click} onModal ={onModal} needPersonnel={data.postNum} applyCheck={data.isHelpApprove}/>}
                                     </>
                                     :
-                                    <div style ={{display:"flex"}}><div><span>0</span>/<input className ="needPersonnel" value={editPostNum} onChange={setEditPostNum}/></div></div>
+                                    <div style ={{display:"flex"}}><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/<input className ="needPersonnel" value={editPostNum} onChange={setEditPostNum}/></div></div>
                                 }
                                 </ApplicationInfoBox>
                                 <ApplicationInfoBox>
@@ -186,14 +186,16 @@ const ContentForm = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 590px;
+    width: 50%;
+    max-width: 600px;
+    min-width: 300px;
     height: 87vh;
     display: flex; 
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: auto;
-    /* ::-webkit-scrollbar{display:none;}  스크롤바 안보이게 */
+    ::-webkit-scrollbar{display:none;}  
 `;
 
 const Icons = styled.div`
@@ -203,7 +205,9 @@ const Icons = styled.div`
 `;
 
 const Content = styled.div`
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     height: 85vh;
     display: flex;
     flex-direction: column;
@@ -213,7 +217,9 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     flex-direction: column;
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     font-size: 40px;
 
     & > .postTitle {
@@ -223,7 +229,8 @@ const Title = styled.div`
     & > .titleDetail{
         display: flex;
         justify-content: space-between;
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
         font-size: 15px;
         margin-top: 5px;
     }
@@ -247,7 +254,8 @@ const EditTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 40px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     
     :focus{
         outline: none;  
@@ -274,7 +282,9 @@ const Edit = styled.button`
 `;
 
 const Image = styled.div`
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     height: 300px;
     background: #BFC7CE;
     margin-top: 10px;
@@ -284,9 +294,9 @@ const ApplicationInfoBox = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    width: 90%;
+    width: 100%;
 
-    & button{
+    & .applyCheck{
         border: none;
         background: none;
         color: #7A7A7A;
@@ -296,12 +306,6 @@ const ApplicationInfoBox = styled.div`
             outline: none;
         }
     }
-    
-    & span{
-        color: #FF4300;
-        font-size: 18px;
-    }
-
     & .applicationInfoBoxTitle {
         width: 200px;
         padding-left: 10px;
@@ -314,8 +318,10 @@ const ApplicationInfoBox = styled.div`
 `;
 
 const ApplicationInfo = styled.div`
-    width: 550px;
-    height: 150px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
+    height: auto;
     margin-top: 20px;
     
     & .applicationMoney{
@@ -339,7 +345,7 @@ const ApplicationInfo = styled.div`
     }
 
     & .ant-calendar-picker {
-        width: 150px;
+        width: 100px;
 
         & .ant-calendar-picker-icon {
             display: none;
@@ -351,10 +357,12 @@ const DeadlineButton = styled.button`
     background: ${props => (props.apply ? "#F0F0F0" : "#FF4300")};
     border: ${props => (props.apply ? "#F0F0F0":"#FF4300")};
     color: ${props => (props.apply ? "#7A7A7A" : "white")};
-    font-size: 15px;
+    font-size: 14px;
     border-radius: 5px;
     box-shadow: 2px 3px 5px #BFC7CE;
-    width: 120px;
+    width: 100%;
+    max-width: 120px;
+    min-width: 60px;
     height: 30px;
 
     :hover {
@@ -375,23 +383,30 @@ const ContentItem = styled.div`
     flex-direction: column;
     align-items: flex-start;
     font-size: 25px;
-    margin-top: 20px;
-    width: 550px;
+    margin-top: 35px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
 
     & > p{
         margin-top: 10px;
         font-size: 18px;
-        width: 550px;
+        max-width: 550px;
+        min-width: 300px;
         height: 200px;
     }
 
     & .map{
-        width: 550px;
+        width: 100%;
+        max-width: 550px;
+        min-width: 300px;
         height: 200px;
     }
 
     & > textarea {
-        width: 550px;
+        width: 100%;
+        max-width: 550px;
+        min-width: 250px;
         height: 200px;
         resize: none;
         color: #7a7a7a;
