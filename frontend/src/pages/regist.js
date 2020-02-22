@@ -3,9 +3,7 @@ import RegistSupplier from '../components/signUp/RegistSupplier';
 
 const Regist = () => {
     return (
-        <RegistSupplier>
-            
-        </RegistSupplier>
+        <RegistSupplier/>
     );
 };
 

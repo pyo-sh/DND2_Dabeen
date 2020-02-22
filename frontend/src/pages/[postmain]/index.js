@@ -81,6 +81,9 @@ const PostUpperDiv = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  & i, span {
+    z-index : 0;
+  }
   & .postmainWrapper {
     width: 100%;
     max-width: 1200px;
@@ -133,7 +136,9 @@ const PostUpperDiv = styled.div`
 `;
 
 Postmain.getInitialProps = async context => {
-  context.store.dispatch(loadHelpPostRequestAction());
+  const {postmain, search} = context.query; // 서치를 검색할 때 쓴다.
+  let helpNum = postmain ==="errand" ? 1000 : postmain === "rental" ? 2000 : 3000;
+  context.store.dispatch(loadHelpPostRequestAction(helpNum));
 
   // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
   // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.

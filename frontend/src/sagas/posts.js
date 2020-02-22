@@ -57,14 +57,14 @@ function* watchRemoveHelpPost() {
     yield takeLatest(REMOVE_HELPPOST_REQUEST, removeHelpPost);
 };
 
-function loadHelpPostAPI() {
-   
+function loadHelpPostAPI(helpNum) {
+   return axios.post(`/help/${helpNum}`);
 };
 
-function* loadHelpPost() {
+function* loadHelpPost(action) {
     try{
-        yield call(loadHelpPostAPI);
-        yield put(loadHelpPostSuccessAction());
+        const result = yield call(loadHelpPostAPI, action.data);
+        yield put(loadHelpPostSuccessAction(result.data.data));
     } catch(e) {
         console.log(e);
         yield put(loadHelpPostFailureAction(e));
@@ -82,7 +82,7 @@ function loadLivePostAPI(data) {
 function* loadLivePost(action) {
     try{
         const result = yield call(loadLivePostAPI, action.data);
-        console.log(result.data.data);
+        // console.log(result.data.data);
         yield put(loadLivePostSuccessAction(result.data.data));
     } catch(e) {
         console.log(e);

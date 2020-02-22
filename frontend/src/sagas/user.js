@@ -83,7 +83,6 @@ function signUpAPI(data) {
             suppl_whet : "n"
         }
     }
-    console.log(reqData);
     return axios.post('/user', reqData);
 }
 function* signUp(action) {
@@ -91,8 +90,9 @@ function* signUp(action) {
         yield call(signUpAPI, action.data);
         yield put(signUpSuccessAction());
     }catch(e){
-        console.error(e);
-        yield put(signUpFailureAction(e));
+        console.log(e.response);
+        yield put(signUpFailureAction(e.response.data.message));
+        // 적용 되면 e.response.data.description으로 될듯
     }
 }
 function* watchSignUp() {

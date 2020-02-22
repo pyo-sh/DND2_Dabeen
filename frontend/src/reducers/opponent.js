@@ -124,7 +124,7 @@ const reducer = (state = initialState, action) => {
             userId : recommend.id,
             userNum : recommend.user_num,
             userName : recommend.user_name,
-            nickname : recommend.nickName,
+            nickname : recommend.nickname,
             avgRate : recommend.avg_rate,
             picPath : recommend.pic_path,
           }

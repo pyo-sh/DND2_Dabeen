@@ -185,10 +185,12 @@ const reducer = (state = initialState, action) => {
       }
       case SIGN_UP_REQUEST: {
         draft.isSigningup = true;
+        draft.signUpError = "";
         break;
       }
       case SIGN_UP_SUCCESS: {
         draft.isSigningup = false;
+        draft.signUpSuccess = true;
         break;
       }
       case SIGN_UP_FAILURE: {
