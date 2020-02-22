@@ -8,7 +8,6 @@ import Link from 'next/link';
 import inputChangeHook from '../hooks/inputChangeHook';
 
 const FindPassword = () => {
-    const dispatch = useDispatch();
     const { isLoggingIn, isLoginSuccess } = useSelector(state => state.user);
     const [id, onChangeId] = inputChangeHook('');
     const [email, onChangeEmail] = inputChangeHook('');
@@ -19,10 +18,18 @@ const FindPassword = () => {
     //     setEmail(e.target.value);
     // }, []);
 
-    const submitForm = useCallback((e) => {
+    const submitForm = useCallback(async (e) => {
         e.preventDefault();
-        
-    },[]);
+        const reqData = {
+            data :{
+                id,
+                email
+            }
+        }
+        await axios.post('/user/findPwd', reqData);
+        alert('이메일을 확인해주세요!');
+        Router.push('/login');
+    },[id, email]);
 
     useEffect(() => {
         if(isLoginSuccess){

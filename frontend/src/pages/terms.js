@@ -2,10 +2,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { Icon } from "antd";
-import { useRouter } from "next/router";
+import Router from "next/router";
 
 const Terms = () => {
-  const router = useRouter();
   const [termsCheck, setTermsCheck] = useState(false);
   const [useTermCheck, setUseTermCheck] = useState(false);
   const [privacyInfoCheck, setPrivacyInfoCheck] = useState(false);
@@ -32,7 +31,7 @@ const Terms = () => {
       alert("모든 이용약관에 동의하셔야 합니다.");
       return;
     }
-    router.push("/signup");
+    Router.push("/signup");
     // 다음 할 일
   }, [termsCheck]);
 

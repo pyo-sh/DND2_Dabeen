@@ -5,16 +5,19 @@ import styled from "styled-components";
 import Link from "next/link";
 import { logoutRequestAction } from "../../reducers/user";
 import Login from "../signUp/Login";
+import inputChangeHook from '../../hooks/inputChangeHook';
+import Router from 'next/router';
 
 const isBrowser = typeof window !== "undefined";
 
 const Header = ({asPath}) => {
   const dispatch = useDispatch();
   const divRef = useRef();
-  console.log(asPath);
   
   const { userInfo } = useSelector(state => state.user);
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
+  const [search, onChangeSearch] = inputChangeHook(''); // 검색어
+  const [searchSubject, onChangeSearchSubject] = inputChangeHook('errand'); // 검색 주제
   const [tryLogin, setTryLogin] = useState(false);
   const [selected, setSelected] = useState("/"); // 선택 된 메뉴가 무엇인지.
   const [isClickMy, setIsClickMy] = useState(false);
@@ -34,6 +37,10 @@ const Header = ({asPath}) => {
   const clickMy = useCallback(() => {
     setIsClickMy(prev => !prev);
   }, []);
+
+  const onSearch = useCallback(() => {
+    Router.push(`/${searchSubject}?search=${search}`);
+  }, [search, searchSubject]);
 
   useEffect(() => { // asPath에 따라서 header 부분 색 바뀌게
     setSelected(asPath.split('/')[1]);
@@ -65,10 +72,30 @@ const Header = ({asPath}) => {
             <img width="150px" src="/images/logo.svg" alt="다빈로고" />
           </a>
         </Link>
-        <Input.Search
-          placeholder="어떤 도움을 찾으시나요?"
-          style={{ marginLeft: 10 }}
-        />
+        {/* <select onChange={onChangeSearchSubject}>
+          <option value="errand">심부름</option>
+          <option value="rental">대여</option>
+          <option value="chores">잡일</option>
+        </select>
+          <Input.Search
+            placeholder="어떤 도움을 찾으시나요?"
+            onSearch={onSearch}
+            value={search}
+            onChange={onChangeSearch}
+            style={{ marginLeft: 10 }}
+          /> */}
+          <Input.Group compact>
+            <select onChange={onChangeSearchSubject}>
+              <option value="errand">심부름</option>
+              <option value="rental">대여</option>
+              <option value="chores">잡일</option>
+            </select>
+            <Input.Search  placeholder="어떤 도움을 찾으시나요?"
+              onSearch={onSearch}
+              value={search}
+              onChange={onChangeSearch}
+              style={{ marginLeft: 10 }} />
+            </Input.Group>
       </div>
       <div className="menuRight" ref={divRef}>
         <ul>
@@ -194,6 +221,15 @@ const Menubar = styled.nav`
   & .menuRight {
     display: none;
   }
+  & .ant-input-group {
+    display : flex;
+    flex-direction : column;
+    align-items : center;
+    & select {
+      border : 1px solid #DDDDDD;
+      height : 32px;
+    }
+  }
   & .ant-input-search {
     & span i {
       color : black;
@@ -242,6 +278,9 @@ const Menubar = styled.nav`
     & .menuLeft {
       display: flex;
       width: 40vw;
+    }
+    & .ant-input-group {
+      flex-direction : row;
     }
     & .menuRight {
       display: flex;

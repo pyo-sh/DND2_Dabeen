@@ -3,9 +3,7 @@ import ServiceCenter from '../components/service/ServiceCenter';
 
 const Service = () => {
     return (
-        <>
-            <ServiceCenter/> 
-        </>
+         <ServiceCenter/> 
     );
 };
 

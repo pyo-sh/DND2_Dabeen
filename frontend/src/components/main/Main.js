@@ -7,11 +7,7 @@ import MainDaBeenerProfile from './MainDaBeenerProfile';
 import { loadRecommendRequest } from '../../reducers/opponent';
 import { loadLivePostRequestAction } from '../../reducers/posts';
 
-const image = [
-    "main1.jpg",
-    "main2.jpg",
-    "main3.jpg"
-];
+const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
     const { userInfo : { blonSggName }} = useSelector(state => state.user);

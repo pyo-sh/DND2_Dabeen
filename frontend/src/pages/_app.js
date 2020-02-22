@@ -8,6 +8,9 @@ import { createStore, compose, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import reducer from "../reducers";
+import axios from 'axios';
+
+axios.defaults.baseURL = "http://15.164.2.26:3307/api";
 
 const Dabeen = ({ Component, store, pageProps, asPath }) => {
   return (
@@ -30,25 +33,10 @@ const Dabeen = ({ Component, store, pageProps, asPath }) => {
           ]}
           link={[{},
             {
-              rel: "stylesheet",
-              href:
-                "https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css"
-            },
-            {
                 rel: "shortcut icon",
                 href: "/images/favicon.ico",
                 type: "image/x-icon"
             },
-            {
-              rel: "stylesheet",
-              href:
-                "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-            },
-            {
-              rel: "stylesheet",
-              href:
-                "https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-            }
           ]}
         >
         </Helmet>

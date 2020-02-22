@@ -1,27 +1,36 @@
-import React, {useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-import { Icon, Button, Form } from 'antd';
-import {useDispatch, useSelector } from 'react-redux';
-import { loginRequestAction } from '../reducers/user';
+import { Button, Form } from 'antd';
+import { useSelector } from 'react-redux';
 import Router from 'next/router';
+import axios from 'axios';
 import Link from 'next/link';
 import inputChangeHook from '../hooks/inputChangeHook';
 
 const FindId = () => {
-    const dispatch = useDispatch();
     const {isLoginSuccess} = useSelector(state => state.user);
     const [name, onChangeName] = inputChangeHook('');
     const [email, onChangeEmail] = inputChangeHook('');
 
-    const submitForm = useCallback((e) => {
+    const submitForm = useCallback(async (e) => {
         e.preventDefault();
-    },[]);
+        const reqData = {
+            data :{
+                name,
+                email
+            }
+        }
+        await axios.post('/user/findId', reqData);
+        alert('이메일을 확인해주세요!');
+        Router.push('/login');
+    },[name, email]);
 
     useEffect(() => {
         if(isLoginSuccess){
             Router.push('/');
         }
     }, [isLoginSuccess]);
+
     return (
         <>
             <Modal>

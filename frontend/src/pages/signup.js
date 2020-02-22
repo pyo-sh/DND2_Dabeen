@@ -16,10 +16,11 @@ import { inputCheckChangeHook } from "../hooks/inputChangeHook";
 // 회원가입 창
 const SignUpMain = () => {
   const dispatch = useDispatch(); // 디스패치
-  const { isSigningup, signUpSuccess } = useSelector(state => state.user);
+  const { isSigningup, signUpSuccess, signUpError } = useSelector(state => state.user);
   useEffect(() => {
     if (signUpSuccess) {
       Router.push("/");
+      alert("회원 가입 성공!");
     }
   }, [signUpSuccess]);
   const nowDate = new Date();
@@ -314,6 +315,9 @@ const SignUpMain = () => {
           ) : (
             <div className="SignupContentCheckAll">전부 필수 작성란입니다.</div>
           )}
+             {signUpError && <div className="SignupContentCheck">
+              {signUpError}
+            </div>}
         </SignUpGetDataDiv>
         <Button
           className="SignupContentButton"

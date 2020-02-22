@@ -214,6 +214,28 @@ const reducer = (state = initialState, action) => {
       case LOAD_HELPPOST_SUCCESS: {
         draft.isLoadingHelpPost = false; // 뭐 여러개의 포스트를 불러와서 넣을거임
         draft.helpPosts = dummyHelpPost2.helpPosts; // 일단 더미를 준다!
+        draft.helpPosts = action.data.map(post => ({
+          helpNum: post.help_num, // 도움번호
+          helpTitle: post.title,
+          helpPostDate: post.help_pstn_dttm, // 도움게시일시
+          categoryNum: post.cat_num, // 카테고리번호
+          price: post.price, // 금액
+          content: post.cont, // 내용
+          userNum: post.user_num,// 수요자번호
+          userName: post.user_name, // 사용자명
+          address: post.address, // 주소
+          phoneNumber: post.phone_num, // 휴대폰번호
+          userId: post.id, // 아이디
+          email: post.email, // 이메일
+          nickname: post.nickname, // 닉네임
+          picPath: post.pic_path, // 사진경로명
+          helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
+          isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          postNum: post.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+          location: post.exec_loc, // 이행장소
+          helpPicList: '' // 도움사진목록,
+        }));
         draft.helpPostLoaded = true; // 추가 다 됨.
         break;
       }
@@ -279,6 +301,16 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LOAD_LIVEPOST_SUCCESS: {
+        draft.livePosts = action.data.map(post => (
+          {
+            userId : post.id,
+            nickname : post.nickname,
+            helpTitle: post.title,
+            helpPostDate: help_pstn_dttm,
+            location : "부산광역시 남구 대연동",
+            picture : "아무거나 이빈다!!"
+          }
+        ))
         break;
       }
       case LOAD_LIVEPOST_FAILURE: {
