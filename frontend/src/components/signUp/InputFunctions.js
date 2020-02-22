@@ -32,7 +32,7 @@ const DabeenInput = memo(({type, placeholder, value, onChangeFunc, maxLength}) =
                 placeholder={placeholder}
                 value={value}
                 onChange={onChangeFunc}
-                maxlength={maxLength ? maxLength : 524288}
+                maxLength={maxLength ? maxLength : 524288}
             />
             {type==="password"
             ?   <Icon
@@ -52,7 +52,7 @@ const CustomInput = styled.div`
     & input{
         flex : 1;
         max-width: 420px;
-        min-width: 260px;
+        min-width: 250px;
         margin: 5px;
         padding: 4px 30px 4px 11px;
 

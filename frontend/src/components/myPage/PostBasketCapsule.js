@@ -14,7 +14,7 @@ const PostBasketCapsule = ({ post }) => {
     <PostBasketCapsuleWrapper>
       <PostBasketCheckIcon
         type="check-circle"
-        setcolor={iconState}
+        setcolor={iconState.toString()}
         onClick={onClickIcon}
       />
       <PostBasketCapsuleUpperDiv>
@@ -74,7 +74,7 @@ const PostBasketCapsuleUpperDiv = styled.div`
 `;
 const PostBasketCheckIcon = styled(Icon)`
   font-size: 20px;
-  color: ${props => (props.setcolor ? "#FF3400" : "none")};
+  color: ${props => (props.setcolor==="true" ? "#FF3400" : "none")};
   cursor: pointer;
 `;
 const PostBasketContent = styled.div`

@@ -60,10 +60,10 @@ const UserPage = ({ userid, pagename, isMe }) => {
                 <div className='userRateTitle'>{userInfo.avgRate}</div>
               </div>
             ) : (
-              <button onClick={dabeenerRegist} className='userRegistButton'>
-                다비너 신청
+                <button onClick={dabeenerRegist} className='userRegistButton'>
+                  다비너 신청
               </button>
-            )}
+              )}
             <div className='userParagraph'>안녕하세요 ~ 입니다</div>
           </div>
         </div>
@@ -113,11 +113,11 @@ const UserPage = ({ userid, pagename, isMe }) => {
       </section>
       <section className='contentSection'>
         <div>
-          {pagename === 'userinfo' ? (<UserInfo userInfo={userInfo} />) : 
-           pagename === 'takehelp' ? (<MyHelp helpType='take' />) : 
-           pagename === 'givehelp' ? (<MyHelp helpType='give' />) : 
-           pagename === 'service' ? (<ServiceCenter />) : 
-           pagename === 'basket' ? (<PostBasket />) : null}
+          {pagename === 'userinfo' ? (<UserInfo userInfo={userInfo} />) :
+            pagename === 'takehelp' ? (<MyHelp helpType='take' />) :
+              pagename === 'givehelp' ? (<MyHelp helpType='give' />) :
+                pagename === 'service' ? (<ServiceCenter />) :
+                  pagename === 'basket' ? (<PostBasket />) : null}
         </div>
       </section>
     </UserPageWrapper>
@@ -153,70 +153,69 @@ const UserPageWrapper = styled.article`
     }
     & .userImage {
       width: 100%;
-      height: 20vw;
+      height: 80vw;
       min-height: 200px;
       max-height: 300px;
       border-radius: 5px;
     }
-    & .profileSection {
-        width : 80%;
-        min-width : 200px;
-        max-width : 300px;
-        height : 100%;
-        margin: 0 20px;
-        display : flex;
-        flex-direction : column;
-        align-items : center;
-        & .userInfomation {
-            width: 100%;
-            border : 1px solid #d0d0d0;
-            border-radius :5px;
-        }
-        & .userImage{
-            width: 100%;
-            height : 80vw;
-            min-height : 200px;
-            max-height : 300px;
-            border-radius: 5px;
-        }
-        & .userIntroduce{
-            width: 100%;
-            padding: 10px 15px;
-            display: flex;
-            flex-direction: column;
-            & .userNickname{
-                margin-bottom: 0;
-            }
-        }
-        & .userParagraph{
-            padding-top: 17.5px;
-        }
-        & .userRate{
-            display: flex;
-            align-items: center;
-            padding-left: 3px;
-            & .userRateTitle{
-                color: #FF4300;
-                padding: 4px 0 0 13px;
-                font-size: 15px;
-                font-weight: bold;
-            }
-        }
-        & .userRegistButton{
-            width: 100%;
-            border : 0;
-            background : #F0F0F0;
-            border-radius : 5px;
-            height : 27px;
-            cursor: pointer;
-            &:hover {
-                color : black;
-            }
-        }
-        background: #f0f0f0;
-        border-right: 3px solid #ff4300;
+    & .userParagraph{
+      padding-top: 17.5px;
+    }
+    & .userIntroduce{
+      width: 100%;
+      padding: 10px 15px;
+      display: flex;
+      flex-direction: column;
+      & .userNickname{
+          margin-bottom: 0;
       }
     }
+    & .userRate{
+      display: flex;
+      align-items: center;
+      padding-left: 3px;
+      & .userRateTitle{
+        color: #FF4300;
+        padding: 4px 0 0 13px;
+        font-size: 15px;
+        font-weight: bold;
+      }
+    }
+    & .userRegistButton{
+      width: 100%;
+      border : 0;
+      background : #F0F0F0;
+      border-radius : 5px;
+      height : 27px;
+      cursor: pointer;
+      &:hover {
+          color : black;
+      }
+    }
+    & .contentNavbar {
+      width : 100%;
+      padding: 10px;
+      margin: 25px 0;
+      display : flex;
+      flex-direction: column;
+      justify-content : space-evenly;
+      list-style : none;
+      border-top: 1px solid #F0F0F0;
+      border-bottom: 1px solid #F0F0F0;
+      & li {
+        margin: 5px;
+        padding: 10px;
+        border-radius: 2px;
+      }
+      & .click {
+        & a{
+          color : #FF9644;
+        }
+        background: #F0F0F0;
+        border-right: 3px solid #FF4300
+      }
+    }
+  }
   & .ant-rate {
     color: #ff4300;
   }

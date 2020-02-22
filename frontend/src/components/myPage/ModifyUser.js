@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 // import { useDispatch, useSelector } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Upload, message } from 'antd';
 import DabeenInput, { check_num,
     check_eng,
     check_spc,
@@ -14,6 +14,8 @@ const ModifyUser = () => {
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
+    const [profileImage, setProfileImage] = useState({});
+    const [porfileImageUrl, setPorfileImageUrl] = useState();
     const [nickname, changeNickname] = inputCheckChangeHook('', [check_eng, check_num, check_kor]);   // 닉네임 state
     const [introduce, changeIntroduce] = inputCheckChangeHook("", [/./g]); // 소개 state
     const [password, changePassword] = inputCheckChangeHook('', [check_eng, check_num, check_spc]);   // 비밀번호 state
@@ -28,11 +30,6 @@ const ModifyUser = () => {
     const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);  // 비밀번호 확인
     const [isPasswordChecked, setIsPasswordChecked] = useState(false);  // 비밀번호 확인을 확인
     const [isEmailCorrect, setIsEmailCorrect] = useState(false);  // 이메일 확인
-
-    // 생년월일 선택 시 바뀔 때 설정하는 거
-    const onChangeSelect = (setState) => useCallback((e) => {
-        setState(e);
-    }, []);
 
     // 비밀번호와 비밀번호 확인 state가 바뀔 때 마다 확인
     useEffect(() => {
@@ -73,7 +70,35 @@ const ModifyUser = () => {
         <ModifyUserUpperDiv>
             <div className="ModifyTitle">회원정보 수정</div>
             <div className="ModifyContent">
-                <div className="ModifyUserProfile">프로필 사진</div>
+                <img
+                    className="ModifyUserProfile"
+                    alt="UserProfileImage"
+                    src={profileImage}
+                    />
+                <Upload
+                    className="ModifyUserProfileChange"
+                    name='file'
+                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                    showUploadList={false}
+                    onChange={useCallback(info => {
+                        if (info.file.status !== 'uploading') {
+                            console.log(info.file, info.fileList, info);
+                        }
+                        if (info.file.status === 'done') {
+                            message.success(`${info.file.name} file uploaded successfully`);
+                            setProfileImage({file: info.file.originFileObj});
+                            setPorfileImageUrl(URL.createObjectURL(info.file.originFileObj));
+                        } else if (info.file.status === 'error') {
+                            message.error(`${info.file.name} file upload failed.`);
+                        }
+                    }, [])}
+                >
+                    <img
+                    className="ModifyUserProfileChangeIcon"
+                    alt="writePost"
+                    src={"/images/postIcon.PNG"}
+                    />
+                </Upload>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">닉네임 *</div>
                     <DabeenInput
@@ -205,18 +230,25 @@ const ModifyUserUpperDiv = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 50px;
+        padding: 50px 0;
         width: 100%;
         max-width: 600px;
-        min-width: 320px;
+        min-width: 280px;
         /* height: 1120px; */
         & .ModifyUserProfile{
-            border: 1px solid black;
+            border: 1px solid #BFC7CE;
             border-radius: 50%;
             width: 150px;
             height: 150px;
-            text-align: center;
-            line-height: 150px;
+        }
+        & .ModifyUserProfileChange {
+            & .ModifyUserProfileChangeIcon {
+                width: 50px;
+                cursor: pointer;
+                margin-left: 50px;
+                margin-right: -50px;
+                margin-top: -50px;
+            }
         }
         & hr{
             width: 100%;
@@ -260,7 +292,7 @@ const ModifyUserGetDataDiv = styled.div`
    
     padding : 5px;
     max-width: 425px;
-    min-width: 270px;
+    min-width: 250px;
     width : 100%;
     
     & .ModifyUserTitle{
