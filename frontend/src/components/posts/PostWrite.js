@@ -59,13 +59,13 @@ const PostWrite = ({setInvisible}) => {
             message.error('제목을 입력해주세요!');
         } 
         dispatch(addHelpPostSuccessAction({
-            help_title: postTitle,
-            cat_num: category,
-            help_aply_cls_dttm: postDeadline,
-            post_type: dateofExecution,
-            post_num: needPersonnel,
-            price: money,
-            exec_loc: location,
+            postName: postTitle,
+            category: category,
+            postDeadline: postDeadline,
+            executionDate: dateofExecution,
+            needPersonnel: needPersonnel,
+            money: money,
+            location: location,
             sigungu: sigungu
         }));
     }, [postTitle]);
@@ -78,7 +78,7 @@ const PostWrite = ({setInvisible}) => {
 
     return (
         <Modal>
-            <Form onSubmit={addPost}>
+            <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}}>
             <ContentFlex>
                 <Content>
                     <Title>
@@ -165,7 +165,9 @@ const ContentFlex = styled.div`
     color: #424242;
     background: white;
     padding: 1rem;
-    width: 590px;
+    width: 100%;
+    max-width: 600px;
+    min-width: 300px;
     height: 87vh;
     display: flex; 
     flex-direction: column;
@@ -176,7 +178,9 @@ const ContentFlex = styled.div`
 `;
 
 const Content = styled.div`
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     height: 85vh;
     display: flex;
     flex-direction: column;
@@ -187,13 +191,17 @@ const Content = styled.div`
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     font-size: 40px;
 `;
 
 const PostSetting = styled.div`
-    width: 550px;
-    height: 350px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
+    height: auto;
     background: #F0F0F0;
     border-radius: 8px;
     font-size: 20px;
@@ -203,6 +211,9 @@ const PostSetting = styled.div`
       display: flex;
       align-items: flex-end;
       flex-wrap: wrap;
+      width: 100%;
+      max-width: 550px;
+      min-width: 250px;
   }
 `;
 
@@ -211,7 +222,9 @@ const PostSettingBox = styled.div`
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
 
     & .postSettingTitle {
         width: 50%;
@@ -276,7 +289,9 @@ const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
     font-size: 40px;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
+    min-width: 250px;
     ::placeholder{
         color: #BFC7CE;
     }
@@ -291,12 +306,16 @@ const ContentItem = styled.div`
     flex-direction: column;
     align-items: flex-start;
     font-size: 25px;
-    margin-top: 20px;
-    width: 550px;
+    margin-top: 25px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     height: 300px;
 
     & > textarea {
-        width: 550px;
+        width: 100%;
+        max-width: 550px;
+        min-width: 250px;
         height: 200px;
         resize: none;
         color: #7a7a7a;
@@ -313,7 +332,9 @@ const ContentItem = styled.div`
 
 const UploadImage = styled.div`
     margin-top: 20px;
-    width: 550px;
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
     font-size: 25px;
 
     & .uploadImage {
@@ -321,8 +342,8 @@ const UploadImage = styled.div`
         border: 1px solid #BFC7CE;
         border-radius: 5px;
         padding: 5px;
-        width: 10vw;
-        height: 10vh;
+        width: 100px;
+        height: 20px;
         cursor: pointer;
     }
     & input[type="file"] {
@@ -341,41 +362,31 @@ const UploadImage = styled.div`
         margin-top: 1vh;
 
         & .imgBorder{
-            width: 6vw;
-            height: 13.5vh;
+            width: 100px;
+            height: 100px;
             border: 1px solid #BFC7CE;
             border-radius: 4px;
-            margin-right: 1vw;
+            margin-right: 10px;
 
             & .deleteIcon{
-                font-size: 1vw;
+                font-size: 12px;
                 text-align: right;
-                margin-left: 1vw;
-                opacity: 0;
-
-                :hover {
-                    opacity: 0.7;
-                }
-            }
-
-            :hover {
-                background: #F0F0F0;
-                opacity: 0.7;
-                z-index: 1;
+                margin-left: 5px;
             }
         }
 
         & img{
-            margin: 0.05vh 0.5vw;
-            width: 5vw;
-            height: 10vh;
+            margin-left: 15px;
+            margin-bottom: 10px;
+            width: 70px;
+            height: 70px;
         }
     }
 `;
 
 const UploadButton = styled(Button)`
-    width: 13vw;
-    height: 4vh;
+    width: 200px;
+    height: 30px;
     margin-top: 20px;
     margin-bottom: 20px;
     background: #FF4300;

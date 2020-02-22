@@ -54,12 +54,14 @@ const SearchJuso = ({location, getLocation}) => {
 };
 
 const Search = styled.div`
-
+    width: 100%;
     & .inputAddress {
         margin-bottom: 1vh;
     }
     & .ant-input {
-        width: 300px;
+        width: 100%;
+        max-width: 300px;
+        min-width: 150px;
         margin-right: 0.5vw;
 
         & :hover, :focus{
@@ -84,7 +86,9 @@ const Search = styled.div`
     }
 
     & .content {
-        width: 550px;
+        width: 100%;
+        max-width: 550px;
+        min-width: 250px;
         height: 200px;
     }
 `;
