@@ -57,8 +57,8 @@ function* watchRemoveHelpPost() {
     yield takeLatest(REMOVE_HELPPOST_REQUEST, removeHelpPost);
 };
 
-function loadHelpPostAPI(helpNum) {
-   return axios.post(`/help/${helpNum}`);
+function loadHelpPostAPI(data) {
+   return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
 };
 
 function* loadHelpPost(action) {

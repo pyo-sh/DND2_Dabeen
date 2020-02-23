@@ -141,9 +141,11 @@ const TermsWrapper = styled.div`
     & > button {
       background: #ff4300;
       border: none;
+      border-radius: 5px;
       color: white;
       cursor: pointer;
       width: 25%;
+      height : 30px;
     }
   }
   @media screen and (max-width: 768px) {

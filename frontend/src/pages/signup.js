@@ -71,12 +71,7 @@ const SignUpMain = () => {
   ]);
 
   // 입력한 정보가 맞는 정보인지 확인하는 state
-  const [isIdCorrect, setIsIdCorrect] = useState(false); // 아이디 확인
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false); // 비밀번호 확인
   const [isPasswordChecked, setIsPasswordChecked] = useState(false); // 비밀번호 확인을 확인
-  const [isNicknameCorrect, setIsNicknameCorrect] = useState(false); // 닉네임 확인
-  const [isRegistrationCorrect, setIsRegistrationCorrect] = useState(false); // 이름과 주민등록번호 매칭 확인
-  const [isEmailCorrect, setIsEmailCorrect] = useState(false); // 아이디 확인
 
   // 생년월일 선택지를 render 하기 위함
   const yearOptions = Array(80)
@@ -122,8 +117,7 @@ const SignUpMain = () => {
   // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
   const onClickSignUp = useCallback(
     e => {
-      // if(isNicknameCorrect && isIdCorrect && isPasswordCorrect && isPasswordChecked && isRegistrationCorrect)
-      if (true) {
+    if(isPasswordChecked){
         const userLog = {
           id,
           password,
@@ -138,8 +132,6 @@ const SignUpMain = () => {
           subAddress
         };
         dispatch(signUpRequestAction(userLog)); // 회원가입 요청
-      } else {
-        alert("회원가입 실패!");
       }
     },
     [
@@ -155,11 +147,7 @@ const SignUpMain = () => {
       mainAddress,
       subAddress,
 
-      isNicknameCorrect,
-      isIdCorrect,
-      isPasswordCorrect,
       isPasswordChecked,
-      isRegistrationCorrect
     ]
   );
 
@@ -175,13 +163,6 @@ const SignUpMain = () => {
             value={id}
             onChangeFunc={changeId}
           />
-          {isIdCorrect || id === "" ? (
-            <div className="SignupContentCheck"></div>
-          ) : (
-            <div className="SignupContentCheck">
-              아이디를 알맞게 입력해주세요
-            </div>
-          )}
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">비밀번호 *</div>
@@ -192,13 +173,6 @@ const SignUpMain = () => {
             onChangeFunc={changePassword}
             maxlength={20}
           />
-          {isPasswordCorrect || password === "" ? (
-            <div className="SignupContentCheck"></div>
-          ) : (
-            <div className="SignupContentCheck">
-              비밀번호를 알맞게 입력해주세요
-            </div>
-          )}
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">비밀번호 확인 *</div>
@@ -223,13 +197,6 @@ const SignUpMain = () => {
             value={nickname}
             onChangeFunc={changeNickname}
           />
-          {isNicknameCorrect || nickname === "" ? (
-            <div className="SignupContentCheck"></div>
-          ) : (
-            <div className="SignupContentCheck">
-              닉네임을 알맞게 입력해주세요
-            </div>
-          )}
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">이름 *</div>
@@ -265,27 +232,15 @@ const SignUpMain = () => {
               {dayOptions}
             </Select>
           </div>
-          {isRegistrationCorrect ? (
-            <div className="SignupContentCheck"></div>
-          ) : (
-            <div className="SignupContentCheck">
-              이름과 생년월일을 확인해주세요
-            </div>
-          )}
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">이메일 *</div>
           <DabeenInput
-            type="text"
+            type="email"
             placeholder="이메일 입력"
             value={email}
             onChangeFunc={changeEmail}
           />
-          {isEmailCorrect ? (
-            <div className="SignupContentCheck"></div>
-          ) : (
-            <div className="SignupContentCheck">이메일을 확인해주세요</div>
-          )}
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">전화번호 *</div>
@@ -310,11 +265,6 @@ const SignUpMain = () => {
             value={subAddress}
             onChangeFunc={changeSubAddress}
           />
-          {isEmailCorrect ? (
-            <div className="SignupContentCheckAll"></div>
-          ) : (
-            <div className="SignupContentCheckAll">전부 필수 작성란입니다.</div>
-          )}
              {signUpError && <div className="SignupContentCheck">
               {signUpError}
             </div>}

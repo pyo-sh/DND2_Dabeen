@@ -90,8 +90,8 @@ function* signUp(action) {
         yield call(signUpAPI, action.data);
         yield put(signUpSuccessAction());
     }catch(e){
-        console.log(e.response);
-        yield put(signUpFailureAction(e.response.data.message));
+        console.error(e);
+        yield put(signUpFailureAction(e.response.data.description));
         // 적용 되면 e.response.data.description으로 될듯
     }
 }

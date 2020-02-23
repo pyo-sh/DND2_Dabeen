@@ -73,7 +73,7 @@ const Modal = styled.div`
     justify-content: center;
     z-index : 2;
     & form {
-        z-index : 99;
+        z-index : 2;
     }
 `;
 
@@ -86,7 +86,7 @@ const Content = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
+    border-radius: 5px;
     & .loginHeader {
         display: flex;
         width: 100%;

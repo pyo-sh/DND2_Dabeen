@@ -127,6 +127,10 @@ export const initialState = {
       imagesPaths: [] //사진 첨부, 여러개 올릴 수 있음
     }
   ],
+  totalPages : 0,
+  helpsPerPage : 0,
+  totalHelps : 0,
+
   isLoadingHelpPost: false,
   loadHelpPostErrorReason: "false",
   helpPostLoaded: false,
@@ -236,6 +240,9 @@ const reducer = (state = initialState, action) => {
           location: post.exec_loc, // 이행장소
           helpPicList: '' // 도움사진목록,
         }));
+        draft.totalHelps = action.data.total_helps;
+        draft.totalPages = action.data.total_pages;
+        draft.helpsPerPage = action.data.helps_per_page;
         draft.helpPostLoaded = true; // 추가 다 됨.
         break;
       }
