@@ -16,7 +16,9 @@ import com.dabeen.dnd.repository.mapper.FqaMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fqa> {
 
     @Autowired
