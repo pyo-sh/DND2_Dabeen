@@ -23,8 +23,8 @@ import com.dabeen.dnd.model.pk.BsktCompPK;
 
 import org.junit.Before;    
     
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
 public class BsktCompRepositoryTest {
 
     @Autowired
