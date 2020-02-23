@@ -15,8 +15,8 @@ import javax.validation.Valid;
 
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.UserMapper;
+import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.FileSaveFailedException;
-import com.dabeen.dnd.exception.IdExistedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
@@ -71,7 +71,13 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
         // 이미 존재하는 ID일 경우, 에러 호출
         if (userRepository.findByUserId(userApiRequset.getUserId()).isPresent())
-            throw new IdExistedException(userApiRequset.getUserId());
+            throw new AlreadyExistedException("\'" + userApiRequset.getUserId() + "\' 아이디가");
+        // 이미 존재하는 EMAIL일 경우, 에러 호출
+        if (userRepository.findByEmail(userApiRequset.getEmail()).isPresent())
+            throw new AlreadyExistedException("\'" + userApiRequset.getEmail() + "\' 이메일이");
+        // 이미 존재하는 PHONE_NUM일 경우, 에러 호출
+        if (userRepository.findByPhoneNum(userApiRequset.getPhoneNum()).isPresent())
+            throw new AlreadyExistedException("해당 휴대폰번호가 ");
 
         // 비밀번호 암호화
         String encryPwd = passwordEncoder.encode(userApiRequset.getPwd());
@@ -98,7 +104,9 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     public Header<UserApiResponse> read(String num) {
         Optional<User> optional = userRepository.findById(num);
 
-        return optional.map(user -> response(user)).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
+        return optional.map(user -> response(user))
+                        .map(Header::OK)
+                        .orElseThrow(() -> new NotFoundException("User"));
     }
 
     @Override

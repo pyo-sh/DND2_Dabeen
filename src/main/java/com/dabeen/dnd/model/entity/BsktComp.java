@@ -35,22 +35,17 @@ public class BsktComp {
 
     //Default CRUD 생성 후 종속성 설정 필요
     @EmbeddedId
-    @NotNull(message = "is not null")
     private BsktCompPK bsktCompPK;
 
-
-    @NotNull(message = "is not null")
     private BigDecimal indvHelpPrice; // 개별도움가격
 
     /* 연관관계 설정 */
-    @NotNull(message = "is not null")
     @MapsId("bsktNum")
     @JoinColumn(name = "bskt_num")
     @ManyToOne
     private Bskt bskt;
 
     // https://stackoverflow.com/questions/31385658/jpa-how-to-make-composite-foreign-key-part-of-composite-primary-key
-    @NotNull(message = "is not null")
     @MapsId("helpSupplCompPK")
     @JoinColumns({
         @JoinColumn(name="helpNum", referencedColumnName = "help_num"),
@@ -58,6 +53,4 @@ public class BsktComp {
     })
     @ManyToOne
     private HelpSupplComp helpSupplComp;
-
-
 }

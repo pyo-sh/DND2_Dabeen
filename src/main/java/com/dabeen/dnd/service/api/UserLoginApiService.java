@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.exception.EmailWrongException;
+import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.PasswordWrongException;
 import com.dabeen.dnd.model.entity.User;
@@ -44,7 +45,7 @@ public class UserLoginApiService{
     public Header<LoginApiResponse> login(Header<LoginApiRequest> request) {
         LoginApiRequest requestData = request.getData();
         User user = userRepository.findByUserId(requestData.getId())
-                .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() + "\' ID"));
+                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
 
         if (!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
             throw new PasswordWrongException();
@@ -53,29 +54,21 @@ public class UserLoginApiService{
         String role = user.getSupplWhet().equals(Whether.y) ? "suppler" : "user";
 
         return Header.OK(LoginApiResponse.builder()
-                .token(jwtService.createToken(user.getUserNum(), user.getUserId(), role)).build());
+                .token(jwtService.createToken(user.getUserNum(), user.getUserId(), user.getNickname(), role)).build());
     }
 
 
     // 아이디 찾기
     public Header<?> findId(Header<FindApiRequest> request) {
         FindApiRequest requestData = request.getData();
-        List<User> users = userRepository.findByUserNameAndEmail(requestData.getName(), requestData.getEmail());
+        User user = userRepository.findByEmail(requestData.getEmail())
+                                    .orElseThrow(() -> new NotFoundException("해당 이메일을 가진 사용자의"));
 
-        if (users.isEmpty())
-            throw new NotFoundException("User");
-
-        // 해당 사용자의 아이디 목록 생성
-        String ids = "";
-        for (int i = 0; i < users.size(); i++) {
-            ids += users.get(i).getUserId();
-
-            if (i != users.size() - 1)
-                ids += ", ";
-        }
+        if (!user.getUserName().equals(requestData.getName()))
+            throw new NameWrongException();
 
         mailService.sendMail(requestData.getEmail(), "아이디를 알려드립니다.", requestData.getName(),
-                "고객님의 아이디는 [ " + ids + " ] 입니다.");
+                "고객님의 아이디는 \'" + user.getUserId() + "\' 입니다.");
 
         return Header.OK();
     }
@@ -84,7 +77,7 @@ public class UserLoginApiService{
     public Header<?> findPwd(Header<FindApiRequest> request) {
         FindApiRequest requestData = request.getData();
         User user = userRepository.findByUserId(requestData.getId())
-                .orElseThrow(() -> new NotFoundException("The \'" + requestData.getId() + "\' user"));
+                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
 
         // 입력된 메일과 사용자의 메일이 동일하지 않은 경우
         if (!user.getEmail().equals(requestData.getEmail()))
@@ -100,7 +93,7 @@ public class UserLoginApiService{
         user.setPwd(passwordEncoder.encode(pwd));
         userRepository.save(user);
 
-        mailService.sendMail(user.getEmail(), "임시 비밀번호를 알려드립니다.", user.getUserName(), "고객님의 임시 비밀번호는 " + pwd + " 입니다.");
+        mailService.sendMail(user.getEmail(), "임시 비밀번호를 알려드립니다.", user.getUserName(), "고객님의 임시 비밀번호는 \'" + pwd + "\' 입니다.");
 
         return Header.OK();
     }

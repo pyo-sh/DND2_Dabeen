@@ -9,11 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
-public class IdExistedException extends RuntimeException{
-    private String message = "\' ID already exists.";
+public class AlreadyExistedException extends RuntimeException{
+    private String message = " 이미 존재합니다.";
     
-    public IdExistedException(String id){
-        this.message = "The \'" + id + this.message;
+    public AlreadyExistedException(String subject){
+        this.message = subject + this.message;
         log.error(this.message);
     }
 }

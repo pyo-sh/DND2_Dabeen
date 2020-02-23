@@ -44,10 +44,8 @@ import lombok.experimental.Accessors;
 @ToString(exclude = {"suppler", "help","bsktComps"})
 public class HelpSupplComp{
     @EmbeddedId
-    @NotNull(message = "is not null")
     private HelpSupplCompPK helpSupplCompPK; // 복합키를 구현하기 위한 PK 객체
 
-    // @NotNull(message = "is not null")
     @Enumerated(EnumType.STRING) // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     private Whether helpAprvWhet; // 도움승인여부
 
@@ -55,21 +53,17 @@ public class HelpSupplComp{
 
     private LocalDateTime astDttm; // 평가일시
 
-    @Min(value = 0, message = "must be a value between 0 and 5, inclusive.")
-    @Max(value = 5, message = "must be a value between 0 and 5, inclusive.")
     private BigDecimal rate; // 평점
 
     private String astCont; // 평가내용
 
     
     /* 연관관계 설정 */
-    @NotNull(message = "is not null")
     @MapsId("helpNum") // Pk 안의 변수와 매핑됨
     @JoinColumn(name = "help_num")
     @ManyToOne
     private Help help;
 
-    @NotNull(message = "is not null")
     @MapsId("supplNum") // Pk 안의 변수와 매핑됨
     @JoinColumn(name = "suppl_num")
     @ManyToOne

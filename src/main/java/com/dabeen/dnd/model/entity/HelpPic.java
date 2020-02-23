@@ -36,10 +36,8 @@ public class HelpPic{
 
     // //FK로써 추후 Help로 종속성 대칭 필요
     @EmbeddedId
-    @NotNull(message = "is not null")
     private HelpPicPK helpPicPK;
 
-    @NotEmpty(message = "is not empty")
     private String path; // 경로명
 
     /* 연관관계 설정 */

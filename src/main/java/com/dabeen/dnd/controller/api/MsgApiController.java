@@ -15,6 +15,9 @@ import com.dabeen.dnd.repository.MsgRepository;
 import com.dabeen.dnd.service.api.MsgApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +34,16 @@ public class MsgApiController{
     @Autowired
     MsgApiService msgApiService;
 
+    @Autowired
+    private Validator validator;
+
     @PostMapping("")
     public Header<MsgApiResponse> create(@RequestBody @Valid Header<MsgApiRequest> request){
+        MsgApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return msgApiService.create(request);
     }
 
@@ -49,6 +60,11 @@ public class MsgApiController{
 
     @PutMapping("")
     public Header<MsgApiResponse> update(@RequestBody @Valid Header<MsgApiRequest> request){
+        MsgApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return msgApiService.update(request);
     }
 

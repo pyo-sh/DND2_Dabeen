@@ -21,6 +21,9 @@ import com.dabeen.dnd.service.api.HelpSupplCompApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +40,16 @@ public class HelpSupplCompApiController{
     @Autowired
     private HelpSupplCompApiService helpSupplCompApiService;
     
+    @Autowired
+    private Validator validator;
+
     @PostMapping("")
     public Header<HelpSupplCompApiResponse> create(@RequestBody @Valid Header<HelpSupplCompApiRequest> request) {
+        HelpSupplCompApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return helpSupplCompApiService.create(request);
     }
 
@@ -55,6 +66,11 @@ public class HelpSupplCompApiController{
 
     @PutMapping("")
     public Header<HelpSupplCompApiResponse> update(@RequestBody @Valid Header<HelpSupplCompApiRequest> request) {
+        HelpSupplCompApiRequest reqDate = request.getData();
+       
+        Errors errors = new BeanPropertyBindingResult(reqDate, "event");
+        validator.validate(reqDate, errors);
+        
         return helpSupplCompApiService.update(request);
     }
 
