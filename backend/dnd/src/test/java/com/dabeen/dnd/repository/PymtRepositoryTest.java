@@ -47,7 +47,7 @@ public class PymtRepositoryTest extends DemoApplicationTests {
         Assert.assertNotNull(newPymt);
     }
 
-    @Test
+    // @Test
     public void read(){
         Optional<Pymt> optional = pymtRepository.findById("2002170001");
         Assert.assertNotNull(optional.isPresent());

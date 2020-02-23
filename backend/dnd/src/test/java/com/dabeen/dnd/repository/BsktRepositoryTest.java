@@ -45,7 +45,7 @@ public class BsktRepositoryTest extends DemoApplicationTests{
         Assert.assertNotNull(Optional.of(bsktRepository.findById((String) bsktMap.get("bsktNum"))));
     }
 
-    @Test
+    // @Test
     public void read(){
         Optional<Bskt> bskt = bsktRepository.findById("2002160001");
         Assert.assertNotNull(bskt);
