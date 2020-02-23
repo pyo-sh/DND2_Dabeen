@@ -17,7 +17,8 @@ import com.dabeen.dnd.repository.mapper.BsktMapper;
 
 import org.junit.Assert;   
     
-public class BsktRepositoryTest extends DemoApplicationTests{
+// public class BsktRepositoryTest extends DemoApplicationTests{
+public class BsktRepositoryTest{
     @Autowired
     private BsktRepository bsktRepository;
 
@@ -46,9 +47,9 @@ public class BsktRepositoryTest extends DemoApplicationTests{
     }
 
     // @Test
-    public void read(){
-        Optional<Bskt> bskt = bsktRepository.findById("2002160001");
-        Assert.assertNotNull(bskt);
-    }
+    // public void read(){
+    //     Optional<Bskt> bskt = bsktRepository.findById("2002160001");
+    //     Assert.assertNotNull(bskt);
+    // }
 }
     

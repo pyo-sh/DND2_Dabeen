@@ -35,21 +35,21 @@ public class MsgRepositoryTest {
     }
         
     // @Test
-    public void create() {
+    // public void create() {
 
-        String chatNum = "2002160001";
-        String msgWriterNum = "2001290001";
-        LocalDateTime msgSendDttm = LocalDateTime.now();
-        String cont = "Contents";
+    //     String chatNum = "2002160001";
+    //     String msgWriterNum = "2001290001";
+    //     LocalDateTime msgSendDttm = LocalDateTime.now();
+    //     String cont = "Contents";
 
-        MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
+    //     MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
 
-        Msg msg = Msg.builder().msgPK(msgPK).cont(cont).build();
+    //     Msg msg = Msg.builder().msgPK(msgPK).cont(cont).build();
 
-        Msg newMsg = msgRepository.save(msg);
+    //     Msg newMsg = msgRepository.save(msg);
         
-        assertThat(newMsg.getMsgPK(),is(msgPK));
-    }
+    //     assertThat(newMsg.getMsgPK(),is(msgPK));
+    // }
     
     @Test
     public void read() {

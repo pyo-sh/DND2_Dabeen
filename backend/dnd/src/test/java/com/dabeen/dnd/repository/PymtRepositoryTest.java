@@ -25,33 +25,33 @@ public class PymtRepositoryTest extends DemoApplicationTests {
     @Autowired
     private BsktRepository bsktRepository;
     
-    @Test
-    public void create() {
-        String bsktNum = "2002170006";
-        PymtMthdType type = PymtMthdType.c;
-        BigDecimal pymtPrice = BigDecimal.valueOf(5000);
-        Whether whether = Whether.n;
+    // @Test
+    // public void create() {
+    //     String bsktNum = "2002170006";
+    //     PymtMthdType type = PymtMthdType.c;
+    //     BigDecimal pymtPrice = BigDecimal.valueOf(5000);
+    //     Whether whether = Whether.n;
 
-        Pymt pymt = Pymt.builder()
-                        .pymtNum(null)
-                        .pymtDttm(LocalDateTime.now())
-                        .pymtMthdType(type)
-                        .pymtPrice(pymtPrice)
-                        .refdWhet(whether)
-                        .bskt(bsktRepository.findById(bsktNum)
-                                            .orElseThrow(() -> new NotFoundException("Bskt")))
-                        .build();
+    //     Pymt pymt = Pymt.builder()
+    //                     .pymtNum(null)
+    //                     .pymtDttm(LocalDateTime.now())
+    //                     .pymtMthdType(type)
+    //                     .pymtPrice(pymtPrice)
+    //                     .refdWhet(whether)
+    //                     .bskt(bsktRepository.findById(bsktNum)
+    //                                         .orElseThrow(() -> new NotFoundException("Bskt")))
+    //                     .build();
                               
-        Pymt newPymt = pymtRepository.save(pymt);
+    //     Pymt newPymt = pymtRepository.save(pymt);
 
-        Assert.assertNotNull(newPymt);
-    }
+    //     Assert.assertNotNull(newPymt);
+    // }
 
     // @Test
-    public void read(){
-        Optional<Pymt> optional = pymtRepository.findById("2002170001");
-        Assert.assertNotNull(optional.isPresent());
-    }
+    // public void read(){
+    //     Optional<Pymt> optional = pymtRepository.findById("2002170001");
+    //     Assert.assertNotNull(optional.isPresent());
+    // }
 
 }
     
