@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class NotUpdateableException extends RuntimeException{
-    private String message = " can not modified.";
+    private String message = " 은 수정할 수 없습니다.";
 
     public NotUpdateableException(String subject){
         this.message = subject + this.message;

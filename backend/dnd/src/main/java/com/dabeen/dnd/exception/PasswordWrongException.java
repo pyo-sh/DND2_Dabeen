@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Slf4j
 public class PasswordWrongException extends RuntimeException{
-    String message = "Password is wrong.";
+    String message = "틀린 비밀번호입니다.";
 
     public PasswordWrongException(){
         log.error(this.message);

@@ -7,10 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Slf4j
-public class EmailWrongException extends RuntimeException{
-    String message = "잘못된 이메일입니다.";
+public class NameWrongException extends RuntimeException{
+    String message = "입력하신 이름이 맞지 않습니다.";
 
-    public EmailWrongException(){
+    public NameWrongException(){
         log.error(this.message);
     }
 }

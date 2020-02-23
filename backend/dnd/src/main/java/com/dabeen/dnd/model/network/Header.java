@@ -6,6 +6,8 @@ package com.dabeen.dnd.model.network;
 
 import java.time.LocalDateTime;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ public class Header<T>{
     private String description;
 
     /* 개별 데이터 */
+    @Valid 
     private T data;
     
     public static <T> Header<T> OK(){
