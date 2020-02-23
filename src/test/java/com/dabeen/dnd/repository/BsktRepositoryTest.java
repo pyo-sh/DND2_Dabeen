@@ -28,23 +28,23 @@ public class BsktRepositoryTest{
     @Autowired
     private BsktMapper bsktMapper;
 
-    @Test
-    public void create() {
-        String bsktUserNum = "2002160001";
-        BigDecimal totalPrice = BigDecimal.valueOf(10000);
-        Whether milegeUseWhet = Whether.y;
+    // @Test
+    // public void create() {
+    //     String bsktUserNum = "2002160001";
+    //     BigDecimal totalPrice = BigDecimal.valueOf(10000);
+    //     Whether milegeUseWhet = Whether.y;
 
-        Map<String, Object> bsktMap = new HashMap<>();
+    //     Map<String, Object> bsktMap = new HashMap<>();
 
-        bsktMap.put("bsktNum", null);
-        bsktMap.put("bsktUserNum", bsktUserNum);
-        bsktMap.put("totalPrice", totalPrice);
-        bsktMap.put("mileageUseWhet", milegeUseWhet);
+    //     bsktMap.put("bsktNum", null);
+    //     bsktMap.put("bsktUserNum", bsktUserNum);
+    //     bsktMap.put("totalPrice", totalPrice);
+    //     bsktMap.put("mileageUseWhet", milegeUseWhet);
 
-        bsktMapper.insert(bsktMap); 
+    //     bsktMapper.insert(bsktMap); 
 
-        Assert.assertNotNull(Optional.of(bsktRepository.findById((String) bsktMap.get("bsktNum"))));
-    }
+    //     Assert.assertNotNull(Optional.of(bsktRepository.findById((String) bsktMap.get("bsktNum"))));
+    // }
 
     // @Test
     // public void read(){
