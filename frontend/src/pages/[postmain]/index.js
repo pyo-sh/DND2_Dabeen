@@ -6,8 +6,10 @@ import PostWrite from "../../components/posts/PostWrite";
 import PostSearch from "../../components/posts/PostSearch";
 import { loadHelpPostRequestAction } from "../../reducers/posts";
 
-const Postmain = () => {
-  const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
+import { Pagination } from 'antd';
+
+const Postmain = ({categoryNum, search}) => {
+  // const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
 
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
@@ -18,7 +20,10 @@ const Postmain = () => {
   const setPostWriteInvisible = useCallback(e => {
     setPostWriteVisible(prev => !prev);
   }, []);
-
+  
+  const onChangePage = useCallback((page) => {
+    loadHelpPostRequestAction({page, search, categoryNum});
+  }, [search, categoryNum]);
   // 보고자 하는 카테고리가 바뀔 때 보여주는 Title을 결정해주는 함수
   const getTitle = useCallback(() => {
     switch (categoryNum) {
@@ -72,6 +77,7 @@ const Postmain = () => {
           <PostWrite setInvisible={setPostWriteInvisible} />
         ) : null}
       </div>
+      <Pagination defaultCurrent={1} onChange={onChangePage} total={100}/>
     </PostUpperDiv>
   );
 };
@@ -133,18 +139,41 @@ const PostUpperDiv = styled.div`
       z-index: 3;
     }
   }
+  & .ant-pagination {
+      & li:hover {
+        border : 1px solid #ff4300;
+        & a {
+          color : #ff4300;
+        }
+      }
+      & .ant-pagination-item-active {
+        border-color : #ff4300;
+        & a {
+          color : #ff4300;
+        }
+      }
+      & li[title*="Pages"] {
+        &:hover {
+          border : none;
+        }
+        & * {
+          color : darkgrey;
+        }  
+      }
+    }
+   
 `;
 
 Postmain.getInitialProps = async context => {
   const {postmain, search} = context.query; // 서치를 검색할 때 쓴다.
-  let helpNum = postmain ==="errand" ? 1000 : postmain === "rental" ? 2000 : 3000;
-  context.store.dispatch(loadHelpPostRequestAction(helpNum));
+  let categoryNum = postmain ==="errand" ? 1000 : postmain === "rental" ? 2000 : 3000;
+  context.store.dispatch(loadHelpPostRequestAction({categoryNum, search, page:1}));
 
   // 처음 들어가자마자 있어야 하는 정보들을 가지고 온다.
   // 여기에는 위에 주소마다 다르게 dispatch를 해야할 듯.
   // 처음 들어가자마자 있어야 하는 정보들은 여기서 아니면 useEffect 같은 곳에서
   // 리덕스 말고 다른 정보를 props로 주려면
-  // return { } 여기 안에 주면 props로 받을 수 있음.
+  return {categoryNum, search}
 };
 
 export default Postmain;

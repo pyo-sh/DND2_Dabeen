@@ -93,8 +93,7 @@ const Header = ({asPath}) => {
             <Input.Search  placeholder="어떤 도움을 찾으시나요?"
               onSearch={onSearch}
               value={search}
-              onChange={onChangeSearch}
-              style={{ marginLeft: 10 }} />
+              onChange={onChangeSearch} />
             </Input.Group>
       </div>
       <div className="menuRight" ref={divRef}>
@@ -209,7 +208,7 @@ const Menubar = styled.nav`
   }
   & .menuLeft {
     display: flex;
-    width: 60vw;
+    width: 70vw;
     & span .ant-input {
       & :hover,
       :focus {
@@ -223,14 +222,18 @@ const Menubar = styled.nav`
   }
   & .ant-input-group {
     display : flex;
-    flex-direction : column;
     align-items : center;
     & select {
-      border : 1px solid #DDDDDD;
-      height : 32px;
+      border: 1px solid #DDDDDD;
+      border-radius: 5px;
+      height: 38px;
+      &:focus {
+        outline: #ff4300 solid 1px;
+      }
     }
   }
   & .ant-input-search {
+    height : 38px;
     & span i {
       color : black;
       font-size: 18px;

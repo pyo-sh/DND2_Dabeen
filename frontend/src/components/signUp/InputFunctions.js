@@ -33,6 +33,7 @@ const DabeenInput = memo(({type, placeholder, value, onChangeFunc, maxLength}) =
                 value={value}
                 onChange={onChangeFunc}
                 maxLength={maxLength ? maxLength : 524288}
+                required
             />
             {type==="password"
             ?   <Icon
