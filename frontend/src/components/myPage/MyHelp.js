@@ -1,6 +1,6 @@
-import React from "react";
-import { Row, Col } from 'antd';
+import React, { useCallback } from "react";
 import styled from "styled-components";
+import { Row, Col, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
 
 const takeHelp = [
@@ -63,6 +63,9 @@ const takenHelp = [
 ];
 
 const MyHelp = ({ helpType }) => {
+  const onChangePagination = useCallback((page, pageSize) => {
+    console.log(page, pageSize);
+  }, []);
   return (
     <MyHelpUpperDiv>
       <div className="Myhelp">
@@ -77,6 +80,14 @@ const MyHelp = ({ helpType }) => {
               </MyHelpCol>
             ))}
           </Row>
+          <Pagination
+            className="MyhelpContentPage"
+            onChange={onChangePagination}
+            simple
+            defaultCurrent={1}
+            pageSize={4}
+            total={12}
+          />
         </div>
       </div>
       <div className="Myhelp">
@@ -91,6 +102,14 @@ const MyHelp = ({ helpType }) => {
               </MyHelpCol>
             ))}
           </Row>
+          <Pagination
+            className="MyhelpContentPage"
+            onChange={onChangePagination}
+            simple
+            defaultCurrent={1}
+            pageSize={4}
+            total={12}
+          />
         </div>
       </div>
     </MyHelpUpperDiv>
@@ -110,6 +129,14 @@ const MyHelpUpperDiv = styled.div`
     }
     & .MyhelpContent{
       padding: 20px 0;
+    }
+    & .MyhelpContentPage{
+      width: 180px;
+      & input {
+        width: 50px;
+        margin: 0;
+      }
+      margin: 20px auto;
     }
   }
 `;
