@@ -23,7 +23,7 @@ public class HelpSupplCompRepositoryTest extends DemoApplicationTests{
     @Autowired
     private UserRepository userRepository;
 
-    @Test
+    // @Test
     public void create() {
         String helpNum = "2002160001";
         String supplNum = "2002170001";
