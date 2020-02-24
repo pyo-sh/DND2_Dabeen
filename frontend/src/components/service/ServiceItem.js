@@ -1,22 +1,39 @@
 import React, { useCallback, useState, memo } from "react";
 import styled from "styled-components";
 
-const ServiceItem = memo(({ service }) => {
+const ServiceItem = memo(({ service, faq}) => {
   const [isClick, setIsClick] = useState(false);
   const questionOnClick = useCallback(() => {
     setIsClick(prev => !prev);
   }, []);
   return (
-    <ServiceItemBox isClick={isClick}>
-      <div className="ServiceItemQuestion" onClick={questionOnClick}>
-        <b>Q.</b>{service.title}
+    <>
+    {service ? 
+      <ServiceItemBox isClick={isClick}>
+      <div className="serviceItemQuestion" onClick={questionOnClick}>
+        <div className="questionTitle"><div><b>Q.</b>{service.questionTitle}</div><div>{service.questionDate}</div></div>
+        {isClick && <div>{service.questionContent}</div>}
       </div>
       {isClick && (
-        <div className="ServiceItemAnswer">
-          <b>A.</b>  {service.rply_const ? service.rply_const : "아직 답변이 달리지 않았습니다."}
+        <div className="serviceItemAnswer">
+            {service.replyPost ? <><div className="replyTitle"><div><b>A.</b>{service.replyPost.replyTitle}</div><div>{service.replyPost.replyDate}</div></div>
+              <div>{service.replyPost.replyContent}</div>
+            </> :"아직 답변이 달리지 않았습니다."}
         </div>
       )}
-    </ServiceItemBox>
+    </ServiceItemBox> :
+    <ServiceItemBox isClick={isClick}>
+    <div className="serviceItemQuestion" onClick={questionOnClick}>
+      <div className="questionTitle"><div><b>Q.</b>{faq.faqTitle}</div></div>
+    </div>
+    {isClick && (
+      <div className="serviceItemAnswer">
+          {faq.faqContent}
+      </div>
+    )}
+  </ServiceItemBox>
+    }
+    </>
   );
 });
 
@@ -25,21 +42,24 @@ const ServiceItemBox = styled.div`
     border-bottom: 1px solid #bfc7ce;
     width: 100%;
   }
-  & .ServiceItemQuestion, .ServiceItemAnswer{
+  & .serviceItemQuestion, .serviceItemAnswer{
     width: 100%;
     padding : 10px;
-    display: flex;
-    align-items: center;
     border-bottom: 1px solid #bfc7ce;
     &:hover {
       color: #FF4300;
     }
   }
-  & .ServiceItemAnswer{
+  & .serviceItemAnswer{
     color: black;
     background : rgb(240,240,240);
     padding-left : 27.5px;
     display : ${props=> props.isClick ? "block" : "none"}
+  }
+  & .questionTitle, .replyTitle {
+    display : flex;
+    width : 100%;
+    justify-content : space-between;
   }
   & b {
     margin-right: 10px;

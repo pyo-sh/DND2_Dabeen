@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Header from "./main/Header";
 import Footer from "./main/Footer";
 import styled from "styled-components";
-import { maintainLoginAction, loginSuccessAction } from "../reducers/user";
+import { loginRequestAction } from "../reducers/user";
 
 
 const AppLayout = ({ children, asPath }) => {
@@ -12,7 +12,7 @@ const AppLayout = ({ children, asPath }) => {
   useEffect(() => {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
-      dispatch(loginSuccessAction({token, loginMaintain : true}));
+      dispatch(loginRequestAction({token}));
     }
   }, []);
   return (
@@ -26,11 +26,11 @@ const AppLayout = ({ children, asPath }) => {
   );
 };
 const AllDiv = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   & .childrenWrapper {
     margin-top: 12vh;
+    min-height: 80vh;
   }
 `;
 

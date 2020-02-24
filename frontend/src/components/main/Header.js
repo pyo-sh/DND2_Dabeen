@@ -14,7 +14,7 @@ const Header = ({asPath}) => {
   const dispatch = useDispatch();
   const divRef = useRef();
   
-  const { userInfo } = useSelector(state => state.user);
+  const { me } = useSelector(state => state.user);
   const [width, setWidth] = useState(isBrowser ? window.innerWidth : 0);
   const [search, onChangeSearch] = inputChangeHook(''); // 검색어
   const [searchSubject, onChangeSearchSubject] = inputChangeHook('errand'); // 검색 주제
@@ -43,8 +43,15 @@ const Header = ({asPath}) => {
   }, [search, searchSubject]);
 
   useEffect(() => { // asPath에 따라서 header 부분 색 바뀌게
-    setSelected(asPath.split('/')[1]);
-  }, [asPath]);
+    const path = asPath.split('/')[1];
+    const check = asPath.split('/')[2] === me.userNum;
+    if(path === 'userpage' && !check) {
+      setSelected('');
+    }
+    else {
+      setSelected(path);
+    }
+  }, [asPath, me && me.userNum]);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -127,7 +134,7 @@ const Header = ({asPath}) => {
           </li>
         </ul>
         <div className="loginBox">
-          {userInfo && userInfo.userNum ? (
+          {me && me.userNum ? (
             <>
               <div className="userPageBox">
                 {/* <Link href="/mypage"> */}
@@ -145,12 +152,12 @@ const Header = ({asPath}) => {
                         &nbsp;
                         <span>25000</span>원
                       </li>
-                      <li><Link href="/basketmain"><a onClick={clickMy}>장바구니</a></Link></li>
+                      <li><Link href="/userpage/[usernum]/[pagename]" as={`/userpage/${me.userNum}/basket`}><a onClick={clickMy}>장바구니</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]"  as={`/userpage/${userInfo.userId}/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
+                      <li><Link href="/userpage/[usernum]/[pagename]"  as={`/userpage/${me.userNum}/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
                       <li><Link href="/chat"><a onClick={clickMy}>채팅하기</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[userid]/[pagename]" as={`/userpage/${userInfo.userId}/service`}><a onClick={clickMy}>고객센터</a></Link></li>
+                      <li><Link href="/userpage/[usernum]/[pagename]" as={`/userpage/${me.userNum}/service`}><a onClick={clickMy}>고객센터</a></Link></li>
                     </ul>
                   </div>
                 ) : null}

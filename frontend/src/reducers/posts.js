@@ -360,12 +360,21 @@ const reducer = (state = initialState, action) => {
       case LOAD_LIVEPOST_SUCCESS: {
         draft.livePosts = action.data.map(post => (
           {
-            userId : post.user_id,
-            nickname : post.nickname,
+            helpNum: post.help_num,
+            helpDate: post.help_post_dttm,
             helpTitle: post.title,
-            helpPostDate: help_pstn_dttm,
-            location : "부산광역시 남구 대연동",
-            picture : "아무거나 이빈다!!"
+            helpContent: post.content,
+            hlepPrice: post.price,
+            helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
+            isHelpApprove: post.help_aprv_whet, // 도움승인여부
+            postNum: post.pref_suppl_num, // 선호공급자수
+            helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+            location: post.exec_loc, // 이행장소
+            helpPicList: '',// 도움사진목록,
+            
+            userId : post.user.id,
+            nickname : post.user.nickname,
+            userPic: post.user.pic,
           }
         ))
         break;

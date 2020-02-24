@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction } from '../reducers/user';
+import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
 
 function loadUserAPI(userNum) { // 유저 정보를 가져온다!
@@ -9,8 +9,8 @@ function loadUserAPI(userNum) { // 유저 정보를 가져온다!
 
 function* loadUser(action) {
     try {
-        const result = yield call(loadUserAPI, action.data);
-        yield put(loadUserSuccessAction(result.data.data));
+        const result = yield call(loadUserAPI, action.data.userNum);
+        yield put(loadUserSuccessAction({info : result.data.data, isMe: action.data.isMe}));
     }
     catch(e) {
         console.error(e);
@@ -37,19 +37,28 @@ function loginAPI(data) {
 
 function* login(action) {
     try {
-        const result = yield call(loginAPI, action.data);
-        action.data.loginMaintain ? localStorage.setItem("token", result.data.data.token) : sessionStorage.setItem("token", result.data.data.token)
-        const tokenResult = jwt_decode(result.data.data.token);
+        let result = '';
+        let token = null;
+        let tokenResult = '';
+        if (action.data.token) {
+            token = action.data.token;
+        }
+        else {
+            result = yield call(loginAPI, action.data);
+            token = result.data.data.token;
+            action.data.loginMaintain ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
+        }
+        // yield put(loginSuccessAction({token : result.data.data.token, loginMaintain : action.data.loginMaintain}));
+        tokenResult = jwt_decode(token);
         console.log(tokenResult);
         const userNum = tokenResult.userNum;
         const userId = tokenResult.id;
         const userRole = tokenResult.role;
         const nickname = tokenResult.nickname;
-        // yield put(loginSuccessAction({token : result.data.data.token, loginMaintain : action.data.loginMaintain}));
-        yield put(loginSuccessAction({userNum, nickname, userId, userRole}));
-        yield put(loadUserRequestAction(userNum));
+        yield put(loginSuccessAction({userNum, userId, userRole, nickname}));
+        yield put(loadUserRequestAction({userNum, isMe: true }));
     }catch(e){
-        console.error(e);
+        console.log(e.response);
         yield put(loginFailureAction(e));
     }
 };
