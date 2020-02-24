@@ -2,14 +2,27 @@ import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction } from '../reducers/posts';
 import axios from 'axios';
 
-function addHelpPostAPI() { //게시글 업로드
-
+function addHelpPostAPI(data) { //게시글 업로드
+    const reqData = {
+        data: {
+            // help_pstn_dttm
+            cat_num: data.category,
+            title: data.postName,
+            exec_loc: data.location,
+            price: data.money,
+            pref_suppl_num: data.needPersonnel,
+            pref_help_exec_dttm: data.executionDate,
+            help_aply_cls_dttm: data.postDeadline,
+            cont: data.content,
+        }
+    }
+    return axios.post('/help', reqData)
 };
 
-function* addHelpPost(data) {
+function* addHelpPost(action) {
     try{
-        yield call(addPostAPI);
-        yield put(addHelpPostSuccessAction(data));
+        const result = yield call(addHelpPostAPI, action.data);
+        yield put(addHelpPostSuccessAction(result.data.data));
     }
     catch(e) {
         console.log(e);
@@ -21,14 +34,30 @@ function* watchAddHelpPost() {
     yield takeLatest(ADD_HELPPOST_REQUEST, addHelpPost);
 };
 
-function updateHelpPostAPI() {
+function updateHelpPostAPI(data) {
+    const reqData = {
+        data: {
+            // help_num
+            // help_pstn_dttm
+            cat_num: data.category,
+            title: data.postName,
+            exec_loc: data.location,
+            price: data.money,
+            pref_suppl_num: data.needPersonnel,
+            pref_help_exec_dttm: data.executionDate,
+            help_aply_cls_dttm: data.postDeadline,
+            cont: data.content,
+            // help_aprv_whey: data
+        }
+    }
 
+    return axios.put('/help', reqData)
 };
 
-function* updateHelpPost() {
+function* updateHelpPost(action) {
     try{
-        yield call(updateHelpPostAPI);
-        yield put(updateHelpPostSuccessAction());
+        const result = yield call(updateHelpPostAPI, action.data);
+        yield put(updateHelpPostSuccessAction(result.data.data));
     } catch(e) {
         console.log(e);
         yield put(updateHelpPostFailureAction(e));
@@ -39,14 +68,14 @@ function* watchUpdateHelpPost() {
     yield takeLatest(UPDATE_HELPPOST_REQUEST, updateHelpPost);
 };
 
-function removeHelpPostAPI() {
-
+function removeHelpPostAPI(helpNum) {
+    return axios.delete(`/help/${helpNum}`)
 };
 
-function* removeHelpPost() {
+function* removeHelpPost(action) {
     try{
-        yield call(removeHelpPostAPI);
-        yield put(removeHelpPostSuccessAction());
+        const result = yield call(removeHelpPostAPI, action.data);
+        yield put(removeHelpPostSuccessAction(result.data));
     } catch(e) {
         console.log(e);
         yield put(removeHelpPostFailureAction(e));
