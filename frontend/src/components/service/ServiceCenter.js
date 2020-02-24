@@ -5,76 +5,101 @@ import ServiceItem from "./ServiceItem";
 import ServiceQuestion from "./ServiceQuestion";
 const dummyMyQuestion = [
   {
-    fqa_num: 1,
-    quest_pstn_dttm: "2020-01-01",
-    title: "환불 관련 문의",
-    rply_const: "ㅋㅋㅋㅋㅋㅋ",
-    fqa_rigistrant_num: "1"
+    quetionNum: 1,
+    questionTitle: '질문 제목',
+    questionContent: '아무것도 모르겠어요.',
+    questionDate: '2020-02-02',
+    questionUserNum: 20,
+    replyPost: {
+      replyNum: 1,
+      replyTitle: '질문 제목',
+      replyContent: '아무것도 모르겠어요.',
+      replyDate: '2020-02-02',
+      replyUserNum: 20,
+    }
   },
   {
-    fqa_num: 5,
-    quest_pstn_dttm: "2020-01-01",
-    title: "환불을 받으려면 어떻게 해야하나요",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    quetionNum: 1,
+    questionTitle: '질문 제목',
+    questionContent: '아무것도 모르겠어요.',
+    questionDate: '2020-02-02',
+    questionUserNum: 20,
+    replyPost: {
+      replyNum: 1,
+      replyTitle: '질문 제목',
+      replyContent: '아무것도 모르겠어요.',
+      replyDate: '2020-02-02',
+      replyUserNum: 20,
+    }
   },
   {
-    fqa_num: 4,
-    quest_pstn_dttm: "2020-01-01",
-    title: "사기를 당했습니다.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    quetionNum: 1,
+    questionTitle: '질문 제목',
+    questionContent: '아무것도 모르겠어요.',
+    questionDate: '2020-02-02',
+    questionUserNum: 20,
+    replyPost: {
+      replyNum: 1,
+      replyTitle: '질문 제목',
+      replyContent: '아무것도 모르겠어요.',
+      replyDate: '2020-02-02',
+      replyUserNum: 20,
+    }
   },
   {
-    fqa_num: 3,
-    quest_pstn_dttm: "2020-01-01",
-    title: "누군가 나의 이름으로 계정을 사용하고 있어요.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "3"
+    quetionNum: 1,
+    questionTitle: '질문 제목',
+    questionContent: '아무것도 모르겠어요.',
+    questionDate: '2020-02-02',
+    questionUserNum: 20,
+    replyPost: {
+      replyNum: 1,
+      replyTitle: '질문 제목',
+      replyContent: '아무것도 모르겠어요.',
+      replyDate: '2020-02-02',
+      replyUserNum: 20,
+    }
   },
   {
-    fqa_num: 2,
-    quest_pstn_dttm: "2020-01-01",
-    title: "회원탈퇴에 대해 알고 싶어요.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    quetionNum: 1,
+    questionTitle: '질문 제목',
+    questionContent: '아무것도 모르겠어요.',
+    questionDate: '2020-02-02',
+    questionUserNum: 20,
+    replyPost: {
+      replyNum: 1,
+      replyTitle: '질문 제목',
+      replyContent: '아무것도 모르겠어요.',
+      replyDate: '2020-02-02',
+      replyUserNum: 20,
+    }
   }
 ];
-const dummyQuestion = [
+const dummyFaqs = [
   {
-    fqa_num: 1,
-    quest_pstn_dttm: "2020-01-01",
-    title: "환불 관련 문의",
-    rply_const: "ㅋㅋㅋㅋㅋㅋ",
-    fqa_rigistrant_num: "1"
+    faqNum: 1,
+    faqTitle: "faq 제목",
+    faqContent: "faq 내용",
   },
   {
-    fqa_num: 5,
-    quest_pstn_dttm: "2020-01-01",
-    title: "환불을 받으려면 어떻게 해야하나요",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    faqNum: 2,
+    faqTitle: "faq 제목",
+    faqContent: "faq 내용",
   },
   {
-    fqa_num: 4,
-    quest_pstn_dttm: "2020-01-01",
-    title: "사기를 당했습니다.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    faqNum: 3,
+    faqTitle: "faq 제목",
+    faqContent: "faq 내용",
   },
   {
-    fqa_num: 3,
-    quest_pstn_dttm: "2020-01-01",
-    title: "누군가 나의 이름으로 계정을 사용하고 있어요.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "3"
+    faqNum: 4,
+    faqTitle: "faq 제목",
+    faqContent: "faq 내용",
   },
   {
-    fqa_num: 2,
-    quest_pstn_dttm: "2020-01-01",
-    title: "회원탈퇴에 대해 알고 싶어요.",
-    rply_const: "이렇게 저렇게 해보세요!",
-    fqa_rigistrant_num: "2"
+    faqNum: 5,
+    faqTitle: "faq 제목",
+    faqContent: "faq 내용",
   }
 ];
 const ServiceCenter = () => {
@@ -103,7 +128,7 @@ const ServiceCenter = () => {
         <div className="ServiceQuestion">
           <ul>
             {dummyMyQuestion.map(v => (
-              <ServiceItem key={v.fqa_num} service={v} />
+              <ServiceItem key={v.questionNum} service={v} />
             ))}
           </ul>
         </div>
@@ -112,8 +137,8 @@ const ServiceCenter = () => {
         <div className="ServiceTitleMain">자주 묻는 질문</div>
         <div className="ServiceQuestion">
           <ul>
-            {dummyQuestion.map(v => (
-              <ServiceItem key={v.fqa_num} service={v} />
+            {dummyFaqs.map(v => (
+              <ServiceItem key={v.faqNum} faq={v} />
             ))}
           </ul>
         </div>

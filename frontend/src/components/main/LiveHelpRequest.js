@@ -157,11 +157,27 @@ const TestSlick = styled(Slick)`
 `;
 
 const LiveHelpRequestContent = styled.div`
+  position: relative;
   width : 95%;
   border: solid 1px gray;
   border-radius: 5px;
-  :hover {
-    border: solid 2px #ff4300;
+  cursor: pointer;
+  transition : border 0.2s, box-shadow 0.3s ease-in-out;
+  &::after {
+    position: absolute;
+    width : 100%;
+    height : 100%;
+    z-index : -1;
+    top: 0;
+    left: 0;
+    content : "";
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.75);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  &:hover::after {
+    opacity: 1;
   }
 
    & .liveHelpRequestUserInfo {

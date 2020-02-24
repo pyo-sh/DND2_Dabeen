@@ -75,11 +75,13 @@ const reducer = (state = initialState, action) => {
             {
                 questionNum : question.post_num, // 게시글번호
                 questionTitle : question.title, // 제목
+                questionContent: question.cont,
                 questionDate : qusestion.pstn_dttm, // 질문게시일시
                 questionUserNum: question.pstner_num, // 질문자번호
-                questionReplyPost : question.rply_post ? {
+                replyPost : question.rply_post ? {
                     replyNum : question.rply_post.post_num,
                     replyTitle : question.rply_post.title,
+                    replyContent: question.rply_post.content,
                     replyDate : qusestion.rply_post.pstn_dttm,
                     replyUserNum: question.rply_post.pstner_num,
                 } : null,
@@ -136,6 +138,14 @@ const reducer = (state = initialState, action) => {
       case LOAD_FAQS_SUCCESS: {
         draft.isLoadedFaqs = true;
         draft.isLoadingFaqs = false;
+
+        draft.faqs = action.data.map(faq => (
+          {
+              fqaNum: faq.fqa_num,
+              fqaTitle: faq.title,
+              fqaContent: fqa.rply_cont,
+          }
+      ))
         break;
       }
       case LOAD_FAQS_FAILURE: {

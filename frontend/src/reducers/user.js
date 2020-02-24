@@ -1,6 +1,6 @@
 import produce from "immer";
-import jwt_decode from 'jwt-decode';
 import { createAction } from './actionFunction';
+
 const dummyState = {
   userInfo: {
     userNum: 123, // 유저번호
@@ -33,7 +33,28 @@ const dummyState = {
   updateError: "",
 }
 export const initialState = {
-  userInfo: {
+  me: {
+    userNum: null, // 유저번호
+    userId: null, 
+    userName: null,
+    email: null,
+    introduce : "",
+    birthDate: null,
+    nickName: null,
+    address: null,
+    phoneNumber: null,
+    blonSggName : null, // 소속시군구명
+    userRole: "", // 다비너 여부
+
+    // 공급자일 경우 필수
+    pic: null, // 프로필사진 주소
+    rrnRear: null, // 주민 번호 뒷자리
+    avgRate: null, // 평점 평균
+    ownMilege: null // 소유 마일리지
+
+  },// 유저정보를 저장해야함.
+
+  selectUser: {
     userNum: null, // 유저번호
     userId: null, 
     userName: null,
@@ -162,10 +183,10 @@ const reducer = (state = initialState, action) => {
         draft.isLoggingIn = false;   
         // action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
         // const tokenResult = jwt_decode(action.data.token);
-        draft.userInfo.userNum = action.data.userNum;
-        draft.userInfo.userId = action.data.userId;
-        draft.userInfo.userRole = action.data.userRole;
-        draft.userInfo.nickName = action.data.nickname;
+        draft.me.userNum = action.data.userNum;
+        draft.me.userId = action.data.userId;
+        draft.me.userRole = action.data.role;
+        draft.me.nickName = action.data.nickname;
         // 토큰 해석해서 userId, userNum 저장하는 방식!!
         // 토큰에 여러개 정보 다 들어 있을지 아니면 한번더 불러야 하는지
         break;
@@ -217,22 +238,41 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LOAD_USER_SUCCESS : {
-        draft.userInfo.userNum = action.data.user_num;
-        draft.userInfo.userName = action.data.user_name;
-        draft.userInfo.userId = action.data.user_id;
-        draft.userInfo.nickName = action.data.nickname;
-        draft.userInfo.email = action.data.email;
-        draft.userInfo.birthDate = action.data.birth_date;
-        draft.userInfo.introduce = action.data.itdc_cont;
-        draft.userInfo.address = action.data.address;
-        draft.userInfo.phoneNumber = action.data.phone_num;
+        if (action.data.isMe) {
+          draft.me.userNum = action.data.info.user_num;
+          draft.me.userName = action.data.info.user_name;
+          draft.me.userId = action.data.info.user_id;
+          draft.me.nickName = action.data.info.nickname;
+          draft.me.email = action.data.info.email;
+          draft.me.birthDate = action.data.info.birth_date;
+          draft.me.introduce = action.data.info.itdc_cont;
+          draft.me.address = action.data.info.address;
+          draft.me.phoneNumber = action.data.info.phone_num;
 
-        draft.userInfo.blonSggName = action.data.blon_sgg_name;
-        draft.userInfo.userRole = action.data.suppl_whet;
-        draft.userInfo.pic = action.data.pic;
-        draft.userInfo.avgRate = action.data.avg_rate;
-        draft.userInfo.rrnRear = action.data.rrn_rear;
-        draft.userInfo.ownMilege = action.data.own_mileage;
+          draft.me.blonSggName = action.data.info.blon_sgg_name;
+          draft.me.userRole = action.data.info.suppl_whet;
+          draft.me.pic = action.data.info.pic;
+          draft.me.avgRate = action.data.info.avg_rate;
+          draft.me.rrnRear = action.data.info.rrn_rear;
+          draft.me.ownMilege = action.data.info.own_mileage;
+        }
+        else {
+          draft.selectUser.userNum = action.data.info.user_num;
+          draft.selectUser.userName = action.data.info.user_name;
+          draft.selectUser.userId = action.data.info.user_id;
+          draft.selectUser.nickName = action.data.info.nickname;
+          draft.selectUser.email = action.data.info.email;
+          draft.selectUser.birthDate = action.data.info.birth_date;
+          draft.selectUser.introduce = action.data.info.itdc_cont;
+          draft.selectUser.address = action.data.info.address;
+          draft.selectUser.phoneNumber = action.data.info.phone_num;
+
+          draft.selectUser.blonSggName = action.data.info.blon_sgg_name;
+          draft.selectUser.userRole = action.data.info.suppl_whet;
+          draft.selectUser.pic = action.data.info.pic;
+          draft.selectUser.avgRate = action.data.info.avg_rate;
+        }
+        
         break;
       }
       case LOAD_USER_FAILURE : {

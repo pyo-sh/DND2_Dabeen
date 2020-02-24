@@ -48,7 +48,7 @@ const Terms = () => {
       privacyInfoCheck={privacyInfoCheck}
     >
       <div className="termsWrap">
-        <h1>DaBeen</h1>
+        <img src='/images/logo.svg' alt='dabeen logo' />
         <div>
           이용약관, 개인정보 수집 및 이용에 모두 동의합니다.
           <button className="checkButton terms" onClick={termsCheckOnClick}>
@@ -98,6 +98,9 @@ const TermsWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 65px;
+  & img {
+    width : 50%;
+  }
   & .termsWrap {
     width: 60%;
     max-width : 550px;
@@ -105,8 +108,6 @@ const TermsWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid grey;
-    border-radius: 7px;
     padding : 15px;
     & .checkButton {
       border: none;

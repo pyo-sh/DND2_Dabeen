@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ModifyUser from './ModifyUser';
 // useRouter를 사용해서 id를 가지고 와서 그 정보를 보여준다!!
 
-const UserInfo = ({ userInfo }) => {
+const UserInfo = ({ userInfo, isMe }) => {
     const [isChanging, setIsChanging] = useState(false);
     // useSelector로 정보를 가져온다. 나일 때랑 다른 사람일 때?..
     const onClickEdit = useCallback((e) => {
@@ -16,12 +16,12 @@ const UserInfo = ({ userInfo }) => {
         :<UserInfoWrapper>
             <div className="userinfoTitle">
                 회원정보
-                <button
+                {isMe && <button
                     onClick={onClickEdit}
                     className="userinfoEditBtn"
                     >
                     edit
-                </button>
+                </button> }
             </div>
             <div className="userinfoWrapper">
                 <div className="userinfoContent">
@@ -48,12 +48,12 @@ const UserInfo = ({ userInfo }) => {
                     </div>
                     <div className="userinfoContentValue">{userInfo.email}</div>
                 </div>
-                <div className="userinfoContent">
+                {isMe && <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="mobile"/> 전화번호
                     </div>
                     <div className="userinfoContentValue">{userInfo.phoneNumber}</div>
-                </div>
+                </div> }
                 <div className="userinfoContent">
                     <div className="userinfoContentName">
                         <Icon className="icon" type="environment" /> 주소

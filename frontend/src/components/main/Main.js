@@ -10,7 +10,7 @@ import { loadLivePostRequestAction } from '../../reducers/posts';
 const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
-    const { userInfo : { blonSggName }} = useSelector(state => state.user);
+    const { me : { blonSggName }} = useSelector(state => state.user);
     const { recommendOpponents } = useSelector(state => state.opponent);
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));
@@ -118,7 +118,7 @@ const LiveHelpRequestMenuBar = styled.div`
         /*선택시 색상 변경되게*/
         font-size: 30px;
         cursor: pointer;
-        
+        transition : color 0.3s;
         :hover{
             color: #FF4300;
         }
