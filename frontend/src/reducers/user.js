@@ -165,6 +165,7 @@ const reducer = (state = initialState, action) => {
         draft.userInfo.userNum = action.data.userNum;
         draft.userInfo.userId = action.data.userId;
         draft.userInfo.userRole = action.data.userRole;
+        draft.userInfo.nickName = action.data.nickname;
         // 토큰 해석해서 userId, userNum 저장하는 방식!!
         // 토큰에 여러개 정보 다 들어 있을지 아니면 한번더 불러야 하는지
         break;
