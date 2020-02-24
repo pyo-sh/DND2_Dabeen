@@ -105,10 +105,9 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
                                                         .postType(post.getPostType())
                                                         .title(post.getTitle())
                                                         .cont(post.getCont())
-                                                        .questPstnDttm(post.getQuestPstnDttm())
+                                                        .pstnDttm(post.getPstnDttm())
                                                         // 연관관계에 있는 객체가 null이라면 해당 변수를 null로 설정
                                                         .questerNum(post.getQuester() == null ? null : post.getQuester().getUserNum())
-                                                        .rplyPstnDttm(post.getRplyPstnDttm())
                                                         .rplyerNum(post.getRplyer() == null ? null : post.getRplyer().getAdminNum())
                                                         .questPostNum(post.getQuestPost() == null ? null : post.getQuestPost().getPostNum())
                                                         .rplyPost(post.getRplyPost() == null ? null : response(post.getRplyPost()))
@@ -122,14 +121,10 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         if(!requestData.getPostType().equals(post.getPostType()))
                         throw new NotUpdateableException("postType");
 
-        // 질문 게시일시
-        if(post.getQuestPstnDttm() != null){
-            if(!requestData.getQuestPstnDttm().equals(post.getQuestPstnDttm()))
-                throw new NotUpdateableException("questPstnDttm");
-        } else {
-            if(requestData.getQuestPstnDttm() != null)
-                throw new NotUpdateableException("questPstnDttm");
-        }
+        // 게시글 게시일시
+        if(!requestData.getPstnDttm().equals(post.getPstnDttm()))
+            throw new NotUpdateableException("questPstnDttm");
+       
 
         // 질문자
         if(post.getQuester() != null){
@@ -138,15 +133,6 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         } else {
             if(requestData.getQuesterNum() != null)
                 throw new NotUpdateableException("questerNum");
-        }
-
-        // 답변 게시 일시
-        if(post.getRplyPstnDttm() != null){
-            if(!requestData.getRplyPstnDttm().equals(post.getRplyPstnDttm()))
-                throw new NotUpdateableException("rplyPstnDttm");
-        } else {
-            if(requestData.getRplyPstnDttm() != null)
-                throw new NotUpdateableException("rplyPstnDttm");
         }
 
         // 답변자
