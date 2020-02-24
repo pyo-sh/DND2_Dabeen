@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import { Select,  DatePicker, TimePicker, Icon, Button, Form, message, Row, Col } from 'antd';
@@ -13,8 +13,10 @@ const categorys = ["심부름", "대여", "잡일"];   //카테고리
 const PostWrite = ({setInvisible}) => {
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
-    const [postDeadline, setPostDeadline] = useState({date: '', time: ''}); //신청 마감 일시 
-    const [dateofExecution, setDateofExecution] = useState({date: '', time: ''});   //수행 일시 
+    const [helpDeadlineDate, setHelpDeadlineDate] = useState(''); //신청 마감 날짜
+    const [helpDeadlineTime, setHelpDeadlineTime] = useState(''); //신청 마감 시간
+    const [helpExecDate, setHelpExecDate] = useState('');   //수행 날짜
+    const [helpExecTime, setHelpExecTime] = useState('');   //수행 시간
     const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
     const [location, setLocation] = useState('');   //이행위치
@@ -25,27 +27,16 @@ const PostWrite = ({setInvisible}) => {
 
     const {helpPosts} = useSelector(state => state.posts);
     const dispatch = useDispatch();
+    const imageInput = useRef();
 
     const getCategory = useCallback(category => {
         setCategory(category);
     }, []);
-    //신청 마감 일시 입력
-    const onPostDeadlineDate = useCallback((deadlineDate, dateString) => {
-        setPostDeadline({...postDeadline, date: dateString});
-    }, [postDeadline]);
 
-    const onPostDeadlineTime = useCallback((deadlineTime, timeString) => {
-        setPostDeadline({...postDeadline, time: timeString});
-    }, [postDeadline]);
-
-    //수행 일시 입력
-    const onExecutionDate = useCallback((executionDate, dateString) => {
-        setDateofExecution({...dateofExecution, date: dateString});
-    }, [dateofExecution]);
-
-    const onExecutionTime = useCallback((executionTime, timeString) => {
-        setDateofExecution({...dateofExecution, time: timeString});
-    }, [dateofExecution]);
+    const onChangeHelpPicker = setStateFunc =>
+    useCallback((moment, string) => {
+      setStateFunc(string);
+    }, []);
 
     const getLocation = useCallback((fullAddress, sigunguName) => {
         setLocation(fullAddress);
@@ -61,8 +52,8 @@ const PostWrite = ({setInvisible}) => {
         dispatch(addHelpPostSuccessAction({
             postName: postTitle,
             category: category,
-            postDeadline: postDeadline,
-            executionDate: dateofExecution,
+            postDeadline: helpDeadlineDate.concat(' ' + helpDeadlineTime),
+            executionDate: helpExecDate.concat(' ' + helpExecTime),
             needPersonnel: needPersonnel,
             money: money,
             location: location,
@@ -76,14 +67,30 @@ const PostWrite = ({setInvisible}) => {
         setImages(images.filter(image => image.key !== key));
     }, [urls, images]);
 
+    const onChangeImages = useCallback((e) => {
+        console.log(e.target.files);
+        const imageFormData = new FormData();
+        [].forEach.call(e.target.files, (f) => {
+            imageFormData.append('image', f);
+        });
+
+        dispatch(uploadImageRequestAction(imageFormData));
+    }, []);
+
+    const onClickImageUpload = useCallback(() => {
+        imageInput.current.click();
+    }, [imageInput.current]);
+
     return (
         <Modal>
             <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}}>
+            <DeleteIcon>    
+                <Icon onClick={setInvisible} type="close" style={{color:"#BFC7CE", marginRight: 10}}/>
+            </DeleteIcon>
             <ContentFlex>
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setInvisible} type="close" style={{fontSize: "25", color:"#BFC7CE", textAlign: 'right', marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <Row className="postSettingBowRow">
@@ -97,15 +104,15 @@ const PostWrite = ({setInvisible}) => {
                                 <PostSettingBox>
                                     <div className="postSettingTitle">신청 마감 일시</div>
                                     <div className="postSettingGetData">
-                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onPostDeadlineDate}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onPostDeadlineTime}/>
+                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                                     </div>
                                 </PostSettingBox>
                                 <PostSettingBox>
                                     <div className="postSettingTitle">수행 일시</div>
                                     <div className="postSettingGetData">
-                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onExecutionDate}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onExecutionTime}/>
+                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
+                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpExecTime)}/>
                                     </div>
                                 </PostSettingBox>
                                 <PostSettingBox>
@@ -129,17 +136,21 @@ const PostWrite = ({setInvisible}) => {
                     </ContentItem>
                     <UploadImage>
                         <div>사진첨부</div>
-                        <Upload urls={urls} images={images} getUrls={setUrls} getImages={setImages}/>
-                        <div className="previewImage">
+                            <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages}/>
+                            <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button>
+                        {/* <Upload urls={urls} images={images} getUrls={setUrls} getImages={setImages}/> */}
+                        {/* <div className="previewImage">
                             {images.length !== 0 ? 
                                 urls.map((url, i) => {
                                     return(
                                     <div className="imgBorder"><div className="deleteIcon"><Icon type="close" onClick={deleteImage(url.key)}/></div><img src={url.url} key={i} alt="미리보기"/></div>
                                     )
                                 }) : <></>}
-                        </div>
-                    </UploadImage>    
+                        </div> */}
+                    </UploadImage>
+                    <div style={{height:"auto"}}>    
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
+                    </div>
                 </Content>                  
             </ContentFlex>
             </Form>
@@ -158,6 +169,15 @@ const Modal = styled.div`
     align-items: center;
     justify-content: center;
     z-index: 1;
+`;
+
+const DeleteIcon = styled.div`
+    font-size: 30px;
+    position: fixed;
+    text-align: right;
+    width: 100%;
+    max-width: 600px;
+    min-width: 300px;
 `;
 
 const ContentFlex = styled.div`
@@ -181,7 +201,7 @@ const Content = styled.div`
     width: 100%;
     max-width: 550px;
     min-width: 250px;
-    height: 85vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -386,7 +406,7 @@ const UploadImage = styled.div`
 
 const UploadButton = styled(Button)`
     width: 200px;
-    height: 30px;
+    height: 45px;
     margin-top: 20px;
     margin-bottom: 20px;
     background: #FF4300;

@@ -124,9 +124,9 @@ export const initialState = {
       location: "창원시 의창구", //이행 위치
       sigungu: "의창구", //이행 시군구
       requirements: "열정페이로 일하실분 우대합니다!", //요구사항
-      imagesPaths: [] //사진 첨부, 여러개 올릴 수 있음
     }
   ],
+  imagesPaths: [], //사진 첨부, 여러개 올릴 수 있음
   totalPages : 1,
   helpsPerPage : 0,
   totalHelps : 0,
@@ -154,10 +154,6 @@ export const LOAD_HELPPOST_REQUEST = "LOAD_HELPPOST_REQUEST";
 export const LOAD_HELPPOST_SUCCESS = "LOAD_HELPPOST_SUCCESS";
 export const LOAD_HELPPOST_FAILURE = "LOAD_HELPPOST_FAILURE";
 
-export const UPLOAD_IMAGE_REQUEST = "UPLOAD_IMAGE_REQUEST";
-export const UPLOAD_IMAGE_SUCCESS = "UPLOAD_IMAGE_SUCCESS";
-export const UPLOAD_IMAGE_FAILURE = "UPLOAD_IMAGE_FAILURE";
-
 export const ADD_HELPPOST_REQUEST = "ADD_HELPPOST_REQUEST";
 export const ADD_HELPPOST_SUCCESS = "ADD_HELPPOST_SUCCESS";
 export const ADD_HELPPOST_FAILURE = "ADD_HELPPOST_FAILURE";
@@ -170,6 +166,10 @@ export const REMOVE_HELPPOST_REQUEST = "REMOVE_HELPPOST_REQUEST";
 export const REMOVE_HELPPOST_SUCCESS = "REMOVE_HELPPOST_SUCCESS";
 export const REMOVE_HELPPOST_FAILURE = "REMOVE_HELPPOST_FAILURE";
 
+export const UPLOAD_IMAGE_REQUEST = "UPLOAD_IMAGE_REQUEST";
+export const UPLOAD_IMAGE_SUCCESS = "UPLOAD_IMAGE_SUCCESS";
+export const UPLOAD_IMAGE_FAILURE = "UPLOAD_IMAGE_FAILURE";
+
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
 export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
@@ -177,10 +177,6 @@ export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
 export const loadHelpPostRequestAction = createAction(LOAD_HELPPOST_REQUEST);
 export const loadHelpPostSuccessAction = createAction(LOAD_HELPPOST_SUCCESS);
 export const loadHelpPostFailureAction = createAction(LOAD_HELPPOST_FAILURE);
-
-export const uploadImageRequestAction = createAction(UPLOAD_IMAGE_REQUEST);
-export const uploadImageSuccessAction = createAction(UPLOAD_IMAGE_SUCCESS);
-export const uploadImageFailureAction = createAction(UPLOAD_IMAGE_FAILURE);
 
 export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
@@ -205,6 +201,10 @@ export const removeHelpPostSuccessAction = createAction(
 export const removeHelpPostFailureAction = createAction(
   REMOVE_HELPPOST_FAILURE
 );
+
+export const uploadImageRequestAction = createAction(UPLOAD_IMAGE_REQUEST);
+export const uploadImageSuccessAction = createAction(UPLOAD_IMAGE_SUCCESS);
+export const uploadImageFailureAction = createAction(UPLOAD_IMAGE_FAILURE);
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -322,6 +322,18 @@ const reducer = (state = initialState, action) => {
       }
       case LOAD_LIVEPOST_FAILURE: {
 
+        break;
+      }
+      case UPLOAD_IMAGE_REQUEST: {
+        break;
+      }
+      case UPLOAD_IMAGE_SUCCESS: {
+        action.data.map(p => {
+          draft.imagesPaths.push(p);
+        });
+        break;
+      }
+      case UPLOAD_IMAGE_FAILURE: {
         break;
       }
       default:

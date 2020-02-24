@@ -1,5 +1,5 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
-import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction } from '../reducers/posts';
+import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction, UPLOAD_IMAGE_REQUEST, uploadImageFailureAction } from '../reducers/posts';
 import axios from 'axios';
 
 function addHelpPostAPI(data) { //게시글 업로드
@@ -50,7 +50,6 @@ function updateHelpPostAPI(data) {
             // help_aprv_whey: data
         }
     }
-
     return axios.put('/help', reqData)
 };
 
@@ -118,9 +117,26 @@ function* loadLivePost(action) {
         yield put(loadLivePostFailureAction(e));
     }
 };
-
 function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
+};
+
+function uploadImageAPI(images) {
+    return axios.post('/help_pic', images);
+};
+
+function* uploadImage(action) {
+    try{
+        const result = yield call(uploadImageAPI, action.data);
+        yield put(uploadImageSuccessAction(result.data));
+    } catch(e) {
+        console.log(e);
+        yield put(uploadImageFailureAction(e));
+    }
+};
+
+function* watchUploadImage() {
+    yield takeLatest(UPLOAD_IMAGE_REQUEST, uploadImage);
 };
 
 export default function* postsSaga() {
