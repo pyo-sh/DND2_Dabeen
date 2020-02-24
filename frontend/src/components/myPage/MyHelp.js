@@ -1,70 +1,21 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { loadUserPostRequestAction } from "../../reducers/posts";
 import styled from "styled-components";
 import { Row, Col, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
 
-const takeHelp = [
-  {
-    help_num: 1,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "아무거나",
-    help_pstn_dttm: "2020-02-01",
-    done: false,
-    payment: false
-  },
-  {
-    help_num: 2,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "아무거나1234",
-    help_pstn_dttm: "2020-02-01",
-    done: false,
-    payment: false
-  },
-  {
-    help_num: 5,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "킹무거나",
-    help_pstn_dttm: "2020-02-01",
-    done: true,
-    payment: false
-  }
-];
-const takenHelp = [
-  {
-    help_num: 1,
-    title: "이거는 테스트야 이름이 너무 길면 사라지는지 안사라지는지",
-    price: 2000000000000,
-    cont: "이거는 테스트야 이름이 너무 길면 사라지는지 안사라지는지",
-    help_pstn_dttm: "2020-02-01",
-    done: true,
-    payment: true
-  },
-  {
-    help_num: 2,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "아무거나1234",
-    help_pstn_dttm: "2020-02-01",
-    done: true,
-    payment: true
-  },
-  {
-    help_num: 5,
-    title: "~~ 도와주세요",
-    price: 20000,
-    cont: "킹무거나",
-    help_pstn_dttm: "2020-02-01",
-    done: true,
-    payment: true
-  }
-];
-
 const MyHelp = ({ helpType }) => {
+  const dispatch = useDispatch();
+  const { userPosts } = useSelector(state => state.posts);
+  // componentDidMount
+  useEffect(() => {
+    dispatch(loadUserPostRequestAction({page:1, helpType}));
+  }, []);
+  // 페이지 바꿀 때 도움 요청
   const onChangePagination = useCallback((page, pageSize) => {
     console.log(page, pageSize);
+    dispatch(loadUserPostRequestAction({page, helpType}));
   }, []);
   return (
     <MyHelpUpperDiv>
@@ -74,9 +25,9 @@ const MyHelp = ({ helpType }) => {
         </div>
         <div className="MyhelpContent">
           <Row gutter={[12, 12]}>
-            {takeHelp.map((element, index) => (
-              <MyHelpCol md={24} lg={12} xl={8} key={index}>
-                <MyHelpCapsule key={element.help_num} helpData={element} />
+            {userPosts.map((element, index) => (
+              <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
+                <MyHelpCapsule helpData={element} />
               </MyHelpCol>
             ))}
           </Row>
@@ -96,9 +47,9 @@ const MyHelp = ({ helpType }) => {
         </div>
         <div className="MyhelpContent">
           <Row gutter={[12, 12]}>
-            {takenHelp.map((element, index) => (
-              <MyHelpCol md={24} lg={12} xl={8} key={index}>
-                <MyHelpCapsule key={element.help_num} helpData={element} />
+            {userPosts.map((element, index) => (
+              <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
+                <MyHelpCapsule helpData={element} />
               </MyHelpCol>
             ))}
           </Row>
@@ -145,4 +96,5 @@ const MyHelpCol = styled(Col)`
   justify-content: center;
   align-items: center;
 `;
+
 export default MyHelp;

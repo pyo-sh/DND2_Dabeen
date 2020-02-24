@@ -282,7 +282,7 @@ const SignUpMain = () => {
 };
 
 const SignUpUpperDiv = styled.div`
-  margin: 90px auto;
+  margin: 30px auto;
 
   display: flex;
   flex-direction: column;
@@ -311,6 +311,7 @@ const SignUpUpperDiv = styled.div`
     & .SignupContentButton {
       width: 100%;
       height: 100vh;
+      margin-top: 40px;
       max-width: 420px;
       max-height: 50px;
       min-width: 270px;
@@ -324,7 +325,7 @@ const SignUpGetDataDiv = styled.div`
   display: flex;
   flex-direction: column;
 
-  padding: 5px;
+  padding: 15px 5px;
   max-width: 425px;
   min-width: 270px;
   width: 100%;

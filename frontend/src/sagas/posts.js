@@ -1,5 +1,5 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
-import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction } from '../reducers/posts';
+import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction, LOAD_USERPOST_REQUEST, loadUserPostSuccessAction, loadUserPostFailureAction } from '../reducers/posts';
 import axios from 'axios';
 
 function addHelpPostAPI(data) { //게시글 업로드
@@ -20,11 +20,11 @@ function addHelpPostAPI(data) { //게시글 업로드
 };
 
 function* addHelpPost(action) {
-    try{
+    try {
         const result = yield call(addHelpPostAPI, action.data);
         yield put(addHelpPostSuccessAction(result.data.data));
     }
-    catch(e) {
+    catch (e) {
         console.log(e);
         yield put(addHelpPostFailureAction(e));
     }
@@ -55,10 +55,10 @@ function updateHelpPostAPI(data) {
 };
 
 function* updateHelpPost(action) {
-    try{
+    try {
         const result = yield call(updateHelpPostAPI, action.data);
         yield put(updateHelpPostSuccessAction(result.data.data));
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         yield put(updateHelpPostFailureAction(e));
     }
@@ -73,10 +73,10 @@ function removeHelpPostAPI(helpNum) {
 };
 
 function* removeHelpPost(action) {
-    try{
+    try {
         const result = yield call(removeHelpPostAPI, action.data);
         yield put(removeHelpPostSuccessAction(result.data));
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         yield put(removeHelpPostFailureAction(e));
     }
@@ -87,14 +87,14 @@ function* watchRemoveHelpPost() {
 };
 
 function loadHelpPostAPI(data) {
-   return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
+    return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
 };
 
 function* loadHelpPost(action) {
-    try{
+    try {
         const result = yield call(loadHelpPostAPI, action.data);
         yield put(loadHelpPostSuccessAction(result.data.data));
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         yield put(loadHelpPostFailureAction(e));
     }
@@ -105,15 +105,15 @@ function* watchLoadHelpPost() {
 };
 
 function loadLivePostAPI(data) {
-   return axios.get(`/help/${data}/main-page`);
+    return axios.get(`/help/${data}/main-page`);
 };
 
 function* loadLivePost(action) {
-    try{
+    try {
         const result = yield call(loadLivePostAPI, action.data);
         // console.log(result.data.data);
         yield put(loadLivePostSuccessAction(result.data.data));
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         yield put(loadLivePostFailureAction(e));
     }
@@ -123,9 +123,28 @@ function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
 };
 
+// function loadUserPostAPI(data) {
+//     return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
+// };
+
+function* loadUserPost(action) {
+    try {
+        // const result = yield call(loadUserPostAPI, action.data);
+        yield put(loadUserPostSuccessAction(/*result.data.data*/action.data));
+    } catch (e) {
+        console.log(e);
+        yield put(loadUserPostFailureAction(e));
+    }
+};
+
+function* watchLoadUserPost() {
+    yield takeLatest(LOAD_USERPOST_REQUEST, loadUserPost);
+};
+
 export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
+        fork(watchLoadUserPost),
     ]);
 };
