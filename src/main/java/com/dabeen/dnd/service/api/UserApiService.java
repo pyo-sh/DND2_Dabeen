@@ -3,7 +3,6 @@
 
 package com.dabeen.dnd.service.api;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import javax.validation.Valid;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.UserMapper;
 import com.dabeen.dnd.exception.AlreadyExistedException;
-import com.dabeen.dnd.exception.FileSaveFailedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
@@ -27,12 +25,10 @@ import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
-import com.dabeen.dnd.service.AwsS3Service;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +55,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     @Autowired
     private HelpSupplCompApiService helpSupplCompApiService;
-    
-    @Autowired
-    private AwsS3Service awsS3Service; // AWS S3에 이미지를 저장하기 위해서
 
 
     // 사용자 생성, 회원가입
@@ -125,14 +118,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
                         // 비밀번호 암호화
                         String encryPwd = passwordEncoder.encode(userApiRequset.getPwd());
-
-                        // 이미지를 AWS S3에 저장하고 경로명 반환
-                        String picPath = null;
-                        try {
-                            picPath = awsS3Service.upload(userApiRequset.getPic(), "user", user.getUserNum());
-                        } catch (IOException e) {
-                            throw new FileSaveFailedException();
-                        }
                         
                         user.setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())
@@ -143,7 +128,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                             .setItdcCont(userApiRequset.getItdcCont())
                             .setSupplWhet(userApiRequset.getSupplWhet())
                             .setBlonSggName(userApiRequset.getBlonSggName())
-                            .setPicPath(picPath)
+                            .setPicPath(userApiRequset.getPicPath())
                             .setAvgRate(userApiRequset.getAvgRate())
                             .setOwnMileage(userApiRequset.getOwnMileage());
                         return user;

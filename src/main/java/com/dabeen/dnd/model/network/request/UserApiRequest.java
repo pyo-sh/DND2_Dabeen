@@ -61,7 +61,7 @@ public class UserApiRequest {
     @NotEmpty(message = "값이 존재해야 합니다.")
     private String blonSggName; // 소속시군구명
     
-    private MultipartFile pic; // 사진 경로명
+    private String picPath; // 사진 경로명
     
     private String rrnRear; // 주민번호 뒷자리
     
