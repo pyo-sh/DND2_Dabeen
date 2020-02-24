@@ -144,26 +144,19 @@ export const initialState = {
   helpPosts: [
     {
       id: 1,
+      helpPostDate: "2020-02-24 11:23:13",
       postName: "망치 빌려주세요.", //게시글 제목
       category: "심부름", //카테고리
-      postDeadline: {
-        //신청 마감 일시
-        date: "2020-03-07",
-        time: "06:19"
-      },
-      executionDate: {
-        //수행 일시
-        date: "2020-03-08",
-        time: "06:19"
-      },
+      helpDeadline: "2020-02-24 23:23:10",  // 마감 일시
+      helpExec: "2020-03-08 14:06:19", // 수행 일시
       needPersonnel: 3, //필요 인원
-      money: 3000, //금액
-      location: "창원시 의창구", //이행 위치
+      price: 3000, //금액
+      execLoc: "경남 창원시 의창구 남산로 20", //이행 위치
       sigungu: "의창구", //이행 시군구
-      requirements: "열정페이로 일하실분 우대합니다!", //요구사항
+      content: "열정페이로 일하실분 우대합니다!", //요구사항
     }
   ],
-  imagesPaths: [], //사진 첨부, 여러개 올릴 수 있음
+  imagePaths: [], //사진 첨부, 여러개 올릴 수 있음
   totalPages : 1,
   helpsPerPage : 0,
   totalHelps : 0,
@@ -379,7 +372,7 @@ const reducer = (state = initialState, action) => {
       }
       case UPLOAD_IMAGE_SUCCESS: {
         action.data.map(p => {
-          draft.imagesPaths.push(p);
+          draft.imagePaths.push(p);
         });
         break;
       }
