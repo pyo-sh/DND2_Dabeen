@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { Input, DatePicker, TimePicker, Select, Button, Row, Col } from "antd";
+import inputChangeHook from '../../hooks/inputChangeHook';
 
 const { Option } = Select;
 
@@ -10,8 +11,10 @@ const PostSearch = ({ categoryNum }) => {
   const [helpApplyTime, setHelpApplyTime] = useState(""); // 게시글 신청 마감 일시 시간
   const [helpExecDate, setHelpExecDate] = useState(""); // 도움 수행 일시 날짜
   const [helpExecTime, setHelpExecTime] = useState(""); // 도움 수행 일시 시간
-  const [helpPrice, setHelpPrice] = useState(""); // 게시글 가격 값
+  const [minPrice, setMinPrice] = useState(""); // 최소가격 값
+  const [maxPrice, setMaxPrice] = useState(""); // 가격 값
   const [helpPriceRange, setHelpPriceRange] = useState(); // 게시글 가격 범위
+  const [helpKeyword, setHelpKeyword] = inputChangeHook('');
 
   // 지역 검색 Input 이 바뀔 때 마다 실행하는 함수
   const onChangeLocation = useCallback(e => {
@@ -29,16 +32,17 @@ const PostSearch = ({ categoryNum }) => {
       setStateFunc(string);
     }, []);
 
-  // 가격대 검색 Input이 바뀔 때 마다 실행하는 함수
-  const onChangePrice = useCallback(e => {
-    const targetString = e.target.value; // Input창의 value 값
-    let deleteString = targetString.replace(/[0-9]/g, "");
-    if (!deleteString) setHelpPrice(e.target.value);
-  }, []);
-  // 가격대 범위 Select이 바뀔 때 마다 실행하는 함수
-  const onChangeRange = value => {
-    setHelpPriceRange(value);
-  };
+  // // 가격대 검색 Input이 바뀔 때 마다 실행하는 함수
+  // const onChangePrice = useCallback(e => {
+  //   const targetString = e.target.value; // Input창의 value 값
+  //   let deleteString = targetString.replace(/[0-9]/g, "");
+  //   if (!deleteString) setHelpPrice(e.target.value);
+  // }, []);
+  // // 가격대 범위 Select이 바뀔 때 마다 실행하는 함수
+  // const onChangeRange = value => {
+  //   setHelpPriceRange(value);
+  // };
+
   return (
     <PostSearchUpperDiv>
       <Row className="postsearchboxRow">
@@ -47,8 +51,8 @@ const PostSearch = ({ categoryNum }) => {
             <div className="postsearchboxTitle">지역</div>
             <div className="postsearchboxInputWrapper">
               <Input
-                className="postsearchboxInput"
-                placeholder="Write location"
+                className="postsearchboxLongInput"
+                placeholder="시/구를 입력하세요. ex)서울 강남구, 부산 남구"
                 value={helpLocation}
                 onChange={onChangeLocation}
               />
@@ -89,7 +93,14 @@ const PostSearch = ({ categoryNum }) => {
           <PostSearchBox>
             <div className="postsearchboxTitle">가격대</div>
             <div className="postsearchboxInputWrapper">
-              <Input
+              <span className="rangeInput">
+                <input className="inputPrice"type="number"/>원
+              </span>
+              <span style={{marginLeft: 2, marginRight: 2}}>~</span>
+              <span className="rangeInput">
+                <input className="inputPrice"type="number"/>원
+              </span>
+              {/* <Input 
                 className="postsearchboxInput"
                 placeholder="Write price"
                 value={helpPrice}
@@ -102,7 +113,18 @@ const PostSearch = ({ categoryNum }) => {
               >
                 <Option value="up">이상</Option>
                 <Option value="down">이하</Option>
-              </Select>
+              </Select> */}
+            </div>
+          </PostSearchBox>
+          <PostSearchBox>
+          <div className="postsearchboxTitle">키워드</div>
+            <div className="postsearchboxInputWrapper">
+              <Input
+                className="postsearchboxLongInput"
+                placeholder="키워드를 입력하세요"
+                value={helpKeyword}
+                onChange={setHelpKeyword}
+              />
             </div>
           </PostSearchBox>
         </Col>
@@ -153,14 +175,57 @@ const PostSearchBox = styled.div`
     padding-left: 10px;
   }
   & .postsearchboxInputWrapper {
+    display: flex;
     width: 100%;
     min-width: 270px;
-    max-width: 316px;
+    max-width: 290px;
+
+    & .rangeInput{
+      background: #FFFFFF;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      width: 100%;
+      min-width: 110px;
+      max-width: 140px;
+      height: 32px;
+      color: #BFC7CE;
+
+      :hover{
+        border-color: #40a9ff;
+      }
+    }
+    & .inputPrice{
+      width: 100%;
+      min-width: 80px;
+      max-width: 110px;
+      height: 22px;
+      border: none;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      text-align: right;
+      color: rgba(0, 0, 0, 0.65);
+      
+      :focus{
+        outline: none;
+      }
+    }
   }
+
+  /* input type="number"일 경우 생기는 화살표 제거 */
+  & input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+  
   & .postsearchboxGetData {
     display: flex;
   }
-
+  & .postsearchboxLongInput {
+    width: 100%;
+    min-width: 270px;
+    max-width: 290px;
+  }
   & .postsearchboxInput {
     width: 100%;
     min-width: 140px;
@@ -168,14 +233,14 @@ const PostSearchBox = styled.div`
   }
   & .postsearchboxDatePicker {
     width: 100%;
-    min-width: 140px;
-    max-width: 170px;
+    min-width: 110px;
+    max-width: 140px;
   }
   & .postsearchboxTimePicker {
     margin-left: 10px;
     width: 100%;
-    min-width: 120px;
-    max-width: 150px;
+    min-width: 110px;
+    max-width: 140px;
   }
   & .postsearchboxSelect {
     width: 85px;
@@ -183,6 +248,15 @@ const PostSearchBox = styled.div`
   }
   & .postsearchboxButton {
     justify-self: flex-end;
+  }
+  & .ant-select-arrow{
+      color: #FF4300;
+  }
+  & .ant-calendar-picker-icon{
+      color: #FF4300;
+  }
+  & .ant-time-picker-clock-icon{
+      color: #FF4300; 
   }
 `;
 
