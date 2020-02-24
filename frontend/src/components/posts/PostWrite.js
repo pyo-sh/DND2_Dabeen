@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { Select,  DatePicker, TimePicker, Icon, Button, Form, message, Row, Col } from 'antd';
+import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
 // import DatePicker from 'react-datepicker';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
@@ -84,47 +84,42 @@ const PostWrite = ({setInvisible}) => {
     return (
         <Modal>
             <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}}>
-            <DeleteIcon>    
-                <Icon onClick={setInvisible} type="close" style={{color:"#BFC7CE", marginRight: 10}}/>
-            </DeleteIcon>
-            <ContentFlex>
                 <Content>
+                    <DeleteIcon>    
+                        <Icon onClick={setInvisible} type="close" style={{color:"#BFC7CE", marginRight: 10}}/>
+                    </DeleteIcon>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
                     </Title>
                     <PostSetting>
-                        <Row className="postSettingBowRow">
-                            <Col xd={24} sm={21}>
-                                <PostSettingBox>
-                                    <div className="postSettingTitle">카테고리</div>
-                                    <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
-                                        {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
-                                    </Select>
-                                </PostSettingBox>
-                                <PostSettingBox>
-                                    <div className="postSettingTitle">신청 마감 일시</div>
-                                    <div className="postSettingGetData">
-                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
-                                    </div>
-                                </PostSettingBox>
-                                <PostSettingBox>
-                                    <div className="postSettingTitle">수행 일시</div>
-                                    <div className="postSettingGetData">
-                                        <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                        <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpExecTime)}/>
-                                    </div>
-                                </PostSettingBox>
-                                <PostSettingBox>
-                                    <div className="postSettingTitle">필요인원</div>
-                                    <input className="postSettingInput" type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
-                                </PostSettingBox>
-                                <PostSettingBox>
-                                    <div className="postSettingTitle">금액</div>
-                                    <input className="postSettingInput" type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
-                                </PostSettingBox>
-                            </Col>
-                        </Row>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">카테고리</div>
+                            <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
+                                {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
+                            </Select>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">신청 마감 일시</div>
+                            <div className="postSettingGetData">
+                                <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
+                                <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                            </div>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">수행 일시</div>
+                            <div className="postSettingGetData">
+                                <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
+                                <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                            </div>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">필요인원</div>
+                            <input className="postSettingInput" type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">금액</div>
+                            <input className="postSettingInput" type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
+                        </PostSettingBox>
                     </PostSetting>
                     <ContentItem>
                         <div>위치</div>  
@@ -152,23 +147,23 @@ const PostWrite = ({setInvisible}) => {
                     <UploadButton htmlType="submit">글 올리기</UploadButton>     
                     </div>
                 </Content>                  
-            </ContentFlex>
             </Form>
         </Modal>
     );
 };
 
 const Modal = styled.div`
-    background: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
     position: fixed;
     left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.25);
+    overflow: auto;
+    /* ::-webkit-scrollbar{display:none;}  스크롤바 안보이게 */
 `;
 
 const DeleteIcon = styled.div`
@@ -178,63 +173,49 @@ const DeleteIcon = styled.div`
     width: 100%;
     max-width: 600px;
     min-width: 300px;
-`;
-
-const ContentFlex = styled.div`
-    font-size: 20px;
-    color: #424242;
-    background: white;
-    padding: 1rem;
-    width: 100%;
-    max-width: 600px;
-    min-width: 300px;
-    height: 87vh;
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: auto;
-    ::-webkit-scrollbar{display:none;}  /* 스크롤바 안보이게 */
+    padding-right: 30px;
 `;
 
 const Content = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
-    height: 80vh;
+    max-width: 600px;
+    min-width: 300px;
+    padding: 30px;
+    margin: 60px 0;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 10px;
+
+    font-size: 20px;
+    color: #424242;
+    background: white;
 `;
 
 const Title = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     max-width: 550px;
     min-width: 250px;
     font-size: 40px;
+    margin-bottom: 20px;
 `;
 
 const PostSetting = styled.div`
     width: 100%;
     max-width: 550px;
-    min-width: 250px;
-    height: auto;
-    background: #F0F0F0;
-    border-radius: 8px;
-    font-size: 20px;
-    display: flex;
+    min-width: 230px;
+    padding: 10px;
+    margin-bottom: 20px;
 
-  & .postSettingBowRow{
-      display: flex;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 550px;
-      min-width: 250px;
-  }
+    display: flex;
+    flex-direction: column;
+
+    border-radius: 8px;
+    background: #F0F0F0;
+    font-size: 20px;
 `;
 
 const PostSettingBox = styled.div`
@@ -244,13 +225,10 @@ const PostSettingBox = styled.div`
     flex-wrap: wrap;
     width: 100%;
     max-width: 550px;
-    min-width: 250px;
+    min-width: 230px;
 
     & .postSettingTitle {
-        width: 50%;
-        min-width: 120px;
-        max-width: 160px;
-        padding-left: 10px;
+        min-width: 160px;
     }
     & .postSettingSelect{
         width: 130px;
@@ -288,7 +266,6 @@ const PostSettingBox = styled.div`
         height: 32px;
         padding-left: 2px;
         font-size: 15px;
-        margin-bottom: 1vh;
         color: #7a7a7a;
         :focus{
             outline: none;
@@ -322,15 +299,14 @@ const InputTitle = styled.input`
 `;
 
 const ContentItem = styled.div`
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     font-size: 25px;
-    margin-top: 25px;
-    width: 100%;
-    max-width: 550px;
-    min-width: 250px;
-    height: 300px;
 
     & > textarea {
         width: 100%;
@@ -351,7 +327,6 @@ const ContentItem = styled.div`
 `;
 
 const UploadImage = styled.div`
-    margin-top: 20px;
     width: 100%;
     max-width: 550px;
     min-width: 250px;

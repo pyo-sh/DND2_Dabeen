@@ -101,6 +101,43 @@ const dummyHelpPost2 = {
     }
   ]
 };
+const dummyUserHelpPost = {
+  transaction_time: "2020-02-23T01:21:12.2801793",
+  result_code: 200,
+  description: "OK",
+  data: [
+      {
+          help_num: "2002130003",
+          help_pstn_dttm: "2020-02-15T12:57:54",
+          cat_num: "1000",
+          cnsr_num: "2002160001",
+          title: "title",
+          exec_loc: "서울특별시",
+          price: 10000000,
+          pref_suppl_num: 10,
+          pref_help_exec_dttm: "2020-02-15T12:57:54",
+          help_aply_cls_dttm: "2020-02-15T12:57:54",
+          cont: "Contents",
+          help_aprv_whet: "n",
+          exec_sgg_name: "성북구"
+      },
+      {
+          help_num: "2002160001",
+          help_pstn_dttm: "2020-02-16T12:38:17",
+          cat_num: "1000",
+          cnsr_num: "2002160001",
+          title: "title",
+          exec_loc: "서울특별시",
+          price: 10000000,
+          pref_suppl_num: 10,
+          pref_help_exec_dttm: "2020-02-16T12:38:17",
+          help_aply_cls_dttm: "2020-02-16T12:38:17",
+          cont: "Contents",
+          help_aprv_whet: "n",
+          exec_sgg_name: "성북구"
+      }
+  ]
+}
 
 export const initialState = {
   livePosts : [],
@@ -131,6 +168,8 @@ export const initialState = {
   helpsPerPage : 0,
   totalHelps : 0,
 
+  userPosts: [],  // 유저가 작성한 도움
+
   isLoadingHelpPost: false,
   loadHelpPostErrorReason: "false",
   helpPostLoaded: false,
@@ -143,7 +182,10 @@ export const initialState = {
   helpPostUpdated: false, //도움 게시글 수정 성공
   removeHelpPostErrorReason: "", //도움 게시글 삭제 실패 사유
   isRemovingHelpPost: false, //도움 게시글 삭제 중
-  helpPostRemoved: false //도움 게시글 삭제 성공
+  helpPostRemoved: false, //도움 게시글 삭제 성공
+  isLoadingUserPost: false,
+  loadUserPostErrorReason: "false",
+  userPostLoaded: false,
 };
 // 실시간 도움 요청
 export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
@@ -169,6 +211,10 @@ export const REMOVE_HELPPOST_FAILURE = "REMOVE_HELPPOST_FAILURE";
 export const UPLOAD_IMAGE_REQUEST = "UPLOAD_IMAGE_REQUEST";
 export const UPLOAD_IMAGE_SUCCESS = "UPLOAD_IMAGE_SUCCESS";
 export const UPLOAD_IMAGE_FAILURE = "UPLOAD_IMAGE_FAILURE";
+
+export const LOAD_USERPOST_REQUEST = "LOAD_USERPOST_REQUEST";
+export const LOAD_USERPOST_SUCCESS = "LOAD_USERPOST_SUCCESS";
+export const LOAD_USERPOST_FAILURE = "LOAD_USERPOST_FAILURE";
 
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
@@ -205,6 +251,10 @@ export const removeHelpPostFailureAction = createAction(
 export const uploadImageRequestAction = createAction(UPLOAD_IMAGE_REQUEST);
 export const uploadImageSuccessAction = createAction(UPLOAD_IMAGE_SUCCESS);
 export const uploadImageFailureAction = createAction(UPLOAD_IMAGE_FAILURE);
+
+export const loadUserPostRequestAction = createAction(LOAD_USERPOST_REQUEST);
+export const loadUserPostSuccessAction = createAction(LOAD_USERPOST_SUCCESS);
+export const loadUserPostFailureAction = createAction(LOAD_USERPOST_FAILURE);
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -334,6 +384,50 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case UPLOAD_IMAGE_FAILURE: {
+        break;
+      }
+      case LOAD_USERPOST_REQUEST: {
+        draft.isLoadingUserPost = true;
+        draft.loadUserPostErrorReason = "";
+        draft.userPostLoaded = false;
+        break;
+      }
+      case LOAD_USERPOST_SUCCESS: {
+        draft.isLoadingUserPost = false;
+        draft.userPostLoaded = true;
+        draft.userPosts = dummyUserHelpPost.data.map(post => ({ // 더미포스트
+          helpNum: post.help_num, // 도움번호
+          helpTitle: post.title,  // 타이틀
+          helpPostDate: post.help_pstn_dttm, // 도움게시일시
+          categoryNum: post.cat_num, // 카테고리번호
+          price: post.price, // 금액
+          content: post.cont, // 내용
+          userNum: post.cnsr_num,// 수요자번호
+          isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          postNum: post.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+          location: post.exec_loc, // 이행장소
+          // exec_sgg_name
+        }));
+        // draft.userPosts = action.data.map(post => ({
+        //   helpNum: post.help_num, // 도움번호
+        //   helpTitle: post.title,  // 타이틀
+        //   helpPostDate: post.help_pstn_dttm, // 도움게시일시
+        //   categoryNum: post.cat_num, // 카테고리번호
+        //   price: post.price, // 금액
+        //   content: post.cont, // 내용
+        //   userNum: post.cnsr_num,// 수요자번호
+        //   isHelpApprove: post.help_aprv_whet, // 도움승인여부
+        //   postNum: post.pref_suppl_num, // 선호공급자수
+        //   helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+        //   location: post.exec_loc, // 이행장소
+        //   // exec_sgg_name
+        // }));
+        break;
+      }
+      case LOAD_USERPOST_FAILURE: {
+        draft.isLoadingUserPost = false;
+        draft.loadUserPostErrorReason = action.data.error;
         break;
       }
       default:

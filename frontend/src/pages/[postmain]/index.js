@@ -27,17 +27,17 @@ const Postmain = ({categoryNum, search}) => {
   // 보고자 하는 카테고리가 바뀔 때 보여주는 Title을 결정해주는 함수
   const getTitle = useCallback(() => {
     switch (categoryNum) {
-      case "errand":
+      case 1000:
         return {
           mainTitle: "심부름",
           subTitle: "간단한 심부름을 도와주세요!"
         };
-      case "rental":
+      case 2000:
         return {
           mainTitle: "대여",
           subTitle: "물건을 잠시 맡겨보아요!"
         };
-      case "chores":
+      case 3000:
         return {
           mainTitle: "잡일",
           subTitle: "부족한 일손을 채워보아요!"

@@ -48,7 +48,7 @@ const Terms = () => {
       privacyInfoCheck={privacyInfoCheck}
     >
       <div className="termsWrap">
-        <h1>DaBeen</h1>
+        <h1 className="termTitle">DaBeen</h1>
         <div>
           이용약관, 개인정보 수집 및 이용에 모두 동의합니다.
           <button className="checkButton terms" onClick={termsCheckOnClick}>
@@ -97,7 +97,7 @@ const TermsWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 65px;
+  margin: 50px 0;
   & .termsWrap {
     width: 60%;
     max-width : 550px;
@@ -105,9 +105,12 @@ const TermsWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid grey;
+    border: 1px solid #bfc7ce;
     border-radius: 7px;
     padding : 15px;
+    & .termTitle{
+      font-size: 30px;
+    }
     & .checkButton {
       border: none;
       background: none;
@@ -119,6 +122,9 @@ const TermsWrapper = styled.div`
       justify-content: center;
       align-items: center;
       margin: 10px 0;
+      & span{
+        margin: 7px 0;
+      }
     }
     & .terms {
       color: ${props => (props.termsCheck ? "green" : "grey")};
@@ -132,10 +138,13 @@ const TermsWrapper = styled.div`
     & .term {
       width: 100%;
       height: 15vh;
-      border: 1px solid grey;
+      border: 1px solid #bfc7ce;
+      border-radius: 4px;
+      padding: 10px;
     }
     & .termDanger {
       color: red;
+      margin: 20px 0 15px 0;
     }
 
     & > button {

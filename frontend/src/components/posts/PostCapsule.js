@@ -25,7 +25,7 @@ const PostCapsule = ({ data }) => {
           </div>
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              <div className="CapsuleMainPicture">사진{data.helpPickList}</div>
+              <img className="CapsuleMainPicture" src={''}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>
@@ -83,18 +83,17 @@ const PostCapsuleUpperDiv = styled.div`
       & .CapsuleMainPicture {
         width: 70px;
         height: 70px;
-        border: solid 1px #d0d0d0;
         border-radius: 50%;
-        text-align: center;
       }
       & .CapsuleMainUserInfo {
         display: flex;
         align-items: flex-end;
         text-align: start;
-        margin-top: -40px;
+        margin-top: -44px;
         padding-left: 110px;
         & .CapsuleMainNickname {
           font-size: 18px;
+          height: 27px;
         }
         & .CapsuleMainId {
           padding-left: 10px;
