@@ -84,7 +84,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         .pwd(encryPwd)
                         .email(userApiRequset.getEmail())
                         .nickname(userApiRequset.getNickname())
-                        .blonSggName(userApiRequset.getBlonSggName())
                         .rrnRear(userApiRequset.getRrnRear())
                         .build();
 
@@ -127,7 +126,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                             .setNickname(userApiRequset.getNickname())
                             .setItdcCont(userApiRequset.getItdcCont())
                             .setSupplWhet(userApiRequset.getSupplWhet())
-                            .setBlonSggName(userApiRequset.getBlonSggName())
                             .setPicPath(userApiRequset.getPicPath())
                             .setAvgRate(userApiRequset.getAvgRate())
                             .setOwnMileage(userApiRequset.getOwnMileage());
@@ -214,7 +212,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                                                         .nickname(user.getNickname())
                                                         .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
-                                                        .blonSggName(user.getBlonSggName())
                                                         .picPath(user.getPicPath())
                                                         .avgRate(user.getAvgRate())
                                                         .ownMileage(user.getOwnMileage())

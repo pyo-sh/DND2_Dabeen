@@ -14,11 +14,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import com.dabeen.dnd.model.enumclass.Whether;
 
@@ -62,8 +57,6 @@ public class User{
 
     @Enumerated(EnumType.STRING) // 여부에 해당되는 값을 지정하기 위해 enumclass로 처리
     private Whether supplWhet; // 공급자 여부
-
-    private String blonSggName; // 소속시군구명
 
     private String picPath; // 사진경로명
 

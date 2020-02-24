@@ -53,7 +53,6 @@ public class UserRepositoryTest extends DemoApplicationTests {
                         .nickname(nickname)
                         .itdcCont(itdcCont)
                         .supplWhet(supplWhet)
-                        .blonSggName(blonSggName)
                         .build();
         
         userMapper.insert(user);

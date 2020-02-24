@@ -17,17 +17,16 @@
         </selectKey>
         <!-- 공급자 여부, 자기소개 Default 값 적용을 위한 user 테이블 컬럼 명시적으로 표현 -->
         insert 
-            into user(user_num,user_name,birth_date,address,phone_num,id,pwd,email,nickname,blon_sgg_name,pic_path,rrn_rear,avg_rate,own_mileage)
+            into user
             values (#{userNum}, #{userName}, #{birthDate}, #{address}, #{phoneNum}, 
-                    #{userId}, #{pwd}, #{email}, #{nickname},
-                    #{blonSggName}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
+                    #{userId}, #{pwd}, #{email}, #{nickname}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
     </insert>
     <select id="selectFiveOderByRate" resultType="map" parameterType="string">
         <choose>
             <when test="value != null">
                 SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
-                WHERE blon_sgg_name = #{blonSggName} AND avg_rate IS NOT NULL
+                WHERE address LIKE CONCAT('%', #{blonSggName}, '%') AND avg_rate IS NOT NULL
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </when>
