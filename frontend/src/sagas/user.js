@@ -27,7 +27,7 @@ function* watchLoadUser() {
 function loginAPI(data) { 
     const reqData = {
         data : {
-            id: data.id,
+            user_id: data.id,
             pwd: data.password
         }
     }
@@ -39,8 +39,8 @@ function* login(action) {
         const result = yield call(loginAPI, action.data);
         action.data.loginMaintain ? localStorage.setItem("token", result.data.data.token) : sessionStorage.setItem("token", result.data.data.token)
         const tokenResult = jwt_decode(result.data.data.token);
-        const userNum = tokenResult.userNum;
-        const userId = tokenResult.id;
+        const userNum = tokenResult.user_num;
+        const userId = tokenResult.user_id;
         const userRole = tokenResult.role;
         // yield put(loginSuccessAction({token : result.data.data.token, loginMaintain : action.data.loginMaintain}));
         yield put(loginSuccessAction({userNum, userId, userRole}));

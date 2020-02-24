@@ -2,64 +2,64 @@ import produce from "immer";
 import { createAction } from "./actionFunction";
 // 나 자신이 아닌 다른사람의 정보를 저장하는 State
 
-const dummyState = {
-  opponents: [
-    {
-      userNum: 12, // 유저번호
-      userId: "vytjrgns",
-      userName: "표석훈",
-      email: "pyo@naver.com",
-      birthDate: "1997-06-09",
-      nickName: "pyo",
-      address: "부산광역시 남구",
-      phoneNumber: "010xxxxxxxx",
-      blonSggName: "부산광역시 남구", // 소속시군구명
-      isDabeener: false, // 다비너 여부
+// const dummyState = {
+//   opponents: [
+//     {
+//       userNum: 12, // 유저번호
+//       userId: "vytjrgns",
+//       userName: "표석훈",
+//       email: "pyo@naver.com",
+//       birthDate: "1997-06-09",
+//       nickName: "pyo",
+//       address: "부산광역시 남구",
+//       phoneNumber: "010xxxxxxxx",
+//       blonSggName: "부산광역시 남구", // 소속시군구명
+//       isDabeener: false, // 다비너 여부
 
-      // 공급자일 경우 필수
-      picPath: null, // 프로필사진 주소
-      rrnRear: null, // 주민 번호 뒷자리
-      avgRate: null, // 평점 평균
-      ownMilege: null // 소유 마일리지
-    },
-    {
-      userNum: 132, // 유저번호
-      userId: "chlwjddms",
-      userName: "최정은",
-      email: "choi@naver.com",
-      birthDate: "1998-03-08",
-      nickName: "choi",
-      address: "부산광역시 남구",
-      phoneNumber: "010xxxxxxxx",
-      blonSggName: "부산광역시 남구", // 소속시군구명
-      isDabeener: false, // 다비너 여부
+//       // 공급자일 경우 필수
+//       picPath: null, // 프로필사진 주소
+//       rrnRear: null, // 주민 번호 뒷자리
+//       avgRate: null, // 평점 평균
+//       ownMilege: null // 소유 마일리지
+//     },
+//     {
+//       userNum: 132, // 유저번호
+//       userId: "chlwjddms",
+//       userName: "최정은",
+//       email: "choi@naver.com",
+//       birthDate: "1998-03-08",
+//       nickName: "choi",
+//       address: "부산광역시 남구",
+//       phoneNumber: "010xxxxxxxx",
+//       blonSggName: "부산광역시 남구", // 소속시군구명
+//       isDabeener: false, // 다비너 여부
 
-      // 공급자일 경우 필수
-      picPath: null, // 프로필사진 주소
-      rrnRear: null, // 주민 번호 뒷자리
-      avgRate: null, // 평점 평균
-      ownMilege: null // 소유 마일리지
-    },
-    {
-      userNum: 134, // 유저번호
-      userId: "rlfgusqls",
-      userName: "길현빈",
-      email: "kil@naver.com",
-      birthDate: "1999-00-00",
-      nickName: "kil",
-      address: "부산광역시 남구",
-      phoneNumber: "010xxxxxxxx",
-      blonSggName: "부산광역시 남구", // 소속시군구명
-      isDabeener: false, // 다비너 여부
+//       // 공급자일 경우 필수
+//       picPath: null, // 프로필사진 주소
+//       rrnRear: null, // 주민 번호 뒷자리
+//       avgRate: null, // 평점 평균
+//       ownMilege: null // 소유 마일리지
+//     },
+//     {
+//       userNum: 134, // 유저번호
+//       userId: "rlfgusqls",
+//       userName: "길현빈",
+//       email: "kil@naver.com",
+//       birthDate: "1999-00-00",
+//       nickName: "kil",
+//       address: "부산광역시 남구",
+//       phoneNumber: "010xxxxxxxx",
+//       blonSggName: "부산광역시 남구", // 소속시군구명
+//       isDabeener: false, // 다비너 여부
 
-      // 공급자일 경우 필수
-      picPath: null, // 프로필사진 주소
-      rrnRear: null, // 주민 번호 뒷자리
-      avgRate: null, // 평점 평균
-      ownMilege: null // 소유 마일리지
-    }
-  ]
-};
+//       // 공급자일 경우 필수
+//       picPath: null, // 프로필사진 주소
+//       rrnRear: null, // 주민 번호 뒷자리
+//       avgRate: null, // 평점 평균
+//       ownMilege: null // 소유 마일리지
+//     }
+//   ]
+// };
 export const initialState = {
   // 다른사람의 정보
   opponents: {},
@@ -121,12 +121,12 @@ const reducer = (state = initialState, action) => {
       case LOAD_RECOMMEND_SUCCESS: {
         draft.recommendOpponents = action.data.map(recommend => (
             {
-            userId : recommend.id,
+            userId : recommend.user_id,
             userNum : recommend.user_num,
             userName : recommend.user_name,
             nickname : recommend.nickname,
             avgRate : recommend.avg_rate,
-            picPath : recommend.pic_path,
+            pic : recommend.pic,
           }
         ))
         break;

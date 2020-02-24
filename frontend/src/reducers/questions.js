@@ -74,21 +74,14 @@ const reducer = (state = initialState, action) => {
         draft.myQuestions = action.data.map(question => (
             {
                 questionNum : question.post_num, // 게시글번호
-                questionType : question.post_type, // 게시글 구분 q 질문 a 답변
                 questionTitle : question.title, // 제목
-                questionDate : qusestion.quest_pstn_dttm, // 질문게시일시
-                questionUserNum: question.quester_num, // 질문자번호
-                questionReplyDate : question.rply_pstn_dttm, // 답변게시일시
-                questionReplyUserNum : question.rplyer_num, // 답변자번호
+                questionDate : qusestion.pstn_dttm, // 질문게시일시
+                questionUserNum: question.pstner_num, // 질문자번호
                 questionReplyPost : question.rply_post ? {
-                    questionNum : question.rply_post.post_num,
-                    questionType : question.rply_post.post_type,
-                    questionTitle : question.rply_post.title,
-                    questionDate : qusestion.rply_post.quest_pstn_dttm,
-                    questionUserNum: question.rply_post.quester_num,
-                    questionReplyDate : question.rply_post.rply_pstn_dttm,
-                    questionReplyUserNum : question.rply_post.rplyer_num,
-                    questionReplyPostNum : question.rply_post.quest_post_num
+                    replyNum : question.rply_post.post_num,
+                    replyTitle : question.rply_post.title,
+                    replyDate : qusestion.rply_post.pstn_dttm,
+                    replyUserNum: question.rply_post.pstner_num,
                 } : null,
             }
         ))

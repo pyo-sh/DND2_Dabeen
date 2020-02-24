@@ -229,7 +229,7 @@ const reducer = (state = initialState, action) => {
           userName: post.user_name, // 사용자명
           address: post.address, // 주소
           phoneNumber: post.phone_num, // 휴대폰번호
-          userId: post.id, // 아이디
+          userId: post.user_id, // 아이디
           email: post.email, // 이메일
           nickname: post.nickname, // 닉네임
           picPath: post.pic_path, // 사진경로명
@@ -310,7 +310,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_LIVEPOST_SUCCESS: {
         draft.livePosts = action.data.map(post => (
           {
-            userId : post.id,
+            userId : post.user_id,
             nickname : post.nickname,
             helpTitle: post.title,
             helpPostDate: help_pstn_dttm,

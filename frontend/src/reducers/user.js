@@ -47,7 +47,7 @@ export const initialState = {
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
-    picPath: null, // 프로필사진 주소
+    pic: null, // 프로필사진 주소
     rrnRear: null, // 주민 번호 뒷자리
     avgRate: null, // 평점 평균
     ownMilege: null // 소유 마일리지
@@ -228,7 +228,7 @@ const reducer = (state = initialState, action) => {
 
         draft.userInfo.blonSggName = action.data.blon_sgg_name;
         draft.userInfo.userRole = action.data.suppl_whet;
-        draft.userInfo.picPath = action.data.pic_path;
+        draft.userInfo.pic = action.data.pic;
         draft.userInfo.avgRate = action.data.avg_rate;
         draft.userInfo.rrnRear = action.data.rrn_rear;
         draft.userInfo.ownMilege = action.data.own_mileage;
