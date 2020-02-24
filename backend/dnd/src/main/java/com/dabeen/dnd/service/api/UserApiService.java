@@ -4,6 +4,7 @@
 package com.dabeen.dnd.service.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
+import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.service.BaseService;
@@ -166,7 +168,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     }
 
     // 내가 작성한 도움 API
-    public Header<List<HelpApiResponse>> searchWrittenHelps(String userNum, Pageable pageable) {
+    public Header<Map<String, Object>> searchWrittenHelps(String userNum, Pageable pageable) {
         Optional<User> optional = userRepository.findById(userNum);
    
         return optional.map(user -> {
@@ -180,23 +182,13 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                 responses.add(helpApiService.response(user.getHelps().get(i)));
             }
 
-            return responses;
-        }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
-    }
+            Map<String, Object> map = new HashMap<>();
+            map.put("page", new PageApiResponse(user.getHelps().size(), size));
+            map.put("list", responses);
 
-    // 내가 받은 평점 API
-    public Header<List<HelpSupplCompApiResponse>> searchProvidedHelps(String userNum, Pageable pageable) {
-        log.info("{}", userNum);
-        Optional<User> optional = userRepository.findById(userNum);
-
-        return optional.map(user -> {
-            List<HelpSupplCompApiResponse> responses = new ArrayList<>();
-
-            for (HelpSupplComp helpSupplComp : user.getHelpSupplComps())
-                responses.add(helpSupplCompApiService.response(helpSupplComp));
-
-            return responses;
-        }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
+            return map;
+        }).map(Header::OK)
+        .orElseThrow(() -> new NotFoundException("User"));
     }
 
     // User > UserApiResponse 를 위한 메소드
