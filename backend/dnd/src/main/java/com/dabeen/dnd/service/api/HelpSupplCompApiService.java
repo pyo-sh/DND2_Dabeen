@@ -140,8 +140,6 @@ public class HelpSupplCompApiService {
         List<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(userNum, Whether.y);
         List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
-        log.info("{}", helpSupplComps);
-
         Integer page = pageable.getPageNumber() - 1;
         Integer size = pageable.getPageSize();
         
