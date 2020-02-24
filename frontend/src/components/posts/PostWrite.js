@@ -6,7 +6,8 @@ import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'an
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import Upload from '../uploadImages/Upload';
-import { addHelpPostSuccessAction } from '../../reducers/posts';
+import { addHelpPostSuccessAction, uploadImageRequestAction } from '../../reducers/posts';
+import axios from 'axios';
 
 const categorys = ["심부름", "대여", "잡일"];   //카테고리
 
@@ -23,9 +24,9 @@ const PostWrite = ({setInvisible}) => {
     const [sigungu, setSigungu] = useState('');     //이행시군구명
     const [requirements, onChangeRequirements] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
-    const [urls, setUrls] = useState([]);           //도움 이미지 미리보기 위한 url
+    // const [urls, setUrls] = useState([]);           //도움 이미지 미리보기 위한 url
 
-    const {helpPosts} = useSelector(state => state.posts);
+    const {imagePaths} = useSelector(state => state.posts);
     const dispatch = useDispatch();
     const imageInput = useRef();
 
@@ -62,19 +63,23 @@ const PostWrite = ({setInvisible}) => {
     }, [postTitle]);
 
     //이미지 삭제
-    const deleteImage = useCallback(key => e =>{
-        setUrls(urls.filter(url => url.key !== key));
-        setImages(images.filter(image => image.key !== key));
-    }, [urls, images]);
+    // const deleteImage = useCallback(key => e =>{
+    //     setUrls(urls.filter(url => url.key !== key));
+    //     setImages(images.filter(image => image.key !== key));
+    // }, [urls, images]);
 
-    const onChangeImages = useCallback((e) => {
-        console.log(e.target.files);
+    const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
-        [].forEach.call(e.target.files, (f) => {
-            imageFormData.append('image', f);
-        });
-
-        dispatch(uploadImageRequestAction(imageFormData));
+        console.log(e.target.files[0]);
+        imageFormData.append('pic', e.target.files[0]);
+        console.log(imageFormData.get('pic'));
+        try{
+            const result = await axios.post('/pic/upload/help', imageFormData);
+            console.log(result);
+            setImages(prev => [...prev, result.data.data]);
+        }catch(e){
+            console.log(e.response);
+        }
     }, []);
 
     const onClickImageUpload = useCallback(() => {
@@ -83,33 +88,31 @@ const PostWrite = ({setInvisible}) => {
 
     return (
         <Modal>
-            <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}}>
+            <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}} encType="multipart/form-data">
                 <Content>
-                    <DeleteIcon>    
-                        <Icon onClick={setInvisible} type="close" style={{color:"#BFC7CE", marginRight: 10}}/>
-                    </DeleteIcon>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
+                        <Icon onClick={setInvisible} type="close" style={{fontSize: 35, color:"#BFC7CE", marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <PostSettingBox>
                             <div className="postSettingTitle">카테고리</div>
                             <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
-                                {categorys.map((_category, i) => <Select.Option value={_category} key={i}>{_category}</Select.Option>)}
+                                {categorys.map((_category) => <Select.Option value={_category} key={_category}>{_category}</Select.Option>)}
                             </Select>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">신청 마감 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                                <TimePicker className="postSettingTimePicker" format="hh:mm" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">수행 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                <TimePicker className="postSettingTimePicker" use12Hours format="h:mm a" minuteStep={10} onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                                <TimePicker className="postSettingTimePicker" format="hh:mm" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
@@ -131,8 +134,20 @@ const PostWrite = ({setInvisible}) => {
                     </ContentItem>
                     <UploadImage>
                         <div>사진첨부</div>
-                            <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages}/>
+                            <input type="file"  hidden ref={imageInput} onChange={onChangeImages}/>
                             <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button>
+                            <div className="previewImage">
+                                {images.map((v, i) => {
+                                    return (
+                                    <div key={v} className="imgBorder"> 
+                                    <div className="deleteIcon">
+                                        <Icon type="close" />
+                                    </div>
+                                    <img src={`/pic/upload/help`} alt={v}/> 
+                                    </div>
+                                    )
+                                })}
+                            </div>
                         {/* <Upload urls={urls} images={images} getUrls={setUrls} getImages={setImages}/> */}
                         {/* <div className="previewImage">
                             {images.length !== 0 ? 
@@ -164,16 +179,6 @@ const Modal = styled.div`
     background: rgba(0, 0, 0, 0.25);
     overflow: auto;
     /* ::-webkit-scrollbar{display:none;}  스크롤바 안보이게 */
-`;
-
-const DeleteIcon = styled.div`
-    font-size: 30px;
-    position: fixed;
-    text-align: right;
-    width: 100%;
-    max-width: 600px;
-    min-width: 300px;
-    padding-right: 30px;
 `;
 
 const Content = styled.div`
@@ -267,6 +272,9 @@ const PostSettingBox = styled.div`
         padding-left: 2px;
         font-size: 15px;
         color: #7a7a7a;
+        :hover{
+            border-color: #40a9ff;
+        }
         :focus{
             outline: none;
         }

@@ -6,11 +6,18 @@ import { Button, Avatar, Rate, Icon } from 'antd';
 const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
     const [visible, setVisible] = useState(click);
-    //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
+    const [count, setCount] = useState(0);
 
     const onClose = useCallback(() => {
         onModal(!visible);
     },[visible]);
+    
+    //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
+    // const choiceDabeener = useCallback(() => {
+    //     if(count <= needPersonnel){
+            
+    //     }
+    // }, []);
 
     return (
         <Modal>
@@ -60,7 +67,7 @@ const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
                                     </div>
                                     <div style={{fontSize:11}}>평점</div>
                                 </div>
-                                <ChoiceButton>선택</ChoiceButton>
+                                <ChoiceButton onClick={choiceDabeener}>선택</ChoiceButton>
                             </div>
                         </UserInfo>
                     </ApplyDabeener>

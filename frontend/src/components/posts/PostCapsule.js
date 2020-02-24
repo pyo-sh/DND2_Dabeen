@@ -34,7 +34,7 @@ const PostCapsule = ({ data }) => {
           </div>
         </div>
         <div className="CapsuleTitle">
-          <div className="CapsuleTitleMain">{data.helpTitle}</div>
+          <div className="CapsuleTitleMain">{data.postName}</div>
           {data.isHelpApprove ? (
             <div setcolor="true" className="CapsuleTitleCheck">
               마감
@@ -46,9 +46,9 @@ const PostCapsule = ({ data }) => {
           )}
         </div>
         <div className="CapsuleFinishTime">
-          신청 마감일 : {data.helpDeadLine}
+          신청 마감일 : {data.helpDeadline}
         </div>
-        <div className="CapsuleDoingTime">수행일 : {data.helpExecDate}</div>
+        <div className="CapsuleDoingTime">수행일 : {data.helpExec}</div>
       </PostCapsuleUpperDiv>
       {postDetailVisible ? (
         <PostDetail setVisible={setVisible} data={data} />
