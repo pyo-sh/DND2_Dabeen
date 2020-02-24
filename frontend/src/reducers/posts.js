@@ -127,7 +127,7 @@ export const initialState = {
       imagesPaths: [] //사진 첨부, 여러개 올릴 수 있음
     }
   ],
-  totalPages : 0,
+  totalPages : 1,
   helpsPerPage : 0,
   totalHelps : 0,
 

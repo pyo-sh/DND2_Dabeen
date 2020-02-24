@@ -22,7 +22,9 @@ const Login = ({clickLogin}) => {
         dispatch(loginRequestAction({id, password, loginMaintain}));
         clickLogin();
     },[id, password, loginMaintain]);
-
+    const closeLoginModal = useCallback(() => {
+        clickLogin(prev => !prev);
+    }, []);
     useEffect(() => {
         if(isLoginSuccess){
             Router.push('/');
@@ -48,11 +50,11 @@ const Login = ({clickLogin}) => {
                     </div>
                     <LoginButton htmlType="submit" loading={isLoggingIn}>로그인</LoginButton>
                     <ContentBottom>
-                        <div><Link href="/signup"><a>회원가입</a></Link></div>
+                        <div><Link href="/signup"><a onClick={closeLoginModal}>회원가입</a></Link></div>
                         <div className="idAndPasswordFind">
-                            <div><Link href="/findid"><a>아이디 찾기</a></Link> </div>
+                            <div><Link href="/findid"><a onClick={closeLoginModal}>아이디 찾기</a></Link> </div>
                             &nbsp; |  &nbsp;
-                            <div><Link href="/findpassword"><a>비밀번호 찾기</a></Link></div>
+                            <div><Link href="/findpassword"><a onClick={closeLoginModal}>비밀번호 찾기</a></Link></div>
                         </div>
                     </ContentBottom>
                 </Content>
