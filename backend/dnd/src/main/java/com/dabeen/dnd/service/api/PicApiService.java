@@ -24,12 +24,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Transactional
 @Service
-@Slf4j
-public class ImgApiService {
+public class PicApiService {
     @Autowired
     private AmazonS3 s3Client; // Aws S3 이용
 
@@ -43,13 +40,13 @@ public class ImgApiService {
         String path = bucketName + "/" + object + "/" + date.format(new Date());
 
         // 파일명이 겹치는 것을 방지하기 위해, UUID를 이용하여 파일의 저장 이름 변경
-        String fileName = UUID.randomUUID().toString();
+        String fileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
         
         ObjectMetadata omd = new ObjectMetadata();
         omd.setContentType(multipartFile.getContentType());
         omd.setContentLength(multipartFile.getSize());
         omd.setHeader("fileName", multipartFile.getOriginalFilename());
-        
+
         s3Client.putObject(new PutObjectRequest(path, fileName, multipartFile.getInputStream(), omd)
                                     .withCannedAcl(CannedAccessControlList.PublicRead)); // 아무나 접근 가능하도록
         
