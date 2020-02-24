@@ -19,13 +19,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostApiResponse {
     private String postNum; // 게시글 번호
+    private LocalDateTime pstnDttm; //게시글 작성 일시
     private PostType postType; // 게시글 구분
     private String title; // 제목
     private String cont;
-    private LocalDateTime questPstnDttm; // 질문게시일시
-    private String questerNum; // 질문자 번호
-    private LocalDateTime rplyPstnDttm; // 답변게시일시
-    private String rplyerNum; // 답변자 번호
+    private String questerNum; // 질문 작성자 번호 - 사용자
+    private String rplyerNum; // 답변 작성자 번호 - 관리자
     private String questPostNum; // 질문 게시글 번호
     private PostApiResponse rplyPost; // 답변
 }

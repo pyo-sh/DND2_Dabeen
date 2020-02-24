@@ -22,7 +22,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostApiRequest{
     private String postNum; // 게시글 번호
-    
+
+    private LocalDateTime pstnDttm; //게시글 작성 일시
+
     @NotNull(message = "값이 존재해야 합니다.")
     private PostType postType; // 게시글 구분
 
@@ -32,9 +34,9 @@ public class PostApiRequest{
     @NotEmpty(message = "값이 존재해야 합니다.")
     private String cont;
 
-    private LocalDateTime questPstnDttm; // 질문게시일시
-    private String questerNum; // 답변게시일시
-    private LocalDateTime rplyPstnDttm; // 답변게시일시
-    private String rplyerNum; // 답변자 번호
+    private String questerNum; // 질문 작성자 번호 - 사용자
+    
+    private String rplyerNum; // 답변 작성자 번호 - 관리자
+
     private String questPostNum; // 질문 게시글 번호
 }
