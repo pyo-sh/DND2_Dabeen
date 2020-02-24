@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button, Row, Col } from 'antd';
 import PostBasketCapsule from './PostBasketCapsule';
+import Router from 'next/router';
 
 const dummyBasketData = {
     transactionTime: '',
@@ -80,7 +81,13 @@ const dummyBasketHelp = {
         },
     },
 }
-const PostBasket = () => {
+const PostBasket = ({isMe}) => {
+    useEffect(() => {
+        if(!isMe) {
+            alert('자신만 볼 수 있는 페이지입니다.');
+            Router.push('/');
+        }
+    }, [isMe]);
     const [allPrice, setAllPrice] = useState(0);
     const [helpCount, setHelpCount] = useState(0);
     const renderPostBasketCapsule = () => {

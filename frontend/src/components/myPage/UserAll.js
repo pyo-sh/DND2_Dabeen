@@ -90,8 +90,8 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
             {pagename === 'userinfo' ? (<UserInfo userInfo={userInfo} isMe={isMe}/>) :
               pagename === 'takehelp' ? (<MyHelp helpType='take' />) :
                 pagename === 'givehelp' ? (<MyHelp helpType='give' />) :
-                  pagename === 'service' ? (<ServiceCenter />) :
-                    pagename === 'basket' ? (<PostBasket />) : null}
+                  pagename === 'service' ? (<ServiceCenter isMe={isMe} />) :
+                    pagename === 'basket' ? (<PostBasket isMe={isMe}/>) : null}
           </div>
         </section>
       </UserPageWrapper>

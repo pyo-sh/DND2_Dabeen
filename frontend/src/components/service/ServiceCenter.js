@@ -1,8 +1,9 @@
 //도움말
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import ServiceItem from "./ServiceItem";
 import ServiceQuestion from "./ServiceQuestion";
+import Router from 'next/router';
 const dummyMyQuestion = [
   {
     quetionNum: 1,
@@ -102,7 +103,13 @@ const dummyFaqs = [
     faqContent: "faq 내용",
   }
 ];
-const ServiceCenter = () => {
+const ServiceCenter = ({isMe}) => {
+  useEffect(() => {
+    if(!isMe){
+      alert('자신만 볼 수 있는 페이지입니다.');
+      Router.push('/');
+    } 
+  }, [isMe]);
   const [visible, setVisible] = useState(false);
   const showModal = useCallback(() => {
     setVisible(true);

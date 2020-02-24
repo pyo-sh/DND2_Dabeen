@@ -202,7 +202,7 @@ const reducer = (state = initialState, action) => {
         // 로그아웃 성공 했을 때 토큰 삭제
         localStorage.removeItem("token");
         sessionStorage.removeItem("token");
-        draft.userInfo = {};
+        draft.me = {};
         break;
       }
       case SIGN_UP_REQUEST: {
