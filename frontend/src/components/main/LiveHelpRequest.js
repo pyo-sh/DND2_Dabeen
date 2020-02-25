@@ -1,57 +1,106 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import styled from "styled-components";
 import { Divider, Avatar } from "antd";
 import Slick from "react-slick";
+import PostDetail from '../posts/PostDetail';
 
 const dummyLiveHelp = [
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
-    {
-        userId : "123",
-        nickname : "asdf",
-        title : "아무거나",
-        date : "2020-02-02",
-        location : "부산광역시 남구 대연동",
-        picture : "아무거나 이빈다!!"
-    },
+  {
+    id: 1,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  },
+  {
+    helpNum: 2,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  },
+  {
+    helpNum: 3,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  },
+  {
+    helpNum: 4,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  },
+  {
+    helpNum: 5,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  },
+  {
+    helpNum: 6,
+    userId: '123',
+    nickname: 'asdf',
+    picture: '아무거나 이빈다!!',
+    helpPostDate: '2020-02-24 11:23:13',
+    postName: '망치 빌려주세요.', //게시글 제목
+    category: '심부름', //카테고리
+    helpDeadline: '2020-02-24 23:23:10', // 마감 일시
+    helpExec: '2020-03-08 14:06:19', // 수행 일시
+    needPersonnel: 3, //필요 인원
+    price: 3000, //금액
+    execLoc: '경남 창원시 의창구 남산로 20', //이행 위치
+    sigungu: '의창구', //이행 시군구
+    content: '열정페이로 일하실분 우대합니다!' //요구사항
+  }
 ];
 
 function SampleNextArrow(props) { // 우 화살표
@@ -78,8 +127,17 @@ function SampleNextArrow(props) { // 우 화살표
 
 // 유즈이펙트로 가져온 유저 정보를 가지고 그려야함
 const LiveHelpRequest = () => {
+  const [ visible, setVisible ] = useState(false);
+  const [selectPost, setSelectPost] = useState(dummyLiveHelp[0]);
+
+  const onClickPost = useCallback((helpNum) => () => {
+    setSelectPost(dummyLiveHelp.filter(help => helpNum === help.helpNum)[0]);
+    setVisible(prev => !prev);
+  },[]);
+
   return (
     // <LiveHelpRequestForm>
+    <>
       <TestSlick 
       initialSlide={0}
       dots={true}
@@ -91,7 +149,7 @@ const LiveHelpRequest = () => {
       nextArrow = {<SampleNextArrow/>}
       prevArrow = {<SamplePrevArrow/>}>
           {dummyLiveHelp.map(help => (
-              <div key = {help.userId} className="liveHelpRequestFlex">
+              <div key = {help.helpNum} className="liveHelpRequestFlex" onClick={onClickPost(help.helpNum)}>
               <LiveHelpRequestContent>
                 {help.picture}
                 <Divider orientation="left" style={{ marginTop: "42%" }}/>
@@ -113,6 +171,8 @@ const LiveHelpRequest = () => {
             </div> 
           ))}
       </TestSlick>
+      {visible && <PostDetail setVisible={setVisible} data={selectPost}/>}
+      </>
   );
 };
 const TestSlick = styled(Slick)`
