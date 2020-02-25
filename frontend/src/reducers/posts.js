@@ -397,21 +397,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_USERPOST_SUCCESS: {
         draft.isLoadingUserPost = false;
         draft.userPostLoaded = true;
-        draft.userPosts = dummyUserHelpPost.data.map(post => ({ // 더미포스트
-          helpNum: post.help_num, // 도움번호
-          helpTitle: post.title,  // 타이틀
-          helpPostDate: post.help_pstn_dttm, // 도움게시일시
-          categoryNum: post.cat_num, // 카테고리번호
-          price: post.price, // 금액
-          content: post.cont, // 내용
-          userNum: post.cnsr_num,// 수요자번호
-          isHelpApprove: post.help_aprv_whet, // 도움승인여부
-          postNum: post.pref_suppl_num, // 선호공급자수
-          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          location: post.exec_loc, // 이행장소
-          // exec_sgg_name
-        }));
-        // draft.userPosts = action.data.map(post => ({
+        // draft.userPosts = dummyUserHelpPost.data.map(post => ({ // 더미포스트
         //   helpNum: post.help_num, // 도움번호
         //   helpTitle: post.title,  // 타이틀
         //   helpPostDate: post.help_pstn_dttm, // 도움게시일시
@@ -425,6 +411,20 @@ const reducer = (state = initialState, action) => {
         //   location: post.exec_loc, // 이행장소
         //   // exec_sgg_name
         // }));
+        draft.userPosts = action.data.map(post => ({
+          helpNum: post.help_num, // 도움번호
+          helpTitle: post.title,  // 타이틀
+          helpPostDate: post.help_pstn_dttm, // 도움게시일시
+          categoryNum: post.cat_num, // 카테고리번호
+          price: post.price, // 금액
+          content: post.cont, // 내용
+          userNum: post.cnsr_num,// 수요자번호
+          isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          postNum: post.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+          location: post.exec_loc, // 이행장소
+          // exec_sgg_name
+        }));
         break;
       }
       case LOAD_USERPOST_FAILURE: {

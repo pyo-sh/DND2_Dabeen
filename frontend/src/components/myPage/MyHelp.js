@@ -5,15 +5,15 @@ import styled from "styled-components";
 import { Row, Col, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
 
-const MyHelp = ({ helpType }) => {
+const MyHelp = ({ userNum, helpType }) => {
   const dispatch = useDispatch();
   const { userPosts } = useSelector(state => state.posts);
   // componentDidMount
   useEffect(() => {
-    dispatch(loadUserPostRequestAction({page:1, helpType}));
+    dispatch(loadUserPostRequestAction({ userNum, page:1, helpType }));
   }, []);
   // 페이지 바꿀 때 도움 요청
-  const onChangePagination = useCallback((page, pageSize) => {
+  const onChangePagination = useCallback(( userNum, page, pageSize) => {
     console.log(page, pageSize);
     dispatch(loadUserPostRequestAction({page, helpType}));
   }, []);
