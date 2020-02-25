@@ -17,8 +17,7 @@
         </selectKey>
         insert 
             into post
-            values (#{postNum}, #{postType}, #{title}, #{cont}, case when #{postType}='q' then now() else null end,
-                    #{questerNum}, case when #{postType}='a' then now() else null end, #{rplyerNum}, #{questPostNum})
+            values (#{postNum}, #{pstnerNum}, now(), #{postType}, #{title}, #{cont}, #{questPostNum})
 
     </insert>
 </mapper>

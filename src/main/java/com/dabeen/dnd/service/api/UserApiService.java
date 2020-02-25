@@ -3,8 +3,8 @@
 
 package com.dabeen.dnd.service.api;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.UserMapper;
 import com.dabeen.dnd.exception.AlreadyExistedException;
-import com.dabeen.dnd.exception.FileSaveFailedException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
@@ -25,14 +24,13 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
+import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
-import com.dabeen.dnd.service.AwsS3Service;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +57,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     @Autowired
     private HelpSupplCompApiService helpSupplCompApiService;
-    
-    @Autowired
-    private AwsS3Service awsS3Service; // AWS S3에 이미지를 저장하기 위해서
 
 
     // 사용자 생성, 회원가입
@@ -91,8 +86,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         .pwd(encryPwd)
                         .email(userApiRequset.getEmail())
                         .nickname(userApiRequset.getNickname())
-                        .blonSggName(userApiRequset.getBlonSggName())
-                        .rrnRear(userApiRequset.getRrnRear())
                         .build();
 
         userMapper.insert(user); // create 쿼리
@@ -125,14 +118,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
                         // 비밀번호 암호화
                         String encryPwd = passwordEncoder.encode(userApiRequset.getPwd());
-
-                        // 이미지를 AWS S3에 저장하고 경로명 반환
-                        String picPath = null;
-                        try {
-                            picPath = awsS3Service.upload(userApiRequset.getPic(), "user", user.getUserNum());
-                        } catch (IOException e) {
-                            throw new FileSaveFailedException();
-                        }
                         
                         user.setBirthDate(userApiRequset.getBirthDate())
                             .setAddress(userApiRequset.getAddress())
@@ -142,8 +127,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                             .setNickname(userApiRequset.getNickname())
                             .setItdcCont(userApiRequset.getItdcCont())
                             .setSupplWhet(userApiRequset.getSupplWhet())
-                            .setBlonSggName(userApiRequset.getBlonSggName())
-                            .setPicPath(picPath)
+                            .setPicPath(userApiRequset.getPicPath())
                             .setAvgRate(userApiRequset.getAvgRate())
                             .setOwnMileage(userApiRequset.getOwnMileage());
                         return user;
@@ -176,14 +160,17 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         Optional<User> optional = userRepository.findById(userNum);
 
         return optional.map(user -> {
-            List<PostApiResponse> responses = user.getQuests().stream().map(quest -> postApiService.response(quest))
-                    .collect(Collectors.toList());
+            List<PostApiResponse> responses = user.getQuests()
+                                                    .stream()
+                                                    .map(postApiService::response)
+                                                    .collect(Collectors.toList());
+           
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
     }
 
     // 내가 작성한 도움 API
-    public Header<List<HelpApiResponse>> searchWrittenHelps(String userNum, Pageable pageable) {
+    public Header<Map<String, Object>> searchWrittenHelps(String userNum, Pageable pageable) {
         Optional<User> optional = userRepository.findById(userNum);
    
         return optional.map(user -> {
@@ -197,23 +184,13 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                 responses.add(helpApiService.response(user.getHelps().get(i)));
             }
 
-            return responses;
-        }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
-    }
+            Map<String, Object> map = new HashMap<>();
+            map.put("page", new PageApiResponse(user.getHelps().size(), size));
+            map.put("list", responses);
 
-    // 내가 받은 평점 API
-    public Header<List<HelpSupplCompApiResponse>> searchProvidedHelps(String userNum, Pageable pageable) {
-        log.info("{}", userNum);
-        Optional<User> optional = userRepository.findById(userNum);
-
-        return optional.map(user -> {
-            List<HelpSupplCompApiResponse> responses = new ArrayList<>();
-
-            for (HelpSupplComp helpSupplComp : user.getHelpSupplComps())
-                responses.add(helpSupplCompApiService.response(helpSupplComp));
-
-            return responses;
-        }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
+            return map;
+        }).map(Header::OK)
+        .orElseThrow(() -> new NotFoundException("User"));
     }
 
     // User > UserApiResponse 를 위한 메소드
@@ -229,7 +206,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                                                         .nickname(user.getNickname())
                                                         .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
-                                                        .blonSggName(user.getBlonSggName())
                                                         .picPath(user.getPicPath())
                                                         .avgRate(user.getAvgRate())
                                                         .ownMileage(user.getOwnMileage())
