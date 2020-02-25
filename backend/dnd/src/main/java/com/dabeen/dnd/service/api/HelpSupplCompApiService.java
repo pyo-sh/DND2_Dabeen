@@ -5,7 +5,9 @@
 package com.dabeen.dnd.service.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,7 @@ import com.dabeen.dnd.model.network.request.HelpSupplCompApiRequest;
 import com.dabeen.dnd.model.network.response.HelpCompHelpInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
+import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.pk.HelpSupplCompPK;
 import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
@@ -133,16 +136,13 @@ public class HelpSupplCompApiService {
     }
 
     // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
-    public Header<List<HelpCompHelpInfoApiResponse>> searchHelps(String userNum, Pageable pageable){
+    public Header<Map<String, Object>> searchHelps(String userNum, Pageable pageable){
         List<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(userNum, Whether.y);
         List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
-
-        log.info("{}", helpSupplComps);
 
         Integer page = pageable.getPageNumber() - 1;
         Integer size = pageable.getPageSize();
         
-
         // pageable의 정보를 이용하여 페이지 처리
         for (int i = page; (i < page + size) && (i < helpSupplComps.size()); i++) {
             HelpSupplComp helpSupplComp = helpSupplComps.get(i);
@@ -158,7 +158,11 @@ public class HelpSupplCompApiService {
             responses.add(response);
         }
 
-        return Header.OK(responses);
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", new PageApiResponse(helpSupplComps.size(), size));
+        map.put("list", responses);
+
+        return Header.OK(map);
     }
 
     // HelpSupplComp > HelpSupplCompApiResponse

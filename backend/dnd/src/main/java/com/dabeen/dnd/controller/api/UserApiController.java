@@ -49,15 +49,8 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
 
     // 내가 작성한 도움 API, 페이징 처리
     @GetMapping("{userNum}/written-helps")
-    public Header<List<HelpApiResponse>> searchWrittenHelps(@PathVariable String userNum,
+    public Header<Map<String, Object>> searchWrittenHelps(@PathVariable String userNum,
             @PageableDefault(size = 15) Pageable pageable) {
         return userApiService.searchWrittenHelps(userNum, pageable);
-    }
-
-    // 내가 받은 평점 API
-    @GetMapping("{userNum}/provided-helps")
-    public Header<List<HelpSupplCompApiResponse>> searchProvidedHelps(@PathVariable String userNum,
-            @PageableDefault(size = 15) Pageable pageable) {
-        return userApiService.searchProvidedHelps(userNum, pageable);
     }
 }

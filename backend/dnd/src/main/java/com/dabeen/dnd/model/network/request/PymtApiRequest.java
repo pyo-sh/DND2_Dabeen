@@ -32,7 +32,6 @@ public class PymtApiRequest{
     @NotNull(message = "값이 존재해야 합니다.")
     private PymtMthdType pymtMthdType; // 결제방법구분
     
-    @NotNull(message = "값이 존재해야 합니다.")
     @Min(value = 0, message =  "값이 0 이상이어야 합니다.")
     private BigDecimal pymtPrice; // 결제금액
 
