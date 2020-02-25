@@ -23,22 +23,22 @@ public class HelpSupplCompRepositoryTest extends DemoApplicationTests{
     @Autowired
     private UserRepository userRepository;
 
-    @Test
-    public void create() {
-        String helpNum = "2002160001";
-        String supplNum = "2002170001";
-        Whether helpAprvWhet = Whether.n;
+    // @Test
+    // public void create() {
+    //     String helpNum = "2002160001";
+    //     String supplNum = "2002170001";
+    //     Whether helpAprvWhet = Whether.n;
         
-        HelpSupplComp helpSupplComp = HelpSupplComp.builder()
-                                                    .helpSupplCompPK(new HelpSupplCompPK())
-                                                    .help(helpRepository.getOne(helpNum))
-                                                    .suppler(userRepository.getOne(supplNum))
-                                                    .helpAprvWhet(helpAprvWhet)
-                                                    .build();
-        HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp);
+    //     HelpSupplComp helpSupplComp = HelpSupplComp.builder()
+    //                                                 .helpSupplCompPK(new HelpSupplCompPK())
+    //                                                 .help(helpRepository.getOne(helpNum))
+    //                                                 .suppler(userRepository.getOne(supplNum))
+    //                                                 .helpAprvWhet(helpAprvWhet)
+    //                                                 .build();
+    //     HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp);
         
-        Assert.assertNotNull(newHelpSupplComp);
-    }
+    //     Assert.assertNotNull(newHelpSupplComp);
+    // }
 
     @Test
     public void read(){

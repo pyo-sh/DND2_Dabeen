@@ -26,39 +26,40 @@ public class UserRepositoryTest extends DemoApplicationTests {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Test
-    public void create() {
-        userRepository.findById(null);
+    // @Test
+    // public void create() {
+    //     userRepository.findById(null);
         
-        String userName = "이은비";
-        String birthDate = "980515";
-        String address = "부산시 사하구 낙동대로 486번길 25";
-        String phoneNum = "010-2458-0000";
-        String id = "test2";
-        String pwd = "test1";
-        String email = "test!@ASd.ca";
-        String nickname = "Lihess";
-        String itdcCont = "안녕하세요";
-        Whether supplWhet = Whether.n;
-        String blonSggName = "사하구";
+    //     String userName = "이은비";
+    //     String birthDate = "980515";
+    //     String address = "부산시 사하구 낙동대로 486번길 25";
+    //     String phoneNum = "010-2458-0000";
+    //     String id = "test2";
+    //     String pwd = "test1";
+    //     String email = "test!@ASd.ca";
+    //     String nickname = "Lihess";
+    //     String itdcCont = "안녕하세요";
+    //     Whether supplWhet = Whether.n;
+    //     String blonSggName = "사하구";
 
-        User user = User.builder()
-                        .userName(userName)
-                        .birthDate(birthDate)
-                        .address(address)
-                        .phoneNum(phoneNum)
-                        .userId(id)
-                        .pwd(passwordEncoder.encode(pwd))
-                        .email(email)
-                        .nickname(nickname)
-                        .itdcCont(itdcCont)
-                        .supplWhet(supplWhet)
-                        .build();
+    //     User user = User.builder()
+    //                     .userName(userName)
+    //                     .birthDate(birthDate)
+    //                     .address(address)
+    //                     .phoneNum(phoneNum)
+    //                     .userId(id)
+    //                     .pwd(passwordEncoder.encode(pwd))
+    //                     .email(email)
+    //                     .nickname(nickname)
+    //                     .itdcCont(itdcCont)
+    //                     .supplWhet(supplWhet)
+    //                     .blonSggName(blonSggName)
+    //                     .build();
         
-        userMapper.insert(user);
+    //     userMapper.insert(user);
 
-        Assert.assertNotNull(userRepository.findById(user.getUserNum()));
-    }
+    //     Assert.assertNotNull(userRepository.findById(user.getUserNum()));
+    // }
 
     @Test
     public void read(){
@@ -77,19 +78,19 @@ public class UserRepositoryTest extends DemoApplicationTests {
         });
     }
 
-    @Test
-    public void delete(){
-        Optional<User> user = userRepository.findById("200203002");
+    // @Test
+    // public void delete(){
+    //     Optional<User> user = userRepository.findById("200203002");
 
-        Assert.assertTrue(user.isPresent()); // 유저가 존재함을 보증함.
+    //     Assert.assertTrue(user.isPresent()); // 유저가 존재함을 보증함.
 
-        user.ifPresent(selectUser -> { 
-           userRepository.delete(selectUser);
-        });
+    //     user.ifPresent(selectUser -> { 
+    //        userRepository.delete(selectUser);
+    //     });
 
-        Optional<User> deleteUser = userRepository.findById("200203002");
-        Assert.assertFalse(deleteUser.isPresent());
-    }
+    //     Optional<User> deleteUser = userRepository.findById("200203002");
+    //     Assert.assertFalse(deleteUser.isPresent());
+    // }
 
 }
     
