@@ -4,18 +4,28 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.entity.Pymt;
+import com.dabeen.dnd.model.enumclass.PymtMthdType;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
+import com.dabeen.dnd.model.network.request.BsktApiRequest;
+import com.dabeen.dnd.model.network.request.BsktCompApiRequest;
 import com.dabeen.dnd.model.network.request.PymtApiRequest;
+import com.dabeen.dnd.model.network.request.PymtExecutionApiRequest;
+import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.PymtApiResponse;
 import com.dabeen.dnd.repository.BsktRepository;
+import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +38,15 @@ import lombok.extern.slf4j.Slf4j;
 public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse, Pymt> {
     @Autowired
     private BsktRepository bsktRepository;
+
+    @Autowired
+    private BsktApiService bsktApiService;
+
+    @Autowired
+    private HelpSupplCompRepository helpSupplCompRepository;
+
+    @Autowired
+    private BsktCompApiService bsktCompApiService;
 
     @Override
     public Header<PymtApiResponse> create(Header<PymtApiRequest> request) {
@@ -42,8 +61,6 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         .pymtPrice(requestData.getPymtPrice())
                         .refdWhet(requestData.getRefdWhet())
                         .refdDttm(requestData.getRefdDttm())
-                        .bskt(bsktRepository.findById(requestData.getPymtNum())
-                                            .orElseThrow(() -> new NotFoundException("Bskt")))
                         .build();
               
         Pymt newPymt = baseRepository.save(pymt);
@@ -96,6 +113,50 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         })
                         .orElseThrow(() -> new NotFoundException("Pymt"));
     }
+
+    // 
+    public Header<?> execution(Header<PymtExecutionApiRequest> request){
+        PymtExecutionApiRequest requstData = request.getData();
+        BigDecimal price = new BigDecimal("0.0");
+        // 금액 합산을 위해. 한 트랜잭션 단위임으로 bskt를 통해 합산 금액을 못 불러옴
+
+        // Bskt를 생성함
+        BsktApiRequest bsktApiRequest = BsktApiRequest.builder()
+                                                    .bsktUserNum(requstData.getUserNum())
+                                                    .totalPrice(BigDecimal.valueOf(0))
+                                                    .mileageUseWhet(Whether.n)
+                                                    .build();
+
+        String bsktNum = bsktApiService.create(Header.OK(bsktApiRequest))
+                                        .getData().getBsktNum();
+        
+        // 입력받은 helpNums를 기반으로 공급자를 찾아 bsktComp을 생성
+        for(String helpNum : requstData.getHelpNums()){
+            List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
+            
+            for(HelpSupplComp helpSupplComp: helpSupplComps){
+                price = price.add(helpSupplComp.getHelp().getPrice());
+
+                BsktCompApiRequest bsktCompApiRequest = BsktCompApiRequest.builder()
+                                                                            .bsktNum(bsktNum)
+                                                                            .helpNum(helpNum)
+                                                                            .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
+                                                                            .indvHelpPrice(helpSupplComp.getHelp().getPrice())
+                                                                            .build();
+                bsktCompApiService.create(Header.OK(bsktCompApiRequest));
+            }
+        }
+
+        // bskt를 기반으로 pymt 생성
+        PymtApiRequest pymtApiRequest = PymtApiRequest.builder()
+                                                        .pymtNum(bsktNum)
+                                                        .pymtMthdType(PymtMthdType.c)
+                                                        .pymtPrice(price)
+                                                        .refdWhet(Whether.n)
+                                                        .build();
+        
+        return Header.OK(create(Header.OK(pymtApiRequest)).getData());
+    } 
 
     // Pymt > PymtApiResponse
     private PymtApiResponse response(Pymt pymt) {

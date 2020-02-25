@@ -27,7 +27,6 @@ public class BsktApiRequest{
     @NotEmpty(message = "값이 존재해야 합니다.")
     private String bsktUserNum; // 장바구니 사용자 번호
 
-    @NotNull(message = "값이 존재해야 합니다.")
     @Min(value = 0, message = "값이 0 이상이여야 합니다.")
     private BigDecimal totalPrice; // 합계금액
 
