@@ -31,12 +31,12 @@ public class AdminApiController extends CrudController<AdminApiRequest, AdminApi
         return adminApiService.login(request);
     }
 
-    @PostMapping("/findId")
+    @PostMapping("/find-id")
     public Header<?> findId(@RequestBody Header<FindApiRequest> request){
         return adminApiService.findId(request);
     }
 
-    @PostMapping("/findPwd")
+    @PostMapping("/find-pwd")
     public Header<?> findPwd(@RequestBody Header<FindApiRequest> request){
         return adminApiService.findPwd(request);
     }
