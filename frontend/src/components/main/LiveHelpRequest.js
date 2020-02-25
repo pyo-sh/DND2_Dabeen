@@ -6,7 +6,7 @@ import PostDetail from '../posts/PostDetail';
 
 const dummyLiveHelp = [
   {
-    id: 1,
+    helpNum: 1,
     userId: '123',
     nickname: 'asdf',
     picture: '아무거나 이빈다!!',
@@ -130,9 +130,10 @@ const LiveHelpRequest = () => {
   const [ visible, setVisible ] = useState(false);
   const [selectPost, setSelectPost] = useState(dummyLiveHelp[0]);
 
+  const toggleDetail = useCallback(() => setVisible(prev=> !prev),[]);
   const onClickPost = useCallback((helpNum) => () => {
     setSelectPost(dummyLiveHelp.filter(help => helpNum === help.helpNum)[0]);
-    setVisible(prev => !prev);
+    toggleDetail();
   },[]);
 
   return (
@@ -163,15 +164,15 @@ const LiveHelpRequest = () => {
               </LiveHelpRequestContent>
               <LiveHelpRequestContentInfo>
                 <div className="titleDate">
-                  <h3>{help.title}</h3>
-                  <div>{help.date}</div>
+                  <h3>{help.postName}</h3>
+                  <div>{help.helpDeadline}</div>
                 </div>
-                <div className="location">{help.location}</div>
+                <div className="location">{help.execLoc}</div>
               </LiveHelpRequestContentInfo>
             </div> 
           ))}
       </TestSlick>
-      {visible && <PostDetail setVisible={setVisible} data={selectPost}/>}
+      {visible && <PostDetail setVisible={toggleDetail} data={selectPost}/>}
       </>
   );
 };

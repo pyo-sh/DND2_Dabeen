@@ -81,9 +81,8 @@ const reducer = (state = initialState, action) => {
                 replyPost : question.rply_post ? {
                     replyNum : question.rply_post.post_num,
                     replyTitle : question.rply_post.title,
-                    replyContent: question.rply_post.content,
+                    replyContent: question.rply_post.cont,
                     replyDate : qusestion.rply_post.pstn_dttm,
-                    replyUserNum: question.rply_post.pstner_num,
                 } : null,
             }
         ))

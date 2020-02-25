@@ -79,9 +79,7 @@ const PostDetail = ({setVisible, data}) => {
                             </Popconfirm>
                             </>
                             }
-                            <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost} onCancel={edit} okText="네" cancelText="아니요">
                             <Icon onClick={setVisible} type="close"/>
-                            </Popconfirm>
                         </Icons>
                     </div>
                     <div className="titleDetail">

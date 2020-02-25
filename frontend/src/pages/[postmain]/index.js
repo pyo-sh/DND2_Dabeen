@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 const Postmain = ({categoryNum, search}) => {
   // const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
-  const { totalPages } = useSelector(state => state.posts);
+  const { totalPages, totalHelps } = useSelector(state => state.posts);
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
   useEffect(() => {
     setPostWriteVisible(false);
@@ -59,6 +59,7 @@ const Postmain = ({categoryNum, search}) => {
         </div>
         <PostSearch categoryNum={categoryNum} />
         <div className="postmainContent">
+          <div className='helpCount'>검색 된 도움 수 : {totalHelps}</div>
           <PostList categoryNum={categoryNum} />
         </div>
         <div
@@ -120,11 +121,18 @@ const PostUpperDiv = styled.div`
   }
   & .postmainContent {
     padding: 0 10px;
+    & .helpCount {
+      font-size: 20px;
+    }
   }
   & .postmainWrite {
     & .postmainWriteIcon {
-      width: 86px;
+      width: 78px;
       cursor: pointer;
+      transition: transform 0.3s;
+      &:hover {
+        transform: scale(1.05);
+      }
     }
     position: fixed;
     right: 57px;

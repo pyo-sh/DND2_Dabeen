@@ -141,7 +141,7 @@ const PostSearchUpperDiv = styled.div`
   margin: 10px 0;
   border-radius: 8px;
   background: #f0f0f0;
-  font-size: 18px;
+  font-size: 16px;
   & .postsearchboxRow{
       display: flex;
       align-items: flex-end;
@@ -154,20 +154,32 @@ const PostSearchUpperDiv = styled.div`
       height: 100%;
   }
   & .postsearchboxButton {
-      width: 100px;
+      width: 80px;
       margin-right: 10px;
       color: white;
-      background-color: #FF9644;
+      background-color: #ff4300;
       border: none;
+      transition: background 0.3s; 
+      &:hover {
+        background:rgb(255,67,0,0.8);
+      }
   }
 `;
 
 const PostSearchBox = styled.div`
   padding: 5px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-wrap: wrap;
   width: 90%;
+  & input {
+    height : 28px;
+    &:hover, :focus {
+      border : 1px solid #FF4300;
+      outline : none;
+      box-shadow : none;
+    }
+  }
   & .postsearchboxTitle {
     width: 50%;
     min-width: 130px;
@@ -179,7 +191,6 @@ const PostSearchBox = styled.div`
     width: 100%;
     min-width: 270px;
     max-width: 290px;
-
     & .rangeInput{
       background: #FFFFFF;
       border: 1px solid #d9d9d9;
@@ -187,11 +198,11 @@ const PostSearchBox = styled.div`
       width: 100%;
       min-width: 110px;
       max-width: 140px;
-      height: 32px;
+      height: 25px;
       color: #BFC7CE;
 
-      :hover{
-        border-color: #40a9ff;
+      &:hover, :focus{
+        border: 1px solid #FF4300;
       }
     }
     & .inputPrice{
@@ -235,6 +246,9 @@ const PostSearchBox = styled.div`
     width: 100%;
     min-width: 110px;
     max-width: 140px;
+    & input:read-only:hover {
+      border: 1px solid #FF4300;
+    }
   }
   & .postsearchboxTimePicker {
     margin-left: 10px;

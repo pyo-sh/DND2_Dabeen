@@ -215,7 +215,7 @@ const Menubar = styled.nav`
   }
   & .menuLeft {
     display: flex;
-    width: 70vw;
+    width: 80vw;
     & span .ant-input {
       & :hover,
       :focus {

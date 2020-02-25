@@ -27,7 +27,7 @@ const FindPassword = () => {
           email
         }
       };
-      await axios.post('/user/findPwd', reqData);
+      await axios.post('/user/find-pwd', reqData);
       alert('이메일을 확인해주세요!');
       Router.push('/login');
     },
