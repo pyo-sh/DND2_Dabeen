@@ -24,27 +24,27 @@ public class AdminRepositoryTest extends DemoApplicationTests{
     @Autowired
     private AdminMapper AdminMapper;
 
-    @Test
-    public void create() {
-        String adminName = "이은비";
-        String address = "부산시 사하구 낙동대로 486번길 25";
-        String phoneNum = "010-2458-0000";
-        String id = "test2";
-        String pwd = "test1";
-        String email = "test!@ASd.ca";
+    // @Test
+    // public void create() {
+    //     String adminName = "이은비";
+    //     String address = "부산시 사하구 낙동대로 486번길 25";
+    //     String phoneNum = "010-2458-0000";
+    //     String id = "test2";
+    //     String pwd = "test1";
+    //     String email = "test!@ASd.ca";
         
-        Admin admin = Admin.builder()
-                            .adminName(adminName)
-                            .address(address)
-                            .adminId(id)
-                            .pwd(pwd)
-                            .phoneNum(phoneNum)
-                            .email(email)
-                            .build();
-        AdminMapper.insert(admin);
+    //     Admin admin = Admin.builder()
+    //                         .adminName(adminName)
+    //                         .address(address)
+    //                         .adminId(id)
+    //                         .pwd(pwd)
+    //                         .phoneNum(phoneNum)
+    //                         .email(email)
+    //                         .build();
+    //     AdminMapper.insert(admin);
 
-        Assert.assertNotNull(adminRepository.findById(admin.getAdminNum()));
-    }
+    //     Assert.assertNotNull(adminRepository.findById(admin.getAdminNum()));
+    // }
 
     @Test
     public void read(){
