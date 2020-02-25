@@ -42,11 +42,10 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         Map<String, Object> postMap = new HashMap<>();
 
         postMap.put("postNum", null);
+        postMap.put("pstnerNum", requestData.getPstnerNum());
         postMap.put("postType", requestData.getPostType());
         postMap.put("title", requestData.getTitle());
         postMap.put("cont", requestData.getCont());
-        postMap.put("questerNum", requestData.getQuesterNum());
-        postMap.put("rplyerNum", requestData.getRplyerNum());
         postMap.put("questPostNum", requestData.getQuestPostNum());
 
         postMapper.insert(postMap);
@@ -102,13 +101,12 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
     public PostApiResponse response(Post post) {
         PostApiResponse postApiResponse = PostApiResponse.builder()
                                                         .postNum(post.getPostNum())
+                                                        .pstnerNum(post.getQuester() == null ? post.getRplyer().getAdminNum() : post.getQuester().getUserNum())
                                                         .postType(post.getPostType())
                                                         .title(post.getTitle())
                                                         .cont(post.getCont())
                                                         .pstnDttm(post.getPstnDttm())
                                                         // 연관관계에 있는 객체가 null이라면 해당 변수를 null로 설정
-                                                        .questerNum(post.getQuester() == null ? null : post.getQuester().getUserNum())
-                                                        .rplyerNum(post.getRplyer() == null ? null : post.getRplyer().getAdminNum())
                                                         .questPostNum(post.getQuestPost() == null ? null : post.getQuestPost().getPostNum())
                                                         .rplyPost(post.getRplyPost() == null ? null : response(post.getRplyPost()))
                                                         .build();  
@@ -127,23 +125,10 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
        
 
         // 질문자
-        if(post.getQuester() != null){
-            if(!requestData.getQuesterNum().equals(post.getQuester().getUserNum()))
-                throw new NotUpdateableException("questerNum");
-        } else {
-            if(requestData.getQuesterNum() != null)
-                throw new NotUpdateableException("questerNum");
-        }
-
-        // 답변자
-        if(post.getRplyer() != null){    
-            if(!requestData.getRplyerNum().equals(post.getRplyer().getAdminNum()))
-                throw new NotUpdateableException("rplyerNum");
-        } else {
-            if(requestData.getRplyerNum() != null)
-                throw new NotUpdateableException("rplyerNum");
-        }
-
+        if(!requestData.getPstnerNum().equals(post.getQuester().getUserNum()) 
+            || !requestData.getPstnerNum().equals(post.getRplyer().getAdminNum()))
+            throw new NotUpdateableException("pstnerNum");
+        
         // 답변할 질문 게시긑
         if(post.getQuestPost() != null){
             if(!requestData.getQuestPostNum().equals(post.getQuestPost().getPostNum()))
