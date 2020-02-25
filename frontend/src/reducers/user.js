@@ -1,37 +1,6 @@
 import produce from "immer";
 import { createAction } from './actionFunction';
 
-const dummyState = {
-  userInfo: {
-    userNum: 123, // 유저번호
-    userId: "ansrjsdn", 
-    userName: "문건우",
-    email: "ansejrrhkd@naver.com",
-    birthDate: "1995-06-01",
-    nickName: "moon",
-    address: "부산광역시 남구",
-    phoneNumber: "010xxxxxxxx",
-    blonSggName : "부산광역시 남구", // 소속시군구명
-    isDabeener: false, // 다비너 여부
-
-    // 공급자일 경우 필수
-    picPath: null, // 프로필사진 주소
-    rrnRear: null, // 주민 번호 뒷자리
-    avgRate: null, // 평점 평균
-    ownMilege: null // 소유 마일리지
-
-  },// 유저정보를 저장해야함.
-  isLoggingOut: false, // 로그아웃 시도중
-  logoutError: "", // 로그아웃 실패 사유
-  isLoggingIn: false, // 로그인 시도중
-  isLoginSuccess: false, // 로그인 성공 여부
-  loginError: "", // 로그인 실패 사유
-  isSigningup: false, //회원가입 시도중
-  signUpSuccess : false, // 회원가입 성공 여부
-  signUpError: "", // 회원 가입 실패
-  isUpdatingInfo: false, // 정보 업데이트중
-  updateError: "",
-}
 export const initialState = {
   me: {
     userNum: null, // 유저번호
@@ -43,7 +12,6 @@ export const initialState = {
     nickName: null,
     address: null,
     phoneNumber: null,
-    blonSggName : null, // 소속시군구명
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수

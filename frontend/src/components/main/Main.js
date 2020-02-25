@@ -10,13 +10,13 @@ import { loadLivePostRequestAction } from '../../reducers/posts';
 const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
-    const { me : { blonSggName }} = useSelector(state => state.user);
+    const { me : { address }} = useSelector(state => state.user);
     const { recommendOpponents } = useSelector(state => state.opponent);
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));
     }, []);
     useEffect(() => {
-        dispatch(loadRecommendRequest(blonSggName));
+        dispatch(loadRecommendRequest(address));
         getLivePost()();
     }, []);
     

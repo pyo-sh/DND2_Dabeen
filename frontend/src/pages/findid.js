@@ -21,7 +21,7 @@ const FindId = () => {
           email
         }
       };
-      await axios.post('/user/findId', reqData);
+      await axios.post('/user/find-id', reqData);
       alert('이메일을 확인해주세요!');
       Router.push('/login');
     },

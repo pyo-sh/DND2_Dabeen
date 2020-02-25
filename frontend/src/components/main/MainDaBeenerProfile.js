@@ -10,9 +10,10 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
         <Link
           href='/userpage/[usernum]/[pagename]'
           as={`/userpage/${user.userNum}/userinfo`}
+          key={user.userNum}
         >
           <a>
-            <MainDaBeenerProfileInfo key={user.userId}>
+            <MainDaBeenerProfileInfo >
               <Avatar size={100} icon='user' />
               <div>@{user.nickname}</div>
               <div style={{ fontSize: 12 }}>{user.userId}</div>
@@ -59,6 +60,13 @@ const MainDaBeenerProfileInfo = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 2vh;
+   
+  & span.ant-avatar{
+    transition : transform 0.3s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
   & .ant-rate {
     color: #ff4300;
   }
