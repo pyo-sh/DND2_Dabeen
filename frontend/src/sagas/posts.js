@@ -138,14 +138,15 @@ function* uploadImage(action) {
 function* watchUploadImage() {
     yield takeLatest(UPLOAD_IMAGE_REQUEST, uploadImage);
 };
-// function loadUserPostAPI(data) {
-//     return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
-// };
+
+function loadUserPostAPI(data) {
+    return axios.post(`/user/${data.userNum}/written-helps?page=${data.page}`);
+};
 
 function* loadUserPost(action) {
     try {
-        // const result = yield call(loadUserPostAPI, action.data);
-        yield put(loadUserPostSuccessAction(/*result.data.data*/action.data));
+        const result = yield call(loadUserPostAPI, action.data);
+        yield put(loadUserPostSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
         yield put(loadUserPostFailureAction(e));

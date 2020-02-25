@@ -52,24 +52,9 @@ const PostDetail = ({setVisible, data}) => {
 
     return (
         <Modal>
-            <ContentForm>
-                <Content>     
-                    <Icons>
-                        {edit&&
-                        <>
-                        <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])} onCancel={edit} okText="네" cancelText="아니요">
-                        <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
-                        </Popconfirm>
-                        <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.id)} onCancel={edit} okText="네" cancelText="아니요">
-                        <Icon type="delete" style={{marginRight: 10}} onClick={deletePost}/>
-                        </Popconfirm>
-                        </>
-                        }
-                        <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost} onCancel={edit} okText="네" cancelText="아니요">
-                        <Icon onClick={setVisible} type="close"/>
-                        </Popconfirm>
-                    </Icons>
-                    <Title>
+            <Content>
+                <Title>
+                    <div className="TitleWrapper">
                         {
                         !edit ? 
                         <div className="postTitle">
@@ -83,136 +68,135 @@ const PostDetail = ({setVisible, data}) => {
                         : 
                         <EditTitle value={editTitle} onChange={setEditTitle}/>
                         }
-                        <div className="titleDetail">
-                            <div>작성일 : {data.helpPostDate}</div>
-                            <div>작성자 : {data.id}</div>  
+                        <Icons>
+                            {edit&&
+                            <>
+                            <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])} onCancel={edit} okText="네" cancelText="아니요">
+                            <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
+                            </Popconfirm>
+                            <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.id)} onCancel={edit} okText="네" cancelText="아니요">
+                            <Icon type="delete" style={{marginRight: 10}} onClick={deletePost}/>
+                            </Popconfirm>
+                            </>
+                            }
+                            <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost} onCancel={edit} okText="네" cancelText="아니요">
+                            <Icon onClick={setVisible} type="close"/>
+                            </Popconfirm>
+                        </Icons>
+                    </div>
+                    <div className="titleDetail">
+                        <div>작성일 : {data.helpPostDate}</div>
+                        <div>작성자 : {data.id}</div>  
+                        {
+                            !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
+                            : 
+                            <Popconfirm placement="topLeft" title="수정하시겠습니까?" onConfirm={onConfirm} onCancel={edit} okText="네" cancelText="아니요">
+                                <Edit>완료</Edit>
+                            </Popconfirm>
+                        }         
+                    </div>
+                </Title>
+                <Image>근데 여기에 무슨 사진을 넣나요</Image>
+                <ApplicationInfo>
+                    <Row>
+                        <Col span={20}>
+                            <ApplicationInfoBox>
+                            <div className="applicationInfoBoxTitle">신청인원</div>
+                            { !edit ?
+                                <>
+                                <div style={{display: "flex"}} className="applicationInfoBoxDetail"><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/{data.needPersonnel}</div><button className="applyCheck" onClick={onModal}>신청 확인</button></div>      
+                                {click &&<CheckDabeener click ={click} onModal ={onModal} needPersonnel={data.needPersonnel} applyCheck={data.isHelpApprove}/>}
+                                </>
+                                :
+                                <div style ={{display:"flex"}}><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/<input className ="needPersonnel" value={editNeedPersonnel} onChange={setEditNeedPersonnel}/></div></div>
+                            }
+                            </ApplicationInfoBox>
+                            <ApplicationInfoBox>
+                            <div className="applicationInfoBoxTitle">신청 마감 일시</div>
                             {
-                                !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
+                                !edit ?
+                                <div className="applicationInfoBoxDetail">{data.helpDeadline}</div>
                                 : 
-                                <Popconfirm placement="topLeft" title="수정하시겠습니까?" onConfirm={onConfirm} onCancel={edit} okText="네" cancelText="아니요">
-                                    <Edit>완료</Edit>
-                                </Popconfirm>
-                            }         
-                        </div>
-                    </Title>
-                    <Image>근데 여기에 무슨 사진을 넣나요</Image>
-                    <ApplicationInfo>
-                        <Row>
-                            <Col span={20}>
-                                <ApplicationInfoBox>
-                                <div className="applicationInfoBoxTitle">신청인원</div>
-                                { !edit ?
-                                    <>
-                                    <div style={{display: "flex"}} className="applicationInfoBoxDetail"><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/{data.needPersonnel}</div><button className="applyCheck" onClick={onModal}>신청 확인</button></div>      
-                                    {click &&<CheckDabeener click ={click} onModal ={onModal} needPersonnel={data.needPersonnel} applyCheck={data.isHelpApprove}/>}
-                                    </>
-                                    :
-                                    <div style ={{display:"flex"}}><div><span style={{fontSize: 18, color: "#FF4300"}}>0</span>/<input className ="needPersonnel" value={editNeedPersonnel} onChange={setEditNeedPersonnel}/></div></div>
-                                }
-                                </ApplicationInfoBox>
-                                <ApplicationInfoBox>
-                                <div className="applicationInfoBoxTitle">신청 마감 일시</div>
+                                <>
+                                <DatePicker defaultValue ={moment(helpDeadline[0], dateFormat)}/>
+                                <TimePicker defaultValue={moment(helpDeadline[1], timeFormat)}/>
+                                </>
+                            }
+                            </ApplicationInfoBox>
+                            <ApplicationInfoBox>
+                            <div className="applicationInfoBoxTitle">수행 일시</div>
+                            {
+                                !edit ?
+                                <div className="applicationInfoBoxDetail">{data.helpExec}</div>
+                                :
+                                <DatePicker defaultValue ={moment(helpExec[0] ,dateFormat)}/>
+                            }
+                            </ApplicationInfoBox>
+                        </Col>
+                        <Col span={4}>
+                            <div className="applicationMoney">
                                 {
                                     !edit ?
-                                    <div className="applicationInfoBoxDetail">{data.helpDeadline}</div>
-                                    : 
                                     <>
-                                    <DatePicker defaultValue ={moment(helpDeadline[0], dateFormat)}/>
-                                    <TimePicker defaultValue={moment(helpDeadline[1], timeFormat)}/>
-                                    </>
-                                }
-                                </ApplicationInfoBox>
-                                <ApplicationInfoBox>
-                                <div className="applicationInfoBoxTitle">수행 일시</div>
-                                {
-                                    !edit ?
-                                    <div className="applicationInfoBoxDetail">{data.helpExec}</div>
-                                    :
-                                    <DatePicker defaultValue ={moment(helpExec[0] ,dateFormat)}/>
-                                }
-                                </ApplicationInfoBox>
-                            </Col>
-                            <Col span={4}>
-                                <div className="applicationMoney">
+                                    <div>{data.price}원</div>
                                     {
-                                        !edit ?
-                                        <>
-                                        <div>{data.price}원</div>
-                                        {
-                                            data.isHelpApprove ?
-                                            <DeadlineButton apply>마감 완료</DeadlineButton>:
-                                            <DeadlineButton>마감</DeadlineButton> 
-                                        }
-                                        </>
-                                        :  
-                                        <>      
-                                        <div style ={{color:"#424242", fontSize:"20px"}}>금액 수정 </div>
-                                        <div><input value ={editPrice} onChange ={setEditPrice}/></div>
-                                        </>
+                                        data.isHelpApprove ?
+                                        <DeadlineButton apply>마감 완료</DeadlineButton>:
+                                        <DeadlineButton>마감</DeadlineButton> 
                                     }
-                                </div>
-                            </Col>
-                        </Row>
-                    </ApplicationInfo>
-                    <ContentItem>
-                        <div>
-                            <div className="contentTitle">위치</div>
-                        </div>
-                        {
-                            !edit ?
-                            <div className="map">
-                                <div>{data.execLoc}</div>
-                                <MyLocation myLocation={data.execLoc}/>        
+                                    </>
+                                    :  
+                                    <>      
+                                    <div style ={{color:"#424242", fontSize:"20px"}}>금액 수정 </div>
+                                    <div><input value ={editPrice} onChange ={setEditPrice}/></div>
+                                    </>
+                                }
                             </div>
-                            :
-                            <SearchJuso location={editExecLoc} getLocation={setEditExecLoc}/>
-                        }
-                    </ContentItem>
-                    <ContentItem>
-                        <div className="contentTitle">도움정보</div>
-                        {
-                            !edit ?       
-                            <p>
-                            {data.content}
-                            </p>
-                            :
-                            <textarea required value={editContent} onChange={setEditContent}/>
-                        }
-                    </ContentItem>
-                </Content>
-            </ContentForm>
+                        </Col>
+                    </Row>
+                </ApplicationInfo>
+                <ContentItem>
+                    <div>
+                        <div className="contentTitle">위치</div>
+                    </div>
+                    {
+                        !edit ?
+                        <div className="map">
+                            <div>{data.execLoc}</div>
+                            <MyLocation myLocation={data.execLoc}/>        
+                        </div>
+                        :
+                        <SearchJuso location={editExecLoc} getLocation={setEditExecLoc}/>
+                    }
+                </ContentItem>
+                <ContentItem>
+                    <div className="contentTitle">도움정보</div>
+                    {
+                        !edit ?       
+                        <p>
+                        {data.content}
+                        </p>
+                        :
+                        <textarea required value={editContent} onChange={setEditContent}/>
+                    }
+                </ContentItem>
+            </Content>
         </Modal>
     );
 };
 
 const Modal = styled.div`
-    background: rgba(0, 0, 0, 0.25);
+    width: 100%;
+    height: 100%;
+    z-index: 1;
     position: fixed;
     left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    z-index: 1;
-`;
-
-const ContentForm = styled.div`
-    font-size: 20px;
-    color: #424242;
-    background: white;
-    padding: 1rem;
-    width: 50%;
-    max-width: 600px;
-    min-width: 300px;
-    height: 87vh;
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    background: rgba(0, 0, 0, 0.25);
     overflow: auto;
-    ::-webkit-scrollbar{display:none;}  
+    /* ::-webkit-scrollbar{display:none;}  스크롤바 안보이게 */
 `;
 
 const Icons = styled.div`
@@ -223,12 +207,19 @@ const Icons = styled.div`
 
 const Content = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
-    height: 85vh;
+    height: 100%;
+    max-width: 600px;
+    min-width: 300px;
+    padding: 30px;
+    margin: 60px 0;
+
     display: flex;
     flex-direction: column;
-    margin-top: 10px;
+    align-items: center;
+
+    font-size: 20px;
+    color: #424242;
+    background: white;
 `;
 
 const Title = styled.div`
@@ -238,12 +229,19 @@ const Title = styled.div`
     max-width: 550px;
     min-width: 250px;
     font-size: 40px;
+    margin-top: 15px;
 
-    & > .postTitle {
+    & .postTitle {
         display: flex;
         align-items:flex-end;
     }
-    & > .titleDetail{
+    & .TitleWrapper{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        
+    }
+    & .titleDetail{
         display: flex;
         justify-content: space-between;
         width: 100%;
