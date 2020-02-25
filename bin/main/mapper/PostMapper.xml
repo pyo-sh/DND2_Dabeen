@@ -17,8 +17,7 @@
         </selectKey>
         insert 
             into post
-            values (#{postNum}, now(), #{postType}, #{title}, #{cont},
-                    #{questerNum}, #{rplyerNum}, #{questPostNum})
+            values (#{postNum}, #{pstnerNum}, now(), #{postType}, #{title}, #{cont}, #{questPostNum})
 
     </insert>
 </mapper>
