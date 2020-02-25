@@ -39,7 +39,7 @@ public class UserLoginApiController {
         return  loginApiSerivce.login(request);
     }
 
-    @PostMapping("/findId")
+    @PostMapping("/find-id")
     public Header<?> findId(@RequestBody Header<FindApiRequest> request) {
         FindApiRequest reqDate = request.getData();
        
@@ -49,7 +49,7 @@ public class UserLoginApiController {
         return loginApiSerivce.findId(request);
     }
 
-    @PostMapping("/findPwd")
+    @PostMapping("/find-pwd")
     public Header<?> findPwd(@RequestBody Header<FindApiRequest> request) {
         FindApiRequest reqDate = request.getData();
        
