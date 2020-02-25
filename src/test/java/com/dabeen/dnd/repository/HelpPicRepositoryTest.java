@@ -25,39 +25,39 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
 public class HelpPicRepositoryTest {
 
-    @Autowired
-    HelpPicRepository helpPicRepository;
+    // @Autowired
+    // HelpPicRepository helpPicRepository;
 
-    @Autowired
-    HelpPicMapper helpPicMapper;    
+    // @Autowired
+    // HelpPicMapper helpPicMapper;    
 
-    @Before
-    public void setup(){
+    // @Before
+    // public void setup(){
 
-    }
+    // }
         
-    @Test
-    public void create() {
+    // @Test
+    // public void create() {
         
-        String helpNum = "2002130001";
+    //     String helpNum = "2002130001";
 
-        String path ="path test";
+    //     String path ="path test";
 
-        HelpPicPK helpPicPK = new HelpPicPK(helpNum, null);
+    //     HelpPicPK helpPicPK = new HelpPicPK(helpNum, null);
 
-        HelpPic helpPic = HelpPic.builder().helpPicPK(helpPicPK).path(path).build();
+    //     HelpPic helpPic = HelpPic.builder().helpPicPK(helpPicPK).path(path).build();
 
-        // helpPicMapper.insert(helpPic.getHelpPicPK().getHelpNum(),helpPic.getPath());
-        // helpPicMapper.insert(helpPic);
-        // HelpPicMapper.insert(helpPic,helpPic.getHelpPicPK().getHelpNum());
+    //     // helpPicMapper.insert(helpPic.getHelpPicPK().getHelpNum(),helpPic.getPath());
+    //     // helpPicMapper.insert(helpPic);
+    //     // HelpPicMapper.insert(helpPic,helpPic.getHelpPicPK().getHelpNum());
 
-        assertThat(helpPic.getHelpPicPK().getHelpNum(),is("2002130001"));
+    //     assertThat(helpPic.getHelpPicPK().getHelpNum(),is("2002130001"));
 
-    }
+    // }
 
     
     // @Test
@@ -90,26 +90,26 @@ public class HelpPicRepositoryTest {
     //     });        
     // }
 
-    @Transactional
-    @Test
-    public void delete() {
+    // @Transactional
+    // @Test
+    // public void delete() {
        
-        String helpNum = "2002130001";
-        Integer picOrnu = 1;
+    //     String helpNum = "2002130001";
+    //     Integer picOrnu = 1;
 
-        HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
+    //     HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
 
-        Optional<HelpPic> helpPic = helpPicRepository.findById(helpPicPK);
+    //     Optional<HelpPic> helpPic = helpPicRepository.findById(helpPicPK);
         
-        assertNotNull(helpPic.isPresent());
+    //     assertNotNull(helpPic.isPresent());
 
-        helpPic.ifPresent(selectHelpPic -> { 
-            helpPicRepository.delete(selectHelpPic);
-         });
+    //     helpPic.ifPresent(selectHelpPic -> { 
+    //         helpPicRepository.delete(selectHelpPic);
+    //      });
 
-         Optional<HelpPic> deleteHelp = helpPicRepository.findById(helpPicPK);
-         assertNotNull(deleteHelp.isPresent());
+    //      Optional<HelpPic> deleteHelp = helpPicRepository.findById(helpPicPK);
+    //      assertNotNull(deleteHelp.isPresent());
 
-    }
+    // }
 }
     

@@ -22,17 +22,17 @@ import com.dabeen.dnd.model.pk.MsgPK;
 
 import org.junit.Before;    
     
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
 public class MsgRepositoryTest {
 
-    @Autowired
-    private MsgRepository msgRepository;
+    // @Autowired
+    // private MsgRepository msgRepository;
 
-    @Before
-    public void setup(){
+    // @Before
+    // public void setup(){
 
-    }
+    // }
         
     // @Test
     // public void create() {

@@ -46,12 +46,12 @@ public class MileageUseHistRepositoryTest extends DemoApplicationTests {
     //     Assert.assertNotNull(newMileageUseHist);
     // }
 
-    @Test
-    public void read(){
-        MileageUseHistPK pk = new MileageUseHistPK("2002160001", LocalDateTime.of(2020, 02, 5, 12, 48, 36));
+    // @Test
+    // public void read(){
+    //     MileageUseHistPK pk = new MileageUseHistPK("2002160001", LocalDateTime.of(2020, 02, 5, 12, 48, 36));
 
-        Optional<MileageUseHist> optional = mileageUseHistRepository.findById(pk);
-        Assert.assertNotNull(optional.isPresent());
-    }
+    //     Optional<MileageUseHist> optional = mileageUseHistRepository.findById(pk);
+    //     Assert.assertNotNull(optional.isPresent());
+    // }
 }
     
