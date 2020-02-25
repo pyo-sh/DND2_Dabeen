@@ -29,7 +29,7 @@ const AllDiv = styled.div`
   display: flex;
   flex-direction: column;
   & .childrenWrapper {
-    margin-top: 12vh;
+    margin-top: 11vh;
     min-height: 80vh;
   }
 `;

@@ -55,14 +55,7 @@ const SignUpMain = () => {
     /[@.]/g
   ]); // 이메일 state
   const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num]);
-  const [mainAddress, changeMainAddress] = inputCheckChangeHook("", [
-    check_eng,
-    check_num,
-    check_kor,
-    check_spa,
-    /[,.:;'"]/g
-  ]);
-  const [subAddress, changeSubAddress] = inputCheckChangeHook("", [
+  const [address, changeAddress] = inputCheckChangeHook("", [
     check_eng,
     check_num,
     check_kor,
@@ -128,8 +121,7 @@ const SignUpMain = () => {
           birthDay,
           email,
           telephone,
-          mainAddress,
-          subAddress
+          address,
         };
         dispatch(signUpRequestAction(userLog)); // 회원가입 요청
       }
@@ -144,8 +136,7 @@ const SignUpMain = () => {
       birthDay,
       email,
       telephone,
-      mainAddress,
-      subAddress,
+      address,
 
       isPasswordChecked,
     ]
@@ -255,15 +246,9 @@ const SignUpMain = () => {
           <div className="SignupContentTitle">주소 *</div>
           <DabeenInput
             type="text"
-            placeholder="시"
-            value={mainAddress}
-            onChangeFunc={changeMainAddress}
-          />
-          <DabeenInput
-            type="text"
-            placeholder="면/읍/리?"
-            value={subAddress}
-            onChangeFunc={changeSubAddress}
+            placeholder="시 면/읍/리 ~"
+            value={address}
+            onChangeFunc={changeAddress}
           />
              {signUpError && <div className="SignupContentCheck">
               {signUpError}

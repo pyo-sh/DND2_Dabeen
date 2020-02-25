@@ -12,7 +12,7 @@ const UserInfo = ({ userInfo, isMe }) => {
     }, []);
     return (
         isChanging
-        ?   <ModifyUser/>
+        ?   <ModifyUser userInfo={userInfo} onClickCancel={onClickEdit}/>
         :<UserInfoWrapper>
             <div className="userinfoTitle">
                 회원정보

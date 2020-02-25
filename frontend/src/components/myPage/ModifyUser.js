@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 // import { useDispatch, useSelector } from 'react-redux';
 import { Button, Upload, message } from 'antd';
@@ -9,27 +10,24 @@ import DabeenInput, { check_num,
     check_spa,
 } from '../signUp/InputFunctions';
 import { inputCheckChangeHook } from '../../hooks/inputChangeHook';
+import { editUserInfoRequestAction } from '../../reducers/user';
 
-const ModifyUser = () => {
+const ModifyUser = ({ userInfo, onClickCancel }) => {
+    const dispatch = useDispatch();
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
     const [profileImage, setProfileImage] = useState({});
     const [porfileImageUrl, setPorfileImageUrl] = useState();
-    const [nickname, changeNickname] = inputCheckChangeHook('', [check_eng, check_num, check_kor]);   // 닉네임 state
-    const [introduce, changeIntroduce] = inputCheckChangeHook("", [/./g]); // 소개 state
+    const [nickname, changeNickname] = inputCheckChangeHook(userInfo.nickName, [check_eng, check_num, check_kor]);   // 닉네임 state
+    const [introduce, changeIntroduce] = inputCheckChangeHook(userInfo.introduce, [/./g]); // 소개 state
     const [password, changePassword] = inputCheckChangeHook('', [check_eng, check_num, check_spc]);   // 비밀번호 state
     const [passwordCheck, changePasswordCheck] = inputCheckChangeHook('', [check_eng, check_num, check_spc]); // 비밀번호 확인 state
-    const [email, changeEmail] = inputCheckChangeHook('', [check_eng, check_num, /[@\.]/g]); // 이메일 state
-    const [telephone, changeTelephone] = inputCheckChangeHook('', [check_num]);
-    const [mainAddress, changeMainAddress] = inputCheckChangeHook('', [check_eng, check_num, check_kor, check_spa, /[,\.:;'"]/g]);
-    const [subAddress, changeSubAddress] = inputCheckChangeHook('', [check_eng, check_num, check_kor, check_spa, /[,\.:;'"]/g]);
-
+    const [email, changeEmail] = inputCheckChangeHook(userInfo.email, [check_eng, check_num, /[@\.]/g]); // 이메일 state
+    const [telephone, changeTelephone] = inputCheckChangeHook(userInfo.phoneNumber, [check_num]);
+    const [address, changeAddress] = inputCheckChangeHook(userInfo.address, [check_eng, check_num, check_kor, check_spa, /[,\.:;'"]/g]);
     // 입력한 정보가 맞는 정보인지 확인하는 state
-    const [isNicknameCorrect, setIsNicknameCorrect] = useState(false);  // 닉네임 확인
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);  // 비밀번호 확인
     const [isPasswordChecked, setIsPasswordChecked] = useState(false);  // 비밀번호 확인을 확인
-    const [isEmailCorrect, setIsEmailCorrect] = useState(false);  // 이메일 확인
 
     // 비밀번호와 비밀번호 확인 state가 바뀔 때 마다 확인
     useEffect(() => {
@@ -39,16 +37,16 @@ const ModifyUser = () => {
     
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickModify = useCallback((e) => {
-        if(isNicknameCorrect && isPasswordCorrect && isPasswordChecked && isEmailCorrect){
+        if(passwordCheck){
             const userLog = {
+                id: userInfo.userId,
                 nickname,
                 password,
                 email,
                 telephone,
-                mainAddress,
-                subAddress,
+                address,
             }
-            
+            dispatch(editUserInfoRequestAction(userLog));
         }
         else{
             alert('회원가입 실패!');
@@ -58,12 +56,7 @@ const ModifyUser = () => {
         password,
         email,
         telephone,
-        mainAddress,
-        subAddress,
-
-        isNicknameCorrect,
-        isPasswordCorrect,
-        isPasswordChecked,
+        address,
     ]);
 
     return (
@@ -107,10 +100,6 @@ const ModifyUser = () => {
                         value={nickname}
                         onChangeFunc={changeNickname}
                         />
-                    {isNicknameCorrect || (nickname === '')
-                    ?   <div className="ModifyUserCheck"></div>
-                    :   <div className="ModifyUserCheck">닉네임을 알맞게 입력해주세요</div>
-                    }
                 </ModifyUserGetDataDiv>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">소개</div>
@@ -131,10 +120,6 @@ const ModifyUser = () => {
                         onChangeFunc={changePassword}
                         maxLength={20}
                     />
-                    {isPasswordCorrect || (password === '')
-                    ?   <div className="ModifyUserCheck"></div>
-                    :   <div className="ModifyUserCheck">비밀번호를 알맞게 입력해주세요</div>
-                    }
                 </ModifyUserGetDataDiv>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">비밀번호 확인 *</div>
@@ -159,10 +144,6 @@ const ModifyUser = () => {
                         value={email}
                         onChangeFunc={changeEmail}
                     />
-                    {isEmailCorrect
-                        ?   <div className="ModifyUserCheck"></div>
-                        :   <div className="ModifyUserCheck">이메일을 확인해주세요</div>
-                    }
                 </ModifyUserGetDataDiv>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">전화번호 *</div>
@@ -177,20 +158,10 @@ const ModifyUser = () => {
                     <div className="ModifyUserTitle">주소 *</div>
                     <DabeenInput
                         type="text"
-                        placeholder="시"
-                        value={mainAddress}
-                        onChangeFunc={changeMainAddress}
+                        placeholder="시 면/읍/리"
+                        value={address}
+                        onChangeFunc={changeAddress}
                     />
-                    <DabeenInput
-                        type="text"
-                        placeholder="면/읍/리?"
-                        value={subAddress}
-                        onChangeFunc={changeSubAddress}
-                    />
-                    {isEmailCorrect
-                        ?   <div className="ModifyUserCheckAll"></div>
-                        :   <div className="ModifyUserCheckAll">전부 필수 작성란입니다.</div>
-                    }
                 </ModifyUserGetDataDiv>
                 <div className="ModifyTips">
                     - 아이디, 이름, 생년월일은 수정이 불가능 합니다.
@@ -200,7 +171,7 @@ const ModifyUser = () => {
                 <div className="ModifyBtn">
                     <Button
                         className="ModifyBtnBack"
-                        onClick={useCallback(() => Router.push('/mypage'),[])}
+                        onClick={onClickCancel}
                         // loading = {}
                         >취소</Button>
                     <Button

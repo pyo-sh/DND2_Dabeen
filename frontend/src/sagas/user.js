@@ -112,14 +112,13 @@ function* watchSignUp() {
 }
 
 // 유저 정보 수정
-function editUserInfoAPI(){
-
+function editUserInfoAPI(data){
+    return axios.post('/api/user', data);
 }
-
 function* editUserInfo(action) {
     try {
-        const result = editUserInfoAPI(action.data);
-        yield put(editUserInfoSuccessAction(result.data));
+        // const result = editUserInfoAPI(action.data);
+        yield put(editUserInfoSuccessAction(/*result.data*/action.data));
     }catch(e){
         console.error(e);
         yield put(editUserInfoFailureAction(e));

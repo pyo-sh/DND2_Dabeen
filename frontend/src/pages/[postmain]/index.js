@@ -9,9 +9,9 @@ import { Pagination } from 'antd';
 import { useSelector } from 'react-redux';
 
 const Postmain = ({categoryNum, search}) => {
-  // const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
   const { totalPages } = useSelector(state => state.posts);
+
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
   useEffect(() => {
     setPostWriteVisible(false);
@@ -123,11 +123,13 @@ const PostUpperDiv = styled.div`
   }
   & .postmainWrite {
     & .postmainWriteIcon {
-      width: 86px;
+      width: 10vw;
+      max-width: 86px;
+      min-width: 70px;
       cursor: pointer;
     }
     position: fixed;
-    right: 57px;
+    right: 5vw;
     bottom: 100px;
     & .postmainWriteModal {
       position: fixed;

@@ -91,13 +91,18 @@ const Header = ({asPath}) => {
             onChange={onChangeSearch}
             style={{ marginLeft: 10 }}
           /> */}
-          <Input.Group compact>
+          <Input.Group
+            compact
+            className="HeaderSearch"
+            >
             <select onChange={onChangeSearchSubject}>
               <option value="errand">심부름</option>
               <option value="rental">대여</option>
               <option value="chores">잡일</option>
             </select>
-            <Input.Search  placeholder="어떤 도움을 찾으시나요?"
+            <Input.Search
+              className="HeaderSearchInput"
+              placeholder="어떤 도움을 찾으시나요?"
               onSearch={onSearch}
               value={search}
               onChange={onChangeSearch} />
@@ -191,7 +196,7 @@ const Header = ({asPath}) => {
 
 const Menubar = styled.nav`
   position: fixed;
-  height : 10vh;
+  height : 9vh;
   min-height : 50px;
   top: 0;
   width: 100%;
@@ -205,10 +210,17 @@ const Menubar = styled.nav`
   color: black;
   z-index: 1;
   opacity : 0.9;
+  & .HeaderSearch{
+    margin-bottom: -5px;
+    margin-left: 10px;
+    & .HeaderSearchInput{
+
+    }
+  }
   & .menuToggle {
     position: absolute;
-    top: 13px;
-    right: 24px;
+    /* top: 13px; */
+    right: 20px;
     cursor: pointer;
     color: black;
     font-size: 24px;
@@ -216,6 +228,8 @@ const Menubar = styled.nav`
   & .menuLeft {
     display: flex;
     width: 70vw;
+    margin-top: -5px;
+    margin-left: 5px;
     & span .ant-input {
       & :hover,
       :focus {

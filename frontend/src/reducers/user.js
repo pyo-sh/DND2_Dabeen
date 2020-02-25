@@ -133,6 +133,10 @@ export const logoutRequestAction = createAction(LOG_OUT_REQUEST);
 export const loadUserRequestAction = createAction(LOAD_USER_REQUEST);
 export const loadUserSuccessAction = createAction(LOAD_USER_SUCCESS);
 export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
+// 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
+export const editUserInfoRequestAction = createAction(EDIT_USERINFO_REQUEST);
+export const editUserInfoSuccessAction = createAction(EDIT_USERINFO_SUCCESS);
+export const editUserInfoFailureAction = createAction(EDIT_USERINFO_FAILURE);
 
 // export const findUserIdRequestAction = createAction(FIND_ID_REQUEST);
 // export const findUserIdSuccessAction = createAction(FIND_ID_SUCCESS);
@@ -142,35 +146,6 @@ export const loadUserFailureAction = createAction(LOAD_USER_FAILURE);
 // export const findUserPasswordSuccessAction = createAction(FIND_PASSWORD_SUCCESS);
 // export const findUserPasswordFailureAction = createAction(FIND_PASSWORD_FAILURE);
 // 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
-export const editUserInfoRequestAction = ({
-  profile,
-  nickname,
-  introduce,
-  password,
-  email,
-  phoneNumber,
-  address
-}) => ({
-  type: EDIT_USERINFO_REQUEST,
-  data: {
-    profile,
-    nickname,
-    introduce,
-    password,
-    email,
-    phoneNumber,
-    address
-  }
-});
-
-export const editUserInfoSuccessAction = data => ({
-  type: EDIT_USERINFO_SUCCESS,
-  data
-});
-
-export const editUserInfoFailureAction = () => ({
-  type: EDIT_USERINFO_FAILURE
-});
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -222,11 +197,17 @@ const reducer = (state = initialState, action) => {
       }
       case EDIT_USERINFO_REQUEST: {
         draft.isUpdatingInfo = true;
+        draft.updateError = "";
         break;
       }
       case EDIT_USERINFO_SUCCESS: {
         draft.isUpdatingInfo = false;
-        draft.userInfo = action.data;
+        // draft.userInfo = action.data;
+        // 임시로 redux만 수정
+        draft.userInfo.nickName = action.data.nickName;
+        draft.userInfo.email = action.data.email;
+        draft.userInfo.telephone = action.data.telephone;
+        draft.userInfo.address = action.data.address;
         break;
       }
       case EDIT_USERINFO_FAILURE: {
