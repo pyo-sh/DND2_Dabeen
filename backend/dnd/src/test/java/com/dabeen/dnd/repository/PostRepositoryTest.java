@@ -19,38 +19,38 @@ import com.dabeen.dnd.repository.mapper.PostMapper;
 import org.junit.Assert;  
     
 public class PostRepositoryTest extends DemoApplicationTests{
-    @Autowired
-    private PostRepository postRepository;
+    // @Autowired
+    // private PostRepository postRepository;
 
-    @Autowired
-    private PostMapper postMapper;
+    // @Autowired
+    // private PostMapper postMapper;
     
-    @Test
-    public void create() {
-        PostType postType = PostType.q;
-        String questerNum = "2002160001";
-        String title = "title";
-        String cont = "content";
+    // @Test
+    // public void create() {
+    //     PostType postType = PostType.q;
+    //     String questerNum = "2002160001";
+    //     String title = "title";
+    //     String cont = "content";
 
-        Map<String, Object> postMap = new HashMap<>();
+    //     Map<String, Object> postMap = new HashMap<>();
  
-        postMap.put("postNum", null);
-        postMap.put("postType", postType);
-        postMap.put("title", title);
-        postMap.put("cont", cont);
-        postMap.put("questerNum", questerNum);
-        postMap.put("rplyerNum", null);
-        postMap.put("questPostNum", null);
+    //     postMap.put("postNum", null);
+    //     postMap.put("postType", postType);
+    //     postMap.put("title", title);
+    //     postMap.put("cont", cont);
+    //     postMap.put("questerNum", questerNum);
+    //     postMap.put("rplyerNum", null);
+    //     postMap.put("questPostNum", null);
 
-        postMapper.insert(postMap);
+    //     postMapper.insert(postMap);
 
-        Assert.assertNotNull(Optional.of(postRepository.findById((String)postMap.get("postNum"))));
-    }
+    //     Assert.assertNotNull(Optional.of(postRepository.findById((String)postMap.get("postNum"))));
+    // }
 
-    @Test
-    public void read(){
-        Optional<Post> post = postRepository.findById("2002160001");
-        Assert.assertNotNull(post.isPresent());
-    }
+    // @Test
+    // public void read(){
+    //     Optional<Post> post = postRepository.findById("2002160001");
+    //     Assert.assertNotNull(post.isPresent());
+    // }
 }
     
