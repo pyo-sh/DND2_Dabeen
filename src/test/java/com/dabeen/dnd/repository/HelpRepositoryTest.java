@@ -28,23 +28,23 @@ import com.dabeen.dnd.repository.mapper.HelpMapper;
 import org.junit.Assert;
 import org.junit.Before;    
     
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// @RunWith(SpringRunner.class)
+// @SpringBootTest
 public class HelpRepositoryTest {
 
-    @Autowired
-    private HelpRepository helpRepository;
+    // @Autowired
+    // private HelpRepository helpRepository;
 
-    @Autowired
-    private UserRepository userRepository; 
+    // @Autowired
+    // private UserRepository userRepository; 
 
-    @Autowired
-    private HelpMapper helpMapper;
+    // @Autowired
+    // private HelpMapper helpMapper;
 
 
-    @Before
-    public void setup(){
-    }
+    // @Before
+    // public void setup(){
+    // }
     // @Test
     // public void create() {
 
