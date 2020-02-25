@@ -17,9 +17,9 @@
         </selectKey>
         <!-- 공급자 여부, 자기소개 Default 값 적용을 위한 user 테이블 컬럼 명시적으로 표현 -->
         insert 
-            into user
+            into user (user_num, user_name, birth_date, address, phone_num, id, pwd, email, nickname)
             values (#{userNum}, #{userName}, #{birthDate}, #{address}, #{phoneNum}, 
-                    #{userId}, #{pwd}, #{email}, #{nickname}, #{picPath}, #{rrnRear}, #{avgRate}, #{ownMileage})
+                    #{userId}, #{pwd}, #{email}, #{nickname})
     </insert>
     <select id="selectFiveOderByRate" resultType="map" parameterType="string">
         <choose>
