@@ -55,50 +55,50 @@ public class ChatRepositoryTest {
     }
 
        
-    @Test
-    public void read() {
+    // @Test
+    // public void read() {
        
-        String chatNum = "2002150001";
+    //     String chatNum = "2002150001";
 
-        Optional<Chat> chat = chatRepository.findById(chatNum);
+    //     Optional<Chat> chat = chatRepository.findById(chatNum);
 
-        assertNotNull(chat.isPresent());
+    //     assertNotNull(chat.isPresent());
 
-    }
-
-       
-    @Test
-    public void update() {
-
-        String chatNum = "2002150001";
-
-        String changedCnsrNum = "2001310010";
-
-        Optional<Chat> chat = chatRepository.findById(chatNum);
-
-        chat.ifPresent(selectedChat ->{
-            // selectedChat.setCnsrNum(changedCnsrNum);
-            chatRepository.save(selectedChat);
-        });
-    }
+    // }
 
        
-    @Test
-    @Transactional
-    public void delete() {
+    // @Test
+    // public void update() {
 
-        String chatNum = "2002150001";
+    //     String chatNum = "2002150001";
 
-        Optional<Chat> chat = chatRepository.findById(chatNum);
+    //     String changedCnsrNum = "2001310010";
 
-        assertNotNull(chat.isPresent());
+    //     Optional<Chat> chat = chatRepository.findById(chatNum);
 
-        chat.ifPresent(selectChat -> { 
-           chatRepository.delete(selectChat);
-        });
+    //     chat.ifPresent(selectedChat ->{
+    //         // selectedChat.setCnsrNum(changedCnsrNum);
+    //         chatRepository.save(selectedChat);
+    //     });
+    // }
 
-        Optional<Chat> deleteChat = chatRepository.findById(chatNum);
-        assertNotNull(deleteChat.isPresent());
-    }
+       
+    // @Test
+    // @Transactional
+    // public void delete() {
+
+    //     String chatNum = "2002150001";
+
+    //     Optional<Chat> chat = chatRepository.findById(chatNum);
+
+    //     assertNotNull(chat.isPresent());
+
+    //     chat.ifPresent(selectChat -> { 
+    //        chatRepository.delete(selectChat);
+    //     });
+
+    //     Optional<Chat> deleteChat = chatRepository.findById(chatNum);
+    //     assertNotNull(deleteChat.isPresent());
+    // }
 }
     

@@ -101,31 +101,31 @@ public class HelpRepositoryTest {
     //     assertThat(help.get().getHelpNum(),is("2002180001"));
     // }
 
-    @Test
-    public void update(){
-        Optional<Help> help = helpRepository.findById("2002180001");
+    // @Test
+    // public void update(){
+    //     Optional<Help> help = helpRepository.findById("2002180001");
 
-        help.ifPresent(selectorUser -> {
-            selectorUser.setExecLoc("부산광역시");
+    //     help.ifPresent(selectorUser -> {
+    //         selectorUser.setExecLoc("부산광역시");
 
-            helpRepository.save(selectorUser);
-        });
-    }
+    //         helpRepository.save(selectorUser);
+    //     });
+    // }
 
-    @Transactional
-    @Test
-    public void delete(){
-        Optional<Help> help = helpRepository.findById("200203003");
+    // @Transactional
+    // @Test
+    // public void delete(){
+    //     Optional<Help> help = helpRepository.findById("200203003");
 
-        assertNotNull(help.isPresent());
+    //     assertNotNull(help.isPresent());
 
-        help.ifPresent(selectUser -> { 
-           helpRepository.delete(selectUser);
-        });
+    //     help.ifPresent(selectUser -> { 
+    //        helpRepository.delete(selectUser);
+    //     });
 
-        Optional<Help> deleteHelp = helpRepository.findById("200203003");
-        assertNotNull(deleteHelp.isPresent());
+    //     Optional<Help> deleteHelp = helpRepository.findById("200203003");
+    //     assertNotNull(deleteHelp.isPresent());
 
-    }
+    // }
 }
     

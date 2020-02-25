@@ -60,35 +60,35 @@ public class HelpPicRepositoryTest {
     }
 
     
-    @Test
-    public void read() {
+    // @Test
+    // public void read() {
         
-        String helpNum = "2002130001";
-        Integer picOrnu = 1;
+    //     String helpNum = "2002130001";
+    //     Integer picOrnu = 1;
 
-        HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
+    //     HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
 
-        assertNotNull(helpPicRepository.findById(helpPicPK));
+    //     assertNotNull(helpPicRepository.findById(helpPicPK));
 
-    }
+    // }
 
     
-    @Test
-    public void update() {
+    // @Test
+    // public void update() {
 
-        String helpNum = "2002130001";
-        Integer picOrnu = 1;
+    //     String helpNum = "2002130001";
+    //     Integer picOrnu = 1;
 
-        HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
+    //     HelpPicPK helpPicPK = new HelpPicPK(helpNum, picOrnu);
 
-        Optional<HelpPic> helpPic = helpPicRepository.findById(helpPicPK);
+    //     Optional<HelpPic> helpPic = helpPicRepository.findById(helpPicPK);
 
-        helpPic.ifPresent(selectorHelpPic -> {
-            selectorHelpPic.setHelpPicPK(helpPicPK);
+    //     helpPic.ifPresent(selectorHelpPic -> {
+    //         selectorHelpPic.setHelpPicPK(helpPicPK);
 
-            helpPicRepository.save(selectorHelpPic);
-        });        
-    }
+    //         helpPicRepository.save(selectorHelpPic);
+    //     });        
+    // }
 
     @Transactional
     @Test

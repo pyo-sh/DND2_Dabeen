@@ -40,10 +40,10 @@ public class HelpSupplCompRepositoryTest extends DemoApplicationTests{
     //     Assert.assertNotNull(newHelpSupplComp);
     // }
 
-    @Test
-    public void read(){
-        Optional<HelpSupplComp> helpSupplComp = helpSupplCompRepository.findById(new HelpSupplCompPK("200204001", "200204001"));
-        Assert.assertNotNull(helpSupplComp);
-    }
+    // @Test
+    // public void read(){
+    //     Optional<HelpSupplComp> helpSupplComp = helpSupplCompRepository.findById(new HelpSupplCompPK("200204001", "200204001"));
+    //     Assert.assertNotNull(helpSupplComp);
+    // }
 }
     

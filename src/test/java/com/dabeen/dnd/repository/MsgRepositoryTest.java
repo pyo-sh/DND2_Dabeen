@@ -51,58 +51,58 @@ public class MsgRepositoryTest {
     //     assertThat(newMsg.getMsgPK(),is(msgPK));
     // }
     
-    @Test
-    public void read() {
+    // @Test
+    // public void read() {
         
-        String chatNum = "2002160001";
-        String msgWriterNum = "2001290001";
-        LocalDateTime msgSendDttm = LocalDateTime.now();
+    //     String chatNum = "2002160001";
+    //     String msgWriterNum = "2001290001";
+    //     LocalDateTime msgSendDttm = LocalDateTime.now();
 
-        MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
+    //     MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
 
-        Optional<Msg> msg = msgRepository.findById(msgPK);
+    //     Optional<Msg> msg = msgRepository.findById(msgPK);
 
-        assertNotNull(msg.isPresent());
+    //     assertNotNull(msg.isPresent());
 
-    }
+    // }
     
-    @Test
-    public void update() {
+    // @Test
+    // public void update() {
         
-        String chatNum = "2002160001";
-        String msgWriterNum = "2001290001";
-        LocalDateTime msgSendDttm = LocalDateTime.now();
+    //     String chatNum = "2002160001";
+    //     String msgWriterNum = "2001290001";
+    //     LocalDateTime msgSendDttm = LocalDateTime.now();
 
-        String updatedCont = "updated Contents";
+    //     String updatedCont = "updated Contents";
 
-        MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
+    //     MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
 
-        msgRepository.findById(msgPK).ifPresent(selectedMsg ->{
-            selectedMsg.setCont(updatedCont);
-            msgRepository.save(selectedMsg);
-        });
-    }
+    //     msgRepository.findById(msgPK).ifPresent(selectedMsg ->{
+    //         selectedMsg.setCont(updatedCont);
+    //         msgRepository.save(selectedMsg);
+    //     });
+    // }
     
-    @Test
-    public void delete() {
+    // @Test
+    // public void delete() {
         
-        String chatNum = "2002160001";
-        String msgWriterNum = "2001290001";
-        LocalDateTime msgSendDttm = LocalDateTime.now();
+    //     String chatNum = "2002160001";
+    //     String msgWriterNum = "2001290001";
+    //     LocalDateTime msgSendDttm = LocalDateTime.now();
 
-        MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
+    //     MsgPK msgPK = new MsgPK(chatNum, msgWriterNum, msgSendDttm);
 
-        Optional<Msg> msg = msgRepository.findById(msgPK);
+    //     Optional<Msg> msg = msgRepository.findById(msgPK);
 
-        assertNotNull(msg.isPresent());
+    //     assertNotNull(msg.isPresent());
 
-        msg.ifPresent(selectMsg -> { 
-           msgRepository.delete(selectMsg);
-        });
+    //     msg.ifPresent(selectMsg -> { 
+    //        msgRepository.delete(selectMsg);
+    //     });
 
-        Optional<Msg> deleteMsg = msgRepository.findById(msgPK);
-        assertNotNull(deleteMsg.isPresent());
+    //     Optional<Msg> deleteMsg = msgRepository.findById(msgPK);
+    //     assertNotNull(deleteMsg.isPresent());
 
-    }
+    // }
 }
     
