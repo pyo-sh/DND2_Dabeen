@@ -86,7 +86,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         .pwd(encryPwd)
                         .email(userApiRequset.getEmail())
                         .nickname(userApiRequset.getNickname())
-                        .rrnRear(userApiRequset.getRrnRear())
                         .build();
 
         userMapper.insert(user); // create 쿼리
@@ -161,8 +160,11 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         Optional<User> optional = userRepository.findById(userNum);
 
         return optional.map(user -> {
-            List<PostApiResponse> responses = user.getQuests().stream().map(quest -> postApiService.response(quest))
-                    .collect(Collectors.toList());
+            List<PostApiResponse> responses = user.getQuests()
+                                                    .stream()
+                                                    .map(postApiService::response)
+                                                    .collect(Collectors.toList());
+           
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
     }

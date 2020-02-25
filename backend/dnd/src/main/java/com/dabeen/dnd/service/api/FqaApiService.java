@@ -4,7 +4,9 @@
 package com.dabeen.dnd.service.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Fqa;
@@ -88,6 +90,15 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                                 return Header.OK(response(fqa));
                             })
                             .orElseThrow(() -> new NotFoundException("Fqa"));
+    }
+
+    // 모든 데이터를 불러옴
+    public Header<List<FqaApiResponse>> readAll(){
+        List<FqaApiResponse> responses = baseRepository.findAll()
+                                                        .stream()
+                                                        .map(this::response)
+                                                        .collect(Collectors.toList());
+        return Header.OK(responses);
     }
 
     public FqaApiResponse response(Fqa fqa){

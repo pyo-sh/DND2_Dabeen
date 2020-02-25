@@ -16,9 +16,6 @@ import javax.persistence.OneToOne;
 
 import com.dabeen.dnd.model.enumclass.PostType;
 
-import org.hibernate.annotations.JoinColumnOrFormula;
-import org.hibernate.annotations.JoinColumnsOrFormulas;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
