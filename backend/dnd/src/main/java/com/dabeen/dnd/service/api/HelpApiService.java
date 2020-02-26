@@ -127,6 +127,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
                                                                     .helpPstnDttm(help.getHelpPstnDttm())
+                                                                    .helpEndDttm(help.getHelpEndDttm())
                                                                     // .catNum(help.getCatNum())
                                                                     // .cnsrNum(help.getCnsrNum())
                                                                     .catNum(help.getCategory().getCatNum())
@@ -139,7 +140,8 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                                                                     .helpAplyClsDttm(help.getHelpAplyClsDttm())
                                                                     .cont(help.getCont())
                                                                     .helpAprvWhet(help.getHelpAprvWhet())
-                                                                    .execSggName(help.getExecSggName()).build();
+                                                                    .execSggName(help.getExecSggName())
+                                                                    .pymtWhet(help.getPymtWhet()).build();
         
         return helpApiResponse;
 

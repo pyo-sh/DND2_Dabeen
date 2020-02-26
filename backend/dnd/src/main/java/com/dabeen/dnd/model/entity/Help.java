@@ -23,6 +23,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.dabeen.dnd.model.enumclass.PymtWhet;
 import com.dabeen.dnd.model.enumclass.Whether;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +47,8 @@ public class Help{
     private String helpNum; // 도움번호
 
     private LocalDateTime helpPstnDttm; // 도움게시일시
+
+    private LocalDateTime helpEndDttm; // 도움마감일시
 
     //FK로써 추후 만들어지는 엔터티로 종속성 연결 필요
     // @NotEmpty(message = "is not empty")
@@ -76,6 +79,9 @@ public class Help{
 
     private String execSggName; //이행시군구명
     
+    @Enumerated(EnumType.STRING)
+    private PymtWhet pymtWhet;
+
     /* 연관관계 설정 */
     
     @ManyToOne
