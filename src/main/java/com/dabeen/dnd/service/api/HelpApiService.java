@@ -91,6 +91,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         return optional.map(help -> {
                     help.setHelpNum(helpApiRequest.getHelpNum());    
                     help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm());
+                    help.setHelpEndDttm(helpApiRequest.getHelpEndDttm());
                     // help.setCatNum(helpApiRequest.getCatNum());
                     // help.setCnsrNum(helpApiRequest.getCnsrNum());
                     help.setCategory(categoryRepository.getOne(helpApiRequest.getCatNum()));

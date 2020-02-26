@@ -27,6 +27,8 @@ public class HelpApiRequest{
     private String helpNum;
 
     private LocalDateTime helpPstnDttm;
+
+    private LocalDateTime helpEndDttm;
     
     private String catNum;
 
