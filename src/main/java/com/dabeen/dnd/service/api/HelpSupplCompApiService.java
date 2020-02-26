@@ -161,7 +161,7 @@ public class HelpSupplCompApiService {
 
     // 공급자가 신청한 도움 API, 페이지 처리
     public Header<Map<String, Object>> searchAppliedHelps(String userNum, Pageable pageable){
-       Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmAfter(userNum, Whether.y, LocalDateTime.now(), pageable);
+       Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
        List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
        helpSupplComps.forEach(helpSupplComp -> {
