@@ -137,12 +137,11 @@ const reducer = (state = initialState, action) => {
       case LOAD_FAQS_SUCCESS: {
         draft.isLoadedFaqs = true;
         draft.isLoadingFaqs = false;
-
         draft.faqs = action.data.map(faq => (
           {
-              fqaNum: faq.fqa_num,
-              fqaTitle: faq.title,
-              fqaContent: fqa.rply_cont,
+              faqNum: faq.fqa_num,
+              faqTitle: faq.title,
+              faqContent: faq.rply_cont,
               // quest_stn_dttm, fqa_rgistrant_num
           }
       ));

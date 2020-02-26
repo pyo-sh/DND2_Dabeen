@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import { PostBasketCapsuleUpperDiv, PostBasketCapsuleWrapper, PostBasketCheckIcon, PostBasketContent } from './PostBasketCapsule.style';
 
-const PostBasketCapsule = ({ post, setAllPrice, setSelectHelps }) => {
+const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
   const [iconState, setIconState] = useState(false);
   const first = useRef(true);
   const onClickIcon = useCallback(
@@ -23,6 +23,7 @@ const PostBasketCapsule = ({ post, setAllPrice, setSelectHelps }) => {
       setSelectHelps(prev => prev.filter(p => p!== post.help_num));
     }
   }, [iconState]);
+  
   return (
     <PostBasketCapsuleWrapper>
       <PostBasketCheckIcon
@@ -56,6 +57,6 @@ const PostBasketCapsule = ({ post, setAllPrice, setSelectHelps }) => {
       </PostBasketCapsuleUpperDiv>
     </PostBasketCapsuleWrapper>
   );
-};
+});
 
 export default PostBasketCapsule;
