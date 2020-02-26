@@ -7,6 +7,7 @@ package com.dabeen.dnd.model.network.response;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.dabeen.dnd.model.enumclass.PymtWhet;
 import com.dabeen.dnd.model.enumclass.Whether;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +24,8 @@ public class HelpApiResponse{
     private String helpNum;
 
     private LocalDateTime helpPstnDttm;
+
+    private LocalDateTime helpEndDttm;
 
     private String catNum;
 
@@ -45,4 +48,6 @@ public class HelpApiResponse{
     private Whether helpAprvWhet;
 
     private String execSggName;
+
+    private PymtWhet pymtWhet;
 }
