@@ -4,7 +4,6 @@ import Helmet from "react-helmet";
 import { ServerStyleSheet, createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-/* @import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean'); */
        html, body {
             height: 100%;
             overflow: auto;

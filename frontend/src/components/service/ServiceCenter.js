@@ -4,6 +4,7 @@ import styled from "styled-components";
 import ServiceItem from "./ServiceItem";
 import ServiceQuestion from "./ServiceQuestion";
 import Router from 'next/router';
+import { useSelector } from 'react-redux';
 const dummyMyQuestion = [
   {
     quetionNum: 1,
@@ -76,33 +77,6 @@ const dummyMyQuestion = [
     }
   }
 ];
-const dummyFaqs = [
-  {
-    faqNum: 1,
-    faqTitle: "faq 제목",
-    faqContent: "faq 내용",
-  },
-  {
-    faqNum: 2,
-    faqTitle: "faq 제목",
-    faqContent: "faq 내용",
-  },
-  {
-    faqNum: 3,
-    faqTitle: "faq 제목",
-    faqContent: "faq 내용",
-  },
-  {
-    faqNum: 4,
-    faqTitle: "faq 제목",
-    faqContent: "faq 내용",
-  },
-  {
-    faqNum: 5,
-    faqTitle: "faq 제목",
-    faqContent: "faq 내용",
-  }
-];
 const ServiceCenter = ({isMe}) => {
   useEffect(() => {
     if(!isMe){
@@ -111,6 +85,8 @@ const ServiceCenter = ({isMe}) => {
     } 
   }, [isMe]);
   const [visible, setVisible] = useState(false);
+  const { faqs } = useSelector(state => state.questions);
+  console.log(faqs);
   const showModal = useCallback(() => {
     setVisible(true);
   }, []);
@@ -144,7 +120,7 @@ const ServiceCenter = ({isMe}) => {
         <div className="ServiceTitleMain">자주 묻는 질문</div>
         <div className="ServiceQuestion">
           <ul>
-            {dummyFaqs.map(v => (
+            {faqs.map(v => (
               <ServiceItem key={v.faqNum} faq={v} />
             ))}
           </ul>
