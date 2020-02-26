@@ -176,7 +176,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         return optional.map(user -> {
             List<HelpApiResponse> responses = new ArrayList<>();
 
-            Integer page = pageable.getPageNumber() - 1;
+            Integer page = pageable.getPageNumber();
             Integer size = pageable.getPageSize();
 
             // pageable의 정보를 이용하여 페이지 처리

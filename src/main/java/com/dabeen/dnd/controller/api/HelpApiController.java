@@ -14,5 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/help")
 public class HelpApiController extends CrudController<HelpApiRequest,HelpApiResponse,Help>{
-
 }

@@ -4,6 +4,7 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +57,6 @@ public class HelpSupplCompApiService {
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
         log.info("{}",  requestData);
-        // PK 객체 생성
-        HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(),requestData.getSupplNum());
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
                                                     .helpSupplCompPK(new HelpSupplCompPK())
@@ -137,33 +137,51 @@ public class HelpSupplCompApiService {
 
     // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
     public Header<Map<String, Object>> searchHelps(String userNum, Pageable pageable){
-        List<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhet(userNum, Whether.y);
+        Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBefore(userNum, Whether.y, LocalDateTime.now(), pageable);
         List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
-        Integer page = pageable.getPageNumber() - 1;
-        Integer size = pageable.getPageSize();
-        
-        // pageable의 정보를 이용하여 페이지 처리
-        for (int i = page; (i < page + size) && (i < helpSupplComps.size()); i++) {
-            HelpSupplComp helpSupplComp = helpSupplComps.get(i);
-
+        helpSupplComps.forEach(helpSupplComp -> {
             HelpCompHelpInfoApiResponse response = HelpCompHelpInfoApiResponse.builder()
-                                                                            .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
-                                                                            .aprvDttm(helpSupplComp.getAprvDttm())
-                                                                            .astDttm(helpSupplComp.getAstDttm())
-                                                                            .rate(helpSupplComp.getRate())
-                                                                            .astCont(helpSupplComp.getAstCont())
-                                                                            .help(helpApiService.response(helpSupplComp.getHelp()))
-                                                                            .build();
+                                                                                .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                                .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                                .astDttm(helpSupplComp.getAstDttm())
+                                                                                .rate(helpSupplComp.getRate())
+                                                                                .astCont(helpSupplComp.getAstCont())
+                                                                                .help(helpApiService.response(helpSupplComp.getHelp()))
+                                                                                .build();
             responses.add(response);
-        }
+        });
 
         Map<String, Object> map = new HashMap<>();
-        map.put("page", new PageApiResponse(helpSupplComps.size(), size));
+        map.put("page", new PageApiResponse((int)helpSupplComps.getTotalElements(), helpSupplComps.getTotalPages(), pageable.getPageSize()));
         map.put("list", responses);
 
         return Header.OK(map);
     }
+
+    // 공급자가 신청한 도움 API, 페이지 처리
+    public Header<Map<String, Object>> searchAppliedHelps(String userNum, Pageable pageable){
+       Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmAfter(userNum, Whether.y, LocalDateTime.now(), pageable);
+       List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
+
+       helpSupplComps.forEach(helpSupplComp -> {
+           HelpCompHelpInfoApiResponse response = HelpCompHelpInfoApiResponse.builder()
+                                                                               .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                               .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                               .astDttm(helpSupplComp.getAstDttm())
+                                                                               .rate(helpSupplComp.getRate())
+                                                                               .astCont(helpSupplComp.getAstCont())
+                                                                               .help(helpApiService.response(helpSupplComp.getHelp()))
+                                                                               .build();
+           responses.add(response);
+       });
+
+       Map<String, Object> map = new HashMap<>();
+       map.put("page", new PageApiResponse((int)helpSupplComps.getTotalElements(), helpSupplComps.getTotalPages(), pageable.getPageSize()));
+       map.put("list", responses);
+
+       return Header.OK(map);
+    }   
 
     // HelpSupplComp > HelpSupplCompApiResponse
     public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
