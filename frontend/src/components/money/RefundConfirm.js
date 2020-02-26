@@ -8,7 +8,7 @@ const RefundConfirm = ({ visible, setVisible, accountNumber, refundPrice, select
     e.preventDefault();
     // 다른 행동 취해야함. 받은 은행, 계좌번호, 환불 등을 통해 신청!!
     setChecking(prev => !prev);
-    setVisible(prev => !prev);
+    setVisible();
   }, []);
   const handleCancel = useCallback(() => {
     setChecking(prev => !prev);
@@ -23,12 +23,14 @@ const RefundConfirm = ({ visible, setVisible, accountNumber, refundPrice, select
       footer={[
         <div>
           <div className="confirmText">해당정보로 환급하겠습니까?</div>
-          <Button className="noBtn" onClick={handleCancel}>
-            아니요
-          </Button>
-          <Button className="okBtn" onClick={handleOk}>
-            예
-          </Button>
+          <div className="BtnWrapper">
+            <Button className="noBtn" onClick={handleCancel}>
+              아니요
+            </Button>
+            <Button className="okBtn" onClick={handleOk}>
+              예
+            </Button>
+          </div>
         </div>
       ]}
     >
@@ -60,10 +62,14 @@ const ConfirmModal = styled(Modal)`
   & .ant-modal-footer {
     display: flex;
     justify-content: center;
+    & .BtnWrapper{
+      display: flex;
+    }
     & div .confirmText {
       color: #ff4300;
     }
     & div .okBtn {
+      width: 100%;
       background: #ff4300;
       color: white;
       & :hover {
@@ -71,6 +77,7 @@ const ConfirmModal = styled(Modal)`
       }
     }
     & div .noBtn {
+      width:100%;
       &:hover {
         border: 1px solid #ff4300;
         color: #ff4300;

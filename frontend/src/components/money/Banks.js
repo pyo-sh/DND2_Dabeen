@@ -31,7 +31,8 @@ const Banks = ({selectOnChange}) => {
 };
 
 const Select = styled.select`
-      width: 120px;
+      width: 75px;
+      height: 38px;
       border-radius: 5px;
       color: tomato;
       & :focus,
