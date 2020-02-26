@@ -52,6 +52,7 @@ const PostDetail = ({setVisible, data}) => {
 
     return (
         <Modal>
+            <div>
             <Content>
                 <Title>
                     <div className="TitleWrapper">
@@ -179,6 +180,7 @@ const PostDetail = ({setVisible, data}) => {
                     }
                 </ContentItem>
             </Content>
+            </div>
         </Modal>
     );
 };
@@ -205,7 +207,6 @@ const Icons = styled.div`
 
 const Content = styled.div`
     width: 100%;
-    height: 100%;
     max-width: 600px;
     min-width: 300px;
     padding: 30px;
