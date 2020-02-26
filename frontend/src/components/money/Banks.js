@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { Select } from './Banks.style';
 
 const banks = [
     "카카오",
@@ -30,19 +30,4 @@ const Banks = ({selectOnChange}) => {
     );
 };
 
-const Select = styled.select`
-      width: 75px;
-      height: 38px;
-      border-radius: 5px;
-      color: tomato;
-      & :focus,
-      :hover {
-        border: 1px solid tomato;
-        box-shadow: none;
-        outline: tomato;
-      }
-     & span {
-      color: tomato;
-    }
-`;
 export default Banks;

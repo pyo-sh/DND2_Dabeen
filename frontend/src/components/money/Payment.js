@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react'; 
 import Banks from './banks';
-import styled from 'styled-components';
-import { Input, Button, Modal } from 'antd';
+import { Input, Button } from 'antd';
+import { PaymentModal } from './Payment.style';
 
 // 결제랑 그 다른 내용 받아서 결제르 좀 더 꾸며야할듯.
 const Payment = ({showPayment, clickPayment, allPrice, selectHelps}) => {
@@ -48,48 +48,3 @@ const Payment = ({showPayment, clickPayment, allPrice, selectHelps}) => {
 };
 
 export default Payment;
-
-const PaymentModal = styled(Modal)`
-    & .ant-modal-header div {
-        font-size: 25px;
-    }
-    & input {
-        &:hover, :focus {
-            border: 1px solid #ff4300;
-            box-shadow : none;
-        }
-    }
-    & .paymentTitle {
-      font-size: 50px;
-      font-weight: bold;
-      width: 100%;
-      max-width: 600px;
-      min-width: 320px;
-    }
-    & .paymentPrice {
-        font-size : 28px;
-    }
-    & button {
-        width : 80px;
-    }
-    & .cancel {
-        &:hover, :focus {
-            color : #ff4300;
-            border : 1px solid #ff4300;
-        }
-    }
-    & .pay {
-        margin-left : 5px;
-        background: #ff4300;
-        color : white;
-        transition : background 0.3s;
-        &:hover, :focus {
-          outline: none;
-          background: rgba(255,67,0,0.8);
-          border : none;
-        }
-    }
-    & .bankInfo {
-      display : flex;
-    }
-`;

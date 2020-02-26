@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { Modal, Button } from "antd";
-import styled from "styled-components";
+import { Button } from "antd";
+import { ConfirmModal } from './Refund.style';
 
 // 정보들 받게 해줘야함. redux로 하던지..
 const RefundConfirm = ({ visible, setVisible, accountNumber, refundPrice, selectBank, setChecking }) => {
@@ -41,49 +41,5 @@ const RefundConfirm = ({ visible, setVisible, accountNumber, refundPrice, select
     </ConfirmModal>
   );
 };
-
-const ConfirmModal = styled(Modal)`
-  & .ant-modal-header div {
-    font-size: 25px;
-  }
-  & .ant-modal-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  & .refundPrice {
-    font-size: 35px;
-    border-bottom: 1px solid black;
-    & b {
-      color: #ff4300;
-    }
-  }
-  & .ant-modal-footer {
-    display: flex;
-    justify-content: center;
-    & .BtnWrapper{
-      display: flex;
-    }
-    & div .confirmText {
-      color: #ff4300;
-    }
-    & div .okBtn {
-      width: 100%;
-      background: #ff4300;
-      color: white;
-      & :hover {
-        border: 1px solid #ff4300;
-      }
-    }
-    & div .noBtn {
-      width:100%;
-      &:hover {
-        border: 1px solid #ff4300;
-        color: #ff4300;
-      }
-    }
-  }
-`;
 
 export default RefundConfirm;
