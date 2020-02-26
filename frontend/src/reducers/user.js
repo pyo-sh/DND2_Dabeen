@@ -3,43 +3,43 @@ import { createAction } from './actionFunction';
 
 export const initialState = {
   me: {
-    userNum: null, // 유저번호
-    userId: null, 
-    userName: null,
-    email: null,
+    userNum: undefined, // 유저번호
+    userId: undefined, 
+    userName: undefined,
+    email: undefined,
     introduce : "",
-    birthDate: null,
-    nickName: null,
-    address: null,
-    phoneNumber: null,
+    birthDate: undefined,
+    nickName: undefined,
+    address: undefined,
+    phoneNumber: undefined,
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
-    pic: null, // 프로필사진 주소
-    rrnRear: null, // 주민 번호 뒷자리
-    avgRate: null, // 평점 평균
-    ownMilege: null // 소유 마일리지
+    pic: undefined, // 프로필사진 주소
+    rrnRear: undefined, // 주민 번호 뒷자리
+    avgRate: undefined, // 평점 평균
+    ownMilege: undefined // 소유 마일리지
 
   },// 유저정보를 저장해야함.
 
   selectUser: {
-    userNum: null, // 유저번호
-    userId: null, 
-    userName: null,
-    email: null,
+    userNum: undefined, // 유저번호
+    userId: undefined, 
+    userName: undefined,
+    email: undefined,
     introduce : "",
-    birthDate: null,
-    nickName: null,
-    address: null,
-    phoneNumber: null,
-    blonSggName : null, // 소속시군구명
+    birthDate: undefined,
+    nickName: undefined,
+    address: undefined,
+    phoneNumber: undefined,
+    blonSggName : undefined, // 소속시군구명
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
-    pic: null, // 프로필사진 주소
-    rrnRear: null, // 주민 번호 뒷자리
-    avgRate: null, // 평점 평균
-    ownMilege: null // 소유 마일리지
+    pic: undefined, // 프로필사진 주소
+    rrnRear: undefined, // 주민 번호 뒷자리
+    avgRate: undefined, // 평점 평균
+    ownMilege: undefined // 소유 마일리지
 
   },// 유저정보를 저장해야함.
   isLoggingOut: false, // 로그아웃 시도중
@@ -203,7 +203,7 @@ const reducer = (state = initialState, action) => {
           draft.me.pic = action.data.info.pic;
           draft.me.avgRate = action.data.info.avg_rate;
           draft.me.rrnRear = action.data.info.rrn_rear;
-          draft.me.ownMilege = action.data.info.own_mileage;
+          draft.me.ownMilege = action.data.info.own_mileage || 0;
         }
         else {
           draft.selectUser.userNum = action.data.info.user_num;
@@ -221,31 +221,12 @@ const reducer = (state = initialState, action) => {
           draft.selectUser.pic = action.data.info.pic;
           draft.selectUser.avgRate = action.data.info.avg_rate;
         }
-        
         break;
       }
       case LOAD_USER_FAILURE : {
         draft.loadUserError = action.data;
         break;
       }
-  //     case FIND_ID_REQUEST : {
-  //       break;        
-  //     }
-  //     case FIND_ID_SUCCESS: {
-  //       break;
-  //     }
-  //     case FIND_ID_FAILURE : {
-  //       break;
-  //     }
-  //     case FIND_PASSWORD_REQUEST : {
-  //       break;
-  //     }
-  //     case FIND_PASSWORD_SUCCESS: {
-  //       break;
-  //     }
-  //     case FIND_PASSWORD_FAILURE : {
-  // break;        
-  //     }
       default:
         break;
     }

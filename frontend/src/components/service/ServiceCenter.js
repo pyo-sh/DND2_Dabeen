@@ -86,7 +86,6 @@ const ServiceCenter = ({isMe}) => {
   }, [isMe]);
   const [visible, setVisible] = useState(false);
   const { faqs } = useSelector(state => state.questions);
-  console.log(faqs);
   const showModal = useCallback(() => {
     setVisible(true);
   }, []);

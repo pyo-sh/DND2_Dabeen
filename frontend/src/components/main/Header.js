@@ -155,7 +155,7 @@ const Header = ({asPath}) => {
                       <li>
                         <Icon type="dollar-circle" theme="filled" />
                         &nbsp;
-                        <span>25000</span>원
+                        <span>{me.ownMilege}</span>원
                       </li>
                       <li><Link href="/userpage/[usernum]/[pagename]" as={`/userpage/${me.userNum}/basket`}><a onClick={clickMy}>장바구니</a></Link></li>
                       <hr />

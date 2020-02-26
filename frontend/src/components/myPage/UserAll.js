@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import UserInfo from './UserInfo';

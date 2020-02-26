@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { loadUserPostRequestAction } from "../../reducers/posts";
 import { Row, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
+import { MyHelpUpperDiv, MyHelpCol } from './MyHelp.style';
 
 const MyHelp = ({ userNum, helpType }) => {
   const dispatch = useDispatch();

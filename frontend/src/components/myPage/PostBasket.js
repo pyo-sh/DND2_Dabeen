@@ -33,8 +33,8 @@ const dummyBasketHelp = {
     transactionTime: '',
     resultCode: '',
     description: '',
-    data: {
-        1: {
+    data: [
+         {
             help_num: 1,
             help_pstn_dttm: '2020-02-18',
             cat_num: '1',
@@ -49,7 +49,7 @@ const dummyBasketHelp = {
             help_aprv_whet: 'false',
             exec_sgg_name: '',
         },
-        2: {
+        {
             help_num: 2,   // 도움번호
             help_pstn_dttm: '2020-02-18', // 도움게시일시
             cat_num: '4,5,6',    // 카테고리번호
@@ -64,7 +64,7 @@ const dummyBasketHelp = {
             help_aprv_whet: 'false', // 도움승인여부
             exec_sgg_name: '',  // 이행시군구명
         },
-        3: {
+        {
             help_num: 3,
             help_pstn_dttm: '2020-02-18',
             cat_num: '1',
@@ -79,7 +79,7 @@ const dummyBasketHelp = {
             help_aprv_whet: 'false',
             exec_sgg_name: '',
         },
-    },
+    ]
 }
 const PostBasket = ({isMe}) => {
     // useEffect(() => {
@@ -91,27 +91,10 @@ const PostBasket = ({isMe}) => {
     const [allPrice, setAllPrice] = useState(0);
     const [selectHelps, setSelectHelps] = useState([]);
     const [showPayment, setShowPayment] = useState(false);
-
+    
     const clickPayment = useCallback(() => {
         setShowPayment(prev => !prev);
     }, []);
-    const renderPostBasketCapsule = () => {
-        const basketArray = Object.keys(dummyBasketData.data);
-        // basketArray.map(index => {
-        //     tempPrice += dummyBasketData.data[index].indv_help_price;
-        //     tempCount++;
-        // });
-        return (basketArray.map(index => {
-            const arrayData = dummyBasketHelp.data[index];
-            if(arrayData){
-                return (
-                    <Col lg={24} xl={12} xxl={12} key={arrayData.help_num}>
-                        <PostBasketCapsule post={arrayData} setAllPrice={setAllPrice} setSelectHelps={setSelectHelps}/>
-                    </Col>
-                );
-            }
-        }));
-    }
 
     return (
         <>
@@ -130,7 +113,10 @@ const PostBasket = ({isMe}) => {
                 className="BasketContent"
                 gutter={10}
                 >
-                {renderPostBasketCapsule()}
+                {dummyBasketHelp.data.map(basket => (
+                    <Col lg={24} xl={12} xxl={12} key={basket.help_num}>
+                        <PostBasketCapsule post={basket} setAllPrice={setAllPrice} setSelectHelps={setSelectHelps}/>
+                    </Col>) )}
             </Row>
         </PostBasketUpperDiv>
         <Payment showPayment={showPayment} clickPayment={clickPayment} allPrice={allPrice} selectHelps={selectHelps}/>
