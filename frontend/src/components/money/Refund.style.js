@@ -108,11 +108,11 @@ export const RefundModal = styled(Modal)`
     display: flex;
     justify-content: center;
     & button {
-      background: tomato;
+      background: #ff4300;
       color: white;
       & :hover {
         border: 1px solid #ff4300;
-        color: black;
+        background : rgba(255,67,0, 0.9)
       }
     }
   }

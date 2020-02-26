@@ -5,8 +5,7 @@ import Refund from '../money/Refund';
 import { UserInfoWrapper } from './UserInfo.style';
 // useRouter를 사용해서 id를 가지고 와서 그 정보를 보여준다!!
 
-const UserInfo = ({ userInfo }) => {
-    let isMe = true;
+const UserInfo = ({ userInfo, isMe }) => {
     const [isChanging, setIsChanging] = useState(false);
     const [modalRefund, setModalRefund] = useState(false);
     // useSelector로 정보를 가져온다. 나일 때랑 다른 사람일 때?..
@@ -23,8 +22,8 @@ const UserInfo = ({ userInfo }) => {
             <div className="userinfoTitle">
                 회원정보
                 {isMe && <button
-                    onClick={onClickEdit}
                     className="userinfoEditBtn"
+                    onClick={onClickEdit}
                     >
                     edit
                 </button> }
@@ -74,8 +73,9 @@ const UserInfo = ({ userInfo }) => {
                         <div className="userinfoContentValueWrapper">
                             <div className="userinfoContentValue">{userInfo.ownMilege}</div>
                             <button
-                                onClick={onClickRefund}
                                 className="userRefundBtn"
+                                onClick={onClickRefund}
+                                
                                 >
                                 환급
                             </button>

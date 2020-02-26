@@ -47,7 +47,7 @@ const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank,
           <span>원</span>
         </div>
         <div className="warnText">
-          <p>블라블라블라블라</p>
+          <p>저희 서비스를 이용해주셔서 감사합니다.</p>
         </div>
       </div>
     </RefundModal>

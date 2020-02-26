@@ -113,8 +113,8 @@ const PostBasket = ({isMe}) => {
                 className="BasketContent"
                 gutter={10}
                 >
-                {dummyBasketData.data.map(basket => (
-                    <Col lg={24} xl={12} xxl={12} key={arrayData.help_num}>
+                {dummyBasketHelp.data.map(basket => (
+                    <Col lg={24} xl={12} xxl={12} key={basket.help_num}>
                         <PostBasketCapsule post={basket} setAllPrice={setAllPrice} setSelectHelps={setSelectHelps}/>
                     </Col>) )}
             </Row>
