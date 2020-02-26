@@ -2,14 +2,20 @@ import React, { useState, useCallback } from 'react';
 import { Icon } from 'antd';
 import styled from 'styled-components';
 import ModifyUser from './ModifyUser';
+import Refund from '../money/Refund';
 // useRouter를 사용해서 id를 가지고 와서 그 정보를 보여준다!!
 
-const UserInfo = ({ userInfo, isMe }) => {
+const UserInfo = ({ userInfo }) => {
+    let isMe = true;
     const [isChanging, setIsChanging] = useState(false);
+    const [modalRefund, setModalRefund] = useState(false);
     // useSelector로 정보를 가져온다. 나일 때랑 다른 사람일 때?..
     const onClickEdit = useCallback((e) => {
         setIsChanging(prev => !prev);
     }, []);
+    const onClickRefund = useCallback(e => {
+        setModalRefund(prev => !prev);
+      }, []);
     return (
         isChanging
         ?   <ModifyUser userInfo={userInfo} onClickCancel={onClickEdit}/>
@@ -60,6 +66,24 @@ const UserInfo = ({ userInfo, isMe }) => {
                     </div>
                     <div className="userinfoContentValue">{userInfo.address}</div>
                 </div>
+                {isMe
+                ?   <div className="userinfoContent">
+                        <div className="userinfoContentName">
+                            <Icon className="icon" type="dollar" /> 마일리지
+                        </div>
+                        <div className="userinfoContentValueWrapper">
+                            <div className="userinfoContentValue">{userInfo.ownMilege}</div>
+                            <button
+                                onClick={onClickRefund}
+                                className="userRefundBtn"
+                                >
+                                환급
+                            </button>
+                        </div>
+                        <Refund visible={modalRefund} setVisible={onClickRefund}/>
+                    </div>
+                :   null
+                }
             </div>
         </UserInfoWrapper>
     );
@@ -92,7 +116,7 @@ const UserInfoWrapper = styled.div`
         display: flex;
         & .userinfoContentName{
             min-width: 120px;
-            padding: 20px 0;
+            margin: 20px 0;
             border-right: 1px solid #F0F0F0;
             & .icon {
                 color : #FF4300;
@@ -102,8 +126,23 @@ const UserInfoWrapper = styled.div`
             word-wrap: break-word;
             white-space: normal;
             min-width: 120px;
-            padding: 20px;
-            padding-right: 0;
+            margin: 20px;
+            margin-right: 0;
+        }
+        & .userRefundBtn{
+            width: 80px;
+            height: 30px;
+            color: white;
+            background: #FF4300;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            margin: 20px;
+        }
+        & .userinfoContentValueWrapper{
+            display: flex;
+            flex-wrap: wrap-reverse;
+            min-width: 120px;
         }
     }
 `;
