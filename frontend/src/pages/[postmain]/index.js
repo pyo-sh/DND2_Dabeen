@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
+import {message} from 'antd';
 import styled from "styled-components";
+import Login from '../../components/signUp/Login';
 import PostList from "../../components/posts/PostList";
 import PostWrite from "../../components/posts/PostWrite";
 import PostSearch from "../../components/posts/PostSearch";
@@ -11,19 +13,38 @@ import { useSelector } from 'react-redux';
 const Postmain = ({categoryNum, search}) => {
   // const categoryNum = useRouter().query.postmain; // 어떤 카테고리를 선택했는지에 대한 props
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
-  const { totalPages } = useSelector(state => state.posts);
+  const [tryLogin, setTryLogin] = useState(false);
+  const { totalPages, me } = useSelector(state => (state.posts, state.user));
+  console.log(me.userNum);
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
   useEffect(() => {
     setPostWriteVisible(false);
   }, [categoryNum]);
   // postWrite Modal창을 닫을 수 있는 함수
+
   const setPostWriteInvisible = useCallback(e => {
     setPostWriteVisible(prev => !prev);
   }, []);
   
+  //로그아웃 상태에서 글쓰기 버튼 누르면 로그인 화면으로 가게 해준다.
+  const clickLogin = useCallback(() => {
+    setTryLogin(prev => !prev);
+  }, []);
+
   const onChangePage = useCallback((page) => {
     loadHelpPostRequestAction({page, search, categoryNum});
   }, [search, categoryNum]);
+
+  //글쓰기 버튼 눌렀을 경우
+  const onClickPostWrite = useCallback(()=>{
+    // if(!me.userNum){
+    //   message.error('로그인 후 글을 작성하실 수 있습니다.');
+    //   setTryLogin(true);
+    // } else{
+      setPostWriteVisible(true);
+    // }
+  }, [me]);
+
   // 보고자 하는 카테고리가 바뀔 때 보여주는 Title을 결정해주는 함수
   const getTitle = useCallback(() => {
     switch (categoryNum) {
@@ -63,9 +84,7 @@ const Postmain = ({categoryNum, search}) => {
         </div>
         <div
           className="postmainWrite"
-          onClick={useCallback(e => {
-            setPostWriteVisible(true);
-          }, [])}
+          onClick={onClickPostWrite}
         >
           <img
             className="postmainWriteIcon"
@@ -74,8 +93,9 @@ const Postmain = ({categoryNum, search}) => {
           />
         </div>
         {postWriteVisible ? (
-          <PostWrite setInvisible={setPostWriteInvisible} />
+          <PostWrite setInvisible={setPostWriteInvisible} userNum={me.userNum}/>
         ) : null}
+        {tryLogin&&<Login clickLogin={clickLogin} />}
       </div>
       <Pagination defaultCurrent={1} onChange={onChangePage} total={totalPages}/>
     </PostUpperDiv>
