@@ -159,7 +159,7 @@ const PostSearchUpperDiv = styled.div`
       color: white;
       background-color: #ff4300;
       border: none;
-      transition: background 0.3s; 
+      transition: 0.3s; 
       &:hover {
         background:rgb(255,67,0,0.8);
       }

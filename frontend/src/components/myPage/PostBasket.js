@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Button, Row, Col } from 'antd';
 import PostBasketCapsule from './PostBasketCapsule';
 import Router from 'next/router';
+import Payment from '../money/Payment';
 
 const dummyBasketData = {
     transactionTime: '',
@@ -82,14 +83,19 @@ const dummyBasketHelp = {
     },
 }
 const PostBasket = ({isMe}) => {
-    useEffect(() => {
-        if(!isMe) {
-            alert('자신만 볼 수 있는 페이지입니다.');
-            Router.push('/');
-        }
-    }, [isMe]);
+    // useEffect(() => {
+    //     if(!isMe) {
+    //         alert('자신만 볼 수 있는 페이지입니다.');
+    //         Router.push('/');
+    //     }
+    // }, [isMe]);
     const [allPrice, setAllPrice] = useState(0);
-    const [helpCount, setHelpCount] = useState(0);
+    const [selectHelps, setSelectHelps] = useState([]);
+    const [showPayment, setShowPayment] = useState(false);
+
+    const clickPayment = useCallback(() => {
+        setShowPayment(prev => !prev);
+    }, []);
     const renderPostBasketCapsule = () => {
         const basketArray = Object.keys(dummyBasketData.data);
         // basketArray.map(index => {
@@ -100,8 +106,8 @@ const PostBasket = ({isMe}) => {
             const arrayData = dummyBasketHelp.data[index];
             if(arrayData){
                 return (
-                    <Col lg={24} xl={12} xxl={12} key={index}>
-                        <PostBasketCapsule post={arrayData}/>
+                    <Col lg={24} xl={12} xxl={12} key={arrayData.help_num}>
+                        <PostBasketCapsule post={arrayData} setAllPrice={setAllPrice} setSelectHelps={setSelectHelps}/>
                     </Col>
                 );
             }
@@ -109,6 +115,7 @@ const PostBasket = ({isMe}) => {
     }
 
     return (
+        <>
         <PostBasketUpperDiv>
             <div className="BasketTitle">
                 <div className="BasketTitleMain">
@@ -116,8 +123,8 @@ const PostBasket = ({isMe}) => {
                     <div className="BasketTitleMoney">총 {allPrice}원</div>
                 </div>
                 <div className="BasketTitleSort">
-                    <div className="BasketTitlePeople">2/{helpCount}</div>
-                    <Button className="BasketTitleBtn">결제</Button>
+    <div className="BasketTitlePeople">3/{selectHelps.length}</div> {/* 불러온 데이터의 길이 중 / 선택된 길이로 해야함 근데   분자/ 분모 가 맞는게 아닌가 */}
+                    <Button className="BasketTitleBtn" onClick={clickPayment}>결제</Button>
                 </div>
             </div>
             <Row
@@ -127,6 +134,8 @@ const PostBasket = ({isMe}) => {
                 {renderPostBasketCapsule()}
             </Row>
         </PostBasketUpperDiv>
+        <Payment showPayment={showPayment} clickPayment={clickPayment} allPrice={allPrice} selectHelps={selectHelps}/>
+        </>
     );
 };
 
@@ -158,7 +167,6 @@ const PostBasketUpperDiv = styled.div`
             font-weight: bold;
         }
         & .BasketTitleMoney{
-            width: 87px;
             font-size: 25px;
             padding-left: 20px;
         }

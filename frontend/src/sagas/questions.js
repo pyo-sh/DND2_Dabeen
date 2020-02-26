@@ -53,13 +53,13 @@ function* watchDeleteQuestion() {
     yield takeLatest(DELETE_QUESTION_REQUEST, deleteQuestion);
 }
 
-function loadFaqsAPI(data){
-    return data ? axios.get(`/user/${data}/main-page`) : axios.get('/user/main-page');
+function loadFaqsAPI(){
+    return axios.get('/fqa');
 }
 
-function* loadFaqs(action) {
+function* loadFaqs() {
     try {
-        const result = yield call(loadFaqsAPI, action.data);
+        const result = yield call(loadFaqsAPI);
         yield put(loadFaqsSuccessAction(result.data.data));
     } catch(e) {
         console.error(e);

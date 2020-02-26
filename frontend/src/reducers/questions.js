@@ -143,8 +143,9 @@ const reducer = (state = initialState, action) => {
               fqaNum: faq.fqa_num,
               fqaTitle: faq.title,
               fqaContent: fqa.rply_cont,
+              // quest_stn_dttm, fqa_rgistrant_num
           }
-      ))
+      ));
         break;
       }
       case LOAD_FAQS_FAILURE: {

@@ -1,15 +1,29 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styled from "styled-components";
 import { Icon } from "antd";
 
-const PostBasketCapsule = ({ post }) => {
+const PostBasketCapsule = ({ post, setAllPrice, setSelectHelps }) => {
   const [iconState, setIconState] = useState(false);
+  const first = useRef(true);
   const onClickIcon = useCallback(
     e => {
-      setIconState(!iconState);
+      setIconState(prev => !prev);
     },
-    [iconState]
+    []
   );
+  useEffect(() => {
+    if(first.current) {
+      first.current = false;
+      return;
+    }
+    if(iconState) {
+      setAllPrice(prev => prev + post.price);
+      setSelectHelps(prev => [...prev, post.help_num])
+    } else {
+      setAllPrice(prev => prev - post.price);
+      setSelectHelps(prev => prev.filter(p => p!== post.help_num));
+    }
+  }, [iconState]);
   return (
     <PostBasketCapsuleWrapper>
       <PostBasketCheckIcon
