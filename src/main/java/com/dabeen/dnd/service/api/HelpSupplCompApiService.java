@@ -136,7 +136,7 @@ public class HelpSupplCompApiService {
     }
 
     // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
-    public Header<Map<String, Object>> searchHelps(String userNum, Pageable pageable){
+    public Header<Map<String, Object>> searchSuppliedHelps(String userNum, Pageable pageable){
         Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBefore(userNum, Whether.y, LocalDateTime.now(), pageable);
         List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
