@@ -4,12 +4,15 @@
 
 package com.dabeen.dnd.repository;
 
+import java.util.List;
+
 import com.dabeen.dnd.model.entity.Help;
+import com.dabeen.dnd.model.enumclass.PymtWhet;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HelpRepository extends JpaRepository<Help, String>{
-
+    List<Help> findByUser_UserNumAndPymtWhet(String userNum, PymtWhet whet);
 }
