@@ -2,16 +2,21 @@ import React, { useState, useCallback, useRef } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import styled from 'styled-components';
 import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
-// import DatePicker from 'react-datepicker';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
-import Upload from '../uploadImages/Upload';
-import { addHelpPostSuccessAction, uploadImageRequestAction } from '../../reducers/posts';
+import { addHelpPostRequestAction } from '../../reducers/posts';
 import axios from 'axios';
+import moment from 'moment';
 
-const categorys = ["심부름", "대여", "잡일"];   //카테고리
+const categorys = {
+    "심부름": "1000",
+    "대여": "2000",
+    "잡일": "3000"
+} //카테고리
 
-const PostWrite = ({setInvisible}) => {
+// const categorys = ["심부름", "대"]
+
+const PostWrite = ({setInvisible, userNum}) => {
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
     const [helpDeadlineDate, setHelpDeadlineDate] = useState(''); //신청 마감 날짜
@@ -22,16 +27,19 @@ const PostWrite = ({setInvisible}) => {
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
     const [location, setLocation] = useState('');   //이행위치
     const [sigungu, setSigungu] = useState('');     //이행시군구명
-    const [requirements, onChangeRequirements] = inputChangeHook('');   //요구사항
+    const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
     // const [urls, setUrls] = useState([]);           //도움 이미지 미리보기 위한 url
-
     const {imagePaths} = useSelector(state => state.posts);
     const dispatch = useDispatch();
     const imageInput = useRef();
-
+    // const timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    // const time = new Date(Date.now() - timezoneOffset);
+    const time = moment();
+    console.log(time.format('YYYY-MM-DDTHH:mm:ss'));
     const getCategory = useCallback(category => {
-        setCategory(category);
+        // console.log(result);
+        setCategory(categorys[category]);
     }, []);
 
     const onChangeHelpPicker = setStateFunc =>
@@ -45,22 +53,27 @@ const PostWrite = ({setInvisible}) => {
     }, []);
     
     //게시글 업로드
-    const addPost = useCallback(() => {
+    const addPost = useCallback((e) => {
         e.preventDefault();
         if(!postTitle || !postTitle.trim()){
             message.error('제목을 입력해주세요!');
         } 
-        dispatch(addHelpPostSuccessAction({
+        dispatch(addHelpPostRequestAction({
+            // todayDate: time.toISOString().split('.')[0],
+            todayDate: time.format('YYYY-MM-DD HH:mm:ss'),
+            userNum: userNum,
             postName: postTitle,
             category: category,
-            postDeadline: helpDeadlineDate.concat(' ' + helpDeadlineTime),
-            executionDate: helpExecDate.concat(' ' + helpExecTime),
-            needPersonnel: needPersonnel,
-            money: money,
-            location: location,
-            sigungu: sigungu
+            helpDeadline: helpDeadlineDate.concat('T' + helpDeadlineTime),
+            helpExec: helpExecDate.concat('T' + helpExecTime),
+            postNum: parseInt(needPersonnel),
+            price: parseInt(money),
+            execLoc: location,
+            sigungu: sigungu,
+            content: content
         }));
-    }, [postTitle]);
+        setInvisible();
+    }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, sigungu, content]);
 
     //이미지 삭제
     // const deleteImage = useCallback(key => e =>{
@@ -98,21 +111,21 @@ const PostWrite = ({setInvisible}) => {
                         <PostSettingBox>
                             <div className="postSettingTitle">카테고리</div>
                             <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
-                                {categorys.map((_category) => <Select.Option value={_category} key={_category}>{_category}</Select.Option>)}
+                                {Object.keys(categorys).map((_category) => <Select.Option value={_category} key={_category}>{_category}</Select.Option>)}
                             </Select>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">신청 마감 일시</div>
                             <div className="postSettingGetData">
-                                <DatePicker className="postSettingDatePicker" style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                <TimePicker className="postSettingTimePicker" format="hh:mm" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                                <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD"style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
+                                <TimePicker className="postSettingTimePicker" format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">수행 일시</div>
                             <div className="postSettingGetData">
-                                <DatePicker className="postSettingDatePicker" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                <TimePicker className="postSettingTimePicker" format="hh:mm" onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                                <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
+                                <TimePicker className="postSettingTimePicker" format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
@@ -130,7 +143,7 @@ const PostWrite = ({setInvisible}) => {
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
-                        <textarea placeholder="요구사항을 입력하세요." required  value={requirements} onChange={onChangeRequirements}/>
+                        <textarea placeholder="요구사항을 입력하세요." required  value={content} onChange={onChangeContent}/>
                     </ContentItem>
                     <UploadImage>
                         <div>사진첨부</div>

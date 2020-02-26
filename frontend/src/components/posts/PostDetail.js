@@ -117,8 +117,8 @@ const PostDetail = ({setVisible, data}) => {
                                 <div className="applicationInfoBoxDetail">{data.helpDeadline}</div>
                                 : 
                                 <>
-                                <DatePicker defaultValue ={moment(helpDeadline[0], dateFormat)}/>
-                                <TimePicker defaultValue={moment(helpDeadline[1], timeFormat)}/>
+                                <DatePicker defaultValue ={moment(helpDeadline[0], dateFormat)} onChange={onChangeHelpPicker(setEditHelpDeadLineDate)}/>
+                                <TimePicker defaultValue={moment(helpDeadline[1], timeFormat)} onChange={onChangeHelpPicker(setEditHelpDeadLineTime)}/>
                                 </>
                             }
                             </ApplicationInfoBox>
@@ -128,7 +128,10 @@ const PostDetail = ({setVisible, data}) => {
                                 !edit ?
                                 <div className="applicationInfoBoxDetail">{data.helpExec}</div>
                                 :
-                                <DatePicker defaultValue ={moment(helpExec[0] ,dateFormat)}/>
+                                <>
+                                <DatePicker defaultValue ={moment(helpExec[0] ,dateFormat)} onChange={onChangeHelpPicker(setEditHelpExecDate)}/>
+                                <TimePicker defaultValue ={moment(helpExec[1], timeFormat)} onChange={onChangeHelpPicker(setEditHelpExecTime)} />
+                                </>
                             }
                             </ApplicationInfoBox>
                         </Col>
