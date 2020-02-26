@@ -1,5 +1,5 @@
 import {Modal} from 'antd';
-import styeld from 'styled-components';
+import styled from 'styled-components';
 
 export const PaymentModal = styled(Modal)`
     & .ant-modal-header div {
