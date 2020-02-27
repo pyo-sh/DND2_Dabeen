@@ -92,15 +92,6 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
                             .orElseThrow(() -> new NotFoundException("Fqa"));
     }
 
-    // 모든 데이터를 불러옴
-    public Header<List<FqaApiResponse>> readAll(){
-        List<FqaApiResponse> responses = baseRepository.findAll()
-                                                        .stream()
-                                                        .map(this::response)
-                                                        .collect(Collectors.toList());
-        return Header.OK(responses);
-    }
-
     public FqaApiResponse response(Fqa fqa){
         FqaApiResponse fqaApiResponse = FqaApiResponse.builder()
                                                     .fqaNum(fqa.getFqaNum())
@@ -112,4 +103,14 @@ public class FqaApiService extends BaseService<FqaApiRequest, FqaApiResponse, Fq
         return fqaApiResponse;
     }
 
+    /* 사용자 API */
+
+    // 모든 데이터를 불러옴
+    public Header<List<FqaApiResponse>> readAll(){
+        List<FqaApiResponse> responses = baseRepository.findAll()
+                                                        .stream()
+                                                        .map(this::response)
+                                                        .collect(Collectors.toList());
+        return Header.OK(responses);
+    }
 }

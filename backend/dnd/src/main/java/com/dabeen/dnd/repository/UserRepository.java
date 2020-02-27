@@ -5,7 +5,6 @@
 
 package com.dabeen.dnd.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import com.dabeen.dnd.model.entity.User;
