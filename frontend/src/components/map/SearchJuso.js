@@ -22,8 +22,6 @@ const SearchJuso = ({location, getLocation}) => {
         const sigunguName = data.sigungu;
         getLocation(fullAddress, sigunguName);
         setClick(false);
-        console.log(data.sigungu)
-        console.log(data.sido)
     }, []);
 
     return (

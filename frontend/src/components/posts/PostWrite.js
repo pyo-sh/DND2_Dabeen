@@ -3,7 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
 import SearchJuso from '../map/SearchJuso';
 import inputChangeHook from '../../hooks/inputChangeHook';
-import { addHelpPostRequestAction } from '../../reducers/posts';
+import { addHelpPostRequestAction, addImageRequestAction } from '../../reducers/posts';
 import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentItem, UploadImage, UploadButton} from './PostWrite.style';
 import axios from 'axios';
 import moment from 'moment';
@@ -63,12 +63,16 @@ const PostWrite = ({setInvisible, userNum}) => {
             postNum: parseInt(needPersonnel),
             price: parseInt(money),
             execLoc: location,
-            sigungu: sigungu,
             content: content
         }));
         setInvisible();
+        // dispatch(addImageRequestAction({
+        //     path: `/help/${time.format('YYYYMMDD')}/${images[0].split('/')[6]}`
+        // }));
     }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, sigungu, content]);
 
+    console.log(time.format('YYYYMMDD'))
+    // console.log(images[0].split('/')[6])
     //이미지 삭제
     // const deleteImage = useCallback(key => e =>{
     //     setUrls(urls.filter(url => url.key !== key));
@@ -88,6 +92,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             console.log(e.response);
         }
     }, []);
+
     console.log(images);
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
@@ -145,6 +150,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                             {/* 업로드버튼 새로 만드세영^_^ */}
                             <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button>
                             <div className="previewImage">
+                                {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/dabeen/help/20200227/5ad03fab-7983-4a8f-a988-f75dd1397efa_1516799552217.jpg`} alt="에러" width="90" height="90"/> */}
                                 {images.map((v, i) => {
                                     return (
                                     <div key={v} className="imgBorder"> 
