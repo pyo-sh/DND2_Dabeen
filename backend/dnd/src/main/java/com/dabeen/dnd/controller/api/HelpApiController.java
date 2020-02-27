@@ -12,6 +12,7 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
+import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
 import com.dabeen.dnd.service.api.HelpApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,10 @@ public class HelpApiController extends CrudController<HelpApiRequest,HelpApiResp
     @GetMapping("{userNum}/received-helps")
     public Header<Map<String, Object>> searchReceivedHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
         return helpApiService.searchReceivedHelps(userNum, pageable);
+    }
+
+    @GetMapping("/search-exec-loc/{execLoc}")
+    public Header<List<HelpExecLocApiResponse>> searchExecLocHelps(@PathVariable String execLoc){
+        return helpApiService.searchExecLocHelps(execLoc);
     }
 }

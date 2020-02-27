@@ -1,12 +1,12 @@
-// HelpApiResponse.java
-// Help엔터티의 response에서 전달받을 데이터
-// 작성자 : 권영인
-
 package com.dabeen.dnd.model.network.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import com.dabeen.dnd.model.entity.Category;
+import com.dabeen.dnd.model.entity.HelpPic;
+import com.dabeen.dnd.model.entity.User;
 import com.dabeen.dnd.model.enumclass.PymtWhet;
 import com.dabeen.dnd.model.enumclass.Whether;
 
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HelpApiResponse{
+public class HelpExecLocApiResponse{
 
     private String helpNum;
 
@@ -27,9 +27,7 @@ public class HelpApiResponse{
 
     private LocalDateTime helpEndDttm;
 
-    private String catNum;
-
-    private String cnsrNum;
+    private UserApiResponse cnsrUser;
 
     private String title;
 
@@ -47,7 +45,7 @@ public class HelpApiResponse{
 
     private Whether helpAprvWhet;
 
-    // private String execSggName;
-
     private PymtWhet pymtWhet;
+
+    private List<HelpPic> helpPics;
 }
