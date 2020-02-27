@@ -150,12 +150,17 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     }
 
     // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
-    public Header<UserHighRateInfoApiResponse> searchHighRateUser(String ssgName) {
-        List<Map<String, Object>> users = userMapper.selectFiveOderByRate(ssgName);
-        Boolean ssgUser = (ssgName != null ? true : false);
+    public Header<UserHighRateInfoApiResponse> searchHighRateUser(String sggName, String userNum) {
+        Map<String, String> map = new HashMap<>();
+        map.put("blonSggName", sggName);
+        map.put("userNum", userNum);
+        
+        List<Map<String, Object>> users = userMapper.selectFiveOderByRate(map);
+        Boolean ssgUser = (sggName != null ? true : false);
 
-        if (ssgName != null && users.isEmpty()){
-            users = userMapper.selectFiveOderByRate(null);
+        if (sggName != null && users.isEmpty()){
+            map.put("blonSggName", null);
+            users = userMapper.selectFiveOderByRate(map);
             ssgUser = false;
         }
 
