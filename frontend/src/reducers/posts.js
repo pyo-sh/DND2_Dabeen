@@ -11,9 +11,9 @@ export const initialState = {
   // 유저의 도움 중 받을 도움 / 줄 도움
   userActivePosts: [],
   userActivePostsPage: {
-    total_datas: 0,
-    total_pages: 0,
-    pages_per_datas: 15
+    totalDatas: 0,
+    totalPages: 0,
+    helpsPerPage: 15
   },
   isLoadingActivePost: false,
   activePostLoaded: false,
@@ -21,9 +21,9 @@ export const initialState = {
   // 유저의 도움 중 받은 도움 줄 도움
   userInactivePosts: [],
   userInactivePostsPage: {
-    total_datas: 0,
-    total_pages: 0,
-    pages_per_datas: 15
+    totalDatas: 0,
+    totalPages: 0,
+    helpsPerPage: 15
   },
   isLoadingInactivePost: false,
   inactivePostLoaded: false,
@@ -123,7 +123,7 @@ const reducer = (state = initialState, action) => {
         draft.helpPosts = dummyHelpPost2.helpPosts; // 일단 더미를 준다!
         draft.helpPosts = action.data.map(post => ({
           helpNum: post.help_num, // 도움번호
-          helpTitle: post.title,
+          helpTitle: post.title,  // 도움이름
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
           categoryNum: post.cat_num, // 카테고리번호
           price: post.price, // 금액
@@ -260,26 +260,39 @@ const reducer = (state = initialState, action) => {
         draft.isLoadingActivePost = false;
         draft.activePostLoaded = true;
           // 데이터 처리
-        draft.userActivePostsPage = action.data.page;
-        draft.userActivePosts = action.data.list.map(post => ({
+        draft.userActivePostsPage = { // 페이지 정보
+          totalDatas: action.data.page.total_datas,
+          totalPages: action.data.page.total_pages,
+          helpsPerPage: action.data.page.pages_per_datas,
+        };
+        draft.userActivePosts = action.data.list.map(post => ({ // 도움정보
           helpNum: post.help_num, // 도움번호
-          helpTitle: post.title,  // 타이틀
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
+          helpEndTime: post.help_end_dttm,  // 도움마감일시
           categoryNum: post.cat_num, // 카테고리번호
+          userNum: post.cnsr_num, // 수요자번호
+          helpTitle: post.title,  // 타이틀
+          location: post.exec_loc, // 이행장소
           price: post.price, // 금액
-          content: post.cont, // 내용
-          userNum: post.cnsr_num,// 수요자번호
-          isHelpApprove: post.help_aprv_whet, // 도움승인여부
           postNum: post.pref_suppl_num, // 선호공급자수
           helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          location: post.exec_loc, // 이행장소
-          // exec_sgg_name
+          helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
+          content: post.cont, // 내용
+          isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          sggLocation: post.exec_sgg_name, // 이행장소
+          isPaymentApprove: post.pymt_whet, // 결제여부
         }));
         break;
       }
       case LOAD_ACTIVE_USERPOST_FAILURE: {
         draft.isLoadingActivePost = false;
         draft.loadActivePostErrorReason = action.data.error;
+        draft.userInactivePostsPage = { // 페이지 정보
+          totalDatas: 0,
+          totalPages: 0,
+          helpsPerPage: 15,
+        };
+        draft.userActivePosts = [];
         break;
       }
       // 받은도움 / 준도움 을 요청하는 reducer
@@ -292,13 +305,40 @@ const reducer = (state = initialState, action) => {
       case LOAD_INACTIVE_USERPOST_SUCCESS: {
         draft.isLoadingInactivePost = false;
         draft.inactivePostLoaded = true;
-
+        // 데이터 처리
+        draft.userInactivePostsPage = { // 페이지 정보
+          totalDatas: action.data.page.total_datas,
+          totalPages: action.data.page.total_pages,
+          helpsPerPage: action.data.page.pages_per_datas,
+        };
+        draft.userInactivePosts = action.data.list.map(post => ({ // 도움정보
+          helpNum: post.help_num, // 도움번호
+          helpPostDate: post.help_pstn_dttm, // 도움게시일시
+          helpEndTime: post.help_end_dttm,  // 도움마감일시
+          categoryNum: post.cat_num, // 카테고리번호
+          userNum: post.cnsr_num, // 수요자번호
+          helpTitle: post.title,  // 타이틀
+          location: post.exec_loc, // 이행장소
+          price: post.price, // 금액
+          postNum: post.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+          helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
+          content: post.cont, // 내용
+          isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          sggLocation: post.exec_sgg_name, // 이행장소
+          isPaymentApprove: post.pymt_whet, // 결제여부
+        }));
         break;
       }
       case LOAD_INACTIVE_USERPOST_FAILURE: {
         draft.isLoadingInactivePost = false;
         draft.loadInactivePostErrorReason = action.data.error;
-        
+        draft.userInactivePostsPage = { // 페이지 정보
+          totalDatas: 0,
+          totalPages: 0,
+          helpsPerPage: 15,
+        };
+        draft.userInactivePosts = [];
         break;
       }
       default:

@@ -168,10 +168,10 @@ function* watchUploadImage() {
 // 받을도움 / 줄도움
 function loadActiveUserPostAPI(data) {
     if(data.helpType === "take"){
-
+        return axios.get(`/help/${data.userNum}/to-receive-helps?page=${data.page}`);
     }
     else if(data.helpType === "give"){
-        return axios.post(`/help-suppl-comp/${data.userNum}/applied-helps?page=${data.page}`);
+        return axios.get(`/help-suppl-comp/${data.userNum}/applied-helps?page=${data.page}`);
     }
     else    return null;
 };
@@ -190,10 +190,10 @@ function* watchLoadActiveUserPost() {
 // 받은도움 / 준도움
 function loadInactiveUserPostAPI(data) {
     if(data.helpType === "take"){
-
+        return axios.get(`/help/${data.userNum}/received-helps?page=${data.page}`);
     }
     else if(data.helpType === "give"){
-        return axios.post(`/help-suppl-comp/${data.userNum}/supplied-helps?page=${data.page}`);
+        return axios.get(`/help-suppl-comp/${data.userNum}/supplied-helps?page=${data.page}`);
     }
     else    return null;
 };

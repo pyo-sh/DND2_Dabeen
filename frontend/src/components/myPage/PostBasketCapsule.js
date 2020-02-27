@@ -34,21 +34,21 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
       <PostBasketCapsuleUpperDiv>
         <div className="BasketCapsuleCapture"></div>
         <PostBasketContent>
-          <div className="PostBasketContentTitle">{post.title}</div>
+          <div className="PostBasketContentTitle">{post.helpTitle}</div>
           <div className="PostBasketContentInfo">
             <div className="PostBasketContentInfoMoney">{post.price}</div>
             <div className="PostBasketContentInfoTimeWrapper">
               <div className="PostBasketContentInfoFinishTime">
-                신청마감 : {post.help_aply_cls_dttm}
+                신청마감 : {post.helpDeadLine}
               </div>
               <div className="PostBasketContentInfoDoingTime">
-                수행일 : {post.pref_help_exec_dttm}
+                수행일 : {post.helpExecDate}
               </div>
             </div>
           </div>
           <div className="PostBasketContentPeople">
             <div className="PostBasketContentPeopleApplied">
-              신청인원 : 3/{post.pref_suppl_num}
+              신청인원 : /{post.postNum}
             </div>
             <div className="PostBasketContentPeopleBtn">재 선택</div>
           </div>

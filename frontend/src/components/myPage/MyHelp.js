@@ -5,7 +5,7 @@ import { Row, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
 import { MyHelpUpperDiv, MyHelpCol } from './MyHelp.style';
 
-const MyHelp = ({ userNum, helpType }) => {
+const MyHelp = ({ userNum, helpType, isMe }) => {
   const dispatch = useDispatch();
   const {
     userActivePosts,
@@ -17,10 +17,13 @@ const MyHelp = ({ userNum, helpType }) => {
   useEffect(() => {
     dispatch(loadActiveUserPostRequestAction({ userNum, page: 0, helpType }));
   }, []);
+  // helpType이 바뀔 때 마다 render
+  useEffect(() => {
+    dispatch(loadActiveUserPostRequestAction({ userNum, page: 0, helpType }));
+  }, [helpType]);
   // 페이지 바꿀 때 도움 요청
-  const onChangePagination = useCallback(( userNum, page, pageSize) => {
-    console.log(page, pageSize);
-    // dispatch(loadActiveUserPostRequestAction({page, helpType}));
+  const onChangePagination = useCallback(( page, pageSize ) => {
+    dispatch(loadActiveUserPostRequestAction({userNum, page, helpType}));
   }, []);
   return (
     <MyHelpUpperDiv>
@@ -32,7 +35,7 @@ const MyHelp = ({ userNum, helpType }) => {
           <Row gutter={[12, 12]}>
             {userActivePosts && userActivePosts.map((element, index) => (
               <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
-                <MyHelpCapsule helpData={element} />
+                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe}/>
               </MyHelpCol>
             ))}
           </Row>
@@ -41,8 +44,8 @@ const MyHelp = ({ userNum, helpType }) => {
             onChange={onChangePagination}
             simple
             defaultCurrent={1}
-            pageSize={userActivePostsPage.pages_per_datas}
-            total={userActivePostsPage.total_pages}
+            pageSize={15}
+            total={userActivePostsPage.totalDatas}
           />
         </div>
       </div>
@@ -54,7 +57,7 @@ const MyHelp = ({ userNum, helpType }) => {
           <Row gutter={[12, 12]}>
             {userInactivePosts && userInactivePosts.map((element, index) => (
               <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
-                <MyHelpCapsule helpData={element} />
+                <MyHelpCapsule helpType={helpType} helpData={element} />
               </MyHelpCol>
             ))}
           </Row>
@@ -63,8 +66,8 @@ const MyHelp = ({ userNum, helpType }) => {
             onChange={onChangePagination}
             simple
             defaultCurrent={1}
-            pageSize={userInactivePostsPage.pages_per_datas}
-            total={userInactivePostsPage.total_pages}
+            pageSize={15}
+            total={userInactivePostsPage.totalDatas}
           />
         </div>
       </div>
