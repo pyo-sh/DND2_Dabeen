@@ -1,5 +1,6 @@
 import produce from "immer";
 import { createAction } from './actionFunction';
+import { removeCookie } from '../utils/cookieFunction';
 
 export const initialState = {
   me: {
@@ -143,8 +144,7 @@ const reducer = (state = initialState, action) => {
       case LOG_OUT_REQUEST: {
          // draft.userInfo = null;
         // 로그아웃 성공 했을 때 토큰 삭제
-        localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
+        removeCookie();
         draft.me = {};
         break;
       }

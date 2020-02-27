@@ -2,7 +2,7 @@ import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
 import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
-
+import { setCookie } from '../utils/cookieFunction';
 function loadUserAPI(userNum) { // 유저 정보를 가져온다!
     return axios.get(`/user/${userNum}`);
 };
@@ -46,11 +46,10 @@ function* login(action) {
         else {
             result = yield call(loginAPI, action.data);
             token = result.data.data.token;
-            action.data.loginMaintain ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
+            // document.cookie = `token=${token}`;
+            setCookie(token, action.data.loginMaintain);
         }
-        // yield put(loginSuccessAction({token : result.data.data.token, loginMaintain : action.data.loginMaintain}));
         tokenResult = jwt_decode(token);
-        console.log(tokenResult);
         const userNum = tokenResult.userNum;
         const userId = tokenResult.id;
         const userRole = tokenResult.role;

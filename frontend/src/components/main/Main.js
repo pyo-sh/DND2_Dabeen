@@ -15,10 +15,10 @@ const Main = () => {
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));
     }, []);
-    useEffect(() => {
-        dispatch(loadRecommendRequest(address));
-        getLivePost()();
-    }, []);
+    // useEffect(() => {
+    //     dispatch(loadRecommendRequest(address));
+    //     getLivePost()();
+    // }, []);
     
 
 

@@ -9,6 +9,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import reducer from "../reducers";
 import axios from 'axios';
+import { loginRequestAction } from '../reducers/user';
 
 axios.defaults.baseURL = "http://15.164.2.26:3307/api";
 
@@ -53,9 +54,20 @@ Dabeen.getInitialProps = async context => {
   let pageProps = {};
  // 리덕스의 스토어 안에 있는 state 불러오기 가능
   const asPath = ctx.asPath;
+  const state = ctx.store.getState();
+  const { cookie } = ctx.isServer ? ctx.req.headers : "";
+  if (ctx.isServer && cookie ) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+
+  if(!state.user.me.userNum && cookie) {
+    const token = cookie.split('=')[1];
+    ctx.store.dispatch(loginRequestAction({token}));
+  }
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
+  
   // 만약에 localstroage에 토큰이 있으면 로그인 하는 로직을 추가합시다!!
   return { pageProps, asPath };
 };

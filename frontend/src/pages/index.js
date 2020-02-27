@@ -1,5 +1,7 @@
 import React from "react";
 import Main from "../components/main/Main";
+import { loadRecommendRequest } from '../reducers/opponent';
+import { loadLivePostRequestAction } from '../reducers/posts';
 
 const Home = () => {
   return (
@@ -9,7 +11,14 @@ const Home = () => {
 };
 
 Home.getInitialProps = async context => {
-  // 실시간 도움, 주변 평점 높은거 가져오는 거
+  const state = context.store.getState();
+  if(state.user.me.address){
+    context.store.dispatch(loadRecommendRequest(state.user.me.address));
+  }
+  else {
+    context.store.dispatch(loadRecommendRequest());
+  }
+  loadLivePostRequestAction(1000);
 }
 
 export default Home;
