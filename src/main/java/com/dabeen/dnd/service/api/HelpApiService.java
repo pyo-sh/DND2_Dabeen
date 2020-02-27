@@ -3,11 +3,14 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -19,6 +22,7 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
+import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.repository.CategoryRepository;
 import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
@@ -27,6 +31,8 @@ import com.dabeen.dnd.repository.mapper.HelpMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
@@ -136,27 +142,6 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         }).orElseThrow( () -> new NotFoundException("Help"));
     }
 
-    public Header<List<HelpAppliInfoApiResponse>> searchNoPaymentHelps(String userNum){
-        List<Help> helps = helpRepository.findByUser_UserNumAndPymtWhet(userNum, PymtWhet.n);
-
-        List<HelpAppliInfoApiResponse> responses = new ArrayList<>();
-        helps.forEach(help -> {
-            // 신청인원
-            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
-            // 승인인원
-            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
-            
-            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
-                                                                        .appliNum(appliNum)
-                                                                        .aprvNum(aprvNum)
-                                                                        .help(this.response(help))
-                                                                        .build();
-            responses.add(response);                                                                                        
-        });
-
-        return Header.OK(responses);
-    }
-
     public HelpApiResponse response(Help help){
 
         HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
@@ -181,4 +166,59 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     }
 
+    /* 사용자 API */
+
+    // 미결제 도움 API
+    public Header<List<HelpAppliInfoApiResponse>> searchNoPaymentHelps(String userNum){
+        List<Help> helps = helpRepository.findByUser_UserNumAndPymtWhet(userNum, PymtWhet.n);
+
+        List<HelpAppliInfoApiResponse> responses = new ArrayList<>();
+        helps.forEach(help -> {
+            // 신청인원
+            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
+            // 승인인원
+            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
+            
+            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
+                                                                        .appliNum(appliNum)
+                                                                        .aprvNum(aprvNum)
+                                                                        .help(this.response(help))
+                                                                        .build();
+            responses.add(response);                                                                                        
+        });
+
+        return Header.OK(responses);
+    }
+
+    // 받을 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 미래인 것
+    public Header<Map<String, Object>> searchToReceiveHelps(String userNum, Pageable pageable){
+        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
+        
+        List<HelpApiResponse> responses = helps.getContent()
+                                                .stream()
+                                                .map(this::response)
+                                                .collect(Collectors.toList());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
+        map.put("list", responses);   
+
+        return Header.OK(map);
+    }
+
+    // 받은 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 과거인 것
+    public Header<Map<String, Object>> searchReceivedHelps(String userNum, Pageable pageable){
+        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmBefore(userNum, LocalDateTime.now(), pageable);
+        
+        List<HelpApiResponse> responses = helps.getContent()
+                                                .stream()
+                                                .map(this::response)
+                                                .collect(Collectors.toList());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
+        map.put("list", responses);   
+             
+        return Header.OK(map);
+    }
 }

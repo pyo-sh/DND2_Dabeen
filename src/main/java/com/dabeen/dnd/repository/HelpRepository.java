@@ -4,15 +4,21 @@
 
 package com.dabeen.dnd.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.dabeen.dnd.model.entity.Help;
 import com.dabeen.dnd.model.enumclass.PymtWhet;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HelpRepository extends JpaRepository<Help, String>{
     List<Help> findByUser_UserNumAndPymtWhet(String userNum, PymtWhet whet);
+    Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
+    Page<Help> findByUser_UserNumAndPrefHelpExecDttmBefore(String userNum, LocalDateTime dateTime, Pageable pageable);
+    List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
 }

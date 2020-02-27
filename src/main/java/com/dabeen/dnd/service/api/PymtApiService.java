@@ -114,7 +114,22 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         .orElseThrow(() -> new NotFoundException("Pymt"));
     }
 
-    // 
+    // Pymt > PymtApiResponse
+    private PymtApiResponse response(Pymt pymt) {
+        PymtApiResponse pymtApiResponse =  PymtApiResponse.builder() 
+                                                        .pymtNum(pymt.getPymtNum())
+                                                        .pymtDttm(pymt.getPymtDttm())
+                                                        .pymtMthdType(pymt.getPymtMthdType())
+                                                        .pymtPrice(pymt.getPymtPrice())
+                                                        .refdWhet(pymt.getRefdWhet())
+                                                        .refdDttm(pymt.getRefdDttm())
+                                                        .build();
+        return pymtApiResponse;
+    }
+
+    /* 사용자 API */
+
+    // 결제 실행 API, 장바구니와 장바구니 구성 엔터티를 함께 생성
     public Header<?> execution(Header<PymtExecutionApiRequest> request){
         PymtExecutionApiRequest requstData = request.getData();
         BigDecimal price = new BigDecimal("0.0");
@@ -157,17 +172,4 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
         
         return Header.OK(create(Header.OK(pymtApiRequest)).getData());
     } 
-
-    // Pymt > PymtApiResponse
-    private PymtApiResponse response(Pymt pymt) {
-        PymtApiResponse pymtApiResponse =  PymtApiResponse.builder() 
-                                                        .pymtNum(pymt.getPymtNum())
-                                                        .pymtDttm(pymt.getPymtDttm())
-                                                        .pymtMthdType(pymt.getPymtMthdType())
-                                                        .pymtPrice(pymt.getPymtPrice())
-                                                        .refdWhet(pymt.getRefdWhet())
-                                                        .refdDttm(pymt.getRefdDttm())
-                                                        .build();
-        return pymtApiResponse;
-    }
 }

@@ -143,6 +143,8 @@ public class AdminApiService extends BaseService<AdminApiRequest, AdminApiRespon
         return adminApiResponse;
     }
 
+    /* 사용자 API */
+
     // 로그인을 위한 메소드
     public Header<LoginApiResponse> login(Header<LoginApiRequest> request){
         LoginApiRequest requestData = request.getData();
