@@ -18,9 +18,11 @@ import {
     LOAD_INACTIVE_USERPOST_REQUEST,
     loadInactiveUserPostSuccessAction,
     loadInactiveUserPostFailureAction,
-    UPLOAD_IMAGE_REQUEST,
-    uploadImageFailureAction,
-    ADD_HELPPOST_REQUEST
+    ADD_IMAGE_REQUEST,
+    ADD_HELPPOST_REQUEST,
+    addImageSuccessAction,
+    addImageFailureAction,
+    UPDATE_HELPPOST_REQUEST
 } from '../reducers/posts';
 import axios from 'axios';
 
@@ -37,7 +39,6 @@ function addHelpPostAPI(data) { //게시글 업로드
             pref_help_exec_dttm: data.helpExec,
             help_aply_cls_dttm: data.helpDeadline,
             cont: data.content,
-            exec_sgg_name: data.sigungu,
             help_aprv_whet: 'n'
         }
     }
@@ -47,7 +48,7 @@ function addHelpPostAPI(data) { //게시글 업로드
 function* addHelpPost(action) {
     try {
         const result = yield call(addHelpPostAPI, action.data);
-        console.log(result);
+        console.log(result.data.data);
         yield put(addHelpPostSuccessAction(result.data.data));
     }
     catch (e) {
@@ -63,8 +64,8 @@ function* watchAddHelpPost() {
 function updateHelpPostAPI(data) {
     const reqData = {
         data: {
-            // help_num
-            // help_pstn_dttm
+            help_num: data.helpNum,
+            help_pstn_dttm: data.helpPostDate,
             cat_num: data.category,
             title: data.postName,
             exec_loc: data.location,
@@ -73,8 +74,7 @@ function updateHelpPostAPI(data) {
             pref_help_exec_dttm: data.executionDate,
             help_aply_cls_dttm: data.postDeadline,
             cont: data.content,
-            // help_aprv_whet: data.,
-            //exec_sgg_name: data.sigungu,
+            help_aprv_whet: data.isHelpApprove,
         }
     }
     return axios.put('/help', reqData)
@@ -148,22 +148,27 @@ function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
 };
 
-function uploadImageAPI(images) {
-    return axios.post('/help_pic', images);
+function addImageAPI(data) {
+    const reqData = {
+        data:{
+            path: data.path
+        }
+    }
+    return axios.post('/help-pic', reqData);
 };
 
-function* uploadImage(action) {
+function* addImage(action) {
     try {
-        const result = yield call(uploadImageAPI, action.data);
-        yield put(uploadImageSuccessAction(result.data));
+        const result = yield call(addImageAPI, action.data);
+        yield put(addImageSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
-        yield put(uploadImageFailureAction(e));
+        yield put(addImageFailureAction(e));
     }
 };
 
-function* watchUploadImage() {
-    yield takeLatest(UPLOAD_IMAGE_REQUEST, uploadImage);
+function* watchAddImage() {
+    yield takeLatest(ADD_IMAGE_REQUEST, addImage);
 };
 
 // 받을도움 / 줄도움
@@ -218,5 +223,7 @@ export default function* postsSaga() {
         fork(watchLoadActiveUserPost),
         fork(watchLoadInactiveUserPost),
         fork(watchAddHelpPost),
+        fork(watchAddImage),
+        fork(watchUpdateHelpPost),
     ]);
 };
