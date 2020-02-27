@@ -47,6 +47,7 @@ public class Pymt{
     
     private LocalDateTime pymtDttm; // 결제일시
 
+    @Enumerated(EnumType.STRING)
     private PymtMthdType pymtMthdType; // 결제방법구분
 
     private BigDecimal pymtPrice; // 결제 금액

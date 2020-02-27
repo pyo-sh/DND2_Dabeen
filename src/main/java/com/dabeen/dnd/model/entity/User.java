@@ -30,7 +30,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Builder
 @Accessors(chain = true)
-@ToString(exclude = {"helpSupplComps", "mileageUseHists", "bskts", "quests"})
+@ToString(exclude = {"helpSupplComps", "mileageUseHists", "bskts", "quests","replies","helps","cnsrChats","supplChats","msgs"})
 public class User{
     // 기본 식별자
     @Id

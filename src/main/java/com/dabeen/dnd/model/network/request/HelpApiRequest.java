@@ -50,6 +50,6 @@ public class HelpApiRequest{
 
     private Whether helpAprvWhet;
 
-    private String execSggName;
+    // private String execSggName;
 
 }

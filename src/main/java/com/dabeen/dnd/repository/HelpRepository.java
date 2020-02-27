@@ -13,6 +13,8 @@ import com.dabeen.dnd.model.enumclass.PymtWhet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -21,4 +23,7 @@ public interface HelpRepository extends JpaRepository<Help, String>{
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmBefore(String userNum, LocalDateTime dateTime, Pageable pageable);
     List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
+    List<Help> findTop9ByHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(LocalDateTime endDttm ,String execLoc);
+    List<Help> findTop9ByHelpEndDttmOrderByHelpNumDesc(LocalDateTime endDttm);
 }
+

@@ -47,7 +47,7 @@ public class HelpApiResponse{
 
     private Whether helpAprvWhet;
 
-    private String execSggName;
+    // private String execSggName;
 
     private PymtWhet pymtWhet;
 }
