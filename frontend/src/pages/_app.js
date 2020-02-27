@@ -57,7 +57,7 @@ Dabeen.getInitialProps = async context => {
   const state = ctx.store.getState();
   const { cookie } = ctx.isServer ? ctx.req.headers : "";
   if (ctx.isServer && cookie ) {
-    axios.defaults.headers.Cookie = cookie;
+    axios.defaults.headers.Authorization = `Bearer ${cookie.split('=')[1]}`;
   }
 
   if(!state.user.me.userNum && cookie) {

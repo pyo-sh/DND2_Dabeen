@@ -47,7 +47,6 @@ function addHelpPostAPI(data) { //게시글 업로드
 function* addHelpPost(action) {
     try {
         const result = yield call(addHelpPostAPI, action.data);
-        console.log(result);
         yield put(addHelpPostSuccessAction(result.data.data));
     }
     catch (e) {
@@ -95,7 +94,7 @@ function* watchUpdateHelpPost() {
 };
 
 function removeHelpPostAPI(helpNum) {
-    return axios.delete(`/help/${helpNum}`)
+    return axios.delete(`/help/${helpNum}`);
 };
 
 function* removeHelpPost(action) {

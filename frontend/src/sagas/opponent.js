@@ -2,8 +2,8 @@ import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 import { LOAD_RECOMMEND_REQUEST, loadRecommendFailure, loadRecommendSuccess } from '../reducers/opponent';
 import axios from 'axios';
 
-function loadRecommendAPI(data){
-    return data ? axios.get(`/user/${data}/main-page`) : axios.get('/user/main-page');
+function loadRecommendAPI({address, userNum}){
+    return (address || userNum) ? axios.get(`/user/main-page/?sgg_name=${address}&user_num=${userNum}`) : axios.get('/user/main-page');
 }
 
 function* loadRecommend(action) {

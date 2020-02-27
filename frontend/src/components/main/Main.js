@@ -1,23 +1,24 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
 import MainDaBeenerProfile from './MainDaBeenerProfile';
 import { loadLivePostRequestAction } from '../../reducers/posts';
 import {LiveHelpRequestMenuBar, MainForm} from './Main.style';
+import { loadRecommendRequest } from '../../reducers/opponent';
 
 const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
-    // const { me : { address }} = useSelector(state => state.user);
-    const { recommendOpponents } = useSelector(state => state.opponent);
+    const { me : { address, userNum }} = useSelector(state => state.user);
+    const { recommendOpponents, sggUser } = useSelector(state => state.opponent);
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));
     }, []);
-    // useEffect(() => {
-    //     dispatch(loadRecommendRequest(address));
-    //     getLivePost()();
-    // }, []);
+    
+    useEffect(() => {
+        dispatch(loadRecommendRequest({address, userNum}));
+    }, [address, userNum]);
     
 
 
@@ -46,7 +47,7 @@ const Main = () => {
                 </div>
             </LiveHelpRequestMenuBar>
             <LiveHelpRequest />
-            <div className="title">내 주변의 높은 평점을 가진 DaBeener를 확인하세요!</div>
+            <div className="title">{sggUser ? "내 주변의 높은 평점을 가진 DaBeener를 확인하세요!" : "전체에서 높은 평점을 가진 DaBeener를 확인하세요!"}</div>
             {recommendOpponents && <MainDaBeenerProfile recommendOpponents={recommendOpponents} />}
         </MainForm>
     );

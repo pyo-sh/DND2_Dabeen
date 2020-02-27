@@ -10,7 +10,7 @@ import DabeenInput, {
   check_spc,
   check_kor,
   check_spa
-} from "../utils/InputFunctions";
+} from "../components/signUp/InputFunctions";
 import { inputCheckChangeHook } from "../hooks/inputChangeHook";
 
 // 회원가입 창

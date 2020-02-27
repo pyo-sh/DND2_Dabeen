@@ -6,7 +6,7 @@ import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import moment from 'moment';
 import SearchJuso from '../map/SearchJuso';
-import {Modal, Icons, Content, Title, ApplyCheck, EditTitle, Edit, Image, ApplicationInfo, DeadlineButton, ContentItem} from './PostDetail.style';
+import {Modal, Icons, Content, Title, ApplyCheck, EditTitle, Edit, Image, ApplicationInfo, DeadlineButton, ContentItem, ApplicationInfoBox} from './PostDetail.style';
 
 // 내가 쓴 글 / 아닌 글 구분해야함
 const PostDetail = ({setVisible, data}) => {

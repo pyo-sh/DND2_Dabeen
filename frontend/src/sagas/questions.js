@@ -19,8 +19,9 @@ function* watchLoadQuestions() {
     yield takeLatest(LOAD_QUESTIONS_REQUEST, loadQuestions);
 }
 
+// 질문 추가하기
 function addQuestionAPI(data){
-    return data ? axios.get(`/user/${data}/main-page`) : axios.get('/user/main-page');
+    return axios.post(`/user/${data}/main-page`, {});
 }
 
 function* addQuestion(action) {
@@ -36,8 +37,9 @@ function* watchAddQuestion() {
     yield takeLatest(ADD_QUESTION_REQUEST, addQuestion);
 }
 
+// 질문 삭제하기
 function deleteQuestiondAPI(data){
-    return data ? axios.get(`/user/${data}/main-page`) : axios.get('/user/main-page');
+    return axios.delete(`/user/${data}/main-page`);
 }
 
 function* deleteQuestion(action) {

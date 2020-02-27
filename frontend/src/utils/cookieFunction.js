@@ -14,3 +14,7 @@ export function removeCookie () {
 
     document.cookie=`token='';expires=${date.toUTCString()}`
 }
+
+export function getCookie() {
+    return document.cookie ? document.cookie.split('=')[1] : "";
+}

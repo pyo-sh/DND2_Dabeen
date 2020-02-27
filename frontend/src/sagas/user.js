@@ -3,6 +3,7 @@ import axios from 'axios';
 import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../utils/cookieFunction';
+
 function loadUserAPI(userNum) { // 유저 정보를 가져온다!
     return axios.get(`/user/${userNum}`);
 };

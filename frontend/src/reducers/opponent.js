@@ -6,6 +6,7 @@ export const initialState = {
   // 다른사람의 정보
   opponents: {},
   recommendOpponents : [],
+  sggUser : '',
   // UserData를 받았는지
   loadedUserData: false,
   isLoadingUserData: false,
@@ -61,7 +62,8 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LOAD_RECOMMEND_SUCCESS: {
-        draft.recommendOpponents = action.data.map(recommend => (
+        draft.sggUser = action.data.ssg_user;
+        draft.recommendOpponents = action.data.users.map(recommend => (
             {
             userId : recommend.id, // user_id로 바꿀 예정
             userNum : recommend.user_num,

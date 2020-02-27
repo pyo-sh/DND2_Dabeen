@@ -11,13 +11,6 @@ const Home = () => {
 };
 
 Home.getInitialProps = async context => {
-  const state = context.store.getState();
-  if(state.user.me.address){
-    context.store.dispatch(loadRecommendRequest(state.user.me.address));
-  }
-  else {
-    context.store.dispatch(loadRecommendRequest());
-  }
   loadLivePostRequestAction(1000);
 }
 
