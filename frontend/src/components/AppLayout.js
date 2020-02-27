@@ -9,12 +9,12 @@ import { loginRequestAction } from "../reducers/user";
 const AppLayout = ({ children, asPath }) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) {
-      dispatch(loginRequestAction({token}));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  //   if (token) {
+  //     dispatch(loginRequestAction({token}));
+  //   }
+  // }, []);
   return (
     <>
       <Header asPath={asPath} />

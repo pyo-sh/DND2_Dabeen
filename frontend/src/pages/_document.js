@@ -20,7 +20,7 @@ class MyDocument extends Document {
       sheet.collectStyles(
         <>
           <GlobalStyles />
-          <App {...props} />
+            <App {...props} />
         </>
       )
     );
@@ -34,10 +34,22 @@ class MyDocument extends Document {
     return (
       <html {...htmlAttrs}>
         <Head>
-          <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean" rel="stylesheet"/>
-          <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet"/>
-          <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet"/>
-          <link href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css" rel="stylesheet"/>
+          <link
+            href='https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean'
+            rel='stylesheet'
+          />
+          <link
+            href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css'
+            rel='stylesheet'
+          />
+          <link
+            href='https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css'
+            rel='stylesheet'
+          />
+          <link
+            href='https://cdnjs.cloudflare.com/ajax/libs/antd/3.25.3/antd.css'
+            rel='stylesheet'
+          />
           {this.props.styleTags}
           {Object.values(helmet).map(el => el.toComponent())}
         </Head>
