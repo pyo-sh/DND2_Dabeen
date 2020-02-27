@@ -253,9 +253,12 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         List<Map<String, Object>> users = userMapper.selectFiveOderByRate(map);
         Boolean ssgUser = (sggName != null ? true : false);
 
+        // 만약 해당 소속시군구명에 속한 사람이 본인뿐이라면
         if (sggName != null && users.isEmpty()){
-            map.put("blonSggName", null);
+            // 전체 사용자 중에서 다시 검색!
+            map.put("blonSggName", null); 
             users = userMapper.selectFiveOderByRate(map);
+
             ssgUser = false;
         }
 

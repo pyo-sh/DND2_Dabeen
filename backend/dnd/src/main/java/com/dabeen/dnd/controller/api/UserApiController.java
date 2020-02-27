@@ -80,7 +80,7 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     @GetMapping("/main-page")
     public Header<UserHighRateInfoApiResponse> searchHighRateUser(
             @RequestParam(value = "sgg_name", required = false) String sggName,
-            @RequestParam(value = "user_num") String userNum) {
+            @RequestParam(value = "user_num", required = false) String userNum) {
         return userApiService.searchHighRateUser(sggName, userNum);
     }
 
