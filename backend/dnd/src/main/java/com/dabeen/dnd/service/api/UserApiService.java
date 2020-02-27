@@ -16,19 +16,28 @@ import javax.validation.Valid;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.UserMapper;
 import com.dabeen.dnd.exception.AlreadyExistedException;
+import com.dabeen.dnd.exception.EmailWrongException;
+import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.exception.PasswordWrongException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.entity.User;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
+import com.dabeen.dnd.model.network.request.FindApiRequest;
+import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
+import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.model.network.response.UserHighRateInfoApiResponse;
 import com.dabeen.dnd.service.BaseService;
+import com.dabeen.dnd.service.JwtService;
+import com.dabeen.dnd.service.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -49,6 +58,12 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     @Autowired
     private PasswordEncoder passwordEncoder; // 패스워드 암호화를 위한 Encoder
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     private PostApiService postApiService;
@@ -149,13 +164,98 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         }).orElseThrow(() -> new NotFoundException("User"));
     }
 
-    // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
-    public Header<UserHighRateInfoApiResponse> searchHighRateUser(String ssgName) {
-        List<Map<String, Object>> users = userMapper.selectFiveOderByRate(ssgName);
-        Boolean ssgUser = (ssgName != null ? true : false);
 
-        if (ssgName != null && users.isEmpty()){
-            users = userMapper.selectFiveOderByRate(null);
+    // 로그인을 위한 메소드
+    public Header<LoginApiResponse> login(Header<LoginApiRequest> request) {
+        LoginApiRequest requestData = request.getData();
+        User user = userRepository.findByUserId(requestData.getId())
+                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
+
+        if (!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
+            throw new PasswordWrongException();
+
+        // 해당 사용자가 공급자인지 아닌지 판단
+        String role = user.getSupplWhet().equals(Whether.y) ? "suppler" : "user";
+
+        return Header.OK(LoginApiResponse.builder()
+                .token(jwtService.createToken(user.getUserNum(), user.getUserId(), user.getNickname(), role)).build());
+    }
+
+    // User > UserApiResponse 를 위한 메소드
+    public UserApiResponse response(User user) {
+        UserApiResponse userApiResponse = UserApiResponse.builder()
+                                                        .userNum(user.getUserNum())
+                                                        .userName(user.getUserName())
+                                                        .birthDate(user.getBirthDate())
+                                                        .address(user.getAddress())
+                                                        .phoneNum(user.getPhoneNum())
+                                                        .userId(user.getUserId())
+                                                        .email(user.getEmail())
+                                                        .nickname(user.getNickname())
+                                                        .itdcCont(user.getItdcCont())
+                                                        .supplWhet(user.getSupplWhet())
+                                                        .picPath(user.getPicPath())
+                                                        .avgRate(user.getAvgRate())
+                                                        .ownMileage(user.getOwnMileage())
+                                                        .build();
+
+        return userApiResponse;
+    }
+
+    /* 사용자 APi */
+
+    // 아이디 찾기
+    public Header<?> findId(Header<FindApiRequest> request) {
+        FindApiRequest requestData = request.getData();
+        User user = userRepository.findByEmail(requestData.getEmail())
+                                    .orElseThrow(() -> new NotFoundException("해당 이메일을 가진 사용자의"));
+
+        if (!user.getUserName().equals(requestData.getName()))
+            throw new NameWrongException();
+
+        mailService.sendMail(requestData.getEmail(), "아이디를 알려드립니다.", requestData.getName(),
+                "고객님의 아이디는 \'" + user.getUserId() + "\' 입니다.");
+
+        return Header.OK();
+    }
+
+    // 비밀번호 찾기
+    public Header<?> findPwd(Header<FindApiRequest> request) {
+        FindApiRequest requestData = request.getData();
+        User user = userRepository.findByUserId(requestData.getId())
+                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
+
+        // 입력된 메일과 사용자의 메일이 동일하지 않은 경우
+        if (!user.getEmail().equals(requestData.getEmail()))
+            throw new EmailWrongException();
+
+        // 12자리의 임시 비밀번호 생성
+        String pwd = "";
+        for (int i = 0; i < 12; i++) {
+            pwd += (char) ((Math.random() * 26) + 97);
+        }
+
+        // 새로운 비밀번호로 변경
+        user.setPwd(passwordEncoder.encode(pwd));
+        userRepository.save(user);
+
+        mailService.sendMail(user.getEmail(), "임시 비밀번호를 알려드립니다.", user.getUserName(), "고객님의 임시 비밀번호는 \'" + pwd + "\' 입니다.");
+
+        return Header.OK();
+    }
+    
+    // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
+    public Header<UserHighRateInfoApiResponse> searchHighRateUser(String sggName, String userNum) {
+        Map<String, String> map = new HashMap<>();
+        map.put("blonSggName", sggName);
+        map.put("userNum", userNum);
+        
+        List<Map<String, Object>> users = userMapper.selectFiveOderByRate(map);
+        Boolean ssgUser = (sggName != null ? true : false);
+
+        if (sggName != null && users.isEmpty()){
+            map.put("blonSggName", null);
+            users = userMapper.selectFiveOderByRate(map);
             ssgUser = false;
         }
 
@@ -178,50 +278,5 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
            
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
-    }
-
-    // 내가 작성한 도움 API
-    public Header<Map<String, Object>> searchWrittenHelps(String userNum, Pageable pageable) {
-        Optional<User> optional = userRepository.findById(userNum);
-   
-        return optional.map(user -> {
-            List<HelpApiResponse> responses = new ArrayList<>();
-
-            Integer page = pageable.getPageNumber();
-            Integer size = pageable.getPageSize();
-
-            // pageable의 정보를 이용하여 페이지 처리
-            for (int i = page; (i < page + size) && (i < user.getHelps().size()); i++) {
-                responses.add(helpApiService.response(user.getHelps().get(i)));
-            }
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("page", new PageApiResponse(user.getHelps().size(), size));
-            map.put("list", responses);
-
-            return map;
-        }).map(Header::OK)
-        .orElseThrow(() -> new NotFoundException("User"));
-    }
-
-    // User > UserApiResponse 를 위한 메소드
-    public UserApiResponse response(User user) {
-        UserApiResponse userApiResponse = UserApiResponse.builder()
-                                                        .userNum(user.getUserNum())
-                                                        .userName(user.getUserName())
-                                                        .birthDate(user.getBirthDate())
-                                                        .address(user.getAddress())
-                                                        .phoneNum(user.getPhoneNum())
-                                                        .userId(user.getUserId())
-                                                        .email(user.getEmail())
-                                                        .nickname(user.getNickname())
-                                                        .itdcCont(user.getItdcCont())
-                                                        .supplWhet(user.getSupplWhet())
-                                                        .picPath(user.getPicPath())
-                                                        .avgRate(user.getAvgRate())
-                                                        .ownMileage(user.getOwnMileage())
-                                                        .build();
-
-        return userApiResponse;
     }
 }

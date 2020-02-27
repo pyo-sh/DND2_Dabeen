@@ -112,6 +112,23 @@ public class HelpSupplCompApiService {
                 }).orElseThrow(() -> new NotFoundException("HelpSupplComp"));
     }
 
+    // HelpSupplComp > HelpSupplCompApiResponse
+    public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
+        HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
+                                                                                    .helpNum(helpSupplComp.getHelpSupplCompPK().getHelpNum())
+                                                                                    .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
+                                                                                    .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                                    .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                                    .astDttm(helpSupplComp.getAstDttm())
+                                                                                    .rate(helpSupplComp.getRate())
+                                                                                    .astCont(helpSupplComp.getAstCont())
+                                                                                    .build();
+
+        return helpSupplCompApiResponse;
+    }
+
+    /* 사용자 API */
+
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
         List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
@@ -182,19 +199,4 @@ public class HelpSupplCompApiService {
 
        return Header.OK(map);
     }   
-
-    // HelpSupplComp > HelpSupplCompApiResponse
-    public HelpSupplCompApiResponse response(HelpSupplComp helpSupplComp) {
-        HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
-                                                                                    .helpNum(helpSupplComp.getHelpSupplCompPK().getHelpNum())
-                                                                                    .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
-                                                                                    .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
-                                                                                    .aprvDttm(helpSupplComp.getAprvDttm())
-                                                                                    .astDttm(helpSupplComp.getAstDttm())
-                                                                                    .rate(helpSupplComp.getRate())
-                                                                                    .astCont(helpSupplComp.getAstCont())
-                                                                                    .build();
-
-        return helpSupplCompApiResponse;
-    }
 }
