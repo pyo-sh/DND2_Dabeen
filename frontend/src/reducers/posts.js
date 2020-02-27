@@ -2,23 +2,8 @@ import produce from "immer";
 import { createAction } from "../utils/actionFunction";
 
 export const initialState = {
-  livePosts: [],
-  helpPosts: [], //  작성한 도움
-  // helpPosts: [
-  //   {
-  //     id: 1,
-  //     helpPostDate: "2020-02-24 11:23:13",
-  //     postName: "망치 빌려주세요.", //게시글 제목
-  //     category: "심부름", //카테고리
-  //     helpDeadline: "2020-02-24 23:23:10",  // 마감 일시
-  //     helpExec: "2020-03-08 14:06:19", // 수행 일시
-  //     needPersonnel: 3, //필요 인원
-  //     price: 3000, //금액
-  //     execLoc: "경남 창원시 의창구 남산로 20", //이행 위치
-  //     sigungu: "의창구", //이행 시군구
-  //     content: "열정페이로 일하실분 우대합니다!", //요구사항
-  //   }
-  // ],
+  livePosts : [],
+  helpPosts : [], //  작성한 도움
   imagePaths: [], //사진 첨부, 여러개 올릴 수 있음
   totalPages: 1,
   helpsPerPage: 0,
@@ -177,21 +162,7 @@ const reducer = (state = initialState, action) => {
       }
       case ADD_HELPPOST_SUCCESS: {
         draft.isAddingHelpPost = false;
-        draft.helpPosts = action.data.map(post => ({
-          helpNum: post.help_num,
-          helpPostDate: post.help_pstn_dttm,
-          categoryNum: post.cat_num,
-          userNum: post.cnsr_num,
-          helpTitle: post.title,
-          execLoc: post.exec_loc,
-          price: post.price,
-          postNum: post.pref_suppl_num,  //선호 공급자수
-          helpDeadLine: post.pref_help_exec_dttm, //신청 마감일
-          helpExec: post.help_aply_cls_dttm,
-          content: post.cont,
-          isHelpApprove: post.help_aprv_whet,
-          sigungu: post.exec_sgg_name,
-        }))
+        draft.helpPosts.push(action.data);
         // draft.maxId += 1;
         draft.helpPostAdded = true;
         break;
