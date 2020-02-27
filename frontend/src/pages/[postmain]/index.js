@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import PostUpperDiv from "../../pagesStyled/postmain";
+import { PostUpperDiv } from "../../pagesStyled/postmain";
 import Login from '../../components/signUp/Login';
 import PostList from "../../components/posts/PostList";
 import PostWrite from "../../components/posts/PostWrite";

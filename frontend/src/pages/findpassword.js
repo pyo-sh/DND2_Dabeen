@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import FormDiv, { Content, InputUser, LoginButton, ContentBottom } from '../pagesStyled/findpassword';
+import { FormDiv, Content, InputUser, LoginButton, ContentBottom } from '../pagesStyled/findpassword';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import Link from 'next/link';

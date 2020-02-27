@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const SignUpUpperDiv = styled.div`
+export const SignUpUpperDiv = styled.div`
   margin: 30px auto;
 
   display: flex;
@@ -80,5 +80,3 @@ export const SignUpGetDataDiv = styled.div`
     align-self: flex-end;
   }
 `;
-
-export default SignUpUpperDiv;

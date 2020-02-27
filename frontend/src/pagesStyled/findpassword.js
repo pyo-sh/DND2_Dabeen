@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-const FormDiv = styled.div`
+export const FormDiv = styled.div`
   width: 100%;
   height : 100%;
   display: flex;
@@ -110,5 +110,3 @@ export const ContentBottom = styled.div`
     display: flex;
   }
 `;
-
-export default FormDiv;

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import RegistSupplierUpperDiv, { RegistSupplierLowerDiv, Icons, RegistButton } from '../pagesStyled/regist';
+import { RegistSupplierUpperDiv, RegistSupplierLowerDiv, Icons, RegistButton } from '../pagesStyled/regist';
 import { Avatar, Upload, message } from 'antd';
 
 // 공급자 등록 창

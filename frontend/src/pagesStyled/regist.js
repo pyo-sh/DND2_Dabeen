@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Icon, Button } from 'antd';
 
-const RegistSupplierUpperDiv = styled.div`
+export const RegistSupplierUpperDiv = styled.div`
     margin: 20px auto;
 
     display: flex;
@@ -111,5 +111,3 @@ export const RegistButton = styled(Button)`
     color: white;
     background: #ff4300;
 `;
-
-export default RegistSupplierUpperDiv;

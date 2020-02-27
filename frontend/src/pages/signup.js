@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import SignUpUpperDiv, { SignUpGetDataDiv } from "../pagesStyled/signup";
+import { SignUpUpperDiv, SignUpGetDataDiv } from "../pagesStyled/signup";
 import { Button, Select } from "antd";
 import { signUpRequestAction } from "../reducers/user";
 import Router from "next/router";

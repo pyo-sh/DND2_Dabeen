@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const PostUpperDiv = styled.div`
+export const PostUpperDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,5 +90,3 @@ const PostUpperDiv = styled.div`
     }
    
 `;
-
-export default PostUpperDiv;
