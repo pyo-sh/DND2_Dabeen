@@ -1,5 +1,5 @@
 import produce from "immer";
-import { createAction } from "./actionFunction";
+import { createAction } from "../utils/actionFunction";
 // 나 자신이 아닌 다른사람의 정보를 저장하는 State
 
 export const initialState = {

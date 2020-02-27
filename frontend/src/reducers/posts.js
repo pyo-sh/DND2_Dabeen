@@ -1,5 +1,5 @@
 import produce from "immer";
-import { createAction } from "./actionFunction";
+import { createAction } from "../utils/actionFunction";
 
 export const initialState = {
   livePosts : [],

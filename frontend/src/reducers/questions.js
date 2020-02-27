@@ -1,5 +1,5 @@
 import produce from "immer";
-import { createAction } from "./actionFunction";
+import { createAction } from "../utils/actionFunction";
 
 // 질문들 필요한거 같은 것. 답변이랑 같이 오는지 필요함
 

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { FormDiv, Content, InputUser, LoginButton, ContentBottom } from '../pagesStyled/findid';
+import { FormDiv, Content, InputUser, LoginButton, ContentBottom } from '../pagesStyles/findid.style';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import axios from 'axios';

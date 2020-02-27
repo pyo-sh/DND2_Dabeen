@@ -1,16 +1,15 @@
-import React, {useEffect, useCallback} from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'antd';
 import LiveHelpRequest from './LiveHelpRequest';
 import MainDaBeenerProfile from './MainDaBeenerProfile';
-import { loadRecommendRequest } from '../../reducers/opponent';
 import { loadLivePostRequestAction } from '../../reducers/posts';
 import {LiveHelpRequestMenuBar, MainForm} from './Main.style';
 
 const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
-    const { me : { address }} = useSelector(state => state.user);
+    // const { me : { address }} = useSelector(state => state.user);
     const { recommendOpponents } = useSelector(state => state.opponent);
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));

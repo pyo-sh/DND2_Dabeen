@@ -1,6 +1,6 @@
 // 약간의 동의를 확인하기 위해 만든 화면
 import React, { useState, useCallback, useEffect } from "react";
-import { TermsWrapper } from "../pagesStyled/terms";
+import { TermsWrapper } from "../pagesStyles/terms.style";
 import { Icon } from "antd";
 import Router from "next/router";
 

@@ -1,5 +1,5 @@
 import produce from "immer";
-import { createAction } from './actionFunction';
+import { createAction } from '../utils/actionFunction';
 import { removeCookie } from '../utils/cookieFunction';
 
 export const initialState = {

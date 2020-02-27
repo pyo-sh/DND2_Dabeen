@@ -6,7 +6,7 @@ import DabeenInput, { check_num,
     check_spc,
     check_kor,
     check_spa,
-} from '../signUp/InputFunctions';
+} from '../../utils/InputFunctions';
 import { inputCheckChangeHook } from '../../hooks/inputChangeHook';
 import { editUserInfoRequestAction } from '../../reducers/user';
 import { ModifyUserGetDataDiv, ModifyUserUpperDiv } from './ModifyUser.style';

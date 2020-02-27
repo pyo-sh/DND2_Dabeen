@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SignUpUpperDiv, SignUpGetDataDiv } from "../pagesStyled/signup";
+import { SignUpUpperDiv, SignUpGetDataDiv } from "../pagesStyles/signup.style";
 import { Button, Select } from "antd";
 import { signUpRequestAction } from "../reducers/user";
 import Router from "next/router";
@@ -10,7 +10,7 @@ import DabeenInput, {
   check_spc,
   check_kor,
   check_spa
-} from "../components/signUp/InputFunctions";
+} from "../utils/InputFunctions";
 import { inputCheckChangeHook } from "../hooks/inputChangeHook";
 
 // 회원가입 창
