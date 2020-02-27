@@ -1,9 +1,7 @@
 import React, { useState, useCallback } from "react";
-import styled from "styled-components";
 import { Input, DatePicker, TimePicker, Select, Button, Row, Col } from "antd";
 import inputChangeHook from '../../hooks/inputChangeHook';
-
-const { Option } = Select;
+import {PostSearchUpperDiv, PostSearchBox} from './PostSearch.style';
 
 const PostSearch = ({ categoryNum }) => {
   const [helpLocation, setHelpLocation] = useState(""); // 게시글의 위치 검색
@@ -100,20 +98,6 @@ const PostSearch = ({ categoryNum }) => {
               <span className="rangeInput">
                 <input className="inputPrice"type="number"/>원
               </span>
-              {/* <Input 
-                className="postsearchboxInput"
-                placeholder="Write price"
-                value={helpPrice}
-                onChange={onChangePrice}
-              />
-              <Select
-                className="postsearchboxSelect"
-                placeholder="Range"
-                onChange={onChangeRange}
-              >
-                <Option value="up">이상</Option>
-                <Option value="down">이하</Option>
-              </Select> */}
             </div>
           </PostSearchBox>
           <PostSearchBox>
@@ -135,143 +119,5 @@ const PostSearch = ({ categoryNum }) => {
     </PostSearchUpperDiv>
   );
 };
-
-const PostSearchUpperDiv = styled.div`
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  background: #f0f0f0;
-  font-size: 16px;
-  & .postsearchboxRow{
-      display: flex;
-      align-items: flex-end;
-      flex-wrap: wrap;
-  }
-  & .postsearchboxButtonWrapper{
-      display: flex;
-      justify-content: flex-end;
-      align-items: flex-end;
-      height: 100%;
-  }
-  & .postsearchboxButton {
-      width: 80px;
-      margin-right: 10px;
-      color: white;
-      background-color: #ff4300;
-      border: none;
-      transition: 0.3s; 
-      &:hover {
-        background:rgb(255,67,0,0.8);
-      }
-  }
-`;
-
-const PostSearchBox = styled.div`
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  width: 90%;
-  & input {
-    height : 28px;
-    &:hover, :focus {
-      border : 1px solid #FF4300;
-      outline : none;
-      box-shadow : none;
-    }
-  }
-  & .postsearchboxTitle {
-    width: 50%;
-    min-width: 130px;
-    max-width: 170px;
-    padding-left: 10px;
-  }
-  & .postsearchboxInputWrapper {
-    display: flex;
-    width: 100%;
-    min-width: 270px;
-    max-width: 290px;
-    & .rangeInput{
-      background: #FFFFFF;
-      border: 1px solid #d9d9d9;
-      border-radius: 4px;
-      width: 100%;
-      min-width: 110px;
-      max-width: 140px;
-      height: 25px;
-      color: #BFC7CE;
-
-      &:hover, :focus{
-        border: 1px solid #FF4300;
-      }
-    }
-    & .inputPrice{
-      width: 100%;
-      min-width: 80px;
-      max-width: 110px;
-      height: 22px;
-      border: none;
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
-      text-align: right;
-      color: rgba(0, 0, 0, 0.65);
-      
-      :focus{
-        outline: none;
-      }
-    }
-  }
-
-  /* input type="number"일 경우 생기는 화살표 제거 */
-  & input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-  }
-  
-  & .postsearchboxGetData {
-    display: flex;
-  }
-  & .postsearchboxLongInput {
-    width: 100%;
-    min-width: 270px;
-    max-width: 290px;
-  }
-  & .postsearchboxInput {
-    width: 100%;
-    min-width: 140px;
-    max-width: 170px;
-  }
-  & .postsearchboxDatePicker {
-    width: 100%;
-    min-width: 110px;
-    max-width: 140px;
-    & input:read-only:hover {
-      border: 1px solid #FF4300;
-    }
-  }
-  & .postsearchboxTimePicker {
-    margin-left: 10px;
-    width: 100%;
-    min-width: 110px;
-    max-width: 140px;
-  }
-  & .postsearchboxSelect {
-    width: 85px;
-    margin-left: 10px;
-  }
-  & .postsearchboxButton {
-    justify-self: flex-end;
-  }
-  & .ant-select-arrow{
-      color: #FF4300;
-  }
-  & .ant-calendar-picker-icon{
-      color: #FF4300;
-  }
-  & .ant-time-picker-clock-icon{
-      color: #FF4300; 
-  }
-`;
 
 export default PostSearch;

@@ -14,7 +14,7 @@ const Postmain = ({categoryNum, search}) => {
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
   const [tryLogin, setTryLogin] = useState(false);
   const { totalPages, totalHelps, me } = useSelector(state => (state.posts, state.user));
-  console.log(me.userNum);
+  
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
   useEffect(() => {
     setPostWriteVisible(false);
@@ -36,12 +36,12 @@ const Postmain = ({categoryNum, search}) => {
 
   //글쓰기 버튼 눌렀을 경우
   const onClickPostWrite = useCallback(()=>{
-    // if(!me.userNum){
-    //   message.error('로그인 후 글을 작성하실 수 있습니다.');
-    //   setTryLogin(true);
-    // } else{
+    if(!me.userNum){
+      message.error('로그인 후 글을 작성하실 수 있습니다.');
+      setTryLogin(true);
+    } else{
       setPostWriteVisible(true);
-    // }
+    }
   }, [me]);
 
   // 보고자 하는 카테고리가 바뀔 때 보여주는 Title을 결정해주는 함수
