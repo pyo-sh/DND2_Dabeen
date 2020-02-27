@@ -1,5 +1,27 @@
 import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
-import { addHelpPostSuccessAction, addHelpPostFailureAction, updateHelpPostSuccessAction, updateHelpPostFailureAction, removeHelpPostSuccessAction, removeHelpPostFailureAction, loadHelpPostSuccessAction, loadHelpPostFailureAction, LOAD_HELPPOST_REQUEST, LOAD_LIVEPOST_REQUEST, loadLivePostSuccessAction, loadLivePostFailureAction, LOAD_USERPOST_REQUEST, loadUserPostSuccessAction, loadUserPostFailureAction, UPLOAD_IMAGE_REQUEST, uploadImageFailureAction, ADD_HELPPOST_REQUEST } from '../reducers/posts';
+import {
+    addHelpPostSuccessAction,
+    addHelpPostFailureAction,
+    updateHelpPostSuccessAction,
+    updateHelpPostFailureAction,
+    removeHelpPostSuccessAction,
+    removeHelpPostFailureAction,
+    loadHelpPostSuccessAction,
+    loadHelpPostFailureAction,
+    LOAD_HELPPOST_REQUEST,
+    LOAD_LIVEPOST_REQUEST,
+    loadLivePostSuccessAction,
+    loadLivePostFailureAction,
+    LOAD_ACTIVE_USERPOST_REQUEST,
+    loadActiveUserPostSuccessAction,
+    loadActiveUserPostFailureAction,
+    LOAD_INACTIVE_USERPOST_REQUEST,
+    loadInactiveUserPostSuccessAction,
+    loadInactiveUserPostFailureAction,
+    UPLOAD_IMAGE_REQUEST,
+    uploadImageFailureAction,
+    ADD_HELPPOST_REQUEST
+} from '../reducers/posts';
 import axios from 'axios';
 
 function addHelpPostAPI(data) { //게시글 업로드
@@ -130,10 +152,10 @@ function uploadImageAPI(images) {
 };
 
 function* uploadImage(action) {
-    try{
+    try {
         const result = yield call(uploadImageAPI, action.data);
         yield put(uploadImageSuccessAction(result.data));
-    } catch(e) {
+    } catch (e) {
         console.log(e);
         yield put(uploadImageFailureAction(e));
     }
@@ -143,29 +165,57 @@ function* watchUploadImage() {
     yield takeLatest(UPLOAD_IMAGE_REQUEST, uploadImage);
 };
 
-function loadUserPostAPI(data) {
-    return axios.post(`/user/${data.userNum}/written-helps?page=${data.page}`);
-};
+// 받을도움 / 줄도움
+function loadActiveUserPostAPI(data) {
+    if(data.helpType === "take"){
 
-function* loadUserPost(action) {
+    }
+    else if(data.helpType === "give"){
+        return axios.post(`/help-suppl-comp/${data.userNum}/applied-helps?page=${data.page}`);
+    }
+    else    return null;
+};
+function* loadActiveUserPost(action) {
     try {
-        const result = yield call(loadUserPostAPI, action.data);
-        yield put(loadUserPostSuccessAction(result.data.data));
+        const result = yield call(loadActiveUserPostAPI, action.data);
+        yield put(loadActiveUserPostSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
-        yield put(loadUserPostFailureAction(e));
+        yield put(loadActiveUserPostFailureAction(e));
     }
 };
+function* watchLoadActiveUserPost() {
+    yield takeLatest(LOAD_ACTIVE_USERPOST_REQUEST, loadActiveUserPost);
+};
+// 받은도움 / 준도움
+function loadInactiveUserPostAPI(data) {
+    if(data.helpType === "take"){
 
-function* watchLoadUserPost() {
-    yield takeLatest(LOAD_USERPOST_REQUEST, loadUserPost);
+    }
+    else if(data.helpType === "give"){
+        return axios.post(`/help-suppl-comp/${data.userNum}/supplied-helps?page=${data.page}`);
+    }
+    else    return null;
+};
+function* loadInactiveUserPost(action) {
+    try {
+        const result = yield call(loadInactiveUserPostAPI, action.data);
+        yield put(loadInactiveUserPostSuccessAction(result.data.data));
+    } catch (e) {
+        console.log(e);
+        yield put(loadInactiveUserPostFailureAction(e));
+    }
+};
+function* watchLoadInactiveUserPost() {
+    yield takeLatest(LOAD_INACTIVE_USERPOST_REQUEST, loadInactiveUserPost);
 };
 
 export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
-        fork(watchLoadUserPost),
+        fork(watchLoadActiveUserPost),
+        fork(watchLoadInactiveUserPost),
         fork(watchAddHelpPost),
     ]);
 };

@@ -2,8 +2,8 @@ import produce from "immer";
 import { createAction } from "../utils/actionFunction";
 
 export const initialState = {
-  livePosts : [],
-  helpPosts : [], //  작성한 도움
+  livePosts: [],
+  helpPosts: [], //  작성한 도움
   // helpPosts: [
   //   {
   //     id: 1,
@@ -20,11 +20,29 @@ export const initialState = {
   //   }
   // ],
   imagePaths: [], //사진 첨부, 여러개 올릴 수 있음
-  totalPages : 1,
-  helpsPerPage : 0,
-  totalHelps : 0,
-
-  userPosts: [],  // 유저가 작성한 도움
+  totalPages: 1,
+  helpsPerPage: 0,
+  totalHelps: 0,
+  // 유저의 도움 중 받을 도움 / 줄 도움
+  userActivePosts: [],
+  userActivePostsPage: {
+    total_datas: 0,
+    total_pages: 0,
+    pages_per_datas: 15
+  },
+  isLoadingActivePost: false,
+  activePostLoaded: false,
+  loadActivePostErrorReason: '',
+  // 유저의 도움 중 받은 도움 줄 도움
+  userInactivePosts: [],
+  userInactivePostsPage: {
+    total_datas: 0,
+    total_pages: 0,
+    pages_per_datas: 15
+  },
+  isLoadingInactivePost: false,
+  inactivePostLoaded: false,
+  loadInactivePostErrorReason: '',
 
   isLoadingHelpPost: false,
   loadHelpPostErrorReason: "false",
@@ -39,9 +57,6 @@ export const initialState = {
   removeHelpPostErrorReason: "", //도움 게시글 삭제 실패 사유
   isRemovingHelpPost: false, //도움 게시글 삭제 중
   helpPostRemoved: false, //도움 게시글 삭제 성공
-  isLoadingUserPost: false,
-  loadUserPostErrorReason: "false",
-  userPostLoaded: false,
 };
 // 실시간 도움 요청
 export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
@@ -67,11 +82,16 @@ export const REMOVE_HELPPOST_FAILURE = "REMOVE_HELPPOST_FAILURE";
 export const UPLOAD_IMAGE_REQUEST = "UPLOAD_IMAGE_REQUEST";
 export const UPLOAD_IMAGE_SUCCESS = "UPLOAD_IMAGE_SUCCESS";
 export const UPLOAD_IMAGE_FAILURE = "UPLOAD_IMAGE_FAILURE";
+// 받을도움 / 줄도움 을 요청
+export const LOAD_ACTIVE_USERPOST_REQUEST = "LOAD_ACTIVE_USERPOST_REQUEST";
+export const LOAD_ACTIVE_USERPOST_SUCCESS = "LOAD_ACTIVE_USERPOST_SUCCESS";
+export const LOAD_ACTIVE_USERPOST_FAILURE = "LOAD_ACTIVE_USERPOST_FAILURE";
+// 받은도움 / 준도움 을 요청
+export const LOAD_INACTIVE_USERPOST_REQUEST = "LOAD_INACTIVE_USERPOST_REQUEST";
+export const LOAD_INACTIVE_USERPOST_SUCCESS = "LOAD_INACTIVE_USERPOST_SUCCESS";
+export const LOAD_INACTIVE_USERPOST_FAILURE = "LOAD_INACTIVE_USERPOST_FAILURE";
 
-export const LOAD_USERPOST_REQUEST = "LOAD_USERPOST_REQUEST";
-export const LOAD_USERPOST_SUCCESS = "LOAD_USERPOST_SUCCESS";
-export const LOAD_USERPOST_FAILURE = "LOAD_USERPOST_FAILURE";
-
+// Actions
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
 export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
@@ -84,33 +104,25 @@ export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
 export const addHelpPostFailureAction = createAction(ADD_HELPPOST_FAILURE);
 
-export const updateHelpPostRequestAction = createAction(
-  UPDATE_HELPPOST_REQUEST
-);
-export const updateHelpPostSuccessAction = createAction(
-  UPDATE_HELPPOST_SUCCESS
-);
-export const updateHelpPostFailureAction = createAction(
-  UPDATE_HELPPOST_FAILURE
-);
+export const updateHelpPostRequestAction = createAction(UPDATE_HELPPOST_REQUEST);
+export const updateHelpPostSuccessAction = createAction(UPDATE_HELPPOST_SUCCESS);
+export const updateHelpPostFailureAction = createAction(UPDATE_HELPPOST_FAILURE);
 
-export const removeHelpPostRequestAction = createAction(
-  REMOVE_HELPPOST_REQUEST
-);
-export const removeHelpPostSuccessAction = createAction(
-  REMOVE_HELPPOST_SUCCESS
-);
-export const removeHelpPostFailureAction = createAction(
-  REMOVE_HELPPOST_FAILURE
-);
+export const removeHelpPostRequestAction = createAction(REMOVE_HELPPOST_REQUEST);
+export const removeHelpPostSuccessAction = createAction(REMOVE_HELPPOST_SUCCESS);
+export const removeHelpPostFailureAction = createAction(REMOVE_HELPPOST_FAILURE);
 
 export const uploadImageRequestAction = createAction(UPLOAD_IMAGE_REQUEST);
 export const uploadImageSuccessAction = createAction(UPLOAD_IMAGE_SUCCESS);
 export const uploadImageFailureAction = createAction(UPLOAD_IMAGE_FAILURE);
-
-export const loadUserPostRequestAction = createAction(LOAD_USERPOST_REQUEST);
-export const loadUserPostSuccessAction = createAction(LOAD_USERPOST_SUCCESS);
-export const loadUserPostFailureAction = createAction(LOAD_USERPOST_FAILURE);
+// 받을도움 / 줄도움 을 요청하는 action
+export const loadActiveUserPostRequestAction = createAction(LOAD_ACTIVE_USERPOST_REQUEST);
+export const loadActiveUserPostSuccessAction = createAction(LOAD_ACTIVE_USERPOST_SUCCESS);
+export const loadActiveUserPostFailureAction = createAction(LOAD_ACTIVE_USERPOST_FAILURE);
+// 받은도움 / 준도움 을 요청하는 action
+export const loadInactiveUserPostRequestAction = createAction(LOAD_INACTIVE_USERPOST_REQUEST);
+export const loadInactiveUserPostSuccessAction = createAction(LOAD_INACTIVE_USERPOST_SUCCESS);
+export const loadInactiveUserPostFailureAction = createAction(LOAD_INACTIVE_USERPOST_FAILURE);
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -176,7 +188,7 @@ const reducer = (state = initialState, action) => {
           postNum: post.pref_suppl_num,  //선호 공급자수
           helpDeadLine: post.pref_help_exec_dttm, //신청 마감일
           helpExec: post.help_aply_cls_dttm,
-          content: post.cont, 
+          content: post.cont,
           isHelpApprove: post.help_aprv_whet,
           sigungu: post.exec_sgg_name,
         }))
@@ -241,9 +253,9 @@ const reducer = (state = initialState, action) => {
             helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
             location: post.exec_loc, // 이행장소
             helpPicList: '',// 도움사진목록,
-            
-            userId : post.user.id,
-            nickname : post.user.nickname,
+
+            userId: post.user.id,
+            nickname: post.user.nickname,
             userPic: post.user.pic,
           }
         ))
@@ -265,30 +277,20 @@ const reducer = (state = initialState, action) => {
       // case UPLOAD_IMAGE_FAILURE: {
       //   break;
       // }
-      case LOAD_USERPOST_REQUEST: {
-        draft.isLoadingUserPost = true;
-        draft.loadUserPostErrorReason = "";
-        draft.userPostLoaded = false;
+      
+      // 받을 도움 / 줄 도움 을 요청하는 reducer
+      case LOAD_ACTIVE_USERPOST_REQUEST: {
+        draft.isLoadingActivePost = true;
+        draft.activePostLoaded = false;
+        draft.loadActivePostErrorReason = '';
         break;
       }
-      case LOAD_USERPOST_SUCCESS: {
-        draft.isLoadingUserPost = false;
-        draft.userPostLoaded = true;
-        // draft.userPosts = dummyUserHelpPost.data.map(post => ({ // 더미포스트
-        //   helpNum: post.help_num, // 도움번호
-        //   helpTitle: post.title,  // 타이틀
-        //   helpPostDate: post.help_pstn_dttm, // 도움게시일시
-        //   categoryNum: post.cat_num, // 카테고리번호
-        //   price: post.price, // 금액
-        //   content: post.cont, // 내용
-        //   userNum: post.cnsr_num,// 수요자번호
-        //   isHelpApprove: post.help_aprv_whet, // 도움승인여부
-        //   postNum: post.pref_suppl_num, // 선호공급자수
-        //   helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-        //   location: post.exec_loc, // 이행장소
-        //   // exec_sgg_name
-        // }));
-        draft.userPosts = action.data.map(post => ({
+      case LOAD_ACTIVE_USERPOST_SUCCESS: {
+        draft.isLoadingActivePost = false;
+        draft.activePostLoaded = true;
+          // 데이터 처리
+        draft.userActivePostsPage = action.data.page;
+        draft.userActivePosts = action.data.list.map(post => ({
           helpNum: post.help_num, // 도움번호
           helpTitle: post.title,  // 타이틀
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
@@ -304,9 +306,28 @@ const reducer = (state = initialState, action) => {
         }));
         break;
       }
-      case LOAD_USERPOST_FAILURE: {
-        draft.isLoadingUserPost = false;
-        draft.loadUserPostErrorReason = action.data.error;
+      case LOAD_ACTIVE_USERPOST_FAILURE: {
+        draft.isLoadingActivePost = false;
+        draft.loadActivePostErrorReason = action.data.error;
+        break;
+      }
+      // 받은도움 / 준도움 을 요청하는 reducer
+      case LOAD_INACTIVE_USERPOST_REQUEST: {
+        draft.isLoadingInactivePost = true;
+        draft.inactivePostLoaded = false;
+        draft.loadInactivePostErrorReason = '';
+        break;
+      }
+      case LOAD_INACTIVE_USERPOST_SUCCESS: {
+        draft.isLoadingInactivePost = false;
+        draft.inactivePostLoaded = true;
+
+        break;
+      }
+      case LOAD_INACTIVE_USERPOST_FAILURE: {
+        draft.isLoadingInactivePost = false;
+        draft.loadInactivePostErrorReason = action.data.error;
+        
         break;
       }
       default:
