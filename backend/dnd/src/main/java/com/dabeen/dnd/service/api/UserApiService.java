@@ -27,6 +27,7 @@ import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
+import com.dabeen.dnd.model.network.response.UserHighRateInfoApiResponse;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,10 +150,20 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     }
 
     // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
-    public Header<List<Map<String, String>>> searchHighRateUser(String ssgName) {
-        List<Map<String, String>> users = userMapper.selectFiveOderByRate(ssgName);
+    public Header<UserHighRateInfoApiResponse> searchHighRateUser(String ssgName) {
+        List<Map<String, Object>> users = userMapper.selectFiveOderByRate(ssgName);
+        Boolean ssgUser = (ssgName != null ? true : false);
 
-        return Header.OK(users);
+        if (ssgName != null && users.isEmpty()){
+            users = userMapper.selectFiveOderByRate(null);
+            ssgUser = false;
+        }
+
+        UserHighRateInfoApiResponse response = UserHighRateInfoApiResponse.builder()
+                                                                            .ssgUser(ssgUser)
+                                                                            .users(users)
+                                                                            .build();
+        return Header.OK(response);
     }
 
     // 내 문의 APi
@@ -176,7 +187,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         return optional.map(user -> {
             List<HelpApiResponse> responses = new ArrayList<>();
 
-            Integer page = pageable.getPageNumber() - 1;
+            Integer page = pageable.getPageNumber();
             Integer size = pageable.getPageSize();
 
             // pageable의 정보를 이용하여 페이지 처리

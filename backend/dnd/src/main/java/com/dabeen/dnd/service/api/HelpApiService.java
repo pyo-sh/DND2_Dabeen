@@ -3,7 +3,9 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,10 +13,15 @@ import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Help;
+import com.dabeen.dnd.model.enumclass.PymtWhet;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
+import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
 import com.dabeen.dnd.repository.CategoryRepository;
+import com.dabeen.dnd.repository.HelpRepository;
+import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.HelpMapper;
 import com.dabeen.dnd.service.BaseService;
@@ -29,12 +36,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse, Help> {
-
+    @Autowired
+    private HelpRepository helpRepository;
+    
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private HelpSupplCompRepository helpSupplCompRepository;
 
     @Autowired
     private HelpMapper helpMapper;
@@ -61,7 +73,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         helpMapper.insert(helpMap);
 
-        return Header.OK(response(baseRepository.findById((String) helpMap.get("helpNum"))
+        return Header.OK(response(helpRepository.findById((String) helpMap.get("helpNum"))
                         .orElseThrow(() -> new NotFoundException("Created Entity"))));
     }
 
@@ -70,9 +82,9 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         // TODO Auto-generated method stub
         log.info("{}",num);  
 
-        return baseRepository.findById(num).map(help -> response(help)).map(help -> Header.OK(help)).orElseThrow(() -> new NotFoundException("Help"));
+        return helpRepository.findById(num).map(help -> response(help)).map(help -> Header.OK(help)).orElseThrow(() -> new NotFoundException("Help"));
 
-        // return baseRepository.findById(num).map(help -> response(help))
+        // return helpRepository.findById(num).map(help -> response(help))
         //                 .map(Header::OK)
         //                 .orElseThrow(() -> new NotFoundException("Help"));
 
@@ -84,7 +96,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         
         HelpApiRequest helpApiRequest = request.getData();
 
-        Optional<Help> optional = baseRepository.findById(helpApiRequest.getHelpNum());
+        Optional<Help> optional = helpRepository.findById(helpApiRequest.getHelpNum());
         log.info("{}", optional);
         // log.info("{}", optional.get().getHelpNum());
   
@@ -109,7 +121,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
                     return help;
                 })
-                .map(baseRepository::save)
+                .map(helpRepository::save)
                 .map(this::response)
                 .map(Header::OK)
                 .orElseThrow(() -> new NotFoundException("Help"));
@@ -118,10 +130,31 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     @Override
     public Header delete(String num) {
         // TODO Auto-generated method stub
-        return baseRepository.findById(num).map(help -> {
-                                                    baseRepository.delete(help);
+        return helpRepository.findById(num).map(help -> {
+                                                    helpRepository.delete(help);
                                                     return Header.OK();
         }).orElseThrow( () -> new NotFoundException("Help"));
+    }
+
+    public Header<List<HelpAppliInfoApiResponse>> searchNoPaymentHelps(String userNum){
+        List<Help> helps = helpRepository.findByUser_UserNumAndPymtWhet(userNum, PymtWhet.n);
+
+        List<HelpAppliInfoApiResponse> responses = new ArrayList<>();
+        helps.forEach(help -> {
+            // 신청인원
+            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
+            // 승인인원
+            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
+            
+            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
+                                                                        .appliNum(appliNum)
+                                                                        .aprvNum(aprvNum)
+                                                                        .help(this.response(help))
+                                                                        .build();
+            responses.add(response);                                                                                        
+        });
+
+        return Header.OK(responses);
     }
 
     public HelpApiResponse response(Help help){
