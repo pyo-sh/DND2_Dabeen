@@ -23,6 +23,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -36,10 +37,11 @@ public class UserApiController extends CrudController<UserApiRequest, UserApiRes
     private UserApiService userApiService;
 
     // 메인 하단배너 - 자신의 소속시군명에 맞는 평점 높은 사용자 5명 출력
-    @GetMapping(value = { "{ssg_name}/main-page", "/main-page" })
+    @GetMapping("/main-page")
     public Header<UserHighRateInfoApiResponse> searchHighRateUser(
-            @PathVariable(value = "ssg_name", required = false) String ssgName) {
-        return userApiService.searchHighRateUser(ssgName);
+            @RequestParam(value = "sgg_name", required = false) String sggName,
+            @RequestParam(value = "user_num") String userNum) {
+        return userApiService.searchHighRateUser(sggName, userNum);
     }
 
     // 내 문의 APi

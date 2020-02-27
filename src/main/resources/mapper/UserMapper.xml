@@ -23,17 +23,17 @@
     </insert>
     <select id="selectFiveOderByRate" resultType="map" parameterType="string">
         <choose>
-            <when test="value != null">
+            <when test="blonSggName != null">
                 SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
-                WHERE address LIKE CONCAT('%', #{blonSggName}, '%') AND avg_rate IS NOT NULL
+                WHERE address LIKE CONCAT('%', #{blonSggName}, '%') AND avg_rate IS NOT NULL AND user_num != #{userNum}
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </when>
             <otherwise>
                 SELECT user_num, user_name, id, nickname, pic_path, avg_rate
                 FROM user
-                WHERE avg_rate IS NOT NULL
+                WHERE avg_rate IS NOT NULL AND user_num != #{userNum}
                 ORDER BY avg_rate DESC
                 LIMIT 5;
             </otherwise>
