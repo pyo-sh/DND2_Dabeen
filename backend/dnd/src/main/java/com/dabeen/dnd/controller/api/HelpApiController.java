@@ -17,7 +17,6 @@ import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
 import com.dabeen.dnd.service.api.HelpApiService;
-import com.sun.tools.sjavac.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
