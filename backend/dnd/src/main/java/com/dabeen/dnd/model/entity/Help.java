@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -77,7 +78,7 @@ public class Help{
     @Enumerated(EnumType.STRING)
     private Whether helpAprvWhet; // 도움승인여부
 
-    private String execSggName; //이행시군구명
+    // private String execSggName; //이행시군구명
     
     @Enumerated(EnumType.STRING)
     private PymtWhet pymtWhet;

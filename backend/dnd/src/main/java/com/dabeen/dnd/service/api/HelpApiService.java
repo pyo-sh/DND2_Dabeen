@@ -22,7 +22,9 @@ import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
+import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
 import com.dabeen.dnd.model.network.response.PageApiResponse;
+import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.repository.CategoryRepository;
 import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
@@ -57,6 +59,9 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     @Autowired
     private HelpMapper helpMapper;
 
+    @Autowired
+    private UserApiService userApiService;
+
     @Override
     public Header<HelpApiResponse> create(Header<HelpApiRequest> request) {
         // TODO Auto-generated method stub
@@ -75,7 +80,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         helpMap.put("prefHelpExecDttm",helpApiRequest.getPrefHelpExecDttm());
         helpMap.put("helpAplyClsDttm",helpApiRequest.getHelpAplyClsDttm());
         helpMap.put("cont",helpApiRequest.getCont());
-        helpMap.put("execSggName",helpApiRequest.getExecSggName());
+        // helpMap.put("execSggName",helpApiRequest.getExecSggName());
 
         helpMapper.insert(helpMap);
 
@@ -121,7 +126,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                     help.setPrefHelpExecDttm(helpApiRequest.getPrefHelpExecDttm());
                     help.setHelpAplyClsDttm(helpApiRequest.getHelpAplyClsDttm());
                     help.setCont(helpApiRequest.getCont());
-                    help.setExecSggName(helpApiRequest.getExecSggName());
+                    // help.setExecSggName(helpApiRequest.getExecSggName());
 
                     log.info("{}",help.getHelpNum());
 
@@ -159,7 +164,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                                                                     .helpAplyClsDttm(help.getHelpAplyClsDttm())
                                                                     .cont(help.getCont())
                                                                     .helpAprvWhet(help.getHelpAprvWhet())
-                                                                    .execSggName(help.getExecSggName())
+                                                                    // .execSggName(help.getExecSggName())
                                                                     .pymtWhet(help.getPymtWhet()).build();
         
         return helpApiResponse;
@@ -182,7 +187,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
             HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
                                                                         .appliNum(appliNum)
                                                                         .aprvNum(aprvNum)
-                                                                        .help(this.response(help))
+                                                                        .help(this.searchResponse(help))
                                                                         .build();
             responses.add(response);                                                                                        
         });
@@ -193,11 +198,21 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     // 받을 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 미래인 것
     public Header<Map<String, Object>> searchToReceiveHelps(String userNum, Pageable pageable){
         Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
+        List<HelpAppliInfoApiResponse > responses = new ArrayList<>();
         
-        List<HelpApiResponse> responses = helps.getContent()
-                                                .stream()
-                                                .map(this::response)
-                                                .collect(Collectors.toList());
+        helps.forEach(help -> {
+            // 신청인원
+            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
+            // 승인인원
+            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
+            
+            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
+                                                                        .appliNum(appliNum)
+                                                                        .aprvNum(aprvNum)
+                                                                        .help(this.searchResponse(help))
+                                                                        .build();
+            responses.add(response);                                                                                        
+        });
 
         Map<String, Object> map = new HashMap<>();
         map.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
@@ -220,5 +235,46 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         map.put("list", responses);   
              
         return Header.OK(map);
+    }
+
+    public Header<List<HelpExecLocApiResponse>> searchExecLocHelps(String execLoc){
+
+        List<Help> helps;
+        LocalDateTime defaultEndDttm = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
+
+        // 기본적인 주소를 통한 help 검색 결과
+        helps = helpRepository.findTop9ByHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(defaultEndDttm, execLoc);
+
+        // 만약 주소를 통한 결과가 없는 경우, 전체 값을 다 검색한 후에 상위 9 개 값을 배열에 새로 담는다.
+        if(helps.isEmpty()){
+            helps = helpRepository.findTop9ByHelpEndDttmOrderByHelpNumDesc(defaultEndDttm);
+        }
+
+        List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+
+        return Header.OK(response);
+    }
+
+    public HelpExecLocApiResponse searchResponse(Help help){
+
+        HelpExecLocApiResponse helpExecLocApiResponse =  HelpExecLocApiResponse.builder()
+                                .helpNum(help.getHelpNum())
+                                .helpPstnDttm(help.getHelpPstnDttm())
+                                .helpEndDttm(help.getHelpEndDttm())
+                                .cnsrUser(userApiService.response(help.getUser()))
+                                .title(help.getTitle())
+                                .execLoc(help.getExecLoc())
+                                .price(help.getPrice())
+                                .prefSupplNum(help.getPrefSupplNum())
+                                .prefHelpExecDttm(help.getPrefHelpExecDttm())
+                                .helpAplyClsDttm(help.getHelpAplyClsDttm())
+                                .cont(help.getCont())
+                                .helpAprvWhet(help.getHelpAprvWhet())
+                                .pymtWhet(help.getPymtWhet())
+                                .helpPics(help.getHelpPics())
+                                .build();
+        
+        return helpExecLocApiResponse;
+        
     }
 }

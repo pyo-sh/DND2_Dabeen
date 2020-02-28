@@ -164,7 +164,7 @@ public class HelpSupplCompApiService {
                                                                                 .astDttm(helpSupplComp.getAstDttm())
                                                                                 .rate(helpSupplComp.getRate())
                                                                                 .astCont(helpSupplComp.getAstCont())
-                                                                                .help(helpApiService.response(helpSupplComp.getHelp()))
+                                                                                .help(helpApiService.searchResponse(helpSupplComp.getHelp()))
                                                                                 .build();
             responses.add(response);
         });
@@ -188,7 +188,7 @@ public class HelpSupplCompApiService {
                                                                                .astDttm(helpSupplComp.getAstDttm())
                                                                                .rate(helpSupplComp.getRate())
                                                                                .astCont(helpSupplComp.getAstCont())
-                                                                               .help(helpApiService.response(helpSupplComp.getHelp()))
+                                                                               .help(helpApiService.searchResponse(helpSupplComp.getHelp()))
                                                                                .build();
            responses.add(response);
        });
