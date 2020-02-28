@@ -129,8 +129,8 @@ function* watchLoadHelpPost() {
     yield takeLatest(LOAD_HELPPOST_REQUEST, loadHelpPost);
 };
 
-function loadLivePostAPI(data) {
-    return axios.get(`/help/${data}/main-page`);
+function loadLivePostAPI(loaction) {
+    return axios.get(`/help/search-exec-loc/${encodeURIComponent(loaction)}`);
 };
 
 function* loadLivePost(action) {

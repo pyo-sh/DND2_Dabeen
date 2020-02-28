@@ -18,9 +18,8 @@ const Main = () => {
     
     useEffect(() => {
         dispatch(loadRecommendRequest({address, userNum}));
+        dispatch(loadLivePostRequestAction(address))
     }, [address, userNum]);
-    
-
 
     return (
         <MainForm>

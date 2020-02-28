@@ -172,16 +172,15 @@ const reducer = (state = initialState, action) => {
           helpNum: action.data.help_num, // 도움번호
           helpPostDate: action.data.help_pstn_dttm, // 도움게시일시
           helpTitle: action.data.title,  //도움제목
+          helpContent: action.data.cont, // 내용
           categoryNum: action.data.cat_num, // 카테고리번호
           price: action.data.price, // 금액
-          content: action.data.cont, // 내용
           helpDeadLine: action.data.help_aply_cls_dttm, // 도움신청마감일시
           isHelpApprove: action.data.help_aprv_whet, // 도움승인여부
           helpEndTime: action.data.help_end_dttm,
           postNum: action.data.pref_suppl_num, // 선호공급자수
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
           location: action.data.exec_loc, // 이행장소
-          sigungu: action.data.exec_sgg_name,
           payment: action.data.pymt_whet
         });
         // draft.maxId += 1;
@@ -248,20 +247,25 @@ const reducer = (state = initialState, action) => {
         draft.livePosts = action.data.map(post => (
           {
             helpNum: post.help_num,
-            helpDate: post.help_post_dttm,
+            helpPostDate: post.help_pstn_dttm,
+            helpEndTime : post.help_end_dttm,
             helpTitle: post.title,
-            helpContent: post.content,
-            hlepPrice: post.price,
-            helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
+            helpContent: post.cont,
+            price: post.price,
             isHelpApprove: post.help_aprv_whet, // 도움승인여부
             postNum: post.pref_suppl_num, // 선호공급자수
             helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+            helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
             location: post.exec_loc, // 이행장소
-            helpPicList: '',// 도움사진목록,
+            helpPicList: post.help_pics,// 도움사진목록,
 
-            userId: post.user.id,
-            nickname: post.user.nickname,
-            userPic: post.user.pic,
+            userNum : post.cnsr_user.user_num,
+            userId: post.cnsr_user.user_id,
+            nickname: post.cnsr_user.nickname,
+            userName : post.cnsr_user.user_name,
+            userPic : post.cnsr_user.pic_path,
+            avgRate : post.cnsr_user.avg_rate,
+            userPic: post.cnsr_user.pic,
           }
         ))
         break;

@@ -10,8 +10,8 @@ const Home = () => {
   );
 };
 
-Home.getInitialProps = async context => {
-  loadLivePostRequestAction(1000);
-}
+// Home.getInitialProps = async context => {
+//   loadLivePostRequestAction(1000);
+// }
 
 export default Home;

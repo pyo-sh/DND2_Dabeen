@@ -76,7 +76,7 @@ const PostDetail = ({setVisible, data}) => {
 
     const getLocation = useCallback((fullAddress, sigunguName) => {
         setEditExecLoc(fullAddress);
-        setEditSigungu(sigunguName);
+        setEditSigungu(sigunguName);   // 시군군 없어졌으니.. 수정해야할
     }, []);
 
     //Picker들 수정할 때 
@@ -125,7 +125,7 @@ const PostDetail = ({setVisible, data}) => {
                     </div>
                     <div className="titleDetail">
                         <div>작성일 : {data.helpPostDate.split('T')[0]}</div>
-                        <div>작성자 : {data.id}</div>  
+                        <div>작성자 : {data.userId}</div>  
                         {
                             !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                             : 
@@ -216,7 +216,7 @@ const PostDetail = ({setVisible, data}) => {
                     {
                         !edit ?       
                         <p>
-                        {data.content}
+                        {data.helpContent}
                         </p>
                         :
                         <textarea required value={editContent} onChange={setEditContent}/>
