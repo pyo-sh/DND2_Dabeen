@@ -21,6 +21,7 @@ import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.exception.NotYourselfException;
 import com.dabeen.dnd.exception.PasswordWrongException;
+import com.dabeen.dnd.exception.TokenInvaildException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -127,6 +128,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotYourselfException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public Header<?> handlerNotYourselfException(NotYourselfException ex) {
+        return Header.ERROR(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    // 본인만 접근 가능한 api에서 본인이 접근하지 않은 경우
+    @ExceptionHandler(TokenInvaildException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Header<?> handlerTokenInvaildException(TokenInvaildException ex) {
         return Header.ERROR(HttpStatus.FORBIDDEN, ex.getMessage());
     }
 
