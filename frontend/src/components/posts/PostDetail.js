@@ -8,7 +8,7 @@ import moment from 'moment';
 import SearchJuso from '../map/SearchJuso';
 import {Modal, Icons, Content, Title, ApplyCheck, EditTitle, Edit, Image, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
 import {updateHelpPostRequestAction} from '../../reducers/posts';
-
+import { getCookie } from '../../utils/cookieFunction';
 // 내가 쓴 글 / 아닌 글 구분해야함
 const PostDetail = ({setVisible, data}) => {
     //수행일시랑 마감일시 날짜랑 시간 잘라야함
@@ -53,6 +53,7 @@ const PostDetail = ({setVisible, data}) => {
                 isHelpApprove: data.isHelpApprove,
                 sigungu: editSigungu,
                 content: editContent,
+                cookie : getCookie()
             })
         );
         setEdit(prev => !prev);
@@ -87,7 +88,7 @@ const PostDetail = ({setVisible, data}) => {
 
     //게시글 삭제 버튼 눌렀을 때
     const deletePost = useCallback((id) => () => {
-        dispatch(removeHelpPostRequestAction(id));
+        dispatch(removeHelpPostRequestAction({id, cookie : getCookie()}));
     }, []);
 
     return (

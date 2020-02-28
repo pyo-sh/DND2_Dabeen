@@ -22,7 +22,8 @@ import {
     ADD_HELPPOST_REQUEST,
     addImageSuccessAction,
     addImageFailureAction,
-    UPDATE_HELPPOST_REQUEST
+    UPDATE_HELPPOST_REQUEST,
+    REMOVE_HELPPOST_REQUEST
 } from '../reducers/posts';
 import axios from 'axios';
 
@@ -39,10 +40,13 @@ function addHelpPostAPI(data) { //게시글 업로드
             pref_help_exec_dttm: data.helpExec,
             help_aply_cls_dttm: data.helpDeadline,
             cont: data.content,
-            help_aprv_whet: 'n'
+            help_aprv_whet: 'n',
         }
     }
-    return axios.post('/help', reqData)
+    const {cookie} = data;
+    return axios.post('/help', reqData,{
+        Authorization: `Bearer ${cookie}`
+        })
 };
 
 function* addHelpPost(action) {
@@ -76,7 +80,10 @@ function updateHelpPostAPI(data) {
             help_aprv_whet: data.isHelpApprove,
         }
     }
-    return axios.put('/help', reqData)
+    const cookie = {data};
+    return axios.put('/help', reqData,{
+        Authorization: `Bearer ${cookie}`
+        });
 };
 
 function* updateHelpPost(action) {
@@ -93,8 +100,10 @@ function* watchUpdateHelpPost() {
     yield takeLatest(UPDATE_HELPPOST_REQUEST, updateHelpPost);
 };
 
-function removeHelpPostAPI(helpNum) {
-    return axios.delete(`/help/${helpNum}`);
+function removeHelpPostAPI({helpNum, cookie}) {
+    return axios.delete(`/help/${helpNum}`, {
+        Authorization: `Bearer ${cookie}`
+        });
 };
 
 function* removeHelpPost(action) {
@@ -112,7 +121,7 @@ function* watchRemoveHelpPost() {
 };
 
 function loadHelpPostAPI(data) {
-    return axios.post(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
+    return axios.get(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
 };
 
 function* loadHelpPost(action) {
@@ -147,13 +156,15 @@ function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
 };
 
-function addImageAPI(data) {
+function addImageAPI({path, cookie}) {
     const reqData = {
         data:{
-            path: data.path
+            path
         }
-    }
-    return axios.post('/help-pic', reqData);
+    };
+    return axios.post('/help-pic', reqData,{
+        Authorization: `Bearer ${cookie}`
+        });
 };
 
 function* addImage(action) {
@@ -220,6 +231,7 @@ export default function* postsSaga() {
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
         fork(watchLoadActiveUserPost),
+        fork(watchRemoveHelpPost),
         fork(watchLoadInactiveUserPost),
         fork(watchAddHelpPost),
         fork(watchAddImage),

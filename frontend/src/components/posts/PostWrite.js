@@ -7,6 +7,7 @@ import { addHelpPostRequestAction, addImageRequestAction } from '../../reducers/
 import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentItem, UploadImage, UploadButton} from './PostWrite.style';
 import axios from 'axios';
 import moment from 'moment';
+import { getCookie } from '../../utils/cookieFunction';
 
 const categorys = {
     "심부름": "1000",
@@ -63,7 +64,8 @@ const PostWrite = ({setInvisible, userNum}) => {
             postNum: parseInt(needPersonnel),
             price: parseInt(money),
             execLoc: location,
-            content: content
+            content: content,
+            cookie : getCookie()
         }));
         setInvisible();
         // dispatch(addImageRequestAction({

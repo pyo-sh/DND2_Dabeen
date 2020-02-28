@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button } from 'antd';
 
-export const FormDiv = styled.div`
+export const FormDiv = styled.form`
   width: 100%;
   height : 100%;
   display: flex;
@@ -46,21 +46,10 @@ export const InputUser = styled.input`
   width: 15vw;
   margin-bottom: 2vh;
   font-size: 17.5px;
+  min-width: 200px;
 
   :hover {
     border-bottom: 2px solid #ff4300;
-  }
-
-  @media only screen and (max-width: 1440px) {
-    width: 22vw;
-  }
-
-  @media only screen and (max-width: 1024px) {
-    width: 30vw;
-  }
-
-  @media only screen and (max-width: 425px) {
-    width: 40vw;
   }
 `;
 
@@ -75,19 +64,8 @@ export const LoginButton = styled(Button)`
   font-weight: bold;
   font-size: 20px;
   box-shadow: 2px 3px 5px #bfc7ce;
-
-  @media only screen and (max-width: 1440px) {
-    width: 22vw;
-  }
-
-  @media only screen and (max-width: 1024px) {
-    width: 30vw;
-  }
-
-  @media only screen and (max-width: 425px) {
-    width: 40vw;
-  }
-
+  min-width: 200px;
+  min-height : 50px;
   :hover {
     opacity: 0.9;
     background: #ff4300;
@@ -106,6 +84,7 @@ export const ContentBottom = styled.div`
   display: flex;
   justify-content: space-between;
   width: 25vw;
+  min-width : 200px;
   & a {
     color: black;
     & :hover {

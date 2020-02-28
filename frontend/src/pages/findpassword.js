@@ -10,12 +10,6 @@ const FindPassword = () => {
   const { isLoggingIn, isLoginSuccess } = useSelector(state => state.user);
   const [id, onChangeId] = inputChangeHook('');
   const [email, onChangeEmail] = inputChangeHook('');
-  // const onChangeId = useCallback((e) => {
-  //     setId(e.target.value);
-  // }, []);
-  // const onChangeEmail = useCallback((e) => {
-  //     setEmail(e.target.value);
-  // }, []);
 
   const submitForm = useCallback(
     async e => {
@@ -26,7 +20,7 @@ const FindPassword = () => {
           email
         }
       };
-      await axios.post('/user/find-pwd', reqData);
+      await axios.post('http://15.164.2.26:3307/api/user/find-pwd', reqData);
       alert('이메일을 확인해주세요!');
       Router.push('/login');
     },
@@ -38,9 +32,9 @@ const FindPassword = () => {
       Router.push('/');
     }
   }, [isLoginSuccess]);
+  
   return (
-    <FormDiv>
-      <form onSubmit={submitForm}>
+    <FormDiv onSubmit={submitForm}>
         <Content>
           <img src="/images/logo.svg" alt="dabeen logo"/>
           <div className='loginForm'>
@@ -75,7 +69,6 @@ const FindPassword = () => {
             </div>
           </ContentBottom>
         </Content>
-      </form>
     </FormDiv>
   );
 };

@@ -12,7 +12,7 @@ const UserPage = ({userNum, pagename, isMe}) => {
   );
 };
 
-UserPage.getInitialProps = async context => {
+UserPage.getInitialProps = async (context, cookie) => { // 쿠키 필요할 때 사용.
   const { pagename } = context.query;
   const userNum = context.query.usernum;
   // 유저번호에 따라 다른 정보를 가지고 온다..

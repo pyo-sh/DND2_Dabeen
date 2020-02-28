@@ -54,7 +54,7 @@ const SignUpMain = () => {
     check_num,
     /[@.]/g
   ]); // 이메일 state
-  const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num]);
+  const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num, /[-]/g]);
   const [address, changeAddress] = inputCheckChangeHook("", [
     check_eng,
     check_num,
@@ -137,7 +137,6 @@ const SignUpMain = () => {
       email,
       telephone,
       address,
-
       isPasswordChecked,
     ]
   );
@@ -237,7 +236,7 @@ const SignUpMain = () => {
           <div className="SignupContentTitle">전화번호 *</div>
           <DabeenInput
             type="text"
-            placeholder="'-'를 제외한 숫자"
+            placeholder="'-'를 포함한 숫자"
             value={telephone}
             onChangeFunc={changeTelephone}
           />

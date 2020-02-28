@@ -55,7 +55,10 @@ Dabeen.getInitialProps = async context => {
  // 리덕스의 스토어 안에 있는 state 불러오기 가능
   const asPath = ctx.asPath;
   const state = ctx.store.getState();
-  const { cookie } = ctx.isServer ? ctx.req.headers : "";
+  let { cookie } = ctx.isServer ? ctx.req.headers : "";
+  if (cookie) {
+    cookie = cookie.split('=')[1];
+  }
   // if (ctx.isServer && cookie ) {
   //   axios.defaults.headers.Authorization = `Bearer ${cookie.split('=')[1]}`;
   // }
@@ -65,11 +68,10 @@ Dabeen.getInitialProps = async context => {
   // 그러면 나는 그건 필요 없이 dispatch 할 때 쿠키를 넣어주도록 하자..
   // 아니면 cookiee 넣어두고.. 갖고 오는 방법이 있나 
   if(!state.user.me.userNum && cookie) {
-    const token = cookie.split('=')[1];
-    ctx.store.dispatch(loginRequestAction({token}));
+    ctx.store.dispatch(loginRequestAction({cookie}));
   }
   if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
+    pageProps = await Component.getInitialProps(ctx, cookie);
   }
   
   // 만약에 localstroage에 토큰이 있으면 로그인 하는 로직을 추가합시다!!

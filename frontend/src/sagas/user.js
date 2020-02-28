@@ -41,8 +41,8 @@ function* login(action) {
         let result = '';
         let token = null;
         let tokenResult = '';
-        if (action.data.token) {
-            token = action.data.token;
+        if (action.data.cookie) {
+            token = action.data.cookie;
         }
         else {
             result = yield call(loginAPI, action.data);
@@ -88,8 +88,7 @@ function signUpAPI(data) {
             nickname : data.nickname,
             email : data.email,
             birth_date : data.birthYear + data.birthMonth + data.birthDay,
-            address : data.mainAddress,
-            blon_sgg_name : data.subAddress,
+            address : data.address,
             phone_num : data.telephone,
             itdc_cont : `반갑습니다. ${data.nickname}입니다`,
             suppl_whet : "n"
@@ -112,13 +111,16 @@ function* watchSignUp() {
 }
 
 // 유저 정보 수정
-function editUserInfoAPI(data){
-    return axios.post('/api/user', data);
-}
+function editUserInfoAPI({userLog, cookie}){
+    return axios.post('/api/user', userLog,{
+        Authorization: `Bearer ${cookie}`
+        });
+};
+
 function* editUserInfo(action) {
     try {
-        // const result = editUserInfoAPI(action.data);
-        yield put(editUserInfoSuccessAction(/*result.data*/action.data));
+        const result = yield call(editUserInfoAPI, action.data);
+        yield put(editUserInfoSuccessAction(result.data.data));
     }catch(e){
         console.error(e);
         yield put(editUserInfoFailureAction(e));

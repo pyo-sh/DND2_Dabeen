@@ -41,6 +41,7 @@ const LiveHelpRequest = () => {
 
   return (
     // <LiveHelpRequestForm>
+    // 뭐지 개수가 3의 배수로 안 맞아 떨어지면 제대로 안 되는건가???
     <>
       <TestSlick 
       initialSlide={0}
@@ -55,7 +56,7 @@ const LiveHelpRequest = () => {
           {livePosts.map(help => (
               <div key = {help.helpNum} className="liveHelpRequestFlex" onClick={onClickPost(help.helpNum)}>
               <LiveHelpRequestContent>
-                {help.helpPicList.length ? help.helpPicList[0] : null}
+                {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
                 <Divider orientation="left" style={{ marginTop: "42%" }}/>
                 <div className="liveHelpRequestUserInfo">
                   <Avatar size="large" icon="user" />

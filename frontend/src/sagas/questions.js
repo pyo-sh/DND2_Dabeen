@@ -2,8 +2,10 @@ import { all, fork, takeLatest, call, put } from 'redux-saga/effects';
 import axios from 'axios';
 import { LOAD_QUESTIONS_REQUEST, loadQuestionsSuccessAction, loadQuestionsFailureAction, ADD_QUESTION_REQUEST, addQuestionSuccessAction, addQuestionFailureAction, DELETE_QUESTION_REQUEST, deleteQuestionSuccessAction, deleteQuestionFailureAction, LOAD_FAQS_REQUEST, loadFaqsSuccessAction, loadFaqsFailureAction } from '../reducers/questions';
 
-function loadQuestionsAPI(userNum){
-    return axios.get(`/user/${userNum}/quests`);
+function loadQuestionsAPI({userNum, cookie}){
+    return axios.get(`/user/${userNum}/quests`,{
+        Authorization: `Bearer ${cookie}`
+        });
 }
 
 function* loadQuestions(action) {
@@ -20,9 +22,17 @@ function* watchLoadQuestions() {
 }
 
 // 질문 추가하기
-function addQuestionAPI(data){
-    return axios.post(`/user/${data}/main-page`, {});
-}
+function addQuestionAPI({userNum, question, cookie}){
+    const reqData ={
+        data : {
+            title : question.title,
+            content : question.content,
+        }
+    };
+    return axios.post(`/user/${userNum}/main-page`, reqData ,{
+        Authorization: `Bearer ${cookie}`
+        });
+};
 
 function* addQuestion(action) {
     try {
@@ -38,9 +48,11 @@ function* watchAddQuestion() {
 }
 
 // 질문 삭제하기
-function deleteQuestiondAPI(data){
-    return axios.delete(`/user/${data}/main-page`);
-}
+function deleteQuestiondAPI({userNum, cookie}){
+    return axios.delete(`/user/${userNum}/main-page`,{
+        Authorization: `Bearer ${cookie}`
+        });
+};
 
 function* deleteQuestion(action) {
     try {

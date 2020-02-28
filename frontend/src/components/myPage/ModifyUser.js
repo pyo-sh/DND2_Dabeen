@@ -10,6 +10,7 @@ import DabeenInput, { check_num,
 import { inputCheckChangeHook } from '../../hooks/inputChangeHook';
 import { editUserInfoRequestAction } from '../../reducers/user';
 import { ModifyUserGetDataDiv, ModifyUserUpperDiv } from './ModifyUser.style';
+import { getCookie } from '../../utils/cookieFunction';
 
 const ModifyUser = ({ userInfo, onClickCancel }) => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                 telephone,
                 address,
             }
-            dispatch(editUserInfoRequestAction(userLog));
+            dispatch(editUserInfoRequestAction({userLog, cookie : getCookie()}));
         }
         else{
             alert('회원가입 실패!');

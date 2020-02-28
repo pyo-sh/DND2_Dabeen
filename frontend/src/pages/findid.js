@@ -11,21 +11,17 @@ const FindId = () => {
   const [name, onChangeName] = inputChangeHook('');
   const [email, onChangeEmail] = inputChangeHook('');
 
-  const submitForm = useCallback(
-    async e => {
-      e.preventDefault();
-      const reqData = {
-        data: {
-          name,
-          email
-        }
-      };
-      await axios.post('/user/find-id', reqData);
-      alert('이메일을 확인해주세요!');
-      Router.push('/login');
-    },
-    [name, email]
-  );
+  const submitForm = useCallback(async e => {
+    e.preventDefault();
+    const reqData = {
+      data: {
+        name,
+        email
+      }};
+    await axios.post('http://15.164.2.26:3307/api/user/find-id', reqData);
+    alert('이메일을 확인해주세요!');
+    Router.push('/login');
+  },[name, email]);
 
   useEffect(() => {
     if (isLoginSuccess) {

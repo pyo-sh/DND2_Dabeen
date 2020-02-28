@@ -6,18 +6,20 @@ import MainDaBeenerProfile from './MainDaBeenerProfile';
 import { loadLivePostRequestAction } from '../../reducers/posts';
 import {LiveHelpRequestMenuBar, MainForm} from './Main.style';
 import { loadRecommendRequest } from '../../reducers/opponent';
+import { getCookie } from '../../utils/cookieFunction';
 
 const image = ['main1.jpg', 'main2.jpg', 'main3.jpg', 'main4.jpg'];
 const Main = () => {
     const dispatch = useDispatch();
     const { me : { address, userNum }} = useSelector(state => state.user);
     const { recommendOpponents, sggUser } = useSelector(state => state.opponent);
+
     const getLivePost = useCallback((categoryNum = 1000) => () => {
         dispatch(loadLivePostRequestAction(categoryNum));
     }, []);
     
     useEffect(() => {
-        dispatch(loadRecommendRequest({address, userNum}));
+        dispatch(loadRecommendRequest({address, userNum, cookie : getCookie()}));
         dispatch(loadLivePostRequestAction(address))
     }, [address, userNum]);
 
