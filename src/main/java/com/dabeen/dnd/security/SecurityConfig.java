@@ -38,8 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         http.authorizeRequests()
             // 토큰 없이도 가능
-            .antMatchers("/api/user/login", "/api/user/find-pwd", "/api/user/find-id", "/api/user/main-page/**",
+            .antMatchers("/", "/api/user/login", "/api/user/find-pwd", "/api/user/find-id", "/api/user/main-page/**",
                          "/api/help/search-exec-loc/**", "/api/help/*/to-receive-helps", "/api/help/*/received-helps").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/user").permitAll()
             .antMatchers(HttpMethod.GET, "/api/user/*").permitAll() 
             .antMatchers(HttpMethod.GET, "/api/help/*").permitAll()
             .antMatchers(HttpMethod.GET, "/api/help-pic/**").permitAll()
