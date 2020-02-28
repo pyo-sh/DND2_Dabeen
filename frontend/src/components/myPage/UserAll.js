@@ -87,8 +87,8 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
         <section className='contentSection'>
           <div>
             {pagename === 'userinfo' ? (<UserInfo userInfo={userInfo} isMe={isMe}/>) :
-              pagename === 'takehelp' ? (<MyHelp userNum={userInfo.userNum} helpType='take' />) :
-                pagename === 'givehelp' ? (<MyHelp userNum={userInfo.userNum} helpType='give' />) :
+              pagename === 'takehelp' ? (<MyHelp userNum={userInfo.userNum} isMe={isMe} helpType='take' />) :
+                pagename === 'givehelp' ? (<MyHelp userNum={userInfo.userNum} isMe={isMe} helpType='give' />) :
                   pagename === 'service' ? (<ServiceCenter isMe={isMe} />) :
                     pagename === 'basket' ? (<PostBasket isMe={isMe}/>) : null}
           </div>

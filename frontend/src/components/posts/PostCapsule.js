@@ -6,6 +6,9 @@ import {PostCapsuleUpperDiv, LocationIcon} from './PostCapsule.style';
 
 const PostCapsule = ({ data }) => {
   const [postDetailVisible, setPostDetailVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
+  // const helpDeadline = data.helpDeadline.split('T');
+  // const helpExecDate = data.helpExecDate.split('T');
+  console.log(data);
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
     setPostDetailVisible(prev => !prev);
@@ -34,8 +37,8 @@ const PostCapsule = ({ data }) => {
           </div>
         </div>
         <div className="CapsuleTitle">
-          <div className="CapsuleTitleMain">{data.postName}</div>
-          {data.isHelpApprove ? (
+          <div className="CapsuleTitleMain">{data.helpTitle}</div>
+          {data.isHelpApprove === "y"? (
             <div setcolor="true" className="CapsuleTitleCheck">
               마감
             </div>
@@ -46,9 +49,9 @@ const PostCapsule = ({ data }) => {
           )}
         </div>
         <div className="CapsuleFinishTime">
-          신청 마감일 : {data.helpDeadline}
+          신청 마감일 : {data.helpDeadLine.split('T')[0]}
         </div>
-        <div className="CapsuleDoingTime">수행일 : {data.helpExec}</div>
+        <div className="CapsuleDoingTime">수행일 : {data.helpExecDate.split('T')[0]}</div>
       </PostCapsuleUpperDiv>
       {postDetailVisible ? (
         <PostDetail setVisible={setVisible} data={data} />

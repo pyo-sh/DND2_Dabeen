@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import PostDetail from '../posts/PostDetail';
 import { MyHelpCapsuleUpperDiv } from './MyHelpCapsule.style';
 
-const MyHelpCapsule = ({ helpData }) => {
+const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
   const [myHelpVisible, setMyHelpVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
@@ -25,9 +25,13 @@ const MyHelpCapsule = ({ helpData }) => {
             </div>
             원
           </section>
-          <div>{helpData.help_pstn_dttm}</div>
+          <div>{helpData.helpPostDate && helpData.helpPostDate.slice(0, 10)}</div>
+          <div>T   {helpData.helpPostDate && helpData.helpPostDate.slice(11, 19)}</div>
           <div className={helpData.isHelpApprove ? "done" : "doing"}>
-            {helpData.isHelpApprove ? "결제완료" : "결제필요"}
+            {helpType === "take" && isMe
+            ? helpData.isPaymentApprove ? "결제완료" : "결제필요"
+            : helpData.isHelpApprove ? "도움완료" : "진행 중"
+            }
           </div>
         </div>
       </MyHelpCapsuleUpperDiv>

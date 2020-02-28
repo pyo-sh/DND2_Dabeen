@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { PostUpperDiv } from "../../pagesStyles/postmain.style";
+import {message} from 'antd';
 import Login from '../../components/signUp/Login';
 import PostList from "../../components/posts/PostList";
 import PostWrite from "../../components/posts/PostWrite";

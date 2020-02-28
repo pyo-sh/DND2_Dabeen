@@ -22,13 +22,16 @@ export const MyHelpCapsuleUpperDiv = styled.div`
     & .MyhelpCapsuleTitleMain {
       font-size: 22px;
       font-weight: bold;
+      height: 45px;
     }
     & .MyhelpCapsuleContent {
       font-size: 15px;
+      padding-left: 5px;
     }
   }
   & .MyhelpCapsuleInfo {
-    min-width: 80px;
+    min-width: 88px;
+    max-width: 88px;
     padding-left: 7px;
     border-left: 1px solid #f0f0f0;
     & .MyhelpCapsuleInfoPrice{
