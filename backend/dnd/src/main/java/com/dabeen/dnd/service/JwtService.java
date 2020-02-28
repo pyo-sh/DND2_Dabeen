@@ -6,6 +6,16 @@ package com.dabeen.dnd.service;
 
 import java.security.Key;
 
+import com.dabeen.dnd.exception.TokenInvaildException;
+import com.dabeen.dnd.model.network.Header;
+import com.dabeen.dnd.repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,6 +23,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 public class JwtService{
+    @Autowired
+    private UserRepository userRepository;
+
     private Key key;
 
     public JwtService(String secret){
@@ -38,5 +51,16 @@ public class JwtService{
                     .setSigningKey(key)
                     .parseClaimsJws(token)
                     .getBody();
-	}
+    }
+    
+    public Header<?> invalidWhet(Authentication authentication){
+        Claims claims = (Claims) authentication.getPrincipal();
+        try {
+            userRepository.findById(claims.get("userNum").toString())
+                     .orElseThrow(() -> new TokenInvaildException());
+        } catch (TokenInvaildException e) {
+            return Header.ERROR(HttpStatus.FORBIDDEN, "description");
+        }
+        return null;
+    }
 }
