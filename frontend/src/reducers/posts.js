@@ -304,7 +304,6 @@ const reducer = (state = initialState, action) => {
           helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
           content: post.cont, // 내용
           isHelpApprove: post.help_aprv_whet, // 도움승인여부
-          sggLocation: post.exec_sgg_name, // 이행장소
           isPaymentApprove: post.pymt_whet, // 결제여부
         }));
         break;
@@ -350,7 +349,6 @@ const reducer = (state = initialState, action) => {
           helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
           content: post.cont, // 내용
           isHelpApprove: post.help_aprv_whet, // 도움승인여부
-          sggLocation: post.exec_sgg_name, // 이행장소
           isPaymentApprove: post.pymt_whet, // 결제여부
         }));
         break;
