@@ -71,8 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers(HttpMethod.POST, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/api/category/**").hasAnyRole("ADMIN")
-            .antMatchers(HttpMethod.PUT, "/api/category/**").hasAnyRole("ADMIN");
-            
+            .antMatchers(HttpMethod.PUT, "/api/category/**").hasAnyRole("ADMIN")
+            .anyRequest().denyAll();
     }   
 
     // passwordEncoder Bean. 패스워드 암호화를 위한 빈으로 AutoWried을 이용하여 관리한다.
