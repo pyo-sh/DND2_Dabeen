@@ -9,9 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+import com.dabeen.dnd.exception.TokenInvaildException;
+import com.dabeen.dnd.model.entity.User;
+import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.service.JwtService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +34,9 @@ import java.util.Collection;
 import java.util.List;
 @Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
+    @Autowired
+    private UserRepository userRepository;
+
     private JwtService jwtService;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtService jwtService) {
@@ -61,6 +67,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         Claims claims = jwtService.getClaims(token.substring("Bearer ".length())); // Authorization: Bearer TOKEN 형태이므로
         String role = "ROLE_" + claims.get("role").toString().toUpperCase(); // 형태를 맞추기 위해서
 
+        //log.info("{}", claims.get("userNum").toString());
+        // 만약 존재하지 않는 사용자에 대한 토큰이라면 에러 호출
+        //User user = userRepository.findById(claims.get("userNum").toString())
+        //                    .orElseThrow(() -> new TokenInvaildException());
+        //
         // 스프링 내부에서만 사용되는 authentication
         return new UsernamePasswordAuthenticationToken(claims, null, AuthorityUtils.createAuthorityList(role));
     }
