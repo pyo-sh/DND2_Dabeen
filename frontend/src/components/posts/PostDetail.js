@@ -17,16 +17,16 @@ const PostDetail = ({setVisible, data}) => {
     const helpDeadline = data.helpDeadLine.split('T');  // helpDeadline[0]=날짜 / helpDeadline[1]=시간
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
-    const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);
-    const [editHelpExecDate, setEditHelpExecDate] = useState(helpExec[0]);
-    const [editHelpExecTime, setEditHelpExecTime] = useState(helpExec[1]);
-    const [editHelpDeadLineDate, setEditHelpDeadLineDate] = useState(helpDeadline[0]);
-    const [editHelpDeadLineTime, setEditHelpDeadLineTime] = useState(helpDeadline[1]);
-    const [editNeedPersonnel, setEditNeedPersonnel] = inputChangeHook(data.postNum);
-    const [editPrice, setEditPrice] = inputChangeHook(data.price);
-    const [editExecLoc, setEditExecLoc] = useState(data.location);
-    const [editSigungu, setEditSigungu] = useState(data.sigungu);
-    const [editContent, setEditContent] = inputChangeHook(data.content);
+    const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
+    const [editHelpExecDate, setEditHelpExecDate] = useState(helpExec[0]);  //수정할 도움 수행 날짜
+    const [editHelpExecTime, setEditHelpExecTime] = useState(helpExec[1]);  //수정할 도움 수행 시간
+    const [editHelpDeadLineDate, setEditHelpDeadLineDate] = useState(helpDeadline[0]);  //수정할 도움 신청 마감 날짜
+    const [editHelpDeadLineTime, setEditHelpDeadLineTime] = useState(helpDeadline[1]);  //수정할 도움 신청 마감 시간
+    const [editNeedPersonnel, setEditNeedPersonnel] = inputChangeHook(data.postNum);    //수정할 필요 인원
+    const [editPrice, setEditPrice] = inputChangeHook(data.price);  //수정할 금액
+    const [editExecLoc, setEditExecLoc] = useState(data.location);  //수정할 주소
+    const [editContent, setEditContent] = inputChangeHook(data.content);    //수정할 요구사항
+    const {me} = useSelector(state => state.user);  //내 정보
     const dispatch = useDispatch();
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
@@ -51,12 +51,11 @@ const PostDetail = ({setVisible, data}) => {
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
                 isHelpApprove: data.isHelpApprove,
-                sigungu: editSigungu,
                 content: editContent,
             })
         );
         setEdit(prev => !prev);
-    }, [time, editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editSigungu, editContent]);
+    }, [time, editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editContent]);
 
     const onChangeHelpDeadlineDate = useCallback((date, dateString) => {
         setEditHelpDeadLineDate(dateString);
@@ -68,26 +67,21 @@ const PostDetail = ({setVisible, data}) => {
 
     const onChangeHelpExecDate = useCallback((date, dateString) => {
         setEditHelpExecDate(dateString);
-    }, [])
+    }, []);
 
     const onChangeHelpExecTime = useCallback((time, timeString) => {
         setEditHelpExecTime(timeString);
-    }, [])
-
-    const getLocation = useCallback((fullAddress, sigunguName) => {
-        setEditExecLoc(fullAddress);
-        setEditSigungu(sigunguName);
     }, []);
 
-    //Picker들 수정할 때 
+    //Picker들 수정할 때 이거 쓰니까 오류떠서 잠시 안씀
     // const onChangeHelpDatePicker = setStateFunc =>
     // useCallback((moment, string) => {
     //   setStateFunc(string); 
     // }, []);
 
     //게시글 삭제 버튼 눌렀을 때
-    const deletePost = useCallback((id) => () => {
-        dispatch(removeHelpPostRequestAction(id));
+    const deletePost = useCallback((helpNum) => () => {
+        dispatch(removeHelpPostRequestAction(helpNum));
     }, []);
 
     return (
@@ -115,7 +109,7 @@ const PostDetail = ({setVisible, data}) => {
                             <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])} onCancel={edit} okText="네" cancelText="아니요">
                             <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
                             </Popconfirm>
-                            <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.id)} onCancel={edit} okText="네" cancelText="아니요">
+                            <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.helpNum)} onCancel={edit} okText="네" cancelText="아니요">
                             <Icon type="delete" style={{marginRight: 10}} onClick={deletePost}/>
                             </Popconfirm>
                             </>
@@ -126,12 +120,15 @@ const PostDetail = ({setVisible, data}) => {
                     <div className="titleDetail">
                         <div>작성일 : {data.helpPostDate.split('T')[0]}</div>
                         <div>작성자 : {data.id}</div>  
+                        {/* 작성자와 내가 같으면 수정 버튼이 나오게 한다. */}
                         {
+                            data.userNum === me.userNum || (
                             !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                             : 
                             <Popconfirm placement="topLeft" title="수정하시겠습니까?" onConfirm={onConfirm} onCancel={edit} okText="네" cancelText="아니요">
                                 <Edit>완료</Edit>
                             </Popconfirm>
+                            )
                         }         
                     </div>
                 </Title>
@@ -158,7 +155,7 @@ const PostDetail = ({setVisible, data}) => {
                                 : 
                                 <>
                                 <DatePicker defaultValue ={moment(editHelpDeadLineDate, dateFormat)} onChange={onChangeHelpDeadlineDate}/>
-                                <TimePicker defaultValue={moment(editHelpDeadLineTime, timeFormat)} onChange={onChangeHelpDeadlineTime}/>
+                                <TimePicker minuteStep={10} defaultValue={moment(editHelpDeadLineTime, timeFormat)} onChange={onChangeHelpDeadlineTime}/>
                                 </>
                             }
                             </ApplicationInfoBox>
@@ -170,7 +167,7 @@ const PostDetail = ({setVisible, data}) => {
                                 :
                                 <>
                                 <DatePicker defaultValue ={moment(editHelpExecDate ,dateFormat)} onChange={onChangeHelpExecDate}/>
-                                <TimePicker defaultValue ={moment(editHelpExecTime, timeFormat)} onChange={onChangeHelpExecTime} />
+                                <TimePicker minuteStep={10} defaultValue ={moment(editHelpExecTime, timeFormat)} onChange={onChangeHelpExecTime} />
                                 </>
                             }
                             </ApplicationInfoBox>
@@ -181,10 +178,15 @@ const PostDetail = ({setVisible, data}) => {
                                     !edit ?
                                     <>
                                     <div>{data.price}원</div>
-                                    {
+                                    {   //내가 쓴 게시글이면 마감버튼 뜨게, 아닐시엔 신청 버튼이 뜨게
+                                        data.userNum === me.userNum ? 
+                                        (
                                         data.isHelpApprove === 'y' ?
                                         <DeadlineButton apply>마감 완료</DeadlineButton>:
                                         <DeadlineButton>마감</DeadlineButton> 
+                                        )
+                                        :
+                                        <DeadlineButton>신청</DeadlineButton>
                                     }
                                     </>
                                     :  
@@ -208,7 +210,7 @@ const PostDetail = ({setVisible, data}) => {
                             <MyLocation myLocation={data.location}/>        
                         </div>
                         :
-                        <SearchJuso location={editExecLoc} getLocation={getLocation}/>
+                        <SearchJuso location={editExecLoc} getLocation={setEditExecLoc}/>
                     }
                 </ContentItem>
                 <ContentItem>

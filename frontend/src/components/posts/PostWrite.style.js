@@ -174,13 +174,23 @@ export const UploadImage = styled.div`
     min-width: 250px;
     font-size: 25px;
 
-    & .uploadImage {
-        font-size: 16px;
-        border: 1px solid #BFC7CE;
+    & .uploadImageFlex {
+        display: flex;
+    }
+
+    & .uploadImageButton {
+        border: 1px dashed #BFC7CE;
         border-radius: 5px;
+        color: #BFC7CE;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 5px;
+        margin-right: 10px;
         padding: 5px;
-        width: 100px;
-        height: 20px;
+        width: 120px;
+        height: 120px;
         cursor: pointer;
     }
     & input[type="file"] {
@@ -196,7 +206,7 @@ export const UploadImage = styled.div`
 
     & .previewImage {
         display: flex;
-        margin-top: 1vh;
+        margin-top: 5px;
 
         & .imgBorder{
             width: 120px;

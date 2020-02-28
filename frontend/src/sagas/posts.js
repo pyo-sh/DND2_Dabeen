@@ -99,8 +99,8 @@ function removeHelpPostAPI(helpNum) {
 
 function* removeHelpPost(action) {
     try {
-        const result = yield call(removeHelpPostAPI, action.data);
-        yield put(removeHelpPostSuccessAction(result.data));
+        yield call(removeHelpPostAPI, action.data);
+        yield put(removeHelpPostSuccessAction(action.data));
     } catch (e) {
         console.log(e);
         yield put(removeHelpPostFailureAction(e));
