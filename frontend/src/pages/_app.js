@@ -56,10 +56,14 @@ Dabeen.getInitialProps = async context => {
   const asPath = ctx.asPath;
   const state = ctx.store.getState();
   const { cookie } = ctx.isServer ? ctx.req.headers : "";
-  if (ctx.isServer && cookie ) {
-    axios.defaults.headers.Authorization = `Bearer ${cookie.split('=')[1]}`;
-  }
-
+  // if (ctx.isServer && cookie ) {
+  //   axios.defaults.headers.Authorization = `Bearer ${cookie.split('=')[1]}`;
+  // }
+  
+  // 서버쪽일 땐 axios의 쿠키가 없어서 헤더에 쿠키를 넣어줬던거고
+  // 프론트는 알아서 withCredentials 가 되던것..
+  // 그러면 나는 그건 필요 없이 dispatch 할 때 쿠키를 넣어주도록 하자..
+  // 아니면 cookiee 넣어두고.. 갖고 오는 방법이 있나 
   if(!state.user.me.userNum && cookie) {
     const token = cookie.split('=')[1];
     ctx.store.dispatch(loginRequestAction({token}));
