@@ -9,19 +9,27 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import com.dabeen.dnd.service.JwtService;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-
+import java.util.Collection;
+import java.util.List;
+@Slf4j
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private JwtService jwtService;
 
@@ -50,10 +58,10 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         if(token == null)
             return null;
 
-        Claims claims = jwtService.getClaims(token.substring("Bearer ".length()));
-        // Authorization: Bearer TOKEN 형태이므로
+        Claims claims = jwtService.getClaims(token.substring("Bearer ".length())); // Authorization: Bearer TOKEN 형태이므로
+        String role = "ROLE_" + claims.get("role").toString().toUpperCase(); // 형태를 맞추기 위해서
 
         // 스프링 내부에서만 사용되는 authentication
-        return new UsernamePasswordAuthenticationToken(claims, null);
+        return new UsernamePasswordAuthenticationToken(claims, null, AuthorityUtils.createAuthorityList(role));
     }
 }
