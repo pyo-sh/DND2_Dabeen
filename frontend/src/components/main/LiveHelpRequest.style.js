@@ -58,7 +58,7 @@ export const LiveHelpRequestContent = styled.div`
     left: 0;
     content : "";
     border-radius: 4px;
-    box-shadow: 1px 1px 2px 1px rgba(0,0,0,0.75);
+    box-shadow: 0 5px 10px 0.5px #BFC7CE;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
   }
