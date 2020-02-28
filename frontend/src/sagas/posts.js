@@ -44,7 +44,7 @@ function addHelpPostAPI(data) { //게시글 업로드
         }
     }
     const {cookie} = data;
-    return axios.post('/help', reqData,{
+    return axios.post('/help', reqData ,{
         Authorization: `Bearer ${cookie}`
         })
 };

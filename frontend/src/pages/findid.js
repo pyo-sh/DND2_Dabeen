@@ -2,9 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import { FormDiv, Content, InputUser, LoginButton, ContentBottom } from '../pagesStyles/findid.style';
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
-import axios from 'axios';
 import Link from 'next/link';
 import inputChangeHook from '../hooks/inputChangeHook';
+import customAxios from '../utils/axiosBase';
 
 const FindId = () => {
   const { isLoginSuccess } = useSelector(state => state.user);
@@ -18,9 +18,10 @@ const FindId = () => {
         name,
         email
       }};
-    await axios.post('http://15.164.2.26:3307/api/user/find-id', reqData);
+      // 'http://15.164.2.26:3307/api/user/find-id'
+    await customAxios.post('/user/find-id', reqData);
     alert('이메일을 확인해주세요!');
-    Router.push('/login');
+    Router.push('/');
   },[name, email]);
 
   useEffect(() => {

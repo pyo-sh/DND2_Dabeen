@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import Link from 'next/link';
 import inputChangeHook from '../hooks/inputChangeHook';
+import customAxios from '../utils/axiosBase';
+
 // import { loginRequestAction } from '../reducers/user';
 
 const FindPassword = () => {
@@ -16,13 +18,13 @@ const FindPassword = () => {
       e.preventDefault();
       const reqData = {
         data: {
-          user_id: id,
+          id,
           email
         }
       };
-      await axios.post('http://15.164.2.26:3307/api/user/find-pwd', reqData);
+      await customAxios.post('/user/find-pwd', reqData);
       alert('이메일을 확인해주세요!');
-      Router.push('/login');
+      Router.push('/');
     },
     [id, email]
   );
