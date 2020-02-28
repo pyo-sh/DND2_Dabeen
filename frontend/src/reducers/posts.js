@@ -3,7 +3,22 @@ import { createAction } from "../utils/actionFunction";
 
 export const initialState = {
   livePosts : [],
-  helpPosts : [], //  작성한 도움
+  helpPosts : [{
+    helpNum: "20200228", // 도움번호
+    userNum: "2002200002",
+    helpPostDate: "2020-02-28T10:12:12", // 도움게시일시
+    helpTitle: "학교 대신 가주세요",  //도움제목
+    categoryNum: "1000", // 카테고리번호
+    price: 30000, // 금액
+    content: "학교 가기싫어영 대신 가줘요오오옹", // 내용
+    helpDeadLine: "2020-02-29T10:12:12", // 도움신청마감일시
+    isHelpApprove: 'n', // 도움승인여부
+    helpEndTime: "9999-12-31T23:59:59",
+    postNum: 1, // 선호공급자수
+    helpExecDate: "2020-03-16T09:00:00", // 선호도움이행일시
+    location: "부산 남구 용소로 45", // 이행장소
+    payment: "n"
+  }],
   helpImages: [], //  도움 사진 첨부
   totalPages: 1,
   helpsPerPage: 0,
@@ -230,7 +245,7 @@ const reducer = (state = initialState, action) => {
       }
       case REMOVE_HELPPOST_SUCCESS: {
         draft.isRemovingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.id === action.data);
+        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data);
         draft.helpPosts.splice(index, 1);
         draft.helpPostRemoved = true;
         break;

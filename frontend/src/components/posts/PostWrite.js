@@ -25,7 +25,6 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
     const [location, setLocation] = useState('');   //이행위치
-    const [sigungu, setSigungu] = useState('');     //이행시군구명
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
     // const {imagePaths} = useSelector(state => state.posts);
@@ -33,8 +32,19 @@ const PostWrite = ({setInvisible, userNum}) => {
     const imageInput = useRef();
     const time = moment();
 
+    // const onClose = useCallback(async() => {
+    //     try{
+    //         const url = images[0];
+    //         await axios.post('/pic/delete', "help/20200228/55a61596-17ff-4f59-bacd-d3de3022a661_1516799552217.jpg");
+    //         // console.log(result);
+    //         setImages([]);
+    //     }catch(e){
+    //         console.log(e.response);
+    //     }
+    //     setInvisible();
+    // }, []);
+
     const getCategory = useCallback(category => {
-        // console.log(result);
         setCategory(categorys[category]);
     }, []);
 
@@ -43,9 +53,8 @@ const PostWrite = ({setInvisible, userNum}) => {
       setStateFunc(string);
     }, []);
 
-    const getLocation = useCallback((fullAddress, sigunguName) => {
+    const getLocation = useCallback((fullAddress) => {
         setLocation(fullAddress);
-        setSigungu(sigunguName);
     }, []);
     
     //게시글 업로드
@@ -69,11 +78,11 @@ const PostWrite = ({setInvisible, userNum}) => {
         }));
         setInvisible();
         // dispatch(addImageRequestAction({
-        //     path: `/help/${time.format('YYYYMMDD')}/${images[0].split('/')[6]}`
+        //     path: `/home/help/${time.format('YYYYMMDD')}/${images[0].split('/')[6]}`
         // }));
-    }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, sigungu, content]);
+    }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
 
-    console.log(time.format('YYYYMMDD'))
+    // console.log(time.format('YYYYMMDD'))
     // console.log(images[0].split('/')[6])
     //이미지 삭제
     // const deleteImage = useCallback(key => e =>{
@@ -95,7 +104,6 @@ const PostWrite = ({setInvisible, userNum}) => {
         }
     }, []);
 
-    console.log(images);
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);
@@ -119,14 +127,14 @@ const PostWrite = ({setInvisible, userNum}) => {
                             <div className="postSettingTitle">신청 마감 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD"style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                <TimePicker className="postSettingTimePicker" format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">수행 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                <TimePicker className="postSettingTimePicker" format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
@@ -148,21 +156,27 @@ const PostWrite = ({setInvisible, userNum}) => {
                     </ContentItem>
                     <UploadImage>
                         <div>사진첨부</div>
-                            <input type="file"  hidden ref={imageInput} onChange={onChangeImages}/>
-                            {/* 업로드버튼 새로 만드세영^_^ */}
-                            <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button>
-                            <div className="previewImage">
-                                {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/dabeen/help/20200227/5ad03fab-7983-4a8f-a988-f75dd1397efa_1516799552217.jpg`} alt="에러" width="90" height="90"/> */}
-                                {images.map((v, i) => {
-                                    return (
-                                    <div key={v} className="imgBorder"> 
-                                    <div className="deleteIcon">
-                                        <Icon type="close" />
-                                    </div>
-                                    <img src={v} alt={v} width="90" height="90"/> 
-                                    </div>
-                                    )
-                                })}
+                            <div className="uploadImageFlex">
+                                <input type="file"  hidden ref={imageInput} onChange={onChangeImages}/>
+                                {/* 업로드버튼 새로 만드세영^_^ */}
+                                <div className="uploadImageButton" onClick={onClickImageUpload}>
+                                    <Icon type="plus-circle" style={{fontSize: 25}}/>
+                                    <div style={{fontSize: 23}}>UPLOAD</div>
+                                </div>
+                                {/* <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button> */}
+                                <div className="previewImage">
+                                    {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/dabeen/help/20200227/5ad03fab-7983-4a8f-a988-f75dd1397efa_1516799552217.jpg`} alt="에러" width="90" height="90"/> */}
+                                    {images.map((v, i) => {
+                                        return (
+                                        <div key={v} className="imgBorder"> 
+                                        <div className="deleteIcon">
+                                            <Icon type="close" />
+                                        </div>
+                                        <img src={v} alt={v} width="90" height="90"/> 
+                                        </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
                     </UploadImage>
                     <div style={{height:"auto"}}>    
