@@ -55,7 +55,7 @@ const Postmain = ({categoryNum, search}) => {
       case 2000:
         return {
           mainTitle: "대여",
-          subTitle: "물건을 잠시 맡겨보아요!"
+          subTitle: "물건을 빌려주세요!"
         };
       case 3000:
         return {
