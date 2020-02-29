@@ -260,12 +260,12 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
             helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(catName, defaultEndDttm, execLoc);
 
+            isResult = true;
+
             if(helps.isEmpty()){
                 helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(catName, defaultEndDttm);
                 isResult = false;
             }
-
-            isResult = true;
 
             List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
 
@@ -300,7 +300,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
             helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(catName, defaultEndDttm);
          
-            isResult = helps.isEmpty() == true ? true : false;
+            isResult = helps.isEmpty() == true ? false : true;
          
             List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
 
