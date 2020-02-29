@@ -31,7 +31,6 @@ function SampleNextArrow(props) { // 우 화살표
 const LiveHelpRequest = () => {
   const [ visible, setVisible ] = useState(false);
   const [selectPost, setSelectPost] = useState('');
-
   const { livePosts } = useSelector(state => state.posts);
   const toggleDetail = useCallback(() => setVisible(prev=> !prev),[]);
   const onClickPost = useCallback((helpNum) => () => {

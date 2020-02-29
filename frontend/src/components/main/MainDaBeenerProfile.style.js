@@ -5,6 +5,8 @@ export const MainDaBeenerProfileForm = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 70%;
+  min-width: 350px;
+  flex-wrap : wrap;
   & a {
       color: #424242;
   }
@@ -14,7 +16,7 @@ export const MainDaBeenerProfileForm = styled.div`
     } */
 
   @media only screen and (max-width: 425px) {
-    width: 50vw;
+    width: 70vw;
     flex-wrap: wrap;
   }
 `;

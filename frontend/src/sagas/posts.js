@@ -134,14 +134,13 @@ function* watchLoadHelpPost() {
     yield takeLatest(LOAD_HELPPOST_REQUEST, loadHelpPost);
 };
 
-function loadLivePostAPI(loaction) {
-    return axios.get(`/help/search-exec-loc/${encodeURIComponent(loaction)}`);
+function loadLivePostAPI({loaction, categoryNum}) {
+    return axios.get(`/help/search-main-exec-loc-helps?exec_loc=${encodeURIComponent(loaction)}&cat_num=${categoryNum}`);
 };
 
 function* loadLivePost(action) {
     try {
         const result = yield call(loadLivePostAPI, action.data);
-        // console.log(result.data.data);
         yield put(loadLivePostSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);

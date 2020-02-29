@@ -28,7 +28,7 @@ const ServiceItem = memo(({ service, faq}) => {
     </div>
     {isClick && (
       <div className="serviceItemAnswer">
-          {faq.faqContent}
+        <div className="replyTitle"><div><b>A.</b>{faq.faqContent}</div></div>
       </div>
     )}
   </ServiceItemBox>
