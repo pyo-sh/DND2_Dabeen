@@ -273,7 +273,7 @@ const reducer = (state = initialState, action) => {
             helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
             location: post.exec_loc, // 이행장소
             helpPicList: post.help_pics,// 도움사진목록,
-
+            
             userNum : post.cnsr_user.user_num,
             userId: post.cnsr_user.user_id,
             nickname: post.cnsr_user.nickname,
@@ -306,20 +306,39 @@ const reducer = (state = initialState, action) => {
           helpsPerPage: action.data.page.pages_per_datas,
         };
         draft.userActivePosts = action.data.list.map(post => ({ // 도움정보
-          helpNum: post.help_num, // 도움번호
-          helpPostDate: post.help_pstn_dttm, // 도움게시일시
-          helpEndTime: post.help_end_dttm,  // 도움마감일시
-          categoryNum: post.cat_num, // 카테고리번호
-          userNum: post.cnsr_num, // 수요자번호
-          helpTitle: post.title,  // 타이틀
-          location: post.exec_loc, // 이행장소
-          price: post.price, // 금액
-          postNum: post.pref_suppl_num, // 선호공급자수
-          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.cont, // 내용
-          isHelpApprove: post.help_aprv_whet, // 도움승인여부
-          isPaymentApprove: post.pymt_whet, // 결제여부
+          applyNum: post.appli_num,
+          approveNum: post.aprv_num,
+
+          helpNum: post.help.help_num, // 도움번호
+          helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
+          helpEndTime: post.help.help_end_dttm,  // 도움마감일시
+          // categoryNum: post.help.cat_num, // 카테고리번호
+
+          userNum : post.help.cnsr_user.user_num,
+          userName : post.help.cnsr_user.user_name,
+          userBirth: post.help.cnsr_user.birth_date,
+          userAddress: post.help.cnsr_user.address,
+          userPhone: post.help.cnsr_user.phone_num,
+          userId: post.help.cnsr_user.user_id,
+          userEmail: post.help.cnsr_user.email,
+          nickname: post.help.cnsr_user.nickname,
+          userContent: post.help.cnsr_user.itdc_cont,
+          userSupply: post.help.cnsr_user.suppl_whet,
+          userPic : post.help.cnsr_user.pic_path,
+          userRear: post.help.cnsr_user.rrn_rear,
+          avgRate : post.help.cnsr_user.avg_rate,
+          userMileage: post.help.cnsr_user.own_mileage,
+
+          helpTitle: post.help.title,  // 타이틀
+          location: post.help.exec_loc, // 이행장소
+          price: post.help.price, // 금액
+          postNum: post.help.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
+          helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
+          content: post.help.cont, // 내용
+          isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
+          isPaymentApprove: post.help.pymt_whet, // 결제여부
+          helpPic : post.help.help_pics, // 사진
         }));
         break;
       }
@@ -351,20 +370,39 @@ const reducer = (state = initialState, action) => {
           helpsPerPage: action.data.page.pages_per_datas,
         };
         draft.userInactivePosts = action.data.list.map(post => ({ // 도움정보
-          helpNum: post.help_num, // 도움번호
-          helpPostDate: post.help_pstn_dttm, // 도움게시일시
-          helpEndTime: post.help_end_dttm,  // 도움마감일시
-          categoryNum: post.cat_num, // 카테고리번호
-          userNum: post.cnsr_num, // 수요자번호
-          helpTitle: post.title,  // 타이틀
-          location: post.exec_loc, // 이행장소
-          price: post.price, // 금액
-          postNum: post.pref_suppl_num, // 선호공급자수
-          helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.cont, // 내용
-          isHelpApprove: post.help_aprv_whet, // 도움승인여부
-          isPaymentApprove: post.pymt_whet, // 결제여부
+          applyNum: post.appli_num,
+          approveNum: post.aprv_num,
+
+          helpNum: post.help.help_num, // 도움번호
+          helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
+          helpEndTime: post.help.help_end_dttm,  // 도움마감일시
+          // categoryNum: post.help.cat_num, // 카테고리번호
+
+          userNum : post.help.cnsr_user.user_num,
+          userName : post.help.cnsr_user.user_name,
+          userBirth: post.help.cnsr_user.birth_date,
+          userAddress: post.help.cnsr_user.address,
+          userPhone: post.help.cnsr_user.phone_num,
+          userId: post.help.cnsr_user.user_id,
+          userEmail: post.help.cnsr_user.email,
+          nickname: post.help.cnsr_user.nickname,
+          userContent: post.help.cnsr_user.itdc_cont,
+          userSupply: post.help.cnsr_user.suppl_whet,
+          userPic : post.help.cnsr_user.pic_path,
+          userRear: post.help.cnsr_user.rrn_rear,
+          avgRate : post.help.cnsr_user.avg_rate,
+          userMileage: post.help.cnsr_user.own_mileage,
+
+          helpTitle: post.help.title,  // 타이틀
+          location: post.help.exec_loc, // 이행장소
+          price: post.help.price, // 금액
+          postNum: post.help.pref_suppl_num, // 선호공급자수
+          helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
+          helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
+          content: post.help.cont, // 내용
+          isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
+          isPaymentApprove: post.help.pymt_whet, // 결제여부
+          helpPic : post.help.help_pics, // 사진
         }));
         break;
       }

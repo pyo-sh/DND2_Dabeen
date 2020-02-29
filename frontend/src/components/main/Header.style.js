@@ -12,10 +12,11 @@ export const Menubar = styled.nav`
   align-items: center;
   background: white;
   text-align: center;
-  border-bottom: 1px solid #BFC7CE;
   color: black;
   z-index: 1;
-  opacity : 0.9;
+  /* opacity : 0.9; */
+  /* border-bottom: 1px solid #BFC7CE; */
+  box-shadow: 0 2px 5px 0.5px #BFC7CE;
   & .HeaderSearch{
     margin-bottom: -5px;
     margin-left: 10px;

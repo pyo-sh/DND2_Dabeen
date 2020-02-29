@@ -5,6 +5,7 @@ export const MainDaBeenerProfileForm = styled.div`
   justify-content: space-around;
   align-items: center;
   width: 70%;
+  margin: 30px 0;
   & a {
       color: #424242;
   }
