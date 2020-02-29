@@ -238,79 +238,49 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     }
 
 
-    public Header<Map<String,Object>> searchMainExecLocHelps(String execLoc){
+    public Header<Map<String,Object>> searchMainExecLocHelps(String execLoc, String catNum){
 
-        Map<String,Object> execLocHelpsMap = new HashMap<>();
+        Map<String,Object> mainExecLocHelpsMap = new HashMap<>();
 
         List<Help> helps;
-        Boolean isResult;
-        
-        Map<String,String> catNameMap = new HashMap<>();
-        catNameMap.put("대여","rent");
-        catNameMap.put("심부름","errand");
-        catNameMap.put("기타","etc");
-        
+        Boolean isResult = true;
+
         LocalDateTime defaultEndDttm = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
 
-        // 기본적인 주소를 통한 help 검색 결과
+        helps = helpRepository.findTop9ByCategory_CatNumAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(catNum, defaultEndDttm, execLoc);
 
-        for (String catName : catNameMap.keySet()){
-
-            Map<String,Object> catNameHelpMap = new HashMap<>();
-
-            helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(catName, defaultEndDttm, execLoc);
-
-            isResult = true;
-
-            if(helps.isEmpty()){
-                helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(catName, defaultEndDttm);
-                isResult = false;
-            }
-
-            List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
-
-            catNameHelpMap.put("isResult", isResult);
-            catNameHelpMap.put("helps", response);
-
-            execLocHelpsMap.put(catNameMap.get(catName)+"Helps",catNameHelpMap);
+        if(helps.isEmpty()){
+            helps = helpRepository.findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(catNum, defaultEndDttm);
+            isResult = false;
         }
 
-        return Header.OK(execLocHelpsMap);
+        List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+
+        mainExecLocHelpsMap.put("isResult", isResult);
+        mainExecLocHelpsMap.put("helps", response);
+
+        return Header.OK(mainExecLocHelpsMap);
     }
 
-    public Header<Map<String,Object>> searchMainHelps(){
+    public Header<Map<String,Object>> searchMainHelps(String catNum){
 
-        Map<String,Object> execLocHelpsMap = new HashMap<>();
+        Map<String,Object> mainHelpsMap = new HashMap<>();
 
         List<Help> helps;
         Boolean isResult;
         
-        Map<String,String> catNameMap = new HashMap<>();
-        catNameMap.put("대여","rent");
-        catNameMap.put("심부름","errand");
-        catNameMap.put("기타","etc");
-        
         LocalDateTime defaultEndDttm = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
 
-        // 기본적인 주소를 통한 help 검색 결과
+        helps = helpRepository.findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(catNum, defaultEndDttm);
 
-        for (String catName : catNameMap.keySet()){
+        isResult = helps.isEmpty() == true ? false : true;
 
-            Map<String,Object> catNameHelpMap = new HashMap<>();
+        List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
 
-            helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(catName, defaultEndDttm);
-         
-            isResult = helps.isEmpty() == true ? false : true;
-         
-            List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+        mainHelpsMap.put("isResult", isResult);
+        mainHelpsMap.put("helps", response);
 
-            catNameHelpMap.put("isResult", isResult);
-            catNameHelpMap.put("helps", response);
-
-            execLocHelpsMap.put(catNameMap.get(catName)+"Helps",catNameHelpMap);
-        }
-
-        return Header.OK(execLocHelpsMap);
+        return Header.OK(mainHelpsMap);
     }
 
     public HelpExecLocApiResponse searchResponse(Help help){
