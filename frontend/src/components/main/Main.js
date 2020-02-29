@@ -33,17 +33,22 @@ const Main = () => {
                         <img key={img} src={`/images/${img}`} alt={img}/>
                 ))}
             </Carousel>
-            <LiveHelpRequestMenuBar selectLiveMenu={selectLiveMenu}>
-                <h1 className="title">{isUserResult ? "주변 실시간 도움 " : "전체 실시간 도움" }</h1>
-                <div className="liveHelpRequestForm">
-                    <div className="liveHelpRequest" name="errand" onClick={getLivePost(1000)}>심부름</div>
-                    <div className="liveHelpRequest" name="rent" onClick={getLivePost(2000)}>대여</div>
-                    <div className="liveHelpRequest" name="etc" onClick={getLivePost(3000)}>잡일</div>
-                </div>
-            </LiveHelpRequestMenuBar>
-            <LiveHelpRequest />
-            <div className="title">{sggUser ? "내 주변의 높은 평점을 가진 DaBeener를 확인하세요!" : "전체에서 높은 평점을 가진 DaBeener를 확인하세요!"}</div>
-            {recommendOpponents && <MainDaBeenerProfile recommendOpponents={recommendOpponents} />}
+            <div className="LiveHelpRequestWrapper">
+                <LiveHelpRequestMenuBar selectLiveMenu={selectLiveMenu}>
+                    <div></div>
+                    <h1 className="LiveHelpRequestTitle">{isUserResult ? "주변 실시간 도움 " : "전체 실시간 도움" }</h1>
+                    <div className="LiveHelpRequestForm">
+                        <div className="LiveHelpRequest" name="errand" onClick={getLivePost(1000)}>심부름</div>
+                        <div className="LiveHelpRequest" name="rent" onClick={getLivePost(2000)}>대여</div>
+                        <div className="LiveHelpRequest" name="etc" onClick={getLivePost(3000)}>잡일</div>
+                    </div>
+                </LiveHelpRequestMenuBar>
+                <LiveHelpRequest />
+            </div>
+            <div className="MainDaBeenerProfileWrapper">
+                <div className="MainDaBeenerProfileTitle">{sggUser ? "내 주변의 높은 평점을 가진 DaBeener를 확인하세요!" : "전체에서 높은 평점을 가진 DaBeener를 확인하세요!"}</div>
+                {recommendOpponents && <MainDaBeenerProfile recommendOpponents={recommendOpponents} />}
+            </div>
         </MainForm>
     );
 };
