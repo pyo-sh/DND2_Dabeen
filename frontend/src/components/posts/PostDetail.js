@@ -7,7 +7,7 @@ import inputChangeHook from '../../hooks/inputChangeHook';
 import moment from 'moment';
 import SearchJuso from '../map/SearchJuso';
 import {Modal, Icons, Content, Title, ApplyCheck, EditTitle, Edit, Image, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
-import {updateHelpPostRequestAction} from '../../reducers/posts';
+import {updateHelpPostRequestAction, removeHelpPostRequestAction} from '../../reducers/posts';
 import { getCookie } from '../../utils/cookieFunction';
 // 내가 쓴 글 / 아닌 글 구분해야함
 const PostDetail = ({setVisible, data}) => {
@@ -24,13 +24,12 @@ const PostDetail = ({setVisible, data}) => {
     const [editHelpDeadLineTime, setEditHelpDeadLineTime] = useState(helpDeadline[1]);  //수정할 도움 신청 마감 시간
     const [editNeedPersonnel, setEditNeedPersonnel] = inputChangeHook(data.postNum);    //수정할 필요 인원
     const [editPrice, setEditPrice] = inputChangeHook(data.price);  //수정할 금액
-    const [editExecLoc, setEditExecLoc] = useState(data.location);  //수정할 주소
-    const [editContent, setEditContent] = inputChangeHook(data.content);    //수정할 요구사항
+    const [editExecLoc, setEditExecLoc] = useState(data.execLoc);  //수정할 주소
+    const [editContent, setEditContent] = inputChangeHook(data.helpContent);    //수정할 요구사항
     const {me} = useSelector(state => state.user);  //내 정보
     const dispatch = useDispatch();
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
-    const time = moment();
 
     //신청 다비너 창 여닫을떄
     const onModal = useCallback(() => {
@@ -43,20 +42,22 @@ const PostDetail = ({setVisible, data}) => {
                 helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
-                postName: editTitle, 
-                category: data.category,
+                helpTitle: editTitle, 
+                categoryNum: data.categoryNum,
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
-                helpExec: editHelpExecDate.concat('T'+editHelpExecTime),
+                helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
                 postNum: parseInt(editNeedPersonnel),
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
+                helpEndTime: data.helpEndTime,
                 isHelpApprove: data.isHelpApprove,
-                content: editContent,
+                helpContent: editContent,
+                payment: data.payment,
                 cookie : getCookie()
             })
         );
         setEdit(prev => !prev);
-    }, [time, editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editContent]);
+    }, [editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editContent]);
 
     const onChangeHelpDeadlineDate = useCallback((date, dateString) => {
         setEditHelpDeadLineDate(dateString);
@@ -82,7 +83,8 @@ const PostDetail = ({setVisible, data}) => {
 
     //게시글 삭제 버튼 눌렀을 때
     const deletePost = useCallback((id) => () => {
-        dispatch(removeHelpPostRequestAction({id, cookie : getCookie()}));
+        // console.log(helpNum)
+        dispatch(removeHelpPostRequestAction({helpNum: id, cookie : getCookie()}));
     }, []);
 
     return (
@@ -111,7 +113,7 @@ const PostDetail = ({setVisible, data}) => {
                             <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
                             </Popconfirm>
                             <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.helpNum)} onCancel={edit} okText="네" cancelText="아니요">
-                            <Icon type="delete" style={{marginRight: 10}} onClick={deletePost}/>
+                            <Icon type="delete" style={{marginRight: 10}}/>
                             </Popconfirm>
                             </>
                             }
@@ -122,7 +124,7 @@ const PostDetail = ({setVisible, data}) => {
                         <div>작성일 : {data.helpPostDate.split('T')[0]}</div>
                         <div>작성자 : {data.userId}</div>  
                         {
-                            data.userNum === me.userNum || (
+                            data.userNum === me.userNum && (
                             !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                             : 
                             <Popconfirm placement="topLeft" title="수정하시겠습니까?" onConfirm={onConfirm} onCancel={edit} okText="네" cancelText="아니요">

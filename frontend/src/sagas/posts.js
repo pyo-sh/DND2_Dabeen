@@ -66,26 +66,28 @@ function updateHelpPostAPI(data) {
     const reqData = {
         data: {
             help_num: data.helpNum,
+            cnsr_num: data.userNum,
             help_pstn_dttm: data.helpPostDate,
-            cat_num: data.category,
-            title: data.postName,
-            exec_loc: data.location,
-            price: data.money,
-            pref_suppl_num: data.needPersonnel,
-            pref_help_exec_dttm: data.executionDate,
-            help_aply_cls_dttm: data.postDeadline,
-            cont: data.content,
+            cat_num: data.categoryNum,
+            title: data.helpTitle,
+            exec_loc: data.execLoc,
+            price: data.price,
+            pref_suppl_num: data.postNum,
+            pref_help_exec_dttm: data.helpExecDate,
+            help_aply_cls_dttm: data.helpDeadLine,
+            cont: data.helpContent,
             help_aprv_whet: data.isHelpApprove,
+            pymt_whet:"n"
         }
     }
-    const cookie = {data};
+    const {cookie} = data;
     return axios.put('/help', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* updateHelpPost(action) {
     try {
-        const result = yield call(updateHelpPostAPI, action.data);
-        yield put(updateHelpPostSuccessAction(result.data.data));
+        yield call(updateHelpPostAPI, action.data);
+        yield put(updateHelpPostSuccessAction(action.data));
     } catch (e) {
         console.log(e);
         yield put(updateHelpPostFailureAction(e));
@@ -97,9 +99,7 @@ function* watchUpdateHelpPost() {
 };
 
 function removeHelpPostAPI({helpNum, cookie}) {
-    return axios.delete(`/help/${helpNum}`, {
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.delete(`/help/${helpNum}`, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* removeHelpPost(action) {
@@ -229,5 +229,6 @@ export default function* postsSaga() {
         fork(watchAddHelpPost),
         fork(watchAddImage),
         fork(watchUpdateHelpPost),
+        fork(watchRemoveHelpPost),
     ]);
 };

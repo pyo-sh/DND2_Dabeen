@@ -8,7 +8,7 @@ const PostCapsule = ({ data }) => {
   const [postDetailVisible, setPostDetailVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   // const helpDeadline = data.helpDeadline.split('T');
   // const helpExecDate = data.helpExecDate.split('T');
-  console.log(data);
+  
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
     setPostDetailVisible(prev => !prev);

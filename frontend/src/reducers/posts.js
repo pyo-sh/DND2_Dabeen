@@ -190,6 +190,7 @@ const reducer = (state = initialState, action) => {
           helpPostDate: action.data.help_pstn_dttm, // 도움게시일시
           helpTitle: action.data.title,  //도움제목
           helpContent: action.data.cont, // 내용
+          userNum: action.data.cnsr_num,
           categoryNum: action.data.cat_num, // 카테고리번호
           price: action.data.price, // 금액
           helpDeadLine: action.data.help_aply_cls_dttm, // 도움신청마감일시
@@ -197,7 +198,7 @@ const reducer = (state = initialState, action) => {
           helpEndTime: action.data.help_end_dttm,
           postNum: action.data.pref_suppl_num, // 선호공급자수
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
-          location: action.data.exec_loc, // 이행장소
+          execLoc: action.data.exec_loc, // 이행장소
           payment: action.data.pymt_whet
         });
         // draft.maxId += 1;
@@ -229,7 +230,7 @@ const reducer = (state = initialState, action) => {
       }
       case UPDATE_HELPPOST_SUCCESS: {
         draft.isUpdatingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.help_num);
+        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.helpNum);
         draft.helpPosts[index] = action.data;
         draft.helpPostUpdated = true;
         break;
