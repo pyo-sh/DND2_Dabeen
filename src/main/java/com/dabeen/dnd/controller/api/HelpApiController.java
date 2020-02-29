@@ -24,6 +24,8 @@ import com.dabeen.dnd.service.api.HelpApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -139,7 +141,7 @@ public class HelpApiController{
                                                 @RequestParam(value = "pref_help_exec_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime prefHelpExecDttm,
                                                 @RequestParam(value = "price_begin",required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceBegin,
                                                 @RequestParam(value = "price_end", required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceEnd,
-                                                @PageableDefault(size = 15) Pageable pageable) throws Exception{
+                                                @PageableDefault(size = 9,sort = "help_num",direction = Direction.ASC) Pageable pageable){
                                                 
             Map<String,Object> requestMap = new HashMap<>();
 
