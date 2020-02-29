@@ -86,8 +86,6 @@ public class HelpApiController{
         return helpApiService.update(request);
     }
 
-    // UpdateHelpEndDttm 메소드 필요
-
     // Delete 메소드
     @DeleteMapping("{num}")
     public Header delete(@PathVariable String num){
@@ -155,6 +153,12 @@ public class HelpApiController{
 
                                                     
             return helpApiService.searchHelps(requestMap,pageable);
+    }
+
+    // 도움마감버튼 클릭시 도움마감시간을 update 하는 함수
+    @PutMapping("/finish-help")
+    public Header<HelpApiResponse> updateEndDttm(@RequestBody @Valid Header<HelpApiRequest> request){
+        return helpApiService.updateEndDttm(request);
     }
 
 
