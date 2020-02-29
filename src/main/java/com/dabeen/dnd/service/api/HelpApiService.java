@@ -335,7 +335,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
             
             // Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
            
-            Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
+            Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, defaultDateTime, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
             List<HelpApiResponse> response = helps.stream()
                                                     .map(help -> response(help))
                                                     .collect(Collectors.toList());
