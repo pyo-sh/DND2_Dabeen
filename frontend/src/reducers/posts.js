@@ -3,6 +3,8 @@ import { createAction } from "../utils/actionFunction";
 
 export const initialState = {
   livePosts : [],
+  isUserResult : false,
+
   helpPosts : [{
     helpNum: "20200228", // 도움번호
     userNum: "2002200002",
@@ -259,7 +261,7 @@ const reducer = (state = initialState, action) => {
         break;
       }
       case LOAD_LIVEPOST_SUCCESS: {
-        draft.livePosts = action.data.map(post => (
+        draft.livePosts = action.data.helps.map(post => (
           {
             helpNum: post.help_num,
             helpPostDate: post.help_pstn_dttm,
@@ -282,7 +284,8 @@ const reducer = (state = initialState, action) => {
             avgRate : post.cnsr_user.avg_rate,
             userPic: post.cnsr_user.pic,
           }
-        ))
+        ));
+        draft.isUserResult = action.data.isResult;
         break;
       }
       case LOAD_LIVEPOST_FAILURE: {

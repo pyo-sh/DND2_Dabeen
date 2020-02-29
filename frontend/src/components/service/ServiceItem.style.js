@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ServiceItemBox = styled.div`
+  cursor: pointer;
   & .question, .answer {
     border-bottom: 1px solid #bfc7ce;
     width: 100%;

@@ -25,40 +25,43 @@ export const MainForm = styled.div`
         text-align: center;
         padding : 24px;
     }
-
     & .title {
         color: #424242;
-        font-size: 48px;
-
-        @media only screen and (max-width: 1024px){
-            font-size: 36px;
-        }
-
-        @media only screen and (max-width: 768px){
-            font-size: 28px;
-        }
-
-        @media only screen and (max-width: 425px){
-            font-size: 20px;
-        }
+        font-size : 48px;
+    }
+    @media only screen and (max-width: 425px){
+        & .title {
+            font-size : 32px;
+        } 
     }
 `;
 
 export const LiveHelpRequestMenuBar = styled.div`
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    flex-direction : column;
+    align-items: center;
     width: 100vw;
     margin-top: 5vh;
+ 
+    @media only screen and (max-width: 425px) {
+        flex-direction : column;
+        align-items: center;
+    }
+    
 
     & .liveHelpRequestForm {
         display: flex;
         justify-content: space-around;
         width: 20vw;
+        min-width : 150px;
 
         @media only screen and (max-width: 425px){
             margin-left: 1vw;
         }
+    }
+    & div[name=${props=> props.selectLiveMenu}] {
+        color : #FF4300;
     }
 
     & .liveHelpRequest {
@@ -76,10 +79,6 @@ export const LiveHelpRequestMenuBar = styled.div`
 
         @media only screen and (max-width: 768px){
             font-size: 18px;
-        }
-
-        @media only screen and (max-width: 425px){
-            font-size: 12px;
         }
     }
 `;
