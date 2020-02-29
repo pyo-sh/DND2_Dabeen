@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
         Authentication authentication = getAuthentication(request);
 
-        jwtService.invalidWhet(authentication);
+        //jwtService.invalidWhet(authentication);
         if(authentication != null){
             // 인증정보를 불러들여 해당 권한으로 설정
             SecurityContext context = SecurityContextHolder.getContext();
