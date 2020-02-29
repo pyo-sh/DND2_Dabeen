@@ -105,18 +105,12 @@ public class HelpApiController{
         return helpApiService.searchReceivedHelps(userNum, pageable);
     }
 
-    // 회원용 메인화면에 입력된 카테고리별로 검색한 장소를 활용한 상위 9개의 도움을 돌려주는 API 
-    @GetMapping("/search-main-exec-loc-helps")
-    public Header<Map<String, Object>> searchMainExecLocHelps(@RequestParam("exec_loc") String execLoc){
-        return helpApiService.searchMainExecLocHelps(execLoc);
+    @GetMapping("/search-exec-loc")
+    public Header<Map<String, Object>> searchExecLocHelps(@RequestParam("exec_loc") String execLoc,
+                                                          @RequestParam("cat_name") String catName){
+        return helpApiService.searchExecLocHelps(execLoc,catName);
 
-    }
-
-    // 비회원용 메인화면에 입력된 카테고리별로 상위 9개의 도움을 돌려주는 API
-    @GetMapping("/search-main-helps")
-    public Header<Map<String, Object>> searchMainHelps(){
-        return helpApiService.searchMainHelps();
-
+        // return helpApiService.searchExecLocHelps(execLoc);
     }
 
     /* 추가 메소드 */
