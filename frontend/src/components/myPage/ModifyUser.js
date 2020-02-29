@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Upload, message } from 'antd';
 import DabeenInput, { check_num,
@@ -11,14 +11,14 @@ import { inputCheckChangeHook } from '../../hooks/inputChangeHook';
 import { editUserInfoRequestAction } from '../../reducers/user';
 import { ModifyUserGetDataDiv, ModifyUserUpperDiv } from './ModifyUser.style';
 import { getCookie } from '../../utils/cookieFunction';
+import customAxios from '../../utils/axiosBase';
 
 const ModifyUser = ({ userInfo, onClickCancel }) => {
     const dispatch = useDispatch();
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
-    const [profileImage, setProfileImage] = useState({});
-    const [porfileImageUrl, setPorfileImageUrl] = useState();
+    const [profileImage, setProfileImage] = useState([]);
     const [nickname, changeNickname] = inputCheckChangeHook(userInfo.nickName, [check_eng, check_num, check_kor]);   // 닉네임 state
     const [introduce, changeIntroduce] = inputCheckChangeHook(userInfo.introduce, [/./g]); // 소개 state
     const [password, changePassword] = inputCheckChangeHook('', [check_eng, check_num, check_spc]);   // 비밀번호 state
@@ -28,6 +28,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
     const [address, changeAddress] = inputCheckChangeHook(userInfo.address, [check_eng, check_num, check_kor, check_spa, /[,\.:;'"]/g]);
     // 입력한 정보가 맞는 정보인지 확인하는 state
     const [isPasswordChecked, setIsPasswordChecked] = useState(false);  // 비밀번호 확인을 확인
+    const imageInput = useRef();
 
     // 비밀번호와 비밀번호 확인 state가 바뀔 때 마다 확인
     useEffect(() => {
@@ -59,6 +60,24 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         address,
     ]);
 
+    const onChangeImages = useCallback(async (e) => {
+        const imageFormData = new FormData();
+        // console.log(e.target.files[0]);
+        imageFormData.append('pic', e.target.files[0]);
+        // console.log(imageFormData.get('pic'));
+        try{
+            const result = await customAxios.post('/pic/upload/user', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            console.log(result);
+            setProfileImage(prev => [...prev, result.data.data]);
+        }catch(e){
+            console.log(e.response);
+        }
+    }, []);
+
+    const onClickImageUpload = useCallback(() => {
+        imageInput.current.click();
+    }, [imageInput.current]);
+
     return (
         <ModifyUserUpperDiv>
             <div className="ModifyTitle">회원정보 수정</div>
@@ -67,8 +86,15 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                     className="ModifyUserProfile"
                     alt="UserProfileImage"
                     src={profileImage}
-                    />
-                <Upload
+                />
+                <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
+                <img
+                    className="ModifyUserProfileChangeIcon"
+                    alt="writePost"
+                    src={"/images/postIcon.PNG"}
+                    onClick={onClickImageUpload}
+                />
+                {/* <Upload
                     className="ModifyUserProfileChange"
                     name='file'
                     action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
@@ -86,12 +112,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                         }
                     }, [])}
                 >
-                    <img
-                    className="ModifyUserProfileChangeIcon"
-                    alt="writePost"
-                    src={"/images/postIcon.PNG"}
-                    />
-                </Upload>
+                </Upload> */}
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">닉네임 *</div>
                     <DabeenInput

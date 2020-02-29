@@ -27,7 +27,7 @@ export const ModifyUserUpperDiv = styled.div`
             width: 150px;
             height: 150px;
         }
-        & .ModifyUserProfileChange {
+        /* & .ModifyUserProfileChange { */
             & .ModifyUserProfileChangeIcon {
                 width: 50px;
                 cursor: pointer;
@@ -35,7 +35,7 @@ export const ModifyUserUpperDiv = styled.div`
                 margin-right: -50px;
                 margin-top: -50px;
             }
-        }
+        /* } */
         & hr{
             width: 100%;
             color: #d9d9d9;
