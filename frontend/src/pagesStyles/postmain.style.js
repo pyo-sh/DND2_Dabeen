@@ -40,6 +40,7 @@ export const PostUpperDiv = styled.div`
     padding: 0 10px;
     & .helpCount {
       font-size: 20px;
+      margin-top: 20px;
     }
   }
   & .postmainWrite {

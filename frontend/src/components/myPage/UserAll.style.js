@@ -24,8 +24,9 @@ export const UserPageWrapper = styled.article`
     align-items: center;
     & .userInfomation {
       width: 100%;
-      border: 1px solid #d0d0d0;
+      border: 1px solid #BFC7CE;
       border-radius: 5px;
+      box-shadow: 0 5px 10px 3px #E9E9E9;
     }
     & .userImage {
       width: 100%;
@@ -76,12 +77,18 @@ export const UserPageWrapper = styled.article`
       flex-direction: column;
       justify-content : space-evenly;
       list-style : none;
-      border-top: 1px solid #F0F0F0;
-      border-bottom: 1px solid #F0F0F0;
+      border: 1px solid #BFC7CE;
+      border-radius: 4px;
+      box-shadow: 0 5px 10px 3px #E9E9E9;
+      & h1{
+        padding-bottom: 10px;
+        border-bottom: 1px solid #BFC7CE;
+      }
       & li {
         margin: 5px;
         padding: 10px;
         border-radius: 2px;
+        box-shadow: 3px 3px 10px 0.5px #E9E9E9;
       }
       & .click {
         & a{
@@ -97,10 +104,14 @@ export const UserPageWrapper = styled.article`
   }
   & .contentSection {
     width: 75vw;
-    max-width: 900px;
-    min-width: 280px;
+    max-width: 940px;
+    min-width: 320px;
+    padding: 0 20px 20px 20px;
     margin: 0 20px;
     display: flex;
     flex-direction: column;
+    /* border: 1px solid #BFC7CE;
+    border-radius: 4px;
+    box-shadow: 0 5px 10px 0.5px #E9E9E9; */
   }
 `;

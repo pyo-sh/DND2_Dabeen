@@ -7,6 +7,7 @@ export const MainDaBeenerProfileForm = styled.div`
   width: 70%;
   min-width: 350px;
   flex-wrap : wrap;
+  margin: 30px 0;
   & a {
       color: #424242;
   }
