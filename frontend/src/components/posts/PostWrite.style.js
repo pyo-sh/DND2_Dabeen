@@ -21,6 +21,7 @@ export const Content = styled.div`
     min-width: 300px;
     padding: 30px;
     margin: 60px 0;
+    border-radius : 12px;
 
     display: flex;
     flex-direction: column;
@@ -37,7 +38,7 @@ export const Title = styled.div`
     align-items: center;
     width: 100%;
     max-width: 550px;
-    min-width: 250px;
+    min-width: 300px;
     font-size: 40px;
     margin-bottom: 20px;
 `;
@@ -84,6 +85,10 @@ export const PostSettingBox = styled.div`
     }
     & .postSettingGetData{
         display: flex;
+        justify-content : flex-end;
+        @media screen and (max-width: 539px)  {
+            width : 290px;
+        }
     }
     & .postSettingDatePicker{
         width: 100%;
@@ -95,6 +100,9 @@ export const PostSettingBox = styled.div`
         min-width: 90px;
         max-width: 120px;
         margin-left: 10px;
+        /* @media screen and (max-width: 768px)  {
+            margin-left : 34px;
+        } */
     }
     & .postSettingInput{
         border: 1px solid #d9d9d9;
@@ -127,10 +135,10 @@ export const PostSettingBox = styled.div`
 export const InputTitle = styled.input`
     border: none;
     color: #7a7a7a;
-    font-size: 40px;
+    font-size: 35px;
     width: 100%;
-    max-width: 400px;
-    min-width: 250px;
+    max-width: 350px;
+    min-width: 200px;
     ::placeholder{
         color: #BFC7CE;
     }

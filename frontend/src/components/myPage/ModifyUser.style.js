@@ -60,6 +60,11 @@ export const ModifyUserUpperDiv = styled.div`
             max-height: 40px;
             min-width: 60px;
             min-height: 30px;
+            & :hover, :focus {
+            outline : none;
+            color : #ff4300;
+            border : 1px solid  #ff4300;
+        }
         }
         & .ModifyBtnAccess {
             width: 100%;
@@ -68,8 +73,16 @@ export const ModifyUserUpperDiv = styled.div`
             max-height: 40px;
             min-width: 60px;
             min-height: 30px;
-            background: #FF9644;
+            background: #ff4300;
+            color : white;
+            transition : 0.3s;
+            & :hover, :focus {
+            outline : none;
+            border : none;
+            opacity : 0.9;
         }
+        }
+      
     }
 `;
 

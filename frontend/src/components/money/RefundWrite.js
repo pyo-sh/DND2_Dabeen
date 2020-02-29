@@ -47,7 +47,7 @@ const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank,
           <span>원</span>
         </div>
         <div className="warnText">
-          <p>저희 서비스를 이용해주셔서 감사합니다.</p>
+          <p>상기 금액에서 수수료 15%를 뺀 금액을 돌려드립니다.</p>
         </div>
       </div>
     </RefundModal>

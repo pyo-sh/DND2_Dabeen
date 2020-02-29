@@ -135,7 +135,7 @@ const PostDetail = ({setVisible, data}) => {
                 <Image>근데 여기에 무슨 사진을 넣나요</Image>
                 <ApplicationInfo>
                     <Row>
-                        <Col span={20}>
+                        <Col span={18}>
                             <ApplicationInfoBox>
                             <div className="applicationInfoBoxTitle">신청인원</div>
                             { !edit ?
@@ -172,7 +172,7 @@ const PostDetail = ({setVisible, data}) => {
                             }
                             </ApplicationInfoBox>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <div className="applicationMoney">
                                 {
                                     !edit ?
