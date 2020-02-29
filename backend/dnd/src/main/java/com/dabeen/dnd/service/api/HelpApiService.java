@@ -349,6 +349,23 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         return Header.OK(searchHelpsMap);
     }
 
+    // 도움마감버튼 클릭시 도움마감시간을 update 하는 함수
+    public Header<HelpApiResponse> updateEndDttm(Header<HelpApiRequest> request){
+
+        HelpApiRequest helpApiRequest = request.getData();
+
+        return helpRepository.findById(helpApiRequest.getHelpNum())
+                        .map(help -> {
+                            //요청한 시간대로 help_end_dttm 수정
+                            help.setHelpEndDttm(LocalDateTime.now());
+                            return help;
+                        })
+                        .map(help -> helpRepository.save(help))
+                        .map(help -> Header.OK(response(help)))
+                        .orElseThrow(() -> new NotFoundException("Help"));
+                        
+    }
+
     public HelpSearchApiResponse searchResponse(Help help){
 
         HelpSearchApiResponse helpExecLocApiResponse =  HelpSearchApiResponse.builder()
