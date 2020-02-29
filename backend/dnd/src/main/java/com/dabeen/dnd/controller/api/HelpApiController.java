@@ -3,6 +3,9 @@
 
 package com.dabeen.dnd.controller.api;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import com.dabeen.dnd.exception.NotYourselfException;
 import com.dabeen.dnd.model.entity.Help;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
+import com.dabeen.dnd.model.network.request.HelpSearchApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
 import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
@@ -21,6 +25,8 @@ import com.dabeen.dnd.service.api.HelpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
@@ -78,6 +84,8 @@ public class HelpApiController{
         return helpApiService.update(request);
     }
 
+    // UpdateHelpEndDttm 메소드 필요
+
     // Delete 메소드
     @DeleteMapping("{num}")
     public Header delete(@PathVariable String num){
@@ -119,9 +127,31 @@ public class HelpApiController{
         return helpApiService.searchMainHelps(catNum);
 
     }
+    
     // 도움조회화면에 사용될 도움 조회 API
-    // @GetMapping("search-helps")
-    // public Header<Map<String,Object>> searchHelps(@RequestBody Header<>)
+    // https://stackoverflow.com/questions/40274353/how-to-use-localdatetime-requestparam-in-spring-i-get-failed-to-convert-string
+    @GetMapping("/search-helps")
+    public Header<Map<String,Object>> searchHelps(
+                                                @RequestParam("title") String title,
+                                                @RequestParam(value = "exec_loc", required = false) String execLoc,
+                                                @RequestParam(value = "help_aply_cls_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime helpAplyClsDttm,
+                                                @RequestParam(value = "pref_help_exec_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime prefHelpExecDttm,
+                                                @RequestParam(value = "price_begin",required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceBegin,
+                                                @RequestParam(value = "price_end", required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceEnd,
+                                                @PageableDefault(size = 15) Pageable pageable) throws Exception{
+                                                
+            Map<String,Object> requestMap = new HashMap<>();
+
+            requestMap.put("title",title);
+            requestMap.put("execLoc",execLoc);
+            requestMap.put("helpAplyClsDttm",helpAplyClsDttm);
+            requestMap.put("prefHelpExecDttm",prefHelpExecDttm);
+            requestMap.put("priceBegin",priceBegin);
+            requestMap.put("priceEnd",priceEnd);
+
+                                                    
+            return helpApiService.searchHelps(requestMap,pageable);
+    }
 
 
     /* 추가 메소드 */

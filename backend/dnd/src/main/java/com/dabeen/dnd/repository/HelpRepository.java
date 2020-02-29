@@ -4,6 +4,7 @@
 
 package com.dabeen.dnd.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,5 +26,12 @@ public interface HelpRepository extends JpaRepository<Help, String>{
     List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
     List<Help> findTop9ByCategory_CatNumAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(String catNum, LocalDateTime endDttm ,String execLoc);
     List<Help> findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(String catNum, LocalDateTime endDttm);
+
+    // 도움조회화면 검색 조건들에 따라 결과를 출력하기 위한 Query Method
+    @Query(value = "select * from help where (title LIKE CONCAT('%',:title,'%') OR cont LIKE CONCAT('%',:title,'%')) AND exec_loc LIKE CONCAT('%',:execLoc,'%') AND help_aply_cls_dttm BETWEEN :helpAplyClsDttmBegin AND :helpAplyClsDttmEnd AND pref_help_exec_dttm BETWEEN :prefHelpExecDttmBegin AND :prefHelpExecDttmEnd AND price BETWEEN :priceBegin AND :priceEnd ORDER BY help_num DESC  ",nativeQuery = true)
+    Page<Help> findByMultipleVariableSearchHelp(@Param("title") String title, @Param("execLoc") String execLoc, @Param("helpAplyClsDttmBegin") LocalDateTime helpAplyClsDttmBegin, @Param("helpAplyClsDttmEnd") LocalDateTime helpAplyClsDttmEnd, @Param("prefHelpExecDttmBegin") LocalDateTime prefHelpExecDttmBegin, @Param("prefHelpExecDttmEnd") LocalDateTime prefHelpExecDttmEnd, @Param("priceBegin") BigDecimal priceBegin, @Param("priceEnd") BigDecimal priceEnd, Pageable pageable);
+
+    // Page<Help> findByTitleContainingOrContContainingAndExecLocContainingAndHelpAplyClsDttmBetweenAndPrefHelpExecDttmBetweenAndPriceBetween(@Param("title") String title, @Param("cont") String cont, @Param("execLoc") String execLoc, @Param("helpAplyClsDttmBegin") LocalDateTime helpAplyClsDttmBegin, @Param("helpAplyClsDttmEnd") LocalDateTime helpAplyClsDttmEnd, @Param("prefHelpExecDttmBegin") LocalDateTime prefHelpExecDttmBegin, @Param("prefHelpExecDttmEnd") LocalDateTime prefHelpExecDttmEnd, @Param("priceBegin") BigDecimal priceBegin, @Param("priceEnd") BigDecimal priceEnd, Pageable pageable);
+
 }
 
