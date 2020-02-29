@@ -21,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -47,8 +48,11 @@ public class HelpApiController extends CrudController<HelpApiRequest,HelpApiResp
         return helpApiService.searchReceivedHelps(userNum, pageable);
     }
 
-    @GetMapping("/search-exec-loc/{execLoc}")
-    public Header<List<HelpExecLocApiResponse>> searchExecLocHelps(@PathVariable String execLoc){
-        return helpApiService.searchExecLocHelps(execLoc);
+    @GetMapping("/search-exec-loc")
+    public Header<Map<String, Object>> searchExecLocHelps(@RequestParam("exec_loc") String execLoc,
+                                                          @RequestParam("cat_name") String catName){
+        return helpApiService.searchExecLocHelps(execLoc,catName);
+
+        // return helpApiService.searchExecLocHelps(execLoc);
     }
 }

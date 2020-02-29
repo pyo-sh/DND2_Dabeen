@@ -227,22 +227,32 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         return Header.OK(map);
     }
 
-    public Header<List<HelpExecLocApiResponse>> searchExecLocHelps(String execLoc){
+    public Header<Map<String,Object>> searchExecLocHelps(String execLoc, String catName){
+
+        Map<String,Object> execLocHelpsMap = new HashMap<>();
 
         List<Help> helps;
+        Boolean isResult;
+        
         LocalDateTime defaultEndDttm = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
 
         // 기본적인 주소를 통한 help 검색 결과
-        helps = helpRepository.findTop9ByHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(defaultEndDttm, execLoc);
+
+        helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(catName, defaultEndDttm, execLoc);
 
         // 만약 주소를 통한 결과가 없는 경우, 전체 값을 다 검색한 후에 상위 9 개 값을 배열에 새로 담는다.
         if(helps.isEmpty()){
-            helps = helpRepository.findTop9ByHelpEndDttmOrderByHelpNumDesc(defaultEndDttm);
+            helps = helpRepository.findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(catName, defaultEndDttm);
+            isResult = false;
         }
 
         List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+        isResult = true;
 
-        return Header.OK(response);
+        execLocHelpsMap.put("isResult",isResult);
+        execLocHelpsMap.put("helps",response);
+
+        return Header.OK(execLocHelpsMap);
     }
 
     public HelpExecLocApiResponse searchResponse(Help help){
