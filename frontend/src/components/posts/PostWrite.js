@@ -7,6 +7,7 @@ import { addHelpPostRequestAction, addImageRequestAction } from '../../reducers/
 import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentItem, UploadImage, UploadButton} from './PostWrite.style';
 import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
+import customAxios from '../../utils/axiosBase';
 import { getCookie } from '../../utils/cookieFunction';
 
 const categorys = {

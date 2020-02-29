@@ -62,7 +62,7 @@ const SignUpMain = () => {
     check_spa,
     /[,.:;'"]/g
   ]);
-
+  
   // 입력한 정보가 맞는 정보인지 확인하는 state
   const [isPasswordChecked, setIsPasswordChecked] = useState(false); // 비밀번호 확인을 확인
 
@@ -217,7 +217,7 @@ const SignUpMain = () => {
             <Select
               className="SignupContentBirthDay"
               defaultValue={birthDay}
-              onChange={onChangeSelect(setBirthMonth)}
+              onChange={onChangeSelect(setBirthDay)}
             >
               {dayOptions}
             </Select>
