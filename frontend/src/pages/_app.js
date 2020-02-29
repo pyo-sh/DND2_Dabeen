@@ -25,7 +25,7 @@ const Dabeen = ({ Component, store, pageProps, asPath }) => {
               },
               {
                   name: "viewport",
-                  content: "width=device-witdh, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"
+                  content: "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=yes"
               },
               {
                 "http-equiv": "X-UA-Compatible",

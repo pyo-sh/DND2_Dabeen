@@ -102,6 +102,7 @@ function* signUp(action) {
         yield put(signUpSuccessAction());
     }catch(e){
         console.error(e);
+        console.log(e.response);
         yield put(signUpFailureAction(e.response.data.description));
         // 적용 되면 e.response.data.description으로 될듯
     }
@@ -112,9 +113,7 @@ function* watchSignUp() {
 
 // 유저 정보 수정
 function editUserInfoAPI({userLog, cookie}){
-    return axios.post('/api/user', userLog,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.post('/api/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {

@@ -44,9 +44,7 @@ function addHelpPostAPI(data) { //게시글 업로드
         }
     }
     const {cookie} = data;
-    return axios.post('/help', reqData ,{
-        Authorization: `Bearer ${cookie}`
-        })
+    return axios.post('/help', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* addHelpPost(action) {
@@ -81,9 +79,7 @@ function updateHelpPostAPI(data) {
         }
     }
     const cookie = {data};
-    return axios.put('/help', reqData,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.put('/help', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* updateHelpPost(action) {
@@ -162,9 +158,7 @@ function addImageAPI({path, cookie}) {
             path
         }
     };
-    return axios.post('/help-pic', reqData,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.post('/help-pic', reqData,{headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* addImage(action) {

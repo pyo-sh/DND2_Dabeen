@@ -3,9 +3,7 @@ import axios from 'axios';
 import { LOAD_QUESTIONS_REQUEST, loadQuestionsSuccessAction, loadQuestionsFailureAction, ADD_QUESTION_REQUEST, addQuestionSuccessAction, addQuestionFailureAction, DELETE_QUESTION_REQUEST, deleteQuestionSuccessAction, deleteQuestionFailureAction, LOAD_FAQS_REQUEST, loadFaqsSuccessAction, loadFaqsFailureAction } from '../reducers/questions';
 
 function loadQuestionsAPI({userNum, cookie}){
-    return axios.get(`/user/${userNum}/quests`,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.get(`/user/${userNum}/quests`,{headers : {Authorization: `Bearer ${cookie}`}});
 }
 
 function* loadQuestions(action) {
@@ -29,9 +27,7 @@ function addQuestionAPI({userNum, question, cookie}){
             content : question.content,
         }
     };
-    return axios.post(`/user/${userNum}/main-page`, reqData ,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.post(`/user/${userNum}/main-page`, reqData ,{headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* addQuestion(action) {
@@ -49,9 +45,7 @@ function* watchAddQuestion() {
 
 // 질문 삭제하기
 function deleteQuestiondAPI({userNum, cookie}){
-    return axios.delete(`/user/${userNum}/main-page`,{
-        Authorization: `Bearer ${cookie}`
-        });
+    return axios.delete(`/user/${userNum}/main-page`,{headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* deleteQuestion(action) {
