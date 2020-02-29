@@ -4,6 +4,7 @@
 
 package com.dabeen.dnd.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +24,14 @@ public interface HelpRepository extends JpaRepository<Help, String>{
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmBefore(String userNum, LocalDateTime dateTime, Pageable pageable);
     List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
-    List<Help> findTop9ByHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(LocalDateTime endDttm ,String execLoc);
-    List<Help> findTop9ByHelpEndDttmOrderByHelpNumDesc(LocalDateTime endDttm);
+    List<Help> findTop9ByCategory_CatNumAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(String catNum, LocalDateTime endDttm ,String execLoc);
+    List<Help> findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(String catNum, LocalDateTime endDttm);
+
+    // 도움조회화면 검색 조건들에 따라 결과를 출력하기 위한 Query Method
+    @Query(value = "select * from help where cat_num = :catNum AND help_end_dttm = :helpEndDttm AND (title LIKE CONCAT('%',:title,'%') OR cont LIKE CONCAT('%',:title,'%')) AND exec_loc LIKE CONCAT('%',:execLoc,'%') AND help_aply_cls_dttm BETWEEN :helpAplyClsDttmBegin AND :helpAplyClsDttmEnd AND pref_help_exec_dttm BETWEEN :prefHelpExecDttmBegin AND :prefHelpExecDttmEnd AND price BETWEEN :priceBegin AND :priceEnd ",nativeQuery = true)
+    Page<Help> findByMultipleVariableSearchHelp(@Param("catNum") String catNum, @Param("title") String title, @Param("helpEndDttm") LocalDateTime helpEndDttm ,@Param("execLoc") String execLoc, @Param("helpAplyClsDttmBegin") LocalDateTime helpAplyClsDttmBegin, @Param("helpAplyClsDttmEnd") LocalDateTime helpAplyClsDttmEnd, @Param("prefHelpExecDttmBegin") LocalDateTime prefHelpExecDttmBegin, @Param("prefHelpExecDttmEnd") LocalDateTime prefHelpExecDttmEnd, @Param("priceBegin") BigDecimal priceBegin, @Param("priceEnd") BigDecimal priceEnd, Pageable pageable);
+
+    // Page<Help> findByTitleContainingOrContContainingAndExecLocContainingAndHelpAplyClsDttmBetweenAndPrefHelpExecDttmBetweenAndPriceBetween(@Param("title") String title, @Param("cont") String cont, @Param("execLoc") String execLoc, @Param("helpAplyClsDttmBegin") LocalDateTime helpAplyClsDttmBegin, @Param("helpAplyClsDttmEnd") LocalDateTime helpAplyClsDttmEnd, @Param("prefHelpExecDttmBegin") LocalDateTime prefHelpExecDttmBegin, @Param("prefHelpExecDttmEnd") LocalDateTime prefHelpExecDttmEnd, @Param("priceBegin") BigDecimal priceBegin, @Param("priceEnd") BigDecimal priceEnd, Pageable pageable);
+
 }
 

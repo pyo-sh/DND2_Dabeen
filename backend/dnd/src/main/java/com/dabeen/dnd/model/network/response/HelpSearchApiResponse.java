@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HelpExecLocApiResponse{
+public class HelpSearchApiResponse{
 
     private String helpNum;
 
