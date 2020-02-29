@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests()
             // 토큰 없이도 가능
             .antMatchers("/", "/api/user/login", "/api/user/find-pwd", "/api/user/find-id", "/api/user/main-page/**",
-                         "/api/help/search-exec-loc/**", "/api/help/*/to-receive-helps", "/api/help/*/received-helps").permitAll()
+                         "/api/help/search-main-exec-loc-helps/**","/api/help/search-main-helps/**", "/api/help/*/to-receive-helps", "/api/help/*/received-helps").permitAll()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // 옵션이....있구나...? POST 전에 OPTIONS을 먼저 보낸다...
             .antMatchers(HttpMethod.POST, "/api/user").permitAll()
             .antMatchers(HttpMethod.GET, "/api/user/*").permitAll() 
