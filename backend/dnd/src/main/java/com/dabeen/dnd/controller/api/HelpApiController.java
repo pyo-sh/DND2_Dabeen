@@ -48,6 +48,7 @@ public class HelpApiController{
     @Autowired
     private Validator validator;
 
+
     /* jwt 검증때문에 상속없이 직접 구현  */
     // Create 메소드
     @PostMapping("")
@@ -118,8 +119,10 @@ public class HelpApiController{
         return helpApiService.searchMainHelps(catNum);
 
     }
-
     // 도움조회화면에 사용될 도움 조회 API
+    // @GetMapping("search-helps")
+    // public Header<Map<String,Object>> searchHelps(@RequestBody Header<>)
+
 
     /* 추가 메소드 */
 
