@@ -7,6 +7,7 @@ import { addHelpPostRequestAction, addImageRequestAction } from '../../reducers/
 import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentItem, UploadImage, UploadButton} from './PostWrite.style';
 import axios from 'axios';
 import moment from 'moment';
+import customAxios from '../../utils/axiosBase';
 import { getCookie } from '../../utils/cookieFunction';
 
 const categorys = {
@@ -96,7 +97,10 @@ const PostWrite = ({setInvisible, userNum}) => {
         imageFormData.append('pic', e.target.files[0]);
         // console.log(imageFormData.get('pic'));
         try{
-            const result = await axios.post('/pic/upload/help', imageFormData);
+            // const result = await axios.post('/pic/upload/help', imageFormData);
+            const result = await customAxios.post('/pic/upload/help', imageFormData, {
+                Authorization: `Bearer ${getCookie()}`
+                });
             console.log(result);
             setImages(prev => [...prev, result.data.data]);
         }catch(e){
