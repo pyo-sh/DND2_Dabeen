@@ -26,9 +26,9 @@ public class HelpApiRequest{
 
     private String helpNum;
 
-    private LocalDateTime helpPstnDttm;
+    // private LocalDateTime helpPstnDttm;
 
-    private LocalDateTime helpEndDttm;
+    // private LocalDateTime helpEndDttm;
     
     private String catNum;
 
@@ -48,7 +48,7 @@ public class HelpApiRequest{
 
     private String cont;
 
-    private Whether helpAprvWhet;
+    // private Whether helpAprvWhet;
 
     // private String execSggName;
 
