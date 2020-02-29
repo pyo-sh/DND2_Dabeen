@@ -7,12 +7,15 @@ export const MainForm = styled.div`
     align-items: center;
     width : 100%;
     margin-top: -2vh;
+    overflow-x: hidden;
     & .ant-carousel {
         width : 100%;
-        height : 50vh;
+        height : 35vw;
+        min-height: 250px;
         & img {
             width : 100%;
-            height : 50vh;
+            height : 35vw;
+            min-height: 250px;
         }
         & .slick-dots li button::before {
             content : ""

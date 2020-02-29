@@ -28,20 +28,11 @@ const Main = () => {
 
     return (
         <MainForm>
-            {/* <div className = "mainImage"> 다빈 소개글 적는 부분 */}
-                {/* <div style={{fontSize:"40px"}}>DaBeen</div>
-                <p>
-                    대충 우리 사이트 설명 어쩌고 저쩌고 다빈이라는 이름 예쁘다
-                    나는 딸 가지면 이름을 아영이로 짓고싶다 ^^!
-                    <br />
-                    배경은 사진 넣으면됩니당.
-                </p> */}
-                <Carousel autoplay dots>
-                    {image.map(img => (
-                            <img key={img} src={`/images/${img}`} alt={img}/>
-                    ))}
-                </Carousel>
-            {/* </div> */}
+            <Carousel autoplay dots>
+                {image.map(img => (
+                        <img key={img} src={`/images/${img}`} alt={img}/>
+                ))}
+            </Carousel>
             <LiveHelpRequestMenuBar selectLiveMenu={selectLiveMenu}>
                 <h1 className="title">{isUserResult ? "주변 실시간 도움 " : "전체 실시간 도움" }</h1>
                 <div className="liveHelpRequestForm">

@@ -5,6 +5,7 @@ export const PostSearchUpperDiv = styled.div`
   margin: 10px 0;
   border-radius: 8px;
   background: #f0f0f0;
+  box-shadow: 0 5px 10px 3px #E9E9E9;
   font-size: 16px;
   & .postsearchboxRow{
       display: flex;
@@ -62,7 +63,7 @@ export const PostSearchBox = styled.div`
       width: 100%;
       min-width: 110px;
       max-width: 140px;
-      height: 25px;
+      height: 28px;
       color: #BFC7CE;
 
       &:hover, :focus{
