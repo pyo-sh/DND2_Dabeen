@@ -23,8 +23,8 @@
 <!-- 키 생성 쿼리 -->
         </selectKey>
         insert 
-            into help(help_num,help_pstn_dttm,cat_num,cnsr_num,title,exec_loc,price,pref_suppl_num,pref_help_exec_dttm,help_aply_cls_dttm,cont)
-            values (#{helpNum}, #{helpPstnDttm}, #{catNum}, #{cnsrNum}, #{title}, #{execLoc}, #{price}, #{prefSupplNum}, #{prefHelpExecDttm}, #{helpAplyClsDttm}, #{cont})
+            into help(help_num,cat_num,cnsr_num,title,exec_loc,price,pref_suppl_num,pref_help_exec_dttm,help_aply_cls_dttm,cont)
+            values (#{helpNum}, #{catNum}, #{cnsrNum}, #{title}, #{execLoc}, #{price}, #{prefSupplNum}, #{prefHelpExecDttm}, #{helpAplyClsDttm}, #{cont})
     </insert>
 </mapper>
 

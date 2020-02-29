@@ -36,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,7 +71,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         Map<String,Object> helpMap = new HashMap<>();
 
         helpMap.put("helpNum",null);
-        helpMap.put("helpPstnDttm",helpApiRequest.getHelpPstnDttm());
+        // helpMap.put("helpPstnDttm",helpApiRequest.getHelpPstnDttm());
         helpMap.put("catNum",helpApiRequest.getCatNum());
         helpMap.put("cnsrNum", helpApiRequest.getCnsrNum());
         helpMap.put("title",helpApiRequest.getTitle());
@@ -113,8 +114,8 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
   
         return optional.map(help -> {
                     help.setHelpNum(helpApiRequest.getHelpNum());    
-                    help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm());
-                    help.setHelpEndDttm(helpApiRequest.getHelpEndDttm());
+                    // help.setHelpPstnDttm(helpApiRequest.getHelpPstnDttm());
+                    // help.setHelpEndDttm(helpApiRequest.getHelpEndDttm());
                     // help.setCatNum(helpApiRequest.getCatNum());
                     // help.setCnsrNum(helpApiRequest.getCnsrNum());
                     help.setCategory(categoryRepository.getOne(helpApiRequest.getCatNum()));
