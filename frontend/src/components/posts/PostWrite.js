@@ -110,11 +110,11 @@ const PostWrite = ({setInvisible, userNum}) => {
 
     return (
         <Modal>
-            <Form onSubmit={addPost} style={{width: "50%", maxWidth: 600, minWidth: 300}} encType="multipart/form-data">
+            <Form onSubmit={addPost} encType="multipart/form-data">
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setInvisible} type="close" style={{fontSize: 35, color:"#BFC7CE", marginRight: 10}}/>
+                        <Icon onClick={setInvisible} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <PostSettingBox>

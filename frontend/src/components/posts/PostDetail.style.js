@@ -25,6 +25,7 @@ export const Content = styled.div`
     min-width: 300px;
     padding: 30px;
     margin: 60px 0;
+    border-radius : 12px;
 
     display: flex;
     flex-direction: column;
@@ -123,6 +124,9 @@ export const ApplicationInfoBox = styled.div`
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
+    @media screen and (max-width : 500px){
+        width : 150px;
+    }
 
     & .applyCheck{
         border: none;
@@ -148,7 +152,7 @@ export const ApplicationInfoBox = styled.div`
 export const ApplicationInfo = styled.div`
     width: 100%;
     max-width: 550px;
-    min-width: 250px;
+    min-width: 300px;
     height: auto;
     margin-top: 20px;
     
@@ -158,11 +162,18 @@ export const ApplicationInfo = styled.div`
         justify-content:flex-end;
         color: #FF4300;
         font-size: 20px;
+        min-width: 80px;
 
+        & div {
+            text-align : center;
+        }
         & input{
             border: none;
             width: 120px;
             font-size: 16px;
+        }
+        @media screen and (max-width:500px) {
+            margin-right : 20px;
         }
     }
 
@@ -190,7 +201,7 @@ export const DeadlineButton = styled.button`
     box-shadow: 2px 3px 5px #BFC7CE;
     width: 100%;
     max-width: 120px;
-    min-width: 60px;
+    min-width: 100px;
     height: 30px;
 
     :hover {

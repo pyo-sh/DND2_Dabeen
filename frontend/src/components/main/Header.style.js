@@ -27,7 +27,7 @@ export const Menubar = styled.nav`
   & .menuToggle {
     position: absolute;
     /* top: 13px; */
-    right: 20px;
+    right: 23px;
     cursor: pointer;
     color: black;
     font-size: 24px;

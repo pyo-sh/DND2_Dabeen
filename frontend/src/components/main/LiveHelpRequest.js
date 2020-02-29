@@ -27,6 +27,42 @@ function SampleNextArrow(props) { // 우 화살표
     );
   }
 
+  const setting = {
+    initialSlide : 0,
+    dots : true,
+    autoplay : true,
+    autoplaySpeed : 2500,
+    infinite : true,
+    slidesToShow : 3,
+    slidesToScroll :3,
+    nextArrow : <SampleNextArrow/>,
+    prevArrow : <SamplePrevArrow/>,
+    responsive : [
+      {
+        breakpoint : 1025,
+        settings: {
+          slidesToScroll : 3,
+          slidesToShow : 3,
+        }
+      },
+      {
+        breakpoint : 769,
+        settings: {
+          slidesToScroll : 2,
+          slidesToShow : 2,
+        }
+      },
+      {
+        breakpoint : 426,
+        settings: {
+          slidesToScroll : 1,
+          slidesToShow : 1,
+        }
+      },
+
+    ]
+  }
+
 // 유즈이펙트로 가져온 유저 정보를 가지고 그려야함
 const LiveHelpRequest = () => {
   const [ visible, setVisible ] = useState(false);
@@ -43,15 +79,8 @@ const LiveHelpRequest = () => {
     // 뭐지 개수가 3의 배수로 안 맞아 떨어지면 제대로 안 되는건가???
     <>
       <TestSlick 
-      initialSlide={0}
-      dots={true}
-      autoplay={true}
-      autoplaySpeed={2500}
-      infinite={true}
-      slidesToShow={3}
-      slidesToScroll={3}
-      nextArrow = {<SampleNextArrow/>}
-      prevArrow = {<SamplePrevArrow/>}>
+      {...setting}
+    >
           {livePosts.map(help => (
               <div key = {help.helpNum} className="liveHelpRequestFlex" onClick={onClickPost(help.helpNum)}>
               <LiveHelpRequestContent>
