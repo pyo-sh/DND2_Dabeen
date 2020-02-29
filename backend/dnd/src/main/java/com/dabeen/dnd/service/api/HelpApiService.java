@@ -187,7 +187,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
             HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
                                                                         .appliNum(appliNum)
                                                                         .aprvNum(aprvNum)
-                                                                        .help(this.response(help))
+                                                                        .help(this.searchResponse(help))
                                                                         .build();
             responses.add(response);                                                                                        
         });
@@ -198,11 +198,21 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     // 받을 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 미래인 것
     public Header<Map<String, Object>> searchToReceiveHelps(String userNum, Pageable pageable){
         Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
+        List<HelpAppliInfoApiResponse > responses = new ArrayList<>();
         
-        List<HelpApiResponse> responses = helps.getContent()
-                                                .stream()
-                                                .map(this::response)
-                                                .collect(Collectors.toList());
+        helps.forEach(help -> {
+            // 신청인원
+            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
+            // 승인인원
+            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
+            
+            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
+                                                                        .appliNum(appliNum)
+                                                                        .aprvNum(aprvNum)
+                                                                        .help(this.searchResponse(help))
+                                                                        .build();
+            responses.add(response);                                                                                        
+        });
 
         Map<String, Object> map = new HashMap<>();
         map.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));

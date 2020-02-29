@@ -164,23 +164,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         }).orElseThrow(() -> new NotFoundException("User"));
     }
 
-
-    // 로그인을 위한 메소드
-    public Header<LoginApiResponse> login(Header<LoginApiRequest> request) {
-        LoginApiRequest requestData = request.getData();
-        User user = userRepository.findByUserId(requestData.getId())
-                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
-
-        if (!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
-            throw new PasswordWrongException();
-
-        // 해당 사용자가 공급자인지 아닌지 판단
-        String role = user.getSupplWhet().equals(Whether.y) ? "suppler" : "user";
-
-        return Header.OK(LoginApiResponse.builder()
-                .token(jwtService.createToken(user.getUserNum(), user.getUserId(), user.getNickname(), role)).build());
-    }
-
     // User > UserApiResponse 를 위한 메소드
     public UserApiResponse response(User user) {
         UserApiResponse userApiResponse = UserApiResponse.builder()
@@ -204,6 +187,22 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
     /* 사용자 APi */
 
+    // 로그인을 위한 메소드
+    public Header<LoginApiResponse> login(Header<LoginApiRequest> request) {
+        LoginApiRequest requestData = request.getData();
+        User user = userRepository.findByUserId(requestData.getId())
+                .orElseThrow(() -> new NotFoundException("\'" + requestData.getId() + "\' 아이디의 사용자를"));
+
+        if (!passwordEncoder.matches(requestData.getPwd(), user.getPwd()))
+            throw new PasswordWrongException();
+
+        // 해당 사용자가 공급자인지 아닌지 판단
+        String role = user.getSupplWhet().equals(Whether.y) ? "suppler" : "user";
+
+        return Header.OK(LoginApiResponse.builder()
+                .token(jwtService.createToken(user.getUserNum(), user.getUserId(), user.getNickname(), role)).build());
+    }
+    
     // 아이디 찾기
     public Header<?> findId(Header<FindApiRequest> request) {
         FindApiRequest requestData = request.getData();
