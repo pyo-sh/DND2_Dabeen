@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 public class HelpAppliInfoApiResponse {
     private Long appliNum; // 신청 인원
     private Long aprvNum; // 승인 인원
-    private HelpExecLocApiResponse help;
+    private HelpSearchApiResponse help;
 }
