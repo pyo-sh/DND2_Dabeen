@@ -23,5 +23,5 @@ public class HelpCompHelpInfoApiResponse{
     private LocalDateTime astDttm; // 평가일시
     private BigDecimal rate; // 평점
     private String astCont; // 평가내용
-    private HelpExecLocApiResponse help; // 도움
+    private HelpSearchApiResponse help; // 도움
 }

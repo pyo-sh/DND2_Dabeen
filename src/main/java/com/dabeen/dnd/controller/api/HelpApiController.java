@@ -19,7 +19,7 @@ import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.request.HelpSearchApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
-import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
+import com.dabeen.dnd.model.network.response.HelpSearchApiResponse;
 import com.dabeen.dnd.service.api.HelpApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,9 +130,10 @@ public class HelpApiController{
     
     // 도움조회화면에 사용될 도움 조회 API
     // https://stackoverflow.com/questions/40274353/how-to-use-localdatetime-requestparam-in-spring-i-get-failed-to-convert-string
-    @GetMapping("/search-helps")
+    @GetMapping("/search-helps/{catNum}")
     public Header<Map<String,Object>> searchHelps(
-                                                @RequestParam("title") String title,
+                                                @PathVariable String catNum,
+                                                @RequestParam(value = "title", required = false) String title,
                                                 @RequestParam(value = "exec_loc", required = false) String execLoc,
                                                 @RequestParam(value = "help_aply_cls_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime helpAplyClsDttm,
                                                 @RequestParam(value = "pref_help_exec_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime prefHelpExecDttm,
@@ -142,6 +143,7 @@ public class HelpApiController{
                                                 
             Map<String,Object> requestMap = new HashMap<>();
 
+            requestMap.put("catNum",catNum);
             requestMap.put("title",title);
             requestMap.put("execLoc",execLoc);
             requestMap.put("helpAplyClsDttm",helpAplyClsDttm);
