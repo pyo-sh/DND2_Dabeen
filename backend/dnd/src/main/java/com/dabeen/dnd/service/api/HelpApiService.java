@@ -24,7 +24,7 @@ import com.dabeen.dnd.model.network.request.HelpApiRequest;
 import com.dabeen.dnd.model.network.request.HelpSearchApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
-import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
+import com.dabeen.dnd.model.network.response.HelpSearchApiResponse;
 import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
 import com.dabeen.dnd.repository.CategoryRepository;
@@ -258,7 +258,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
             isResult = false;
         }
 
-        List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+        List<HelpSearchApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
 
         mainExecLocHelpsMap.put("isResult", isResult);
         mainExecLocHelpsMap.put("helps", response);
@@ -280,7 +280,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         isResult = helps.isEmpty() == true ? false : true;
 
-        List<HelpExecLocApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
+        List<HelpSearchApiResponse> response = helps.stream().map(help -> searchResponse(help)).collect(Collectors.toList());
 
         mainHelpsMap.put("isResult", isResult);
         mainHelpsMap.put("helps", response);
@@ -296,6 +296,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         LocalDateTime defaultDateTime = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
         LocalDateTime currentDateTime = LocalDateTime.now();
 
+        String catNum = (String) requestMap.get("catNum");
 
         String title = (String) requestMap.get("title");
     
@@ -309,47 +310,48 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         BigDecimal priceEnd = (BigDecimal) requestMap.get("priceEnd");
 
-        if(title.isEmpty()){
-            throw new Exception("검색어를 입력하세요");
-        }
+        // if(title.isEmpty()){
+        //     throw new Exception("검색어를 입력하세요");
+        // }
 
-        else{
+        // else{
 
-            //Default 값 설정
-            execLoc = execLoc == null ? "" : execLoc;
-            helpAplyClsDttm = helpAplyClsDttm == null ? defaultDateTime : helpAplyClsDttm;
-            prefHelpExecDttm = prefHelpExecDttm == null ? defaultDateTime : prefHelpExecDttm;
-            priceBegin = priceBegin == null ? priceBegin = BigDecimal.valueOf(0L) : priceBegin;
-            priceEnd = priceEnd == null ? priceEnd = BigDecimal.valueOf(9999999999.9999) : priceEnd;
-            
-            log.info("{}",execLoc);
-            log.info("{}",currentDateTime);
-            log.info("{}",helpAplyClsDttm);
-            log.info("{}",prefHelpExecDttm);
-            log.info("{}",priceBegin);
-            log.info("{}",priceEnd);    
+        //Default 값 설정
+        title = title == null ? "" : title;
+        execLoc = execLoc == null ? "" : execLoc;
+        helpAplyClsDttm = helpAplyClsDttm == null ? defaultDateTime : helpAplyClsDttm;
+        prefHelpExecDttm = prefHelpExecDttm == null ? defaultDateTime : prefHelpExecDttm;
+        priceBegin = priceBegin == null ? priceBegin = BigDecimal.valueOf(0L) : priceBegin;
+        priceEnd = priceEnd == null ? priceEnd = BigDecimal.valueOf(9999999999.9999) : priceEnd;
+        
+        log.info("{}",execLoc);
+        log.info("{}",currentDateTime);
+        log.info("{}",helpAplyClsDttm);
+        log.info("{}",prefHelpExecDttm);
+        log.info("{}",priceBegin);
+        log.info("{}",priceEnd);    
 
-            // Page<Help> helps = helpRepository.findByTitleContainingAndExecLocContaining(title, execLoc, pageable);
+        // Page<Help> helps = helpRepository.findByTitleContainingAndExecLocContaining(title, execLoc, pageable);
 
-            // Page<Help> helps = helpRepository.findByTitleContainingOrContContainingAndExecLocContainingAndHelpAplyClsDttmBetweenAndPrefHelpExecDttmBetweenAndPriceBetween(title, title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
-            
-            // Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
-           
-            Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, defaultDateTime, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
-            List<HelpApiResponse> response = helps.stream()
-                                                    .map(help -> response(help))
-                                                    .collect(Collectors.toList());
-            searchHelpsMap.put("helps",response);
-            searchHelpsMap.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
+        // Page<Help> helps = helpRepository.findByTitleContainingOrContContainingAndExecLocContainingAndHelpAplyClsDttmBetweenAndPrefHelpExecDttmBetweenAndPriceBetween(title, title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
+        
+        // Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(title, title, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
+        
+        Page<Help> helps = helpRepository.findByMultipleVariableSearchHelp(catNum, title, defaultDateTime, execLoc, currentDateTime, helpAplyClsDttm, currentDateTime, prefHelpExecDttm, priceBegin, priceEnd, pageable);
+        List<HelpSearchApiResponse> response = helps.stream()
+                                                .map(help -> searchResponse(help))
+                                                .collect(Collectors.toList());
+        searchHelpsMap.put("helps",response);
+        searchHelpsMap.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
 
-        }
+        // }
 
         return Header.OK(searchHelpsMap);
     }
 
-    public HelpExecLocApiResponse searchResponse(Help help){
+    public HelpSearchApiResponse searchResponse(Help help){
 
-        HelpExecLocApiResponse helpExecLocApiResponse =  HelpExecLocApiResponse.builder()
+        HelpSearchApiResponse helpExecLocApiResponse =  HelpSearchApiResponse.builder()
                                 .helpNum(help.getHelpNum())
                                 .helpPstnDttm(help.getHelpPstnDttm())
                                 .helpEndDttm(help.getHelpEndDttm())
