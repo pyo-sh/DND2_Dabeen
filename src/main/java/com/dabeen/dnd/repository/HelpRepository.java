@@ -23,7 +23,7 @@ public interface HelpRepository extends JpaRepository<Help, String>{
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
     Page<Help> findByUser_UserNumAndPrefHelpExecDttmBefore(String userNum, LocalDateTime dateTime, Pageable pageable);
     List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
-    List<Help> findTop9ByCategory_CatNameAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(String catName, LocalDateTime endDttm ,String execLoc);
-    List<Help> findTop9ByCategory_CatNameAndHelpEndDttmOrderByHelpNumDesc(String catName, LocalDateTime endDttm);
+    List<Help> findTop9ByCategory_CatNumAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(String catNum, LocalDateTime endDttm ,String execLoc);
+    List<Help> findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(String catNum, LocalDateTime endDttm);
 }
 
