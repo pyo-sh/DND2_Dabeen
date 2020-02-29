@@ -56,13 +56,11 @@ public class HelpSupplCompApiService {
 
     public Header<HelpSupplCompApiResponse> create(Header<HelpSupplCompApiRequest> request) {
         HelpSupplCompApiRequest requestData = request.getData();
-        log.info("{}",  requestData);
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
                                                     .helpSupplCompPK(new HelpSupplCompPK())
                                                     .suppler(userRepository.findById(requestData.getSupplNum()).orElse(null))
                                                     .help(helpRepository.findById(requestData.getHelpNum()).orElse(null))
-                                                    // .helpAprvWhet(requestData.getHelpAprvWhet())
                                                     .aprvDttm(requestData.getAprvDttm())
                                                     .astDttm(requestData.getAstDttm())
                                                     .rate(requestData.getRate())
@@ -117,6 +115,7 @@ public class HelpSupplCompApiService {
         HelpSupplCompApiResponse helpSupplCompApiResponse = HelpSupplCompApiResponse.builder()
                                                                                     .helpNum(helpSupplComp.getHelpSupplCompPK().getHelpNum())
                                                                                     .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
+                                                                                    .compDttm(helpSupplComp.getCompDttm())
                                                                                     .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
                                                                                     .aprvDttm(helpSupplComp.getAprvDttm())
                                                                                     .astDttm(helpSupplComp.getAstDttm())
@@ -131,12 +130,13 @@ public class HelpSupplCompApiService {
 
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
-        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
+        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNumOrderByCompDttm(helpNum);
 
         // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
         List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
                                                                     .map(helpSupplComp -> {
                                                                         HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
+                                                                                                                    .compDttm(helpSupplComp.getCompDttm())
                                                                                                                     .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
                                                                                                                     .aprvDttm(helpSupplComp.getAprvDttm())
                                                                                                                     .astDttm(helpSupplComp.getAstDttm())
@@ -154,7 +154,7 @@ public class HelpSupplCompApiService {
 
     // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
     public Header<Map<String, Object>> searchSuppliedHelps(String userNum, Pageable pageable){
-        Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBefore(userNum, Whether.y, LocalDateTime.now(), pageable);
+        Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBeforeOrderByHelp_HelpNumDesc(userNum, Whether.y, LocalDateTime.now(), pageable);
         List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
         helpSupplComps.forEach(helpSupplComp -> {
@@ -178,7 +178,7 @@ public class HelpSupplCompApiService {
 
     // 공급자가 신청한 도움 API, 페이지 처리
     public Header<Map<String, Object>> searchAppliedHelps(String userNum, Pageable pageable){
-       Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
+       Page<HelpSupplComp> helpSupplComps= helpSupplCompRepository.findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfterOrderByHelp_HelpNumDesc(userNum, LocalDateTime.now(), pageable);
        List<HelpCompHelpInfoApiResponse> responses = new ArrayList<>();
 
        helpSupplComps.forEach(helpSupplComp -> {
