@@ -3,6 +3,9 @@
 
 package com.dabeen.dnd.controller.api;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +16,19 @@ import com.dabeen.dnd.exception.NotYourselfException;
 import com.dabeen.dnd.model.entity.Help;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
+import com.dabeen.dnd.model.network.request.HelpSearchApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
-import com.dabeen.dnd.model.network.response.HelpExecLocApiResponse;
+import com.dabeen.dnd.model.network.response.HelpSearchApiResponse;
 import com.dabeen.dnd.service.api.HelpApiService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
@@ -32,6 +40,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.Claims;
@@ -46,6 +55,7 @@ public class HelpApiController{
 
     @Autowired
     private Validator validator;
+
 
     /* jwt 검증때문에 상속없이 직접 구현  */
     // Create 메소드
@@ -76,6 +86,8 @@ public class HelpApiController{
         return helpApiService.update(request);
     }
 
+    // UpdateHelpEndDttm 메소드 필요
+
     // Delete 메소드
     @DeleteMapping("{num}")
     public Header delete(@PathVariable String num){
@@ -104,10 +116,47 @@ public class HelpApiController{
         return helpApiService.searchReceivedHelps(userNum, pageable);
     }
 
-    @GetMapping("/search-exec-loc/{execLoc}")
-    public Header<List<HelpExecLocApiResponse>> searchExecLocHelps(@PathVariable String execLoc){
-        return helpApiService.searchExecLocHelps(execLoc);
+    // 회원용 메인화면에 입력된 카테고리별로 검색한 장소를 활용한 상위 9개의 도움을 돌려주는 API 
+    @GetMapping("/search-main-exec-loc-helps")
+    public Header<Map<String, Object>> searchMainExecLocHelps(@RequestParam("exec_loc") String execLoc, @RequestParam("cat_num") String catNum){
+        return helpApiService.searchMainExecLocHelps(execLoc,catNum);
+
     }
+
+    // 비회원용 메인화면에 입력된 카테고리별로 상위 9개의 도움을 돌려주는 API
+    @GetMapping("/search-main-helps")
+    public Header<Map<String, Object>> searchMainHelps(@RequestParam("cat_num") String catNum){
+        return helpApiService.searchMainHelps(catNum);
+
+    }
+    
+    // 도움조회화면에 사용될 도움 조회 API
+    // https://stackoverflow.com/questions/40274353/how-to-use-localdatetime-requestparam-in-spring-i-get-failed-to-convert-string
+    @GetMapping("/search-helps/{catNum}")
+    public Header<Map<String,Object>> searchHelps(
+                                                @PathVariable String catNum,
+                                                @RequestParam(value = "title", required = false) String title,
+                                                @RequestParam(value = "exec_loc", required = false) String execLoc,
+                                                @RequestParam(value = "help_aply_cls_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime helpAplyClsDttm,
+                                                @RequestParam(value = "pref_help_exec_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime prefHelpExecDttm,
+                                                @RequestParam(value = "price_begin",required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceBegin,
+                                                @RequestParam(value = "price_end", required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceEnd,
+                                                @PageableDefault(size = 9,sort = "help_num",direction = Direction.ASC) Pageable pageable){
+                                                
+            Map<String,Object> requestMap = new HashMap<>();
+
+            requestMap.put("catNum",catNum);
+            requestMap.put("title",title);
+            requestMap.put("execLoc",execLoc);
+            requestMap.put("helpAplyClsDttm",helpAplyClsDttm);
+            requestMap.put("prefHelpExecDttm",prefHelpExecDttm);
+            requestMap.put("priceBegin",priceBegin);
+            requestMap.put("priceEnd",priceEnd);
+
+                                                    
+            return helpApiService.searchHelps(requestMap,pageable);
+    }
+
 
     /* 추가 메소드 */
 
