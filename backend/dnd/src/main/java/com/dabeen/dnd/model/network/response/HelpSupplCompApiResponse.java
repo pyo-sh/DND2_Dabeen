@@ -22,7 +22,7 @@ public class HelpSupplCompApiResponse {
     /* respnose에서는 PK를 객체 형태로 받지 않으므로 */
     private String helpNum; // 도움 번호
     private String supplNum; // 공급자 번호
-    
+    private LocalDateTime compDttm; // 구성일시
     private Whether helpAprvWhet; // 도움승인여부
     private LocalDateTime aprvDttm; // 승인일시
     private LocalDateTime astDttm; // 평가일시
