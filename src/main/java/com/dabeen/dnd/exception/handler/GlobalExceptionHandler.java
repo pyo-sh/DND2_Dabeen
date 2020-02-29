@@ -19,10 +19,13 @@ import com.dabeen.dnd.exception.FileSaveFailedException;
 import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.exception.NotYourselfException;
 import com.dabeen.dnd.exception.PasswordWrongException;
+import com.dabeen.dnd.exception.TokenInvaildException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -121,12 +124,19 @@ public class GlobalExceptionHandler {
         return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 
-    // MultipartFile로 받아야할 변수의 형식이 다를 경우
-    //@ExceptionHandler(HttpMessageConversionException.class)
-    //@ResponseStatus(HttpStatus.BAD_REQUEST)
-    //public Header<?> handlerHttpMessageConversionException(HttpMessageConversionException ex) {
-    //    return Header.ERROR(HttpStatus.BAD_REQUEST, "파일의 request 형식이 잘못되었습니다.");
-    //}
+    // 본인만 접근 가능한 api에서 본인이 접근하지 않은 경우
+    @ExceptionHandler(NotYourselfException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Header<?> handlerNotYourselfException(NotYourselfException ex) {
+        return Header.ERROR(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    // 본인만 접근 가능한 api에서 본인이 접근하지 않은 경우
+    @ExceptionHandler(TokenInvaildException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Header<?> handlerTokenInvaildException(TokenInvaildException ex) {
+        return Header.ERROR(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
 
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
     //@ExceptionHandler(RuntimeException.class)
