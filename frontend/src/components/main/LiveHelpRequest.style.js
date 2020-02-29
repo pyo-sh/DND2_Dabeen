@@ -1,5 +1,6 @@
 import Slick from "react-slick";
 import styled from "styled-components";
+import { Icon } from "antd"
 
 export const TestSlick = styled(Slick)`
   width: 85vw;
@@ -42,70 +43,96 @@ export const TestSlick = styled(Slick)`
    } 
 `;
 
-export const LiveHelpRequestContent = styled.div`
-  position: relative;
-  width : 95%;
-  border: solid 1px gray;
+export const LiveHelpRequestWrapper = styled.div`
+  margin: 15px;
   border-radius: 5px;
-  cursor: pointer;
-  transition : border 0.2s, box-shadow 0.3s ease-in-out;
-  &::after {
-    position: absolute;
-    width : 100%;
-    height : 100%;
-    z-index : -1;
-    top: 0;
-    left: 0;
-    content : "";
-    border-radius: 4px;
-    box-shadow: 0 5px 10px 0.5px #BFC7CE;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-  &:hover::after {
-    opacity: 1;
-  }
+  overflow: hidden;
 
-   & .liveHelpRequestUserInfo {
-    display: flex;
-    justify-content : flex-start;
-    align-items: center;
-    margin-top: -37px;
-    margin-bottom: 5px;
-    & > div {
-        display : flex;
-        align-items : center;
-        margin-top : 10px;
-        margin-left : 10px;
+  /* border: solid 1px #d0d0d0; */
+  border-radius: 5px;
+  box-shadow: 0 3.5px 10px 2px #E9E9E9;
+
+  cursor: pointer;
+
+  & .liveHelpRequestContent{
+    padding: 12.5px;
+
+    & .liveHelpRequestTitle{
+      font-size: 22px;
+      font-weight: bold;
+      height: 35px;
+    }
+    & .liveHelpRequestDeadline{
+      padding-top: 5px;
+      font-size: 15px;
     }
   }
-
-  & .liveHelpRequestID {
-    color: black;
-    margin-right: 8px;
+  & .liveHelpRequestTitle, .liveHelpRequestDeadline, .LiveHelpRequestLocationInfo{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-
-  & .liveHelpRequestNickname {
-    color: darkgray;
-    font-size: 11px;
+  &:hover{
+    box-shadow: 0 5px 10px 4px #BFC7CE;
   }
 `;
 
-export const LiveHelpRequestContentInfo = styled.div`
-  color: gray;
+export const LocationIcon = styled(Icon)`
+  color: #ff4300;
+  margin-right: 5px;
+`;
+
+export const LiveHelpRequestUpperDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width : 90%;
-
-  & > .titleDate {
+  height: 250px;
+  border-bottom: solid 1px #E9E9E9;
+  & .LiveHelpRequestLocation{
+    height: 31px;
+    align-self: flex-end;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    z-index: 0;
+    & .LiveHelpRequestLocationTriangle{
+      border-top: 15.5px solid white;
+      border-right: 15.5px solid white;
+      border-bottom: 15.5px solid transparent;
+      border-left: 15.5px solid transparent;
+      opacity: 0.9;
+    }
+    & .LiveHelpRequestLocationInfo{
+      min-width: 170px;
+      max-width: 300px;
+      background: white;
+      opacity: 0.9;
+      padding: 5px 10px 5px 0;
+    }
+  }
+  & .LiveHelpRequestImage{
+    width: 100%;
+    height: -webkit-calc(100% - 39px);
+    margin: -31px 0 -55px 0;
   }
 
-  & > .location {
-    border-top: solid 1px gray;
-    text-align: right;
+  & .LiveHelpRequestUserPicture{
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+  }
+  & .liveHelpRequestUserInfo{
+    display: flex;
+    align-items: flex-end;
+    text-align: start;
+    margin-top: -50px;
+    padding-left: 110px;
+    padding-bottom: 6px;
+  }
+  & .liveHelpRequestNickname{
+      font-size: 18px;
+      font-weight: bold;
+      /* height: 27px; */
+    }
+  & .liveHelpRequestID{
+    padding-left: 10px;
   }
 `;

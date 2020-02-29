@@ -28,46 +28,70 @@ export const MainForm = styled.div`
         text-align: center;
         padding : 24px;
     }
-    & .title {
+    & .LiveHelpRequestTitle, .MainDaBeenerProfileTitle{
         color: #424242;
         font-size : 48px;
-    }
-    @media only screen and (max-width: 425px){
-        & .title {
+        margin: 0;
+        text-align: center;
+        @media only screen and (max-width: 425px){
             font-size : 32px;
-        } 
+        }
+    }
+    padding-bottom: 3vw;
+
+    & .LiveHelpRequestWrapper{
+        width: 100%;
+        margin-top: 5vw;
+        padding: 20px;
+        box-shadow: 0 0px 5px 3px #BFC7CE;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    & .MainDaBeenerProfileWrapper{
+        width: 100%;
+        margin-top: 5vw;
+        padding: 30px;
+        /* box-shadow: 0 0px 5px 0.5px #BFC7CE; */
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 `;
 
 export const LiveHelpRequestMenuBar = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-direction : column;
-    align-items: center;
     width: 100vw;
-    margin-top: 5vh;
- 
-    @media only screen and (max-width: 425px) {
-        flex-direction : column;
-        align-items: center;
-    }
-    
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 
-    & .liveHelpRequestForm {
-        display: flex;
-        justify-content: space-around;
+    & .LiveHelpRequestForm {
         width: 20vw;
         min-width : 150px;
+        height: 45px;
+        margin-right: 50px;
+        margin-top: -45px;
 
-        @media only screen and (max-width: 425px){
-            margin-left: 1vw;
+        align-self: flex-end;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+
+        @media only screen and (max-width: 767px){
+            align-self: center;
+            margin: 0;
         }
     }
     & div[name=${props=> props.selectLiveMenu}] {
         color : #FF4300;
     }
 
-    & .liveHelpRequest {
+    & .LiveHelpRequest {
         /*선택시 색상 변경되게*/
         font-size: 30px;
         cursor: pointer;
@@ -78,10 +102,6 @@ export const LiveHelpRequestMenuBar = styled.div`
 
         @media only screen and (max-width: 1024px){
             font-size: 20px;
-        }
-
-        @media only screen and (max-width: 768px){
-            font-size: 18px;
         }
     }
 `;

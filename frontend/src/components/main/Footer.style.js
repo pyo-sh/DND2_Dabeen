@@ -22,10 +22,12 @@ export const FooterBox = styled.div`
         & :hover {
             color : #ff4300;
         }
+        @media only screen and (max-width: 400px){
+            padding: 0 4px;
+        }
     }
     & .FooterBoxWrapper{
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-evenly;
         align-items: center;
     }
@@ -39,10 +41,4 @@ export const FooterBox = styled.div`
         width: 15vw;
         font-size: 15px;
     }
-`;
-
-export const FooterCol = styled(Col)`
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
 `;

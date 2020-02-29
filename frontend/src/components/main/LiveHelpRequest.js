@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
-import { Divider, Avatar } from "antd";
+import { Divider } from "antd";
 import PostDetail from '../posts/PostDetail';
-import {TestSlick, LiveHelpRequestContent, LiveHelpRequestContentInfo} from './LiveHelpRequest.style';
+import { TestSlick, LiveHelpRequestWrapper, LocationIcon, LiveHelpRequestUpperDiv } from './LiveHelpRequest.style';
 import { useSelector } from 'react-redux';
 
 
@@ -82,25 +82,32 @@ const LiveHelpRequest = () => {
       {...setting}
     >
           {livePosts.map(help => (
-              <div key = {help.helpNum} className="liveHelpRequestFlex" onClick={onClickPost(help.helpNum)}>
-              <LiveHelpRequestContent>
-                {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
-                <Divider orientation="left" style={{ marginTop: "42%" }}/>
-                <div className="liveHelpRequestUserInfo">
-                  <Avatar size="large" icon="user" />
-                  <div>
-                    <div className="liveHelpRequestID">{help.userId}</div>
-                    <div className="liveHelpRequestNickname">@{help.nickname}</div>
+            <div key = {help.helpNum} className="liveHelpRequestFlex" onClick={onClickPost(help.helpNum)}>
+              <LiveHelpRequestWrapper>
+                <LiveHelpRequestUpperDiv>
+                  <div className="LiveHelpRequestLocation">
+                    <div className="LiveHelpRequestLocationTriangle"></div>
+                    <div className="LiveHelpRequestLocationInfo">
+                      <LocationIcon type="environment" />
+                      {help.location}
+                    </div>
                   </div>
+                  {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
+                  <img className="LiveHelpRequestImage" src={'/images/main2.jpg'}/>
+                  {/* <Divider orientation="left" style={{ marginTop: "42%" }}/> */}
+                  <Divider orientation="left">
+                    <img className="LiveHelpRequestUserPicture" src={'/images/main4.jpg'}/>
+                  </Divider>
+                  <div className="liveHelpRequestUserInfo">
+                    <div className="liveHelpRequestNickname">{help.nickname}</div>
+                    <div className="liveHelpRequestID">@{help.userId}</div>
+                  </div>
+                </LiveHelpRequestUpperDiv>
+                <div className="liveHelpRequestContent">
+                  <div className="liveHelpRequestTitle">{help.helpTitle}</div>
+                  <div className="liveHelpRequestDeadline">마감일 : {help.helpDeadline}</div>
                 </div>
-              </LiveHelpRequestContent>
-              <LiveHelpRequestContentInfo>
-                <div className="titleDate">
-                  <h3>{help.helpTitle}</h3>
-                  <div>{help.helpDeadline}</div>
-                </div>
-                <div className="location">{help.location}</div>
-              </LiveHelpRequestContentInfo>
+              </LiveHelpRequestWrapper>
             </div> 
           ))}
       </TestSlick>
