@@ -289,7 +289,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     }
 
     // 도움조회화면에서 사용될 조건에 따른 결과를 출력하기 위한 함수
-    public Header<Map<String,Object>> searchHelps(Map<String,Object> requestMap, Pageable pageable) throws Exception{
+    public Header<Map<String,Object>> searchHelps(Map<String,Object> requestMap, Pageable pageable){
 
         Map<String,Object> searchHelpsMap = new HashMap<>(); 
 
