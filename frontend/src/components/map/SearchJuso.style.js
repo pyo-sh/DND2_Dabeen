@@ -15,7 +15,27 @@ export const Search = styled.div`
         border-radius: 3px;
         }
     } */
-    & input {
+    & .SearchJusoInputAddress {
+        display: flex;
+        align-items: center;
+        padding: 20px 15px;
+        border-top: 1px solid #BFC7CE;
+        @media screen and (max-width:385px) {
+            padding: 20px 5px;
+        }
+
+        & input {
+            width: 72%;
+            flex : 1;
+            max-width: 300px;
+            min-width: 250px;
+            margin: 5px;
+            padding: 4px 30px 4px 11px;
+            border: 1px solid #BFC7CE;
+            border-radius: 3px;
+        }
+    }
+    & .ant-input {
         width: 100%;
         max-width: 300px;
         min-width: 140px;

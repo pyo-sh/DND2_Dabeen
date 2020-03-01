@@ -102,7 +102,7 @@ const LiveHelpRequest = () => {
                 </LiveHelpRequestUpperDiv>
                 <div className="liveHelpRequestContent">
                   <div className="liveHelpRequestTitle">{help.helpTitle}</div>
-                  <div className="liveHelpRequestDeadline">마감일 : {help.helpDeadline}</div>
+                  <div className="liveHelpRequestDeadline">마감일 : {help.helpDeadLine.split('T')[0]}</div>
                 </div>
               </LiveHelpRequestWrapper>
             </div> 

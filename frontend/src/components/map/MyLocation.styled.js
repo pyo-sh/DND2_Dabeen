@@ -9,5 +9,7 @@ export const MarkImage = styled.img`
 
 export const Map = styled.div`
     width: 100%;
+    max-width: 680px;
+    min-width: 250px;
     height: 200px;
 `;

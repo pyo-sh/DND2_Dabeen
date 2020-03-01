@@ -90,6 +90,21 @@ export const Title = styled.div`
         }
     }
 `;
+export const HelpPic = styled.div`
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 3px #E9E9E9;
+
+    & .PostDetailImage{
+        width: 100%;
+        max-width: 680px;
+        height: 45vw;
+        max-height: 300px;
+    }
+`;
 
 export const DetailSlick = styled(Slick)`
     width: 100%;

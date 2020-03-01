@@ -5,22 +5,23 @@ export const initialState = {
   livePosts : [],
   isUserResult : false,
 
-  helpPosts : [{
-    helpNum: "20200228", // 도움번호
-    userNum: "2002290004",
-    helpPostDate: "2020-02-28T10:12:12", // 도움게시일시
-    helpTitle: "학교 대신 가주세요",  //도움제목
-    categoryNum: "1000", // 카테고리번호
-    price: 30000, // 금액
-    helpContent: "학교 가기싫어영 대신 가줘요오오옹", // 내용
-    helpDeadLine: "2020-02-29T10:12:12", // 도움신청마감일시
-    isHelpApprove: 'n', // 도움승인여부
-    helpEndTime: "9999-12-31T23:59:59",
-    postNum: 1, // 선호공급자수
-    helpExecDate: "2020-03-16T09:00:00", // 선호도움이행일시
-    execLoc: "부산 남구 용소로 45", // 이행장소
-    payment: "n"
-  }],
+  helpPosts : [//{
+  //   helpNum: "20200228", // 도움번호
+  //   userNum: "2002290004",
+  //   helpPostDate: "2020-02-28T10:12:12", // 도움게시일시
+  //   helpTitle: "학교 대신 가주세요",  //도움제목
+  //   categoryNum: "1000", // 카테고리번호
+  //   price: 30000, // 금액
+  //   helpContent: "학교 가기싫어영 대신 가줘요오오옹", // 내용
+  //   helpDeadLine: "2020-02-29T10:12:12", // 도움신청마감일시
+  //   isHelpApprove: 'n', // 도움승인여부
+  //   helpEndTime: "9999-12-31T23:59:59",
+  //   postNum: 1, // 선호공급자수
+  //   helpExecDate: "2020-03-16T09:00:00", // 선호도움이행일시
+  //   execLoc: "부산 남구 용소로 45", // 이행장소
+  //   payment: "n"
+  // }
+  ],
   helpImages: [], //  도움 사진 첨부
   totalPages: 1,
   helpsPerPage: 0,
@@ -149,21 +150,21 @@ const reducer = (state = initialState, action) => {
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
           categoryNum: post.cat_num, // 카테고리번호
           price: post.price, // 금액
-          content: post.cont, // 내용
-          userNum: post.user_num,// 수요자번호
-          userName: post.user_name, // 사용자명
-          address: post.address, // 주소
-          phoneNumber: post.phone_num, // 휴대폰번호
-          userId: post.user_id, // 아이디
-          email: post.email, // 이메일
-          nickname: post.nickname, // 닉네임
-          picPath: post.pic_path, // 사진경로명
+          helpContent: post.cont, // 내용
+          userNum: post.cnsr_user.user_num,// 수요자번호
+          userName: post.cnsr_user.user_name, // 사용자명
+          address: post.cnsr_user.address, // 주소
+          phoneNumber: post.cnsr_user.phone_num, // 휴대폰번호
+          userId: post.cnsr_user.user_id, // 아이디
+          email: post.cnsr_user.email, // 이메일
+          nickname: post.cnsr_user.nickname, // 닉네임
+          picPath: post.cnsr_user.pic_path, // 프로필사진경로명
           helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
           isHelpApprove: post.help_aprv_whet, // 도움승인여부
           postNum: post.pref_suppl_num, // 선호공급자수
           helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          location: post.exec_loc, // 이행장소
-          helpPicList: '' // 도움사진목록,
+          execLoc: post.exec_loc, // 이행장소
+          helpPicList: post.help_pics // 도움사진목록,
         }));
         draft.totalHelps = action.data.page.total_datas;
         draft.totalPages = action.data.page.total_pages;
@@ -198,7 +199,8 @@ const reducer = (state = initialState, action) => {
           postNum: action.data.pref_suppl_num, // 선호공급자수
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
           execLoc: action.data.exec_loc, // 이행장소
-          payment: action.data.pymt_whet
+          payment: action.data.pymt_whet, //결제 여부
+          helpPicList: action.data.help_pics//도움 사진 리스트
         });
         // draft.maxId += 1;
         draft.helpPostAdded = true;

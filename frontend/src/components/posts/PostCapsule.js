@@ -35,8 +35,8 @@ const PostCapsule = ({ data }) => {
               <img className="CapsuleMainPicture" src={'/images/main4.jpg'}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
-              <div className="CapsuleMainNickname">아이언맨{data.nickname}</div>
-              <div className="CapsuleMainId">@순두부{data.id}</div>
+              <div className="CapsuleMainNickname">{data.nickname}</div>
+              <div className="CapsuleMainId">@{data.userId}</div>
             </div>
           </div>
         </div>

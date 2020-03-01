@@ -6,7 +6,7 @@ import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import moment from 'moment';
 import SearchJuso from '../map/SearchJuso';
-import { Modal, Icons, Content, Title, DetailSlick, slickSetting, ApplyCheck, EditTitle, Edit, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
+import { Modal, Icons, Content, Title, HelpPic, DetailSlick, slickSetting, ApplyCheck, EditTitle, Edit, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
 import { updateHelpPostRequestAction, removeHelpPostRequestAction } from '../../reducers/posts';
 import { getCookie } from '../../utils/cookieFunction';
 
@@ -15,6 +15,7 @@ const PostDetail = ({setVisible, data}) => {
     const helpDeadline = data.helpDeadLine.split('T');  // helpDeadline[0]=날짜 / helpDeadline[1]=시간
     const helpExecHour = parseInt(helpExec[1].substring(0,2));
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
+    const imagesURL = data.helpPicList.map(pic => pic.path);    //path만 따로 배열에 저장
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
@@ -26,11 +27,15 @@ const PostDetail = ({setVisible, data}) => {
     const [editPrice, setEditPrice] = inputChangeHook(data.price);  //수정할 금액
     const [editExecLoc, setEditExecLoc] = useState(data.execLoc);  //수정할 주소
     const [editContent, setEditContent] = inputChangeHook(data.helpContent);    //수정할 요구사항
+    const [editImages, setEditImages] = useState(imagesURL);       //도움 이미지
+    const [editImgPaths, setEditImgPaths] = useState(data.helpPicList);   //Request에 보낼 이미지
     const {me} = useSelector(state => state.user);  //내 정보
     const dispatch = useDispatch();
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
     console.dir(data);
+
+    console.log(imagesURL);
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -113,6 +118,7 @@ const PostDetail = ({setVisible, data}) => {
         dispatch(removeHelpPostRequestAction({helpNum: id, cookie : getCookie()}));
     }, []);
 
+    console.log(data.userNum)
     return (
         <Modal>
         <div>
@@ -160,8 +166,7 @@ const PostDetail = ({setVisible, data}) => {
                     </div>
                     <div className="PostTitleDetailBtn">
                         {
-                            // data.userNum === me.userNum && (
-                                (
+                            data.userNum === me.userNum && (
                             !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                             : 
                             <Popconfirm
@@ -183,12 +188,26 @@ const PostDetail = ({setVisible, data}) => {
                     </div>
                 </div>
             </Title>
+            {imagesURL.length === 0 ?
             <DetailSlick {...slickSetting}>
-                <img className="PostDetailImage" src={'/images/main1.jpg'}/>
-                <img className="PostDetailImage" src={'/images/main2.jpg'}/>
-                <img className="PostDetailImage" src={'/images/main3.jpg'}/>
-                <img className="PostDetailImage" src={'/images/main4.jpg'}/>
+            <img className="PostDetailImage" src={'/images/main1.jpg'}/>
+            <img className="PostDetailImage" src={'/images/main2.jpg'}/>
+            <img className="PostDetailImage" src={'/images/main3.jpg'}/>
+            <img className="PostDetailImage" src={'/images/main4.jpg'}/>
             </DetailSlick>
+            :
+            imagesURL.length === 1 ?
+                <HelpPic>
+                <img className="PostDetailImage" src={imagesURL} />
+                </HelpPic>
+                :
+                <DetailSlick {...slickSetting}>
+                {imagesURL.map((url, i) => {
+                    <img className="PostDetailImage" src={url} key={url}/>
+                })}
+                </DetailSlick>
+            }
+            
             <ApplicationInfo>
                 <div className="ApplicationInfoBoxWrapper">
                     <ApplicationInfoBox>
