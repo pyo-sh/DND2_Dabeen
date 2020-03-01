@@ -34,7 +34,7 @@ export const PaymentModal = styled(Modal)`
         margin-left : 5px;
         background: #ff4300;
         color : white;
-        transition : background 0.3s;
+        transition : 0.3s;
         &:hover, :focus {
           outline: none;
           background: rgba(255,67,0,0.8);
@@ -43,5 +43,9 @@ export const PaymentModal = styled(Modal)`
     }
     & .bankInfo {
       display : flex;
+      align-items : center;
+      & input {
+          height : 38px;
+      }
     }
 `;

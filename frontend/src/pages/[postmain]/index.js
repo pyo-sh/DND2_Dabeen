@@ -6,14 +6,40 @@ import PostList from "../../components/posts/PostList";
 import PostWrite from "../../components/posts/PostWrite";
 import PostSearch from "../../components/posts/PostSearch";
 import { loadHelpPostRequestAction } from "../../reducers/posts";
-
+import inputChangeHook from '../../hooks/inputChangeHook';
 import { Pagination } from 'antd';
 import { useSelector } from 'react-redux';
 
 const Postmain = ({categoryNum, search}) => {
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
   const [tryLogin, setTryLogin] = useState(false);
-  const { totalPages, totalHelps, me } = useSelector(state => (state.posts, state.user));
+  const { totalPages, totalHelps } = useSelector(state => state.posts);
+  const { me } = useSelector(state => state.user);
+
+  const [helpLocation, setHelpLocation] = useState(""); // 게시글의 위치 검색
+  const [helpApplyDate, setHelpApplyDate] = useState(""); // 게시글 신청 마감 일시 날짜
+  const [helpApplyTime, setHelpApplyTime] = useState(""); // 게시글 신청 마감 일시 시간
+  const [helpExecDate, setHelpExecDate] = useState(""); // 도움 수행 일시 날짜
+  const [helpExecTime, setHelpExecTime] = useState(""); // 도움 수행 일시 시간
+  const [minPrice, onChangeMinPrice] = inputChangeHook(""); // 최소가격 값
+  const [maxPrice, onChangeMaxPrice] = inputChangeHook(""); // 가격 값
+  // const [helpPriceRange, setHelpPriceRange] = useState(); // 게시글 가격 범위
+  const [helpKeyword, onChangeHelpKeyword] = inputChangeHook('');
+
+    // 지역 검색 Input 이 바뀔 때 마다 실행하는 함수
+  const onChangeLocation = useCallback(e => {
+    const targetString = e.target.value; // Input창의 value 값
+    let deleteString = targetString.replace(/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g, ""); // 한글
+    deleteString = deleteString.replace(/[a-z|A-Z]/g, ""); // 영어
+    deleteString = deleteString.replace(/(\s)/g, ""); // 공백
+    // deleteString = deleteString.replace(/[0-9]/g, "");   // 숫자
+    if (!deleteString) setHelpLocation(e.target.value);
+  }, []);
+  
+    // [신청 마감 일시 / 도움 수행 일시] [DatePicker / TimePicker] 가 바뀔 때 마다 실행하는 함수
+  const onChangeHelpClock = useCallback(setStateFunc => (moment, string) => {
+    setStateFunc(string);
+  }, []);
   
   // 카테고리 정한것을 바꿨을 때, postWrite이 보이는 상태이면 다시 Modal창을 닫아야함
   useEffect(() => {
@@ -30,9 +56,11 @@ const Postmain = ({categoryNum, search}) => {
     setTryLogin(prev => !prev);
   }, []);
 
-  const onChangePage = useCallback((page) => {
-    loadHelpPostRequestAction({page, search, categoryNum});
-  }, [search, categoryNum]);
+  const onChangePage = useCallback((page=1) => {
+    loadHelpPostRequestAction({page, search, categoryNum, helpLocation,
+       helpApplyDate : helpApplyDate.concat('T' + helpApplyTime), helpExecDate : helpExecDate.concat('T' +helpExecTime ),
+       minPrice, maxPrice, helpKeyword });
+  }, [search, categoryNum, helpLocation, helpApplyDate, helpApplyTime,helpExecDate, helpExecTime, minPrice, maxPrice, helpKeyword]);
 
   //글쓰기 버튼 눌렀을 경우
   const onClickPostWrite = useCallback(()=>{
@@ -77,9 +105,20 @@ const Postmain = ({categoryNum, search}) => {
           <div className="postmainTitleMain">{getTitle().mainTitle}</div>
           <div className="postmainTitleSub">{getTitle().subTitle}</div>
         </div>
-        <PostSearch categoryNum={categoryNum} />
+        <PostSearch categoryNum={categoryNum} setHelpApplyDate={setHelpApplyDate}
+          setHelpApplyTime={setHelpApplyTime}
+          setHelpExecDate={setHelpExecDate} 
+          setHelpExecTime={setHelpExecDate}
+          minPrice={minPrice} onChangeMinPrice={onChangeMinPrice}
+          maxPrice={maxPrice} onChangeMaxPrice={onChangeMaxPrice}
+          helpKeyword={helpKeyword} onChangeHelpKeyword={onChangeHelpKeyword}
+          onChangeHelpClock={onChangeHelpClock}
+          helpLocation={helpLocation}
+          onChangeLocation={onChangeLocation}
+          onChangePage={onChangePage}
+        />
         <div className="postmainContent">
-          <div className='helpCount'>검색 된 도움 수 : {totalHelps}</div>
+          <div className='helpCount'>검색 된 도움 수 : {totalHelps || 0}</div>
           <PostList categoryNum={categoryNum} />
         </div>
         <div

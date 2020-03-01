@@ -39,7 +39,8 @@ const Header = ({asPath}) => {
   }, []);
 
   const onSearch = useCallback(() => {
-    Router.push(`/${searchSubject}?search=${search}`);
+    // Router.push(`/${searchSubject}?search=${search}`);
+    Router.push('/[postmain]',`/${searchSubject}?search=${search}`);
   }, [search, searchSubject]);
 
   useEffect(() => { // asPath에 따라서 header 부분 색 바뀌게
@@ -73,7 +74,7 @@ const Header = ({asPath}) => {
           style={{ color: "#FF4300" }}
         />
       </span>
-      <div className="menuLeft">
+      <nav className="menuLeft">
         <Link href="/">
           <a onClick={useCallback(() => setSelected("/"), [])}>
             <img width="150px" src="/images/logo.svg" alt="다빈로고" />
@@ -100,15 +101,13 @@ const Header = ({asPath}) => {
               <option value="rental">대여</option>
               <option value="chores">잡일</option>
             </select>
-            <Input.Search
-              className="HeaderSearchInput"
-              placeholder="어떤 도움을 찾으시나요?"
-              onSearch={onSearch}
-              value={search}
-              onChange={onChangeSearch} />
+            <div className="HeaderSearchInput">
+              <input placeholder="어떤 도움을 찾으시나요?" value={search} onChange={onChangeSearch} />
+              <Icon type="search" onClick={onSearch}/>
+            </div>
             </Input.Group>
-      </div>
-      <div className="menuRight" ref={divRef}>
+      </nav>
+      <nav className="menuRight" ref={divRef}>
         <ul>
           <li>
             <Link href="/[postmain]" as="/errand">
@@ -188,7 +187,7 @@ const Header = ({asPath}) => {
             </>
           )}
         </div>
-      </div>
+      </nav>
       {tryLogin && <Login clickLogin={clickLogin} />}
     </Menubar>
   );

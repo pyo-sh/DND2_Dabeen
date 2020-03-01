@@ -32,7 +32,7 @@ const Payment = ({showPayment, clickPayment, allPrice, selectHelps}) => {
             title="결제"
             onOk = {onOk}
             footer={[ <div className="btnBox">
-           <Button className='cancel' onClick={clickPayment}>취소</Button>,<Button className='pay' onClick={onOk}>결제</Button>
+           <Button className='cancel' onClick={clickPayment}>취소</Button><Button className='pay' onClick={onOk}>결제</Button>
             </div>]}
         >
             <div className="bankInfo">

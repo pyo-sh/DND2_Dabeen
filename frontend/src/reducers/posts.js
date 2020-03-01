@@ -143,8 +143,7 @@ const reducer = (state = initialState, action) => {
       }
       case LOAD_HELPPOST_SUCCESS: {
         draft.isLoadingHelpPost = false; // 뭐 여러개의 포스트를 불러와서 넣을거임
-        draft.helpPosts = dummyHelpPost2.helpPosts; // 일단 더미를 준다!
-        draft.helpPosts = action.data.map(post => ({
+        draft.helpPosts = action.data.helps.map(post => ({
           helpNum: post.help_num, // 도움번호
           helpTitle: post.title,  // 도움이름
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
@@ -166,9 +165,9 @@ const reducer = (state = initialState, action) => {
           location: post.exec_loc, // 이행장소
           helpPicList: '' // 도움사진목록,
         }));
-        draft.totalHelps = action.data.total_helps;
-        draft.totalPages = action.data.total_pages;
-        draft.helpsPerPage = action.data.helps_per_page;
+        draft.totalHelps = action.data.page.total_datas;
+        draft.totalPages = action.data.page.total_pages;
+        draft.helpsPerPage = action.data.page.page_per_datas;
         draft.helpPostLoaded = true; // 추가 다 됨.
         break;
       }
