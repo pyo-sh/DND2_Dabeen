@@ -45,12 +45,12 @@ public class Post{
 
     /* 연관관계 설정 */
     @ManyToOne
-    @JoinColumn(name = "pstner_num", insertable=false, updatable=false)
+    @JoinColumn(name = "quester_num")
      // 중복 매핑이므로. mybatis를 이용하여 insert 하기때문에 문제 없음
     private User quester;
 
     @ManyToOne
-    @JoinColumn(name = "pstner_num", insertable=false, updatable=false)
+    @JoinColumn(name = "rplyer_num")
     private Admin rplyer;
 
     @OneToOne

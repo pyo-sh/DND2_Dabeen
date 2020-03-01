@@ -13,11 +13,11 @@ import javax.transaction.Transactional;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
 import com.dabeen.dnd.model.entity.Post;
+import com.dabeen.dnd.model.enumclass.PostType;
+import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.PostApiRequest;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
-import com.dabeen.dnd.repository.AdminRepository;
-import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.PostMapper;
 import com.dabeen.dnd.service.BaseService;
 
@@ -42,11 +42,14 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         Map<String, Object> postMap = new HashMap<>();
 
         postMap.put("postNum", null);
-        postMap.put("pstnerNum", requestData.getPstnerNum());
         postMap.put("postType", requestData.getPostType());
         postMap.put("title", requestData.getTitle());
         postMap.put("cont", requestData.getCont());
         postMap.put("questPostNum", requestData.getQuestPostNum());
+
+        if(requestData.getPostType() == PostType.q)
+            postMap.put("questerNum", requestData.getPstnerNum());
+        else  postMap.put("rplyerNum", requestData.getPstnerNum());
 
         postMapper.insert(postMap);
         
@@ -56,7 +59,6 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
 
     @Override
     public Header<PostApiResponse> read(String num) {
-        log.info("{}", num );
         Optional<Post> optional = baseRepository.findById(num);
 
         return  optional.map(this::response)
@@ -69,7 +71,6 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         PostApiRequest requestData = request.getData();
 
         Optional<Post> optional = baseRepository.findById(requestData.getPostNum());
-        log.info("{}", optional);
   
         return optional.map(post -> {
                     // 제목, 내용 외 수정 불가. 수정하려고 할 시 에러 호출
@@ -123,7 +124,6 @@ public class PostApiService extends BaseService<PostApiRequest, PostApiResponse,
         if(!requestData.getPstnDttm().equals(post.getPstnDttm()))
             throw new NotUpdateableException("questPstnDttm");
        
-
         // 질문자
         if(!requestData.getPstnerNum().equals(post.getQuester().getUserNum()) 
             || !requestData.getPstnerNum().equals(post.getRplyer().getAdminNum()))
