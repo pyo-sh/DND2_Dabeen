@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             // 반드시 로그인 해야
             .antMatchers("/api/pic/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/mileage-use-hist/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers("/api/bskt-comp").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/pymt/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/bskt/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/post/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
@@ -59,7 +60,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/api/msg/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/user/*/quests").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/help/*/no-payment-helps").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.POST, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.PUT, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.POST, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/user").hasAnyRole("USER", "SUPPLER", "ADMIN")
