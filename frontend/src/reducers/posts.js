@@ -167,7 +167,7 @@ const reducer = (state = initialState, action) => {
         }));
         draft.totalHelps = action.data.page.total_datas;
         draft.totalPages = action.data.page.total_pages;
-        draft.helpsPerPage = action.data.page.page_per_datas;
+        draft.helpsPerPage = action.data.page.data_per_page;
         draft.helpPostLoaded = true; // 추가 다 됨.
         break;
       }

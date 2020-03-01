@@ -3,6 +3,7 @@ import { Divider } from "antd";
 import PostDetail from '../posts/PostDetail';
 import { TestSlick, LiveHelpRequestWrapper, LocationIcon, LiveHelpRequestUpperDiv } from './LiveHelpRequest.style';
 import { useSelector } from 'react-redux';
+import SkeletonCapsule from '../posts/SkeletonCapsule';
 
 
 function SampleNextArrow(props) { // 우 화살표
