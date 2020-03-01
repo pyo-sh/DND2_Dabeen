@@ -9,6 +9,7 @@ import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
 import { getCookie } from '../../utils/cookieFunction';
 import MyLocation from '../map/MyLocation';
+import axios from 'axios';
 
 const categorys = {
     "심부름": "1000",
@@ -28,22 +29,25 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [location, setLocation] = useState('');   //이행위치
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
-    // const {imagePaths} = useSelector(state => state.posts);
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
 
-    // const onClose = useCallback(async() => {
-    //     try{
-    //         const url = images[0];
-    //         await axios.post('/pic/delete', "help/20200228/55a61596-17ff-4f59-bacd-d3de3022a661_1516799552217.jpg");
-    //         // console.log(result);
-    //         setImages([]);
-    //     }catch(e){
-    //         console.log(e.response);
-    //     }
-    //     setInvisible();
-    // }, []);
+    //만약 사진 업로드 한 채로 글쓰기 창 닫으면 사진도 같이 삭제되게 한다. 
+    const onClose = useCallback((images) => () =>{
+        if(images.length !== 0) {
+            console.log(images)
+            const imageFormData = new FormData();
+            imageFormData.append('url', images[0]);
+            try{
+                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+                setImages([]);
+            }catch(e){
+                console.log(e.response);
+            }
+        }
+        setInvisible();
+    }, []);
 
     const getCategory = useCallback(category => {
         setCategory(categorys[category]);
@@ -52,10 +56,6 @@ const PostWrite = ({setInvisible, userNum}) => {
     const onChangeHelpPicker = setStateFunc =>
     useCallback((moment, string) => {
       setStateFunc(string);
-    }, []);
-
-    const getLocation = useCallback((fullAddress) => {
-        setLocation(fullAddress);
     }, []);
     
     //게시글 업로드
@@ -83,19 +83,24 @@ const PostWrite = ({setInvisible, userNum}) => {
         // }));
     }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
 
-    // console.log(time.format('YYYYMMDD'))
-    // console.log(images[0].split('/')[6])
+   
     //이미지 삭제
-    // const deleteImage = useCallback(key => e =>{
-    //     setUrls(urls.filter(url => url.key !== key));
-    //     setImages(images.filter(image => image.key !== key));
-    // }, [urls, images]);
+    const deleteImage = useCallback((url) => () => {
+        const imageFormData = new FormData();
+        imageFormData.append('url', url);
+        try{
+            axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setImages([]);
+        }catch(e){
+            console.log(e.response);
+        }
+    }, []);
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
         // console.log(e.target.files[0]);
         imageFormData.append('pic', e.target.files[0]);
-        // console.log(imageFormData.get('pic'));
+        console.log(imageFormData.get('pic'));
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
@@ -115,7 +120,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setInvisible} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
+                        <Icon onClick={onClose(images)} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <PostSettingBox>
@@ -149,7 +154,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                     </PostSetting>
                     <ContentItem>
                         <div>위치</div>  
-                        <SearchJuso location={location} getLocation={getLocation}/>
+                        <SearchJuso location={location} setLocation={setLocation}/>
                         <MyLocation myLocation={location} />
                     </ContentItem>
                     <ContentItem>
@@ -170,7 +175,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                                     {images.map((v, i) => {
                                         return (
                                         <div key={v} className="imgBorder"> 
-                                        <div className="deleteIcon">
+                                        <div className="deleteIcon" onClick={deleteImage(v)}>
                                             <Icon type="close" />
                                         </div>
                                         <img src={v} alt={v} width="90" height="90"/> 

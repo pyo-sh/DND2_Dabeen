@@ -33,9 +33,8 @@ const PostDetail = ({setVisible, data}) => {
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
 
-    // console.log(helpDeadline[1].substring(0,5))
+    //AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
-        console.log(hour, time)
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
         else {
             if(hour == 12) return <div>PM{time.substring(0, 5)}</div>
@@ -46,18 +45,19 @@ const PostDetail = ({setVisible, data}) => {
         }
     }, []);
 
+    //수정 취소 눌렀을 경우
     const backPost = useCallback(() => {
         setEdit(prev => !prev);
         setEditTitle(data.helpTitle);
         setEditHelpExecDate(helpExec[0]);
         setEditHelpExecTime(helpExec[1]);
-        setEditHelpDeadLineDate(helpExec[0]);
+        setEditHelpDeadLineDate(helpDeadline[0]);
         setEditHelpDeadLineTime(helpDeadline[1]);
         setEditNeedPersonnel(data.postNum);
         setEditPrice(data.price);
         setEditExecLoc(data.execLoc);
         setEditContent(data.helpContent);
-    }, []);
+    }, [helpExec, helpDeadline]);
     
     //신청 다비너 창 여닫을떄
     const onModal = useCallback(() => {
