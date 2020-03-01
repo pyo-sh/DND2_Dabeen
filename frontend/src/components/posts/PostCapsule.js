@@ -26,7 +26,7 @@ const PostCapsule = ({ data }) => {
             <div className="CapsuleMainLocationTriangle"></div>
             <div className="CapsuleMainLocationInfo">
               <LocationIcon type="environment" />
-              {data.execLoc} 부산광역시 남구 대연동
+              {data.execLoc}
             </div>
           </div>
           <img className="CapsuleMainImage" src={'/images/main2.jpg'}/>
