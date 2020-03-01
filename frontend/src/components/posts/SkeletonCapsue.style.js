@@ -1,15 +1,10 @@
 import styled from 'styled-components';
-import {Icon} from 'antd';
-
-export const LocationIcon = styled(Icon)`
-  color: #ff4300;
-`;
 
 export const PostCapsuleUpperDiv = styled.div`
   width: 100%;
   max-width: 500px;
   min-width: 300px;
-  
+  /* margin-top : 15px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,27 +22,26 @@ export const PostCapsuleUpperDiv = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
-    & :hover {
-      /* border: solid 1px #ff4300; */
-      box-shadow: 0 5px 10px 5px #E9E9E9;
-    }
     & .CapsuleMainLocation {
       height: 31px;
       align-self: flex-end;
       display: flex;
       z-index: 0;
-      /* border-radius: 15px; */
-      color: #424242;
+      color: #F2F2F2;
+      animation : shining 1s ease-in-out infinite;
       & .CapsuleMainLocationTriangle{
-        border-top: 15.5px solid white;
-        border-right: 15.5px solid white;
+        border-top: 15.5px solid #F2F2F2;
+        border-right: 15.5px solid #F2F2F2;
         border-bottom: 15.5px solid transparent;
         border-left: 15.5px solid transparent;
         opacity: 0.9;
+        animation : shining 1s ease-in-out infinite;
       }
       & .CapsuleMainLocationInfo{
         width: 170px;
-        background: white;
+        height : 31px;
+        background: #F2F2F2;
+        animation : shining 1s ease-in-out infinite;
         opacity: 0.9;
         padding: 5px 10px 5px 0;
       }
@@ -56,6 +50,7 @@ export const PostCapsuleUpperDiv = styled.div`
       width: 100%;
       height: -webkit-calc(100% - 39px);
       margin: -31px 0 -56px 0;
+      background : #E6E6E6;
     }
     & .CapsuleMainProfile {
       z-index: 0;
@@ -63,6 +58,8 @@ export const PostCapsuleUpperDiv = styled.div`
         width: 80px;
         height: 80px;
         border-radius: 50%;
+        background : #DDDDDD;
+        animation : shining 1s ease-in-out infinite;
       }
       & .CapsuleMainUserInfo {
         display: flex;
@@ -72,20 +69,22 @@ export const PostCapsuleUpperDiv = styled.div`
         padding-left: 110px;
         padding-bottom: 6px;
         & .CapsuleMainNickname {
-          font-size: 18px;
           height: 27px;
+          width: 50px;
+          margin-right : 5px;
+          background : #F2F2F2;
+          border-radius : 4px;
+          animation : shining 1s ease-in-out infinite;
         }
         & .CapsuleMainId {
-          padding-left: 10px;
+          height: 22px;
+          width: 65px;
+          background : #F2F2F2;
+          border-radius : 4px;
+          animation : shining 1s ease-in-out infinite;
         }
       }
     }
-  }
-
-  & .CapsuleTitleMain, .CapsuleMainLocationInfo{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 `;
 
@@ -93,7 +92,7 @@ export const CapsuleTitleWrapper = styled.div`
   width: 100%;
   padding: 20px 10px 15px 15px;
   margin-top: -10px;
-
+  height : 119px;
   border-radius: 5px;
   box-shadow: 0 3px 10px 2px #E9E9E9;
   & .CapsuleTitle {
@@ -102,25 +101,41 @@ export const CapsuleTitleWrapper = styled.div`
     justify-content: space-between;
     align-items: flex-end;
     & .CapsuleTitleMain {
-      font-size: 25px;
       margin: 0px;
+      width : 100px;
+      height : 20px;
+      background : #F2F2F2;
+      border-radius : 4px;
+      animation : shining 1s ease-in-out infinite;
     }
-    & .CapsuleTitleCheck {
+  }
+  & .CapsuleTitleCheck {
       min-width: 60px;
       height: 25px;
       padding: 2px;
-      border-radius: 10px;
       margin: 10px 10px 2px 10px;
-
-      font-size: 14px;
-      text-align: center;
-
-      color: ${props => (props.setcolor === "true" ? "#7A7A7A" : "white")};
-      background: ${props =>
-        props.setcolor === "false" ? "#F0F0F0" : "#FF4300"};
-    }
+      border-radius: 10px;
+      background:#F2F2F2;
+      animation : shining 1s ease-in-out infinite;
   }
-  & .CapsuleFinishTime{
-    padding-top: 5px;
+  & .CapsuleFinishTime, .CapsuleDoingTime{
+    margin-top : 10px;
+    width : 150px;
+    height : 20px;
+    background : #F2F2F2;
+    border-radius : 4px;
+    animation : shining 1s ease-in-out infinite;
+  }
+
+  @keyframes shining {
+      0% {
+          opacity : 0.7;
+      }
+      50% {
+          opacity : 1;
+      }
+      100% {
+          opacity : 0.7;
+      }
   }
 `;

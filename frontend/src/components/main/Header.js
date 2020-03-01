@@ -40,7 +40,7 @@ const Header = ({asPath}) => {
 
   const onSearch = useCallback(() => {
     // Router.push(`/${searchSubject}?search=${search}`);
-    Router.push('/[postmain]',`/${searchSubject}?search=${search}`);
+    Router.push(`/[postmain]?search=${search}`,`/${searchSubject}?search=${search}`);
   }, [search, searchSubject]);
 
   useEffect(() => { // asPath에 따라서 header 부분 색 바뀌게

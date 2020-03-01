@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Input, DatePicker, TimePicker, Select, Button, Row, Col } from "antd";
-import inputChangeHook from '../../hooks/inputChangeHook';
 import {PostSearchUpperDiv, PostSearchBox} from './PostSearch.style';
-import { loadHelpPostRequestAction } from '../../reducers/posts';
 
 const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate, 
   setHelpApplyTime, setHelpExecDate, setHelpExecTime, 
   minPrice,  onChangeMinPrice, maxPrice, onChangeMaxPrice, helpKeyword, onChangeHelpKeyword,
   onChangeHelpClock, onChangePage }) => {
   
+    const clickSearch = () => {
+      onChangePage();
+    };
 
   // // 가격대 검색 Input이 바뀔 때 마다 실행하는 함수
   // const onChangePrice = useCallback(e => {
@@ -41,13 +42,13 @@ const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate,
             <div className="postsearchboxGetData">
               <DatePicker
                 className="postsearchboxDatePicker"
-                format="YYYY/MM/DD"
+                format="YYYY-MM-DD"
                 onChange={onChangeHelpClock(setHelpApplyDate)}
               />
               <TimePicker
                 className="postsearchboxTimePicker"
                 use12Hours
-                format="h:mm a"
+                format="HH:mm:ss"
                 onChange={onChangeHelpClock(setHelpApplyTime)}
               />
             </div>
@@ -57,13 +58,13 @@ const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate,
             <div className="postsearchboxGetData">
               <DatePicker
                 className="postsearchboxDatePicker"
-                format="YYYY/MM/DD"
+                format="YYYY-MM-DD"
                 onChange={onChangeHelpClock(setHelpExecDate)}
               />
               <TimePicker
                 className="postsearchboxTimePicker"
                 use12Hours
-                format="h:mm a"
+                format="HH:mm:ss"
                 onChange={onChangeHelpClock(setHelpExecTime)}
               />
             </div>
@@ -93,7 +94,7 @@ const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate,
           </PostSearchBox>
         </Col>
         <Col xs={24} sm={3} className="postsearchboxButtonWrapper">
-          <Button className="postsearchboxButton" onClick={onChangePage}>검색</Button>
+          <Button className="postsearchboxButton" onClick={clickSearch}>검색</Button>
         </Col>
       </Row>
     </PostSearchUpperDiv>

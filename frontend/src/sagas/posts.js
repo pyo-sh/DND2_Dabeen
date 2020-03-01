@@ -117,9 +117,9 @@ function* watchRemoveHelpPost() {
 };
 
 function loadHelpPostAPI(data) {
-    return axios.get(`/help/search-helps/${data.categoryNum}?page=${data.page}${data.helpKeyword ? `&title=${encodeURIComponent(data.helpKeyword)}` : data.search ? `&title=${encodeURIComponent(data.search)}` : ""}
-    ${data.helpExecDate ? `&pref_help_exec_dttm=${data.helpExecDate}` : ""}${data.helpApplyDate ? `&help_aply_cls_dttm=${data.helpApplyDate}` : ""}
-    ${data.minPrice ? `&price_begin=${data.minPrice}` : ""}${data.maxPrice ? `&price_end=${data.maxPrice}` : ""}`);
+    const title = data.helpKeyword ? data.helpKeyword : data.search ? data.search : "";
+    return axios.get(`/help/search-helps/${data.categoryNum}?page=${data.page-1}${data.helpExecDate ? `&pref_help_exec_dttm=${data.helpExecDate}` : ""}${data.helpApplyDate ? `&help_aply_cls_dttm=${data.helpApplyDate}` : ""}
+    ${data.minPrice ? `&price_begin=${data.minPrice}` : ""}${data.maxPrice ? `&price_end=${data.maxPrice}` : ""}${title ? `&title=${encodeURIComponent(title)}` : ""}${data.helpLocation ? `&exec_loc=${encodeURIComponent(data.helpLocation)}` : ""}`);
 };
 
 function* loadHelpPost(action) {
@@ -138,7 +138,8 @@ function* watchLoadHelpPost() {
 };
 
 function loadLivePostAPI({location, categoryNum}) {
-    return axios.get(`/help/search-main-exec-loc-helps?cat_num=${categoryNum}${location ? `&exec_loc=${encodeURIComponent(location)}` : ""}`);
+    return location ?  axios.get(`/help/search-main-exec-loc-helps?cat_num=${categoryNum}&exec_loc=${encodeURIComponent(location)}`)
+    : axios.get(`/help/search-main-helps?cat_num=${categoryNum}`);
 };
 
 function* loadLivePost(action) {
