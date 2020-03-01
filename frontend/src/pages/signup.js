@@ -252,7 +252,7 @@ const SignUpMain = () => {
             value={address}
             onChangeFunc={changeAddress}
           /> */}
-          <SearchJuso location={address} getLocation={changeAddress}/>
+          <SearchJuso location={address} setLocation={changeAddress}/>
              {signUpError && <div className="SignupContentCheck">
               {signUpError}
             </div>}
