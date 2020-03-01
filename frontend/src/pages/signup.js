@@ -12,6 +12,7 @@ import DabeenInput, {
   check_spa
 } from "../components/signUp/InputFunctions";
 import { inputCheckChangeHook } from "../hooks/inputChangeHook";
+import SearchJuso from "../components/map/SearchJuso";
 
 // 회원가입 창
 const SignUpMain = () => {
@@ -55,13 +56,15 @@ const SignUpMain = () => {
     /[@.]/g
   ]); // 이메일 state
   const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num, /[-]/g]);
-  const [address, changeAddress] = inputCheckChangeHook("", [
-    check_eng,
-    check_num,
-    check_kor,
-    check_spa,
-    /[,.:;'"]/g
-  ]);
+  const [address, changeAddress] = useState("");
+  console.log(address);
+  // const [address, changeAddress] = inputCheckChangeHook("", [
+  //   check_eng,
+  //   check_num,
+  //   check_kor,
+  //   check_spa,
+  //   /[,.:;'"]/g
+  // ]);
   
   // 입력한 정보가 맞는 정보인지 확인하는 state
   const [isPasswordChecked, setIsPasswordChecked] = useState(false); // 비밀번호 확인을 확인
@@ -243,12 +246,13 @@ const SignUpMain = () => {
         </SignUpGetDataDiv>
         <SignUpGetDataDiv>
           <div className="SignupContentTitle">주소 *</div>
-          <DabeenInput
+          {/* <DabeenInput
             type="text"
             placeholder="시 면/읍/리 ~"
             value={address}
             onChangeFunc={changeAddress}
-          />
+          /> */}
+          <SearchJuso location={address} getLocation={changeAddress}/>
              {signUpError && <div className="SignupContentCheck">
               {signUpError}
             </div>}

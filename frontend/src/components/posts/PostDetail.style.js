@@ -143,6 +143,7 @@ export const ApplicationInfoBox = styled.div`
         padding-left: 10px;
     }
     & .applicationInfoBoxDetail{
+        display: flex;
         width: 170px;
         font-size: 15px;
         padding-left: 10px;
@@ -169,7 +170,7 @@ export const ApplicationInfo = styled.div`
         }
         & input{
             border: none;
-            width: 120px;
+            width: 100px;
             font-size: 16px;
         }
         @media screen and (max-width:500px) {
@@ -187,6 +188,12 @@ export const ApplicationInfo = styled.div`
         width: 100px;
 
         & .ant-calendar-picker-icon {
+            display: none;
+        }
+    }
+    & .ant-time-picker {
+        width: 100px;
+        & .ant-time-picker-icon {
             display: none;
         }
     }
@@ -221,7 +228,7 @@ export const ContentItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 25px;
+    font-size: 20px;
     margin-top: 35px;
     width: 100%;
     max-width: 550px;

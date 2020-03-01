@@ -12,6 +12,7 @@ import { editUserInfoRequestAction } from '../../reducers/user';
 import { ModifyUserGetDataDiv, ModifyUserUpperDiv } from './ModifyUser.style';
 import { getCookie } from '../../utils/cookieFunction';
 import customAxios from '../../utils/axiosBase';
+import SearchJuso from '../map/SearchJuso';
 
 const ModifyUser = ({ userInfo, onClickCancel }) => {
     const dispatch = useDispatch();
@@ -177,12 +178,13 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                 </ModifyUserGetDataDiv>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">주소 *</div>
-                    <DabeenInput
+                    <SearchJuso location={address} getLocation={changeAddress}/>
+                    {/* <DabeenInput
                         type="text"
                         placeholder="시 면/읍/리"
                         value={address}
                         onChangeFunc={changeAddress}
-                    />
+                    /> */}
                 </ModifyUserGetDataDiv>
                 <div className="ModifyTips">
                     - 아이디, 이름, 생년월일은 수정이 불가능 합니다.

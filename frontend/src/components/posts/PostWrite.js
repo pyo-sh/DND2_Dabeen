@@ -8,6 +8,7 @@ import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentI
 import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
 import { getCookie } from '../../utils/cookieFunction';
+import MyLocation from '../map/MyLocation';
 
 const categorys = {
     "심부름": "1000",
@@ -149,6 +150,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                     <ContentItem>
                         <div>위치</div>  
                         <SearchJuso location={location} getLocation={getLocation}/>
+                        <MyLocation myLocation={location} />
                     </ContentItem>
                     <ContentItem>
                         <div>요구사항</div>
@@ -165,7 +167,6 @@ const PostWrite = ({setInvisible, userNum}) => {
                                 </div>
                                 {/* <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button> */}
                                 <div className="previewImage">
-                                    {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/dabeen/help/20200227/5ad03fab-7983-4a8f-a988-f75dd1397efa_1516799552217.jpg`} alt="에러" width="90" height="90"/> */}
                                     {images.map((v, i) => {
                                         return (
                                         <div key={v} className="imgBorder"> 
