@@ -17,21 +17,27 @@ import javax.transaction.Transactional;
 
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.Help;
+import com.dabeen.dnd.model.entity.HelpPic;
 import com.dabeen.dnd.model.enumclass.PymtWhet;
 import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.HelpApiRequest;
+import com.dabeen.dnd.model.network.request.HelpPicApiRequest;
 import com.dabeen.dnd.model.network.request.HelpSearchApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpAppliInfoApiResponse;
+import com.dabeen.dnd.model.network.response.HelpPicApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSearchApiResponse;
 import com.dabeen.dnd.model.network.response.PageApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
+import com.dabeen.dnd.model.pk.HelpPicPK;
 import com.dabeen.dnd.repository.CategoryRepository;
+import com.dabeen.dnd.repository.HelpPicRepository;
 import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.repository.UserRepository;
 import com.dabeen.dnd.repository.mapper.HelpMapper;
+import com.dabeen.dnd.repository.mapper.HelpPicMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +55,10 @@ import lombok.extern.slf4j.Slf4j;
 public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse, Help> {
     @Autowired
     private HelpRepository helpRepository;
-    
+
+    @Autowired
+    private HelpPicRepository helpPicRepository;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -61,6 +70,9 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     @Autowired
     private HelpMapper helpMapper;
+
+    @Autowired
+    private HelpPicMapper helpPicMapper;
 
     @Autowired
     private UserApiService userApiService;
@@ -90,8 +102,25 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         helpMapper.insert(helpMap);
 
-        return Header.OK(response(helpRepository.findById((String) helpMap.get("helpNum"))
-                        .orElseThrow(() -> new NotFoundException("Created Entity"))));
+        List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
+
+        List<HelpPicApiResponse> helpPicResponses = helpPicRequests.stream().map(helpPicRequest -> {
+                               
+                               Map<String,Object> helpPicMap = new HashMap<>();
+                               helpPicMap.put("helpNum",helpMap.get("helpNum"));
+                               helpPicMap.put("picOrnu",null);
+                               helpPicMap.put("path",helpPicRequest.getPath()); 
+
+                               helpPicMapper.insert(helpPicMap);
+
+                               HelpPicPK helpPicPK = new HelpPicPK((String) helpPicMap.get("helpNum"), (Integer) helpPicMap.get("picOrnu"));
+                               HelpPicApiResponse helpPicApiResponse = helpPicRepository.findById(helpPicPK).map(helpPic -> helpPicApiService.response(helpPic)).orElseThrow(() -> new NotFoundException("HelpPic"));
+                               
+                               return helpPicApiResponse;
+                            }).collect(Collectors.toList());
+
+        return Header.OK(picResponse(helpRepository.findById((String) helpMap.get("helpNum"))
+                        .orElseThrow(() -> new NotFoundException("Created Entity")),helpPicResponses));
     }
 
     @Override
@@ -139,7 +168,25 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                     return help;
                 })
                 .map(helpRepository::save)
-                .map(this::response)
+                .map(help ->{
+                    List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
+                    List<HelpPicApiResponse> helpPicResponses = helpPicRequests.stream()
+                                    .map(helpPicRequest ->{
+                                        
+                                        HelpPicPK helpPicPK = new HelpPicPK(helpPicRequest.getHelpNum(),helpPicRequest.getPicOrnu());
+                                        HelpPic newHelpPic = helpPicRepository.findById(helpPicPK)
+                                                            .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
+                                                            .map(helpPic -> helpPicRepository.save(helpPic))
+                                                            .orElseThrow(()-> new NotFoundException("HelpPic"));
+
+                                        HelpPicApiResponse helpPicApiResponse = helpPicApiService.response(newHelpPic);
+
+                                        return helpPicApiResponse;
+                                    })
+                                    .collect(Collectors.toList());
+                    return picResponse(help, helpPicResponses);
+                })
+                // .map(this::response)
                 .map(Header::OK)
                 .orElseThrow(() -> new NotFoundException("Help"));
     }
@@ -176,6 +223,34 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         return helpApiResponse;
 
     }
+
+    public HelpApiResponse picResponse(Help help, List<HelpPicApiResponse> helpPics){
+
+        HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
+                                                                    .helpPstnDttm(help.getHelpPstnDttm())
+                                                                    .helpEndDttm(help.getHelpEndDttm())
+                                                                    // .catNum(help.getCatNum())
+                                                                    // .cnsrNum(help.getCnsrNum())
+                                                                    .catNum(help.getCategory().getCatNum())
+                                                                    .cnsrNum(help.getUser().getUserNum())
+                                                                    .title(help.getTitle())
+                                                                    .execLoc(help.getExecLoc())
+                                                                    .price(help.getPrice())
+                                                                    .prefSupplNum(help.getPrefSupplNum())
+                                                                    .prefHelpExecDttm(help.getPrefHelpExecDttm())
+                                                                    .helpAplyClsDttm(help.getHelpAplyClsDttm())
+                                                                    .cont(help.getCont())
+                                                                    .helpAprvWhet(help.getHelpAprvWhet())
+                                                                    // .execSggName(help.getExecSggName())
+                                                                    .pymtWhet(help.getPymtWhet())
+                                                                    .helpPics(helpPics)
+                                                                    .build();
+        
+        return helpApiResponse;
+
+    }
+
+
 
     /* 사용자 API */
 

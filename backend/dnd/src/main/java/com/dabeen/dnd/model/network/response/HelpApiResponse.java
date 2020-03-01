@@ -6,6 +6,7 @@ package com.dabeen.dnd.model.network.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.dabeen.dnd.model.enumclass.PymtWhet;
 import com.dabeen.dnd.model.enumclass.Whether;
@@ -50,4 +51,6 @@ public class HelpApiResponse{
     // private String execSggName;
 
     private PymtWhet pymtWhet;
+
+    private List<HelpPicApiResponse> helpPics;
 }
