@@ -2,8 +2,7 @@ import styled from 'styled-components';
 
 export const Search = styled.div`
     width: 100%;
-
-    & .inputAddress {
+    /* & .inputAddress {
         margin-bottom: 1vh;
         & input{
             width: 72%;
@@ -12,6 +11,24 @@ export const Search = styled.div`
             min-width: 250px;
             margin: 5px;
             padding: 4px 30px 4px 11px;
+        border: 1px solid #BFC7CE;
+        border-radius: 3px;
+        }
+    } */
+    & .SearchJusoInputAddress {
+        display: flex;
+        align-items: center;
+        padding: 20px 15px;
+        border-top: 1px solid #BFC7CE;
+        @media screen and (max-width:385px) {
+            padding: 20px 5px;
+        }
+    }
+    & .ant-input {
+        width: 100%;
+        max-width: 300px;
+        min-width: 140px;
+        margin-right: 0.5vw;
 
             @media screen and (max-width:425px){
                 width: 260px;
@@ -41,5 +58,9 @@ export const Search = styled.div`
                 color: #FFFFFF;
             }
         }
+    & .SearchJusoContent {
+        width: 100%;
+        padding: 0 1px;
+        height: 200px;
     }
 `;

@@ -67,7 +67,7 @@ export const LiveHelpRequestWrapper = styled.div`
       font-size: 15px;
     }
   }
-  & .liveHelpRequestTitle, .liveHelpRequestDeadline, .LiveHelpRequestLocationInfo{
+  & .liveHelpRequestTitle, .liveHelpRequestDeadline, .LiveHelpRequestLocationInfo, .liveHelpRequestNickname, .liveHelpRequestID{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
