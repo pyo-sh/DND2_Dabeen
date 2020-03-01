@@ -30,6 +30,8 @@ public class HelpSupplCompApiRequest {
     @NotEmpty(message = "값이 존재해야 합니다.")
     private String supplNum; // 공급자 번호
     
+    private LocalDateTime compDttm; // 구성일시
+
     private Whether helpAprvWhet; // 도움승인여부
 
     private LocalDateTime aprvDttm; // 승인일시

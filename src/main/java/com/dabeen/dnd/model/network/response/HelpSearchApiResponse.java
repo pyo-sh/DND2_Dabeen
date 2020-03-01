@@ -47,5 +47,5 @@ public class HelpSearchApiResponse{
 
     private PymtWhet pymtWhet;
 
-    private List<HelpPic> helpPics;
+    private List<HelpPicApiResponse> helpPics;
 }

@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class PageApiResponse {
     private Integer totalDatas; // 총 데이터 수
     private Integer totalPages; // 총 페이지 수
-    private Integer pagePerDatas; // 페이지 별 데이터 수
+    private Integer dataPerPage; // 페이지 별 데이터 수
 
-    public PageApiResponse(Integer totalDatas, Integer pagePerDatas){
+    public PageApiResponse(Integer totalDatas, Integer dataPerPage){
         this.totalDatas = totalDatas;
-        this.totalPages = (int)Math.ceil((double)totalDatas / pagePerDatas);
-        this.pagePerDatas = pagePerDatas;
+        this.totalPages = (int)Math.ceil((double)totalDatas / dataPerPage);
+        this.dataPerPage = dataPerPage;
     }
 }
