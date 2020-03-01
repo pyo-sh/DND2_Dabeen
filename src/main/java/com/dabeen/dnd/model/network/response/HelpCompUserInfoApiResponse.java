@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class HelpCompUserInfoApiResponse{
+    private LocalDateTime compDttm; // 구성일시
     private Whether helpAprvWhet; // 도움승인여부
     private LocalDateTime aprvDttm; // 승인일시
     private LocalDateTime astDttm; // 평가일시

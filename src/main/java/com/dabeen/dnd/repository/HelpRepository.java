@@ -21,9 +21,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HelpRepository extends JpaRepository<Help, String>{
     List<Help> findByUser_UserNumAndPymtWhet(String userNum, PymtWhet whet);
-    Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
-    Page<Help> findByUser_UserNumAndPrefHelpExecDttmBefore(String userNum, LocalDateTime dateTime, Pageable pageable);
-    List<Help> findByPrefHelpExecDttm(LocalDateTime prefHelpExecDttm);
+    Page<Help> findByUser_UserNumAndPrefHelpExecDttmAfterOrderByHelpNumDesc(String userNum, LocalDateTime dateTime, Pageable pageable);
+    Page<Help> findByUser_UserNumAndPrefHelpExecDttmBeforeOrderByHelpNumDesc(String userNum, LocalDateTime dateTime, Pageable pageable);
+    List<Help> findByPrefHelpExecDttmOrderByHelpNumDesc(LocalDateTime prefHelpExecDttm);
     List<Help> findTop9ByCategory_CatNumAndHelpEndDttmAndExecLocContainingOrderByHelpNumDesc(String catNum, LocalDateTime endDttm ,String execLoc);
     List<Help> findTop9ByCategory_CatNumAndHelpEndDttmOrderByHelpNumDesc(String catNum, LocalDateTime endDttm);
 

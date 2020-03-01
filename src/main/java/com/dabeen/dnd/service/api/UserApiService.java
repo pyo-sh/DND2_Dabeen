@@ -4,6 +4,8 @@
 package com.dabeen.dnd.service.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,11 +275,15 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         Optional<User> optional = userRepository.findById(userNum);
 
         return optional.map(user -> {
-            List<PostApiResponse> responses = user.getQuests()
-                                                    .stream()
-                                                    .map(postApiService::response)
-                                                    .collect(Collectors.toList());
-           
+            List<PostApiResponse> responses = new ArrayList<>();
+
+            responses = user.getQuests()
+                            .stream()
+                            .map(postApiService::response)
+                            .collect(Collectors.toList());
+                            
+            Collections.sort(responses, Comparator.reverseOrder());
+
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
     }
