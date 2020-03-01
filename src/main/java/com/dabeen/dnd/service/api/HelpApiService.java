@@ -173,7 +173,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                     List<HelpPicApiResponse> helpPicResponses = helpPicRequests.stream()
                                     .map(helpPicRequest ->{
                                         
-                                        HelpPicPK helpPicPK = new HelpPicPK(helpPicRequest.getHelpNum(),helpPicRequest.getPicOrnu());
+                                        HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(),helpPicRequest.getPicOrnu());
                                         HelpPic newHelpPic = helpPicRepository.findById(helpPicPK)
                                                             .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
                                                             .map(helpPic -> helpPicRepository.save(helpPic))
