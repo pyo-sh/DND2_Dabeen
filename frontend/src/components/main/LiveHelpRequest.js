@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Divider, Avatar } from "antd";
 import PostDetail from '../posts/PostDetail';
 import {TestSlick, LiveHelpRequestContent, LiveHelpRequestContentInfo} from './LiveHelpRequest.style';
@@ -27,41 +27,6 @@ function SampleNextArrow(props) { // 우 화살표
     );
   }
 
-  const setting = {
-    initialSlide : 0,
-    dots : true,
-    autoplay : true,
-    autoplaySpeed : 2500,
-    infinite : true,
-    slidesToShow : 3,
-    slidesToScroll :3,
-    nextArrow : <SampleNextArrow/>,
-    prevArrow : <SamplePrevArrow/>,
-    responsive : [
-      {
-        breakpoint : 1025,
-        settings: {
-          slidesToScroll : 3,
-          slidesToShow : 3,
-        }
-      },
-      {
-        breakpoint : 769,
-        settings: {
-          slidesToScroll : 2,
-          slidesToShow : 2,
-        }
-      },
-      {
-        breakpoint : 426,
-        settings: {
-          slidesToScroll : 1,
-          slidesToShow : 1,
-        }
-      },
-
-    ]
-  }
 
 // 유즈이펙트로 가져온 유저 정보를 가지고 그려야함
 const LiveHelpRequest = () => {
@@ -73,6 +38,37 @@ const LiveHelpRequest = () => {
     setSelectPost(livePosts.filter(help => helpNum === help.helpNum)[0]);
     toggleDetail();
   },[livePosts]);
+
+  const setting = useMemo(()=> ({
+    initialSlide : 0,
+    dots : true,
+    autoplay : true,
+    autoplaySpeed : 2500,
+    infinite : livePosts.length >= 3,
+    slidesToShow : 3,
+    slidesToScroll :3,
+    nextArrow : <SampleNextArrow/>,
+    prevArrow : <SamplePrevArrow/>,
+    responsive : [
+      {
+        breakpoint : 769,
+        settings: {
+          slidesToScroll : 2,
+          slidesToShow : 2,
+          infinite : livePosts.length >= 2,
+        }
+      },
+      {
+        breakpoint : 426,
+        settings: {
+          slidesToScroll : 1,
+          slidesToShow : 1,
+          infinite : livePosts.length >= 1,
+        }
+      },
+
+    ]
+  }), [livePosts.length])
 
   return (
     // <LiveHelpRequestForm>
