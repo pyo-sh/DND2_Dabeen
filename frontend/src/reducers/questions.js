@@ -76,13 +76,13 @@ const reducer = (state = initialState, action) => {
                 questionNum : question.post_num, // 게시글번호
                 questionTitle : question.title, // 제목
                 questionContent: question.cont,
-                questionDate : qusestion.pstn_dttm, // 질문게시일시
+                questionDate : question.pstn_dttm, // 질문게시일시
                 questionUserNum: question.pstner_num, // 질문자번호
                 replyPost : question.rply_post ? {
                     replyNum : question.rply_post.post_num,
                     replyTitle : question.rply_post.title,
                     replyContent: question.rply_post.cont,
-                    replyDate : qusestion.rply_post.pstn_dttm,
+                    replyDate : question.rply_post.pstn_dttm,
                 } : null,
             }
         ))
@@ -103,6 +103,14 @@ const reducer = (state = initialState, action) => {
       case ADD_QUESTION_SUCCESS: {
         draft.isAddedQuestion = true;
         draft.isAddingQuestion = false;
+        draft.myQuestions.push({
+          questionNum : action.data.post_num, // 게시글번호
+          questionTitle : action.data.title, // 제목
+          questionContent: action.data.cont,
+          questionDate : action.data.pstn_dttm, // 질문게시일시
+          questionUserNum: action.data.pstner_num, // 질문자번호
+          replyPost : action.data.rply_post
+        })
         break;
       }
       case ADD_QUESTION_FAILURE: {

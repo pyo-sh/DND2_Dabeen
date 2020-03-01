@@ -26,7 +26,8 @@ const inputChangeHook = (initialState) => {
 
     return [
         basic,
-        onChange
+        onChange,
+        setBasic
     ]
 };
 

@@ -5,78 +5,7 @@ import ServiceItem from "./ServiceItem";
 import ServiceQuestion from "./ServiceQuestion";
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
-const dummyMyQuestion = [
-  {
-    quetionNum: 1,
-    questionTitle: '질문 제목',
-    questionContent: '아무것도 모르겠어요.',
-    questionDate: '2020-02-02',
-    questionUserNum: 20,
-    replyPost: {
-      replyNum: 1,
-      replyTitle: '질문 제목',
-      replyContent: '아무것도 모르겠어요.',
-      replyDate: '2020-02-02',
-      replyUserNum: 20,
-    }
-  },
-  {
-    quetionNum: 1,
-    questionTitle: '질문 제목',
-    questionContent: '아무것도 모르겠어요.',
-    questionDate: '2020-02-02',
-    questionUserNum: 20,
-    replyPost: {
-      replyNum: 1,
-      replyTitle: '질문 제목',
-      replyContent: '아무것도 모르겠어요.',
-      replyDate: '2020-02-02',
-      replyUserNum: 20,
-    }
-  },
-  {
-    quetionNum: 1,
-    questionTitle: '질문 제목',
-    questionContent: '아무것도 모르겠어요.',
-    questionDate: '2020-02-02',
-    questionUserNum: 20,
-    replyPost: {
-      replyNum: 1,
-      replyTitle: '질문 제목',
-      replyContent: '아무것도 모르겠어요.',
-      replyDate: '2020-02-02',
-      replyUserNum: 20,
-    }
-  },
-  {
-    quetionNum: 1,
-    questionTitle: '질문 제목',
-    questionContent: '아무것도 모르겠어요.',
-    questionDate: '2020-02-02',
-    questionUserNum: 20,
-    replyPost: {
-      replyNum: 1,
-      replyTitle: '질문 제목',
-      replyContent: '아무것도 모르겠어요.',
-      replyDate: '2020-02-02',
-      replyUserNum: 20,
-    }
-  },
-  {
-    quetionNum: 1,
-    questionTitle: '질문 제목',
-    questionContent: '아무것도 모르겠어요.',
-    questionDate: '2020-02-02',
-    questionUserNum: 20,
-    replyPost: {
-      replyNum: 1,
-      replyTitle: '질문 제목',
-      replyContent: '아무것도 모르겠어요.',
-      replyDate: '2020-02-02',
-      replyUserNum: 20,
-    }
-  }
-];
+
 const ServiceCenter = ({isMe}) => {
   useEffect(() => {
     if(!isMe){
@@ -85,7 +14,7 @@ const ServiceCenter = ({isMe}) => {
     } 
   }, [isMe]);
   const [visible, setVisible] = useState(false);
-  const { faqs } = useSelector(state => state.questions);
+  const { myQuestions, faqs } = useSelector(state => state.questions);
   const showModal = useCallback(() => {
     setVisible(true);
   }, []);
@@ -109,7 +38,7 @@ const ServiceCenter = ({isMe}) => {
         </div>
         <div className="ServiceQuestion">
           <ul>
-            {dummyMyQuestion.map(v => (
+            {myQuestions.map(v => (
               <ServiceItem key={v.questionNum} service={v} />
             ))}
           </ul>

@@ -2,16 +2,24 @@ import React, {useState, useCallback, memo} from 'react';
 import { Modal, Button, Input } from 'antd';
 import {CustomModal} from './ServiceQuestion.style';
 import inputChangeHook from '../../hooks/inputChangeHook';
+import { useDispatch, useSelector } from 'react-redux';
+import { addQuestionRequestAction } from '../../reducers/questions';
+import { getCookie } from '../../utils/cookieFunction';
 // 문의하기 모달!
 
 const ServiceQuestion = memo(({visible, setVisible}) => {
-    const [question, onChangeQuestion] = inputChangeHook('');
-    const [title, onChangeTitle] = inputChangeHook('');
+    const dispatch = useDispatch();
+    const { me : {userNum}} = useSelector(state => state.user);
+    const [question, onChangeQuestion, setQuestion] = inputChangeHook('');
+    const [title, onChangeTitle, setTitle] = inputChangeHook('');
 
     const handleOk = useCallback((e) => {
         e.preventDefault();
+        setQuestion('');
+        setTitle('');
+        dispatch(addQuestionRequestAction({userNum, title, question, cookie : getCookie()}))
         setVisible(prev => !prev); // 이 때 문의사항을 보내야함!!
-    }, []);
+    }, [title, question, userNum]);
     const handleCancel = useCallback(() => {
         setVisible(prev => !prev);
     }, []);
