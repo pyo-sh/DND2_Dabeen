@@ -60,23 +60,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/api/msg/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/user/*/quests").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/help/*/no-payment-helps").hasAnyRole("USER", "SUPPLER", "ADMIN")
-            .antMatchers(HttpMethod.DELETE, "/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.POST, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help-pic/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.POST, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/user").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/user/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 공급자만 사용 가능
             .antMatchers(HttpMethod.POST, "/api/help-suppl-comp").hasAnyRole("SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 관리자만 사용 가능
             .antMatchers("/api/admin/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/fqa/**").hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/api/category/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/category/**").hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/category/**").hasAnyRole("ADMIN")
             .anyRequest().denyAll();
     }   
 
