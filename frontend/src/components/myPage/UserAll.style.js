@@ -11,7 +11,6 @@ export const UserPageWrapper = styled.article`
   }
   & a {
     color: black;
-    cursor: pointer;
   }
   & .profileSection {
     width: 80%;
@@ -89,6 +88,7 @@ export const UserPageWrapper = styled.article`
         padding: 10px;
         border-radius: 2px;
         box-shadow: 3px 3px 10px 0.5px #E9E9E9;
+        cursor: pointer;
       }
       & .click {
         & a{

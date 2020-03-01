@@ -117,12 +117,15 @@ function* watchRemoveHelpPost() {
 };
 
 function loadHelpPostAPI(data) {
-    return axios.get(`/help/${data.categoryNum}?page=${data.page}&search=${data.search}`);
+    return axios.get(`/help/search-helps/${data.categoryNum}?page=${data.page}${data.helpKeyword ? `&title=${encodeURIComponent(data.helpKeyword)}` : data.search ? `&title=${encodeURIComponent(data.search)}` : ""}
+    ${data.helpExecDate ? `&pref_help_exec_dttm=${data.helpExecDate}` : ""}${data.helpApplyDate ? `&help_aply_cls_dttm=${data.helpApplyDate}` : ""}
+    ${data.minPrice ? `&price_begin=${data.minPrice}` : ""}${data.maxPrice ? `&price_end=${data.maxPrice}` : ""}`);
 };
 
 function* loadHelpPost(action) {
     try {
         const result = yield call(loadHelpPostAPI, action.data);
+        console.log(result.data);
         yield put(loadHelpPostSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
@@ -134,8 +137,8 @@ function* watchLoadHelpPost() {
     yield takeLatest(LOAD_HELPPOST_REQUEST, loadHelpPost);
 };
 
-function loadLivePostAPI({loaction, categoryNum}) {
-    return axios.get(`/help/search-main-exec-loc-helps?exec_loc=${encodeURIComponent(loaction)}&cat_num=${categoryNum}`);
+function loadLivePostAPI({location, categoryNum}) {
+    return axios.get(`/help/search-main-exec-loc-helps?cat_num=${categoryNum}${location ? `&exec_loc=${encodeURIComponent(location)}` : ""}`);
 };
 
 function* loadLivePost(action) {

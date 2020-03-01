@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Col } from 'antd';
 
-export const FooterBox = styled.div`
+export const FooterBox = styled.footer`
     width : 100%;
     height : 80px;
     /* margin-top: auto; */

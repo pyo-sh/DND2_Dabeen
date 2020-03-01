@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Menubar = styled.nav`
+export const Menubar = styled.header`
   position: fixed;
   height : 9vh;
   min-height : 50px;
@@ -21,7 +21,33 @@ export const Menubar = styled.nav`
     margin-bottom: -5px;
     margin-left: 10px;
     & .HeaderSearchInput{
-
+      display : flex;
+      border : 1px solid #DDDDDD;
+      height : 38px;
+      width : 80%;
+      min-width : 100px;
+      align-items : center;
+      justify-content : space-evenly;
+      border-radius : 5px;
+      &:hover, :focus {
+        border-color : #ff4300;
+      }
+      & input {
+        border : none;
+        height : 100%;
+        width : 80%;
+        &:focus {
+          outline : none;
+          border : none;
+          box-shadow: none;
+        }
+      }
+      & i {
+        font-size: 20px;
+        &:hover {
+          color : #ff4300;
+        }
+      }
     }
   }
   & .menuToggle {
@@ -60,13 +86,6 @@ export const Menubar = styled.nav`
       }
     }
   }
-  & .ant-input-search {
-    height : 38px;
-    & span i {
-      color : black;
-      font-size: 18px;
-    }
-  }
   & .active {
     display: flex;
     flex-direction: column;
@@ -102,7 +121,7 @@ export const Menubar = styled.nav`
   }
 }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 769px) {
     & .menuToggle {
       display: none;
     }
