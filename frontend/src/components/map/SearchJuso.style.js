@@ -15,34 +15,20 @@ export const Search = styled.div`
         border-radius: 3px;
         }
     } */
-    & .SearchJusoInputAddress {
-        display: flex;
-        align-items: center;
-        padding: 20px 15px;
-        border-top: 1px solid #BFC7CE;
-        @media screen and (max-width:385px) {
-            padding: 20px 5px;
-        }
-    }
-    & .ant-input {
+    & input {
         width: 100%;
         max-width: 300px;
         min-width: 140px;
-        margin-right: 0.5vw;
-
-            @media screen and (max-width:425px){
-                width: 260px;
-            }
-            border: none;
-            border-radius: 0px;
-            border-bottom: 1px solid #BFC7CE;
-            &::placeholder{
-                color: #BFC7CE;
-            }
-            &:focus {
-                outline: none;
-            }
+        border: none;
+        border-radius: 0px;
+        border-bottom: 1px solid #BFC7CE;
+        &::placeholder{
+            color: #BFC7CE;
         }
+        &:focus {
+            outline: none;
+        }
+    }
         
         & .ant-btn {
             width: 100px;

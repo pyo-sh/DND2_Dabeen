@@ -274,6 +274,9 @@ export const ApplicationInfoBox = styled.div`
         align-items: center;
         flex-wrap: wrap;
         font-size: 18px;
+        & .ApplicationInfoBoxDetailDate{
+            margin-right: 5px;
+        }
     }
     & .ApplicationInfoBoxDatePicker{
         width: 100px;

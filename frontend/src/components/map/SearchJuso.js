@@ -39,13 +39,8 @@ const SearchJuso = ({location, setLocation}) => {
                 </div>
             </Modal>
             }
-            {/* <div className="SearchJusoContent">
-                <MyLocation myLocation={location}/>
-            </div> */}
-            <div className="SearchJusoInputAddress">
-                <input placeholder="주소를 검색하세요." value={location}  readOnly/>
-                <Button type="link" onClick={clickButton}>주소 검색</Button>
-            </div>
+            <input placeholder="주소를 검색하세요." value={location}  readOnly/>
+            <Button type="link" onClick={clickButton}>주소 검색</Button>
         </Search>
     );
 };

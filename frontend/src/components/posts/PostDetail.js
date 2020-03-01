@@ -30,7 +30,7 @@ const PostDetail = ({setVisible, data}) => {
     const dispatch = useDispatch();
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
-
+    console.dir(data);
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -222,7 +222,7 @@ const PostDetail = ({setVisible, data}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">신청 마감 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail">{helpDeadline[0]} {time(helpDeadlineHour, helpDeadline[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpDeadline[0]}</div>{time(helpDeadlineHour, helpDeadline[1])}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -241,7 +241,7 @@ const PostDetail = ({setVisible, data}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">수행 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail">{helpExec[0]} {time(helpExecHour, helpExec[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpExec[0]}</div>{time(helpExecHour, helpExec[1])}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -284,17 +284,21 @@ const PostDetail = ({setVisible, data}) => {
                 {!edit
                 ?   <div className="ContentMapWrapper">
                         <div className="ContentMap">
-                            <MyLocation myLocation={data.execLoc}/>    
+                            <MyLocation myLocation={data.location}/>    
                         </div>    
                         <div className="ContentMapInfo">
                             지도 위치
-                            <div className="ContentMapLocation">{data.execLoc}</div>
+                            <div className="ContentMapLocation">{data.location}</div>
                         </div>
                     </div>
-                :   <>
-                    <SearchJuso location={editExecLoc} setLocation={setEditExecLoc}/>
-                    <MyLocation myLocation={editExecLoc}/>
-                    </>
+                :   <div className="ContentMapWrapper">
+                        <div className="ContentMap">
+                            <MyLocation myLocation={editExecLoc}/>    
+                        </div>    
+                        <div className="ContentMapInfo">
+                            <SearchJuso location={editExecLoc} setLocation={setEditExecLoc}/>
+                        </div>
+                    </div>
                 }
             </ContentItem>
             <ContentItem>
