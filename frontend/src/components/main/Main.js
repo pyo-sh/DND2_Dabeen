@@ -28,7 +28,7 @@ const Main = () => {
 
     return (
         <MainForm>
-            <Carousel autoplay dots>
+            <Carousel className="MainCarousel" autoplay dots>
                 {image.map(img => (
                         <img key={img} src={`/images/${img}`} alt={img}/>
                 ))}

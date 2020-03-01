@@ -8,9 +8,11 @@ import PostSearch from "../../components/posts/PostSearch";
 import { loadHelpPostRequestAction } from "../../reducers/posts";
 import inputChangeHook from '../../hooks/inputChangeHook';
 import { Pagination } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Postmain = ({categoryNum, search}) => {
+  const dispatch = useDispatch();
+
   const [postWriteVisible, setPostWriteVisible] = useState(false); // 게시글 쓰기 버튼을 클릭했을 때 Modal창 띄우기 위함
   const [tryLogin, setTryLogin] = useState(false);
   const { totalPages, totalHelps } = useSelector(state => state.posts);
@@ -57,9 +59,9 @@ const Postmain = ({categoryNum, search}) => {
   }, []);
 
   const onChangePage = useCallback((page=1) => {
-    loadHelpPostRequestAction({page, search, categoryNum, helpLocation,
-       helpApplyDate : helpApplyDate.concat('T' + helpApplyTime), helpExecDate : helpExecDate.concat('T' +helpExecTime ),
-       minPrice, maxPrice, helpKeyword });
+    dispatch(loadHelpPostRequestAction({page, search : search || "", categoryNum, helpLocation,
+       helpApplyDate : helpApplyDate && helpApplyDate.concat('T' + helpApplyTime), helpExecDate : helpExecDate && helpExecDate.concat('T' +helpExecTime),
+       minPrice, maxPrice, helpKeyword }));
   }, [search, categoryNum, helpLocation, helpApplyDate, helpApplyTime,helpExecDate, helpExecTime, minPrice, maxPrice, helpKeyword]);
 
   //글쓰기 버튼 눌렀을 경우
@@ -108,7 +110,7 @@ const Postmain = ({categoryNum, search}) => {
         <PostSearch categoryNum={categoryNum} setHelpApplyDate={setHelpApplyDate}
           setHelpApplyTime={setHelpApplyTime}
           setHelpExecDate={setHelpExecDate} 
-          setHelpExecTime={setHelpExecDate}
+          setHelpExecTime={setHelpExecTime}
           minPrice={minPrice} onChangeMinPrice={onChangeMinPrice}
           maxPrice={maxPrice} onChangeMaxPrice={onChangeMaxPrice}
           helpKeyword={helpKeyword} onChangeHelpKeyword={onChangeHelpKeyword}
@@ -119,7 +121,7 @@ const Postmain = ({categoryNum, search}) => {
         />
         <div className="postmainContent">
           <div className='helpCount'>검색 된 도움 수 : {totalHelps || 0}</div>
-          <PostList categoryNum={categoryNum} />
+          {totalHelps ?  <PostList categoryNum={categoryNum} /> : <h2>검색 결과가 없어요 ㅠㅠ</h2> }
         </div>
         <div
           className="postmainWrite"
@@ -136,7 +138,7 @@ const Postmain = ({categoryNum, search}) => {
         ) : null}
         {tryLogin&&<Login clickLogin={clickLogin} />}
       </div>
-      <Pagination defaultCurrent={1} onChange={onChangePage} total={totalPages}/>
+      <Pagination defaultCurrent={2} onChange={onChangePage} total={totalHelps} defaultPageSize={9}/>
     </PostUpperDiv>
   );
 };

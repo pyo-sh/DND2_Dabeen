@@ -24,25 +24,28 @@ const SearchJuso = ({location, setLocation}) => {
 
     return (
         <Search>
-            <div className="inputAddress">
-            <input placeholder="주소를 검색하세요." value={location}  readOnly/>
-            <Button type="link" onClick={clickButton}>주소 검색</Button>
-            </div>
             {click &&
             <Modal 
                 title="도로명 주소"
                 visible={click}
                 footer={null}
                 onCancel={onCancel}
-            >
-                <div className="content">
-                <DaumPostcode 
-                onComplete={handleAddress}
-                autoClose={true}
-                />
+                >
+                <div className="SearchJusoContent">
+                    <DaumPostcode 
+                        onComplete={handleAddress}
+                        autoClose={true}
+                        />
                 </div>
-            </Modal> 
-            } 
+            </Modal>
+            }
+            {/* <div className="SearchJusoContent">
+                <MyLocation myLocation={location}/>
+            </div> */}
+            <div className="SearchJusoInputAddress">
+                <input placeholder="주소를 검색하세요." value={location}  readOnly/>
+                <Button type="link" onClick={clickButton}>주소 검색</Button>
+            </div>
         </Search>
     );
 };

@@ -70,6 +70,7 @@ export const PostUpperDiv = styled.div`
   & .ant-pagination {
       & li:hover {
         border : 1px solid #ff4300;
+        outline:none;
         & a {
           color : #ff4300;
         }
