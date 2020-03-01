@@ -36,9 +36,8 @@ const PostWrite = ({setInvisible, userNum}) => {
     //만약 사진 업로드 한 채로 글쓰기 창 닫으면 사진도 같이 삭제되게 한다. 
     const onClose = useCallback((images) => () =>{
         if(images.length !== 0) {
-            console.log(images)
             const imageFormData = new FormData();
-            imageFormData.append('url', images[0]);
+            images.map(image => imageFormData.append('url', images));
             try{
                 axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
                 setImages([]);
@@ -47,7 +46,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             }
         }
         setInvisible();
-    }, []);
+    }, [images]);
 
     const getCategory = useCallback(category => {
         setCategory(categorys[category]);
@@ -58,7 +57,7 @@ const PostWrite = ({setInvisible, userNum}) => {
       setStateFunc(string);
     }, []);
     
-    //게시글 업로드
+    //도움 업로드
     const addPost = useCallback((e) => {
         e.preventDefault();
         if(!postTitle || !postTitle.trim()){
@@ -75,6 +74,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             price: parseInt(money),
             execLoc: location,
             content: content,
+            // helpPics: images,
             cookie : getCookie()
         }));
         setInvisible();
@@ -90,11 +90,12 @@ const PostWrite = ({setInvisible, userNum}) => {
         imageFormData.append('url', url);
         try{
             axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
-            setImages([]);
+            setImages(images.filter(image => image !== url));
         }catch(e){
             console.log(e.response);
         }
-    }, []);
+    }, [images]);
+    console.log(images);
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
@@ -104,6 +105,7 @@ const PostWrite = ({setInvisible, userNum}) => {
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
+            // setImages(prev => [...prev, {"path" : result.data.data}]);
             setImages(prev => [...prev, result.data.data]);
         }catch(e){
             console.log(e.response);
@@ -164,13 +166,11 @@ const PostWrite = ({setInvisible, userNum}) => {
                     <UploadImage>
                         <div>사진첨부</div>
                             <div className="uploadImageFlex">
-                                <input type="file"  hidden ref={imageInput} onChange={onChangeImages}/>
-                                {/* 업로드버튼 새로 만드세영^_^ */}
+                                <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
                                 <div className="uploadImageButton" onClick={onClickImageUpload}>
                                     <Icon type="plus-circle" style={{fontSize: 25}}/>
                                     <div style={{fontSize: 23}}>UPLOAD</div>
                                 </div>
-                                {/* <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button> */}
                                 <div className="previewImage">
                                     {images.map((v, i) => {
                                         return (

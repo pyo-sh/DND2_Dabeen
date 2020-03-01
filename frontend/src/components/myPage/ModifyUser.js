@@ -178,7 +178,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                 </ModifyUserGetDataDiv>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">주소 *</div>
-                    <SearchJuso location={address} getLocation={changeAddress}/>
+                    <SearchJuso location={address} setLocation={changeAddress}/>
                     {/* <DabeenInput
                         type="text"
                         placeholder="시 면/읍/리"

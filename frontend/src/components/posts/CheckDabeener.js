@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useSeletor } from 'react-redux';
-import { Avatar, Rate, Icon } from 'antd';
-import {Modal, DrawerForm, ApplyDabeener, UserInfo, ChoiceButton} from './CheckDabeener.style';
+import { Icon } from 'antd';
+import {Modal, DrawerForm} from './CheckDabeener.style';
+import ApplyDabeener from './ApplyDabeener';
 
 const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
@@ -36,74 +37,18 @@ const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
                         <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>1</span>/{needPersonnel}</div>
                      </div>
                      {
-                        applyCheck&&<button className="pay">결제!</button>
+                        applyCheck === "y" &&<button className="pay">결제!</button>
                      }
                  </div>
                  <div className="drawerMiddle">
                     {/* 얘도 map으로 줘야함.... 
                         아이디, 닉네임, 총 도움수, 평점, 자기소개 받아와서 출력
                     */}
-                    <ApplyDabeener>
-                        <Avatar/> {/*이 antd도 조만간 안녕일듯  */}
-                        <UserInfo>
-                            <div className="user">
-                                <div className="userInfo">
-                                    <div>닉네임</div>
-                                    <div style={{fontSize: 14}}>@아이디</div>
-                                </div>
-                                <div className="userIntro">
-                                    아이엠 그라운드 자기소개하기! 안녕 나는 연전광이라고해! 우리 앞으로 잘 지내자!
-                                </div>
-                            </div>
-                            <div className="userDetailInfo">
-                                <div>
-                                    <div style={{fontSize:15}}>10</div>
-                                    <div style={{fontSize:11}}>총 도움수</div>
-                                </div>
-                                <div>
-                                    <div className="rateFlex">
-                                        <Rate allowHalf disabled defaultValue={3.5} style={{fontSize: 15}}/>
-                                        <div>3.5</div>
-                                    </div>
-                                    <div style={{fontSize:11}}>평점</div>
-                                </div>
-                                <ChoiceButton>선택</ChoiceButton>
-                            </div>
-                        </UserInfo>
-                    </ApplyDabeener>
-                    <ApplyDabeener>
-                        <Avatar icon="user"/>
-                        <UserInfo>
-                            <div className="user">
-                                <div className="userInfo">
-                                    <div>닉네임</div>
-                                    <div style={{fontSize: 14}}>@아이디</div>
-                                </div>
-                                <div className="userIntro">
-                                    아이엠 그라운드 자기소개하기! 안녕 나는 연전광이라고해! 우리 앞으로 잘 지내자!
-                                </div>
-                            </div>
-                            <div className="userDetailInfo">
-                                <div>
-                                    <div style={{fontSize:15}}>10</div>
-                                    <div style={{fontSize:11}}>총 도움수</div>
-                                </div>
-                                <div>
-                                    <div className="rateFlex">
-                                        <Rate allowHalf disabled defaultValue={3.5} style={{fontSize: 15}}/>
-                                        <div>3.5</div>
-                                    </div>
-                                    <div style={{fontSize:11}}>평점</div>
-                                </div>
-                                <ChoiceButton choice>취소</ChoiceButton>
-                            </div>
-                        </UserInfo>
-                    </ApplyDabeener>
+                    <ApplyDabeener />
+                    <ApplyDabeener />
                 </div>
             </DrawerForm>
         </Modal>
     );
 };
-
-
 export default CheckDabeener;
