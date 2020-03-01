@@ -6,6 +6,7 @@ package com.dabeen.dnd.model.network.request;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -47,6 +48,8 @@ public class HelpApiRequest{
     private LocalDateTime helpAplyClsDttm;
 
     private String cont;
+
+    private List<HelpPicApiRequest> helpPics;
 
     // private Whether helpAprvWhet;
 
