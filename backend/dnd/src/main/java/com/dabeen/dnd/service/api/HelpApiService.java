@@ -65,6 +65,9 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     @Autowired
     private UserApiService userApiService;
 
+    @Autowired
+    private HelpPicApiService helpPicApiService;
+
     @Override
     public Header<HelpApiResponse> create(Header<HelpApiRequest> request) {
         // TODO Auto-generated method stub
@@ -200,7 +203,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     // 받을 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 미래인 것
     public Header<Map<String, Object>> searchToReceiveHelps(String userNum, Pageable pageable){
-        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmAfter(userNum, LocalDateTime.now(), pageable);
+        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmAfterOrderByHelpNumDesc(userNum, LocalDateTime.now(), pageable);
         List<HelpAppliInfoApiResponse > responses = new ArrayList<>();
         
         helps.forEach(help -> {
@@ -226,7 +229,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     // 받은 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 과거인 것
     public Header<Map<String, Object>> searchReceivedHelps(String userNum, Pageable pageable){
-        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmBefore(userNum, LocalDateTime.now(), pageable);
+        Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmBeforeOrderByHelpNumDesc(userNum, LocalDateTime.now(), pageable);
         
         List<HelpApiResponse> responses = helps.getContent()
                                                 .stream()
@@ -382,7 +385,10 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                                 .cont(help.getCont())
                                 .helpAprvWhet(help.getHelpAprvWhet())
                                 .pymtWhet(help.getPymtWhet())
-                                .helpPics(help.getHelpPics())
+                                .helpPics(help.getHelpPics()
+                                                .stream()
+                                                .map(helpPicApiService::response)
+                                                .collect(Collectors.toList()))
                                 .build();
         
         return helpExecLocApiResponse;

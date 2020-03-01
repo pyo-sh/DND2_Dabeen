@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostApiResponse {
+public class PostApiResponse implements Comparable<PostApiResponse>{
     private String postNum; // 게시글 번호
     private String pstnerNum; // 작성자 번호
     private LocalDateTime pstnDttm; //게시글 작성 일시
@@ -26,4 +26,10 @@ public class PostApiResponse {
     private String cont;
     private String questPostNum; // 질문 게시글 번호
     private PostApiResponse rplyPost; // 답변
+
+    
+    @Override
+    public int compareTo(PostApiResponse postApiRequest) {
+        return this.postNum.compareTo(postApiRequest.postNum);
+    }
 }
