@@ -52,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             // 반드시 로그인 해야
             .antMatchers("/api/pic/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/mileage-use-hist/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers("/api/bskt-comp").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/pymt/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/bskt/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/post/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
@@ -60,19 +61,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/api/user/*/quests").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/help/*/no-payment-helps").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.POST, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.PUT, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help-pic/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.POST, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/user").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/user/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 공급자만 사용 가능
             .antMatchers(HttpMethod.POST, "/api/help-suppl-comp").hasAnyRole("SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 관리자만 사용 가능
             .antMatchers("/api/admin/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/fqa/**").hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/fqa/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.POST, "/api/category/**").hasAnyRole("ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/category/**").hasAnyRole("ADMIN")
+            .antMatchers(HttpMethod.DELETE, "/api/category/**").hasAnyRole("ADMIN")
             .anyRequest().denyAll();
     }   
 
