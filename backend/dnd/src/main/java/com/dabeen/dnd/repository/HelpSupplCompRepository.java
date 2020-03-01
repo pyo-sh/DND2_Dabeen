@@ -19,8 +19,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HelpSupplCompRepository extends JpaRepository<HelpSupplComp, HelpSupplCompPK>{
     List<HelpSupplComp> findByHelpSupplCompPK_helpNum(String helpNum);
-    Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBefore(String userNum, Whether whet, LocalDateTime dateTime, Pageable pageable);
-    Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfter(String userNum, LocalDateTime dateTime, Pageable pageable);
+    List<HelpSupplComp> findByHelpSupplCompPK_helpNumOrderByCompDttm(String helpNum);
+    Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBeforeOrderByHelp_HelpNumDesc(String userNum, Whether whet, LocalDateTime dateTime, Pageable pageable);
+    Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfterOrderByHelp_HelpNumDesc(String userNum, LocalDateTime dateTime, Pageable pageable);
 
     Long countByHelpSupplCompPK_helpNum(String helpNum);
     Long countByHelpSupplCompPK_helpNumAndHelpAprvWhet(String helpNum, Whether whet);
