@@ -74,7 +74,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             price: parseInt(money),
             execLoc: location,
             content: content,
-            helpPics: images,
+            // helpPics: images,
             cookie : getCookie()
         }));
         setInvisible();
@@ -105,7 +105,8 @@ const PostWrite = ({setInvisible, userNum}) => {
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
-            setImages(prev => [...prev, {"path" : result.data.data}]);
+            // setImages(prev => [...prev, {"path" : result.data.data}]);
+            setImages(prev => [...prev, result.data.data]);
         }catch(e){
             console.log(e.response);
         }

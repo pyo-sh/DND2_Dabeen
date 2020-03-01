@@ -40,7 +40,7 @@ function addHelpPostAPI(data) { //게시글 업로드
             pref_help_exec_dttm: data.helpExec,
             help_aply_cls_dttm: data.helpDeadline,
             cont: data.content,
-            helpPics: data.helpPics,
+            // helpPics: data.helpPics,
             help_aprv_whet: 'n',
         }
     }
