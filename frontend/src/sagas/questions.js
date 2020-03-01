@@ -20,14 +20,16 @@ function* watchLoadQuestions() {
 }
 
 // 질문 추가하기
-function addQuestionAPI({userNum, question, cookie}){
+function addQuestionAPI({userNum, question, title, cookie}){
     const reqData ={
         data : {
-            title : question.title,
-            content : question.content,
+            pstner_num : userNum,
+            title : title,
+            cont : question,
+            post_type : 'q'
         }
     };
-    return axios.post(`/user/${userNum}/main-page`, reqData ,{headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.post(`/post`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* addQuestion(action) {

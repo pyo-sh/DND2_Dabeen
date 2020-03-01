@@ -57,7 +57,6 @@ const SignUpMain = () => {
   ]); // 이메일 state
   const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num, /[-]/g]);
   const [address, changeAddress] = useState("");
-  console.log(address);
   // const [address, changeAddress] = inputCheckChangeHook("", [
   //   check_eng,
   //   check_num,
