@@ -12,7 +12,6 @@ export const Modal = styled.div`
     justify-content: center;
     background: rgba(0, 0, 0, 0.25);
     overflow: auto;
-    /* ::-webkit-scrollbar{display:none;}  스크롤바 안보이게 */
 `;
 
 export const Content = styled.div`
@@ -144,11 +143,12 @@ export const ContentItem = styled.div`
     width: 100%;
     max-width: 550px;
     min-width: 250px;
+    height: auto;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    font-size: 25px;
+    font-size: 20px;
 
     & > textarea {
         width: 100%;
@@ -192,16 +192,6 @@ export const UploadImage = styled.div`
         width: 120px;
         height: 120px;
         cursor: pointer;
-    }
-    & input[type="file"] {
-        position:absolute;
-        width:1px;
-        height:1px;
-        padding:0;
-        margin:-1px;
-        overflow:hidden;
-        clip:rect(0,0,0,0);
-        border:0;
     }
 
     & .previewImage {

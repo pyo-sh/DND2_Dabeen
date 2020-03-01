@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Geocode from 'react-geocode';    //주소를 위도, 경도로 계산해서 나타내줌
 import apiKeys from '../../api/apiKeys';
 import GoogleMapReact from 'google-map-react';
+import styled from 'styled-components';
 
 const MyLocation = ({myLocation}) => {
     // //임시로 부경대학교 위치가 제일 처음 뜨게 설정했다.
@@ -26,7 +27,7 @@ const MyLocation = ({myLocation}) => {
     }, [myLocation]);
 
     return (
-        <div style={{height: '100%', width: '100%'}}>
+        <Map>
             <GoogleMapReact
                 bootstrapURLKeys={{key: apiKeys.googlemap}}
                 center={{lat: lat, lng: lng}}
@@ -34,8 +35,14 @@ const MyLocation = ({myLocation}) => {
             >
                 <Marker lat={lat} lng={lng} image="/images/pin.svg"/>
             </GoogleMapReact>
-        </div>
+        </Map>
     );
 };
 
+const Map = styled.div`
+    width: 100%;
+    max-width: 550px;
+    min-width: 250px;
+    height: 200px;
+`;
 export default MyLocation;

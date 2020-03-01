@@ -15,6 +15,8 @@ const PostDetail = ({setVisible, data}) => {
     //임시로 내가 쓴 글이라고 설정
     const helpExec = data.helpExecDate.split('T');     // helpExec[0]=날짜 / helpExec[1]=시간
     const helpDeadline = data.helpDeadLine.split('T');  // helpDeadline[0]=날짜 / helpDeadline[1]=시간
+    const helpExecHour = parseInt(helpExec[1].substring(0,2));
+    const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
@@ -31,6 +33,32 @@ const PostDetail = ({setVisible, data}) => {
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm:ss';
 
+    // console.log(helpDeadline[1].substring(0,5))
+    const time = useCallback((hour, time) => {
+        console.log(hour, time)
+        if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
+        else {
+            if(hour == 12) return <div>PM{time.substring(0, 5)}</div>
+            else{
+                const hours = String(hour-12);
+                return <div>PM{hours + time.substring(2, 5)}</div>
+            }
+        }
+    }, []);
+
+    const backPost = useCallback(() => {
+        setEdit(prev => !prev);
+        setEditTitle(data.helpTitle);
+        setEditHelpExecDate(helpExec[0]);
+        setEditHelpExecTime(helpExec[1]);
+        setEditHelpDeadLineDate(helpExec[0]);
+        setEditHelpDeadLineTime(helpDeadline[1]);
+        setEditNeedPersonnel(data.postNum);
+        setEditPrice(data.price);
+        setEditExecLoc(data.execLoc);
+        setEditContent(data.helpContent);
+    }, []);
+    
     //신청 다비너 창 여닫을떄
     const onModal = useCallback(() => {
         setClick(prev => !prev);
@@ -109,7 +137,7 @@ const PostDetail = ({setVisible, data}) => {
                         <Icons>
                             {edit&&
                             <>
-                            <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])} onCancel={edit} okText="네" cancelText="아니요">
+                            <Popconfirm placement="bottom" title="수정을 그만두시겠습니까?" onConfirm={backPost} onCancel={edit} okText="네" cancelText="아니요">
                             <Icon type="rollback" style={{marginRight: 10, color: "#7A7A7A"}}/>
                             </Popconfirm>
                             <Popconfirm placement="bottom" title="정말 삭제하시겠습니까?" onConfirm={deletePost(data.helpNum)} onCancel={edit} okText="네" cancelText="아니요">
@@ -153,7 +181,14 @@ const PostDetail = ({setVisible, data}) => {
                             <div className="applicationInfoBoxTitle">신청 마감 일시</div>
                             {
                                 !edit ?
-                                <div className="applicationInfoBoxDetail">{helpDeadline[0]}</div>
+                                <div className="applicationInfoBoxDetail">
+                                <div>
+                                {helpDeadline[0]} 
+                                </div>
+                                <div style={{marginLeft: 5}}>
+                                {time(helpDeadlineHour, helpDeadline[1])}
+                                </div>
+                                </div>
                                 : 
                                 <>
                                 <DatePicker defaultValue ={moment(editHelpDeadLineDate, dateFormat)} onChange={onChangeHelpDeadlineDate}/>
@@ -165,7 +200,14 @@ const PostDetail = ({setVisible, data}) => {
                             <div className="applicationInfoBoxTitle">수행 일시</div>
                             {
                                 !edit ?
-                                <div className="applicationInfoBoxDetail">{helpExec[0]}</div>
+                                <div className="applicationInfoBoxDetail">
+                                <div>
+                                {helpExec[0]}
+                                </div>
+                                <div style={{marginLeft: 5}}>
+                                {time(helpExecHour, helpExec[1])}
+                                </div>
+                                </div>
                                 :
                                 <>
                                 <DatePicker defaultValue ={moment(editHelpExecDate ,dateFormat)} onChange={onChangeHelpExecDate}/>
@@ -212,7 +254,10 @@ const PostDetail = ({setVisible, data}) => {
                             <MyLocation myLocation={data.location}/>        
                         </div>
                         :
+                        <>
                         <SearchJuso location={editExecLoc} getLocation={setEditExecLoc}/>
+                        <MyLocation myLocation={editExecLoc}/>      
+                        </>
                     }
                 </ContentItem>
                 <ContentItem>
