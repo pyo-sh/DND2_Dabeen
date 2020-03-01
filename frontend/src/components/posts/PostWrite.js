@@ -29,6 +29,7 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [location, setLocation] = useState('');   //이행위치
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
+    const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
@@ -37,7 +38,7 @@ const PostWrite = ({setInvisible, userNum}) => {
     const onClose = useCallback((images) => () =>{
         if(images.length !== 0) {
             const imageFormData = new FormData();
-            images.map(image => imageFormData.append('url', images));
+            images.map(image => imageFormData.append('url', image));
             try{
                 axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
                 setImages([]);
@@ -74,16 +75,13 @@ const PostWrite = ({setInvisible, userNum}) => {
             price: parseInt(money),
             execLoc: location,
             content: content,
-            // helpPics: images,
+            helpPics: imgPaths,
             cookie : getCookie()
         }));
         setInvisible();
-        // dispatch(addImageRequestAction({
-        //     path: `/home/help/${time.format('YYYYMMDD')}/${images[0].split('/')[6]}`
-        // }));
     }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
 
-   
+//    console.log(images.map(image => image));
     //이미지 삭제
     const deleteImage = useCallback((url) => () => {
         const imageFormData = new FormData();
@@ -91,11 +89,11 @@ const PostWrite = ({setInvisible, userNum}) => {
         try{
             axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image !== url));
+            setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){
             console.log(e.response);
         }
     }, [images]);
-    console.log(images);
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
@@ -107,11 +105,13 @@ const PostWrite = ({setInvisible, userNum}) => {
             console.log(result);
             // setImages(prev => [...prev, {"path" : result.data.data}]);
             setImages(prev => [...prev, result.data.data]);
+            setImgPaths(prev => [...prev, {"path": result.data.data}]);
         }catch(e){
             console.log(e.response);
         }
-    }, []);
+    }, [imgPaths]);
 
+    console.log(imgPaths)
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);
