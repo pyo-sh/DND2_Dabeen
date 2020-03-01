@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Slick from "react-slick";
 
 export const Modal = styled.div`
     width: 100%;
@@ -13,19 +14,13 @@ export const Modal = styled.div`
     overflow: auto;
 `;
 
-export const Icons = styled.div`
-    text-align: right;
-    font-size: 25px;
-    color: #BFC7CE;
-`;
-
 export const Content = styled.div`
-    width: 100%;
-    max-width: 600px;
+    width: 100vw;
+    max-width: 680px;
     min-width: 300px;
     padding: 30px;
     margin: 60px 0;
-    border-radius : 12px;
+    border-radius : 5px;
 
     display: flex;
     flex-direction: column;
@@ -34,20 +29,32 @@ export const Content = styled.div`
     font-size: 20px;
     color: #424242;
     background: white;
+    box-shadow: 0 0 10px 4px #7A7A7A;
+
+    & .PostTitleDetailAuthor, .ContentMapLocation, .ApplicationMoneyTitleValue{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+`;
+
+export const Icons = styled.div`
+    display: flex;
+    text-align: right;
+    font-size: 25px;
+    color: #BFC7CE;
 `;
 
 export const Title = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
     font-size: 40px;
-    margin-top: 15px;
 
-    & .postTitle {
+    & .PostTitle {
         display: flex;
-        align-items:flex-end;
+        flex-direction: column;
+        font-weight: bold;
     }
     & .TitleWrapper{
         width: 100%;
@@ -55,28 +62,84 @@ export const Title = styled.div`
         justify-content: space-between;
         
     }
-    & .titleDetail{
+    & .PostTitleDetail{
+        width: 100%;
+
         display: flex;
         justify-content: space-between;
-        width: 100%;
-        max-width: 400px;
+
         font-size: 15px;
-        margin-top: 5px;
+        & .PostTitleDetailContent{
+            min-width: 140px;
+            display: flex;
+            flex-wrap: wrap;
+            & .PostTitleDetailDate{
+                margin-top: 5px;
+                min-width: 140px;
+                margin-right: 10px;
+            }
+            & .PostTitleDetailAuthor{
+                margin-top: 5px;
+                min-width: 140px;
+            }
+        }
+        & .PostTitleDetailBtn{
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap-reverse;
+        }
+    }
+`;
+
+export const DetailSlick = styled(Slick)`
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 3px;
+    box-shadow: 0 0 10px 3px #E9E9E9;
+    
+    /* width : -webkit-calc(100% - 40px); */
+    & .PostDetailImage{
+        width: 100%;
+        height: 45vw;
+        max-height: 300px;
+    }
+    & .slick-next, .slick-prev {
+        display : block;
+        background : white;
+        &::before {
+            color : #424242;
+            /* line-height : 10px; */
+            font-size : 30px;
+        }
+    }
+    & .slick-prev {
+        &::before {
+            content : "<";
+        }
+    }
+    & .slick-next{
+        &::before{
+            content : ">";
+        }
+    }
+    & .slick-dots li button::before {
+        content : ""
     }
 `;
 
 export const ApplyCheck = styled.div`
-    min-width: 60px;
+    width: 60px;
     height: 25px;
     padding: 2px;
-    border-radius: 10px;
-    margin: 10px 10px 2px 10px;
+    margin: 5px 0 0 5px;
 
     font-size: 14px;
     text-align: center;
-
     color: ${props => (props.apply ? "#7A7A7A" : "white")};
     background: ${props => (props.apply ? "#F0F0F0" : "#FF4300")};
+    border-radius: 10px;
 `;
 
 export const EditTitle = styled.input`
@@ -84,7 +147,7 @@ export const EditTitle = styled.input`
     color: #7a7a7a;
     font-size: 40px;
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     
     :focus{
         outline: none;  
@@ -92,13 +155,15 @@ export const EditTitle = styled.input`
 `;
 
 export const Edit = styled.button`
+    min-width: 60px;
+    height: 25px;  
+    margin: 5px 0 0 5px;
+
+    font-size: 14px;
+    color: #7A7A7A;
     background: #F0F0F0;  
     border: 1px solid #F0F0F0;
     border-radius: 7px;
-    color: #7A7A7A;
-    min-width: 60px;
-    height: 25px;  
-    font-size: 14px;
     cursor: pointer;
 
     :focus{
@@ -110,70 +175,52 @@ export const Edit = styled.button`
     }
 `;
 
-export const Image = styled.div`
-    width: 100%;
-    max-width: 550px;
-    min-width: 250px;
-    height: 300px;
-    background: #BFC7CE;
-    margin-top: 10px;
-`;
-
-export const ApplicationInfoBox = styled.div`
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    width: 100%;
-    @media screen and (max-width : 500px){
-        width : 150px;
-    }
-
-    & .applyCheck{
-        border: none;
-        background: none;
-        color: #7A7A7A;
-        cursor: pointer;
-
-        :focus{
-            outline: none;
-        }
-    }
-    & .applicationInfoBoxTitle {
-        width: 200px;
-        padding-left: 10px;
-    }
-    & .applicationInfoBoxDetail{
-        width: 170px;
-        font-size: 15px;
-        padding-left: 10px;
-    }  
-`;
-
 export const ApplicationInfo = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 300px;
-    height: auto;
     margin-top: 20px;
+
+    display: flex;
+    justify-content: space-between;
+
+    & .ApplicationInfoBoxWrapper{
+        display: flex;
+        flex-direction: column;
+    }
     
-    & .applicationMoney{
+    & .ApplicationMoney{
+        width: 100%;
+        max-width: 250px;
+        min-width: 120px;
+        padding-left: 20px;
+        margin-left: 20px;
+
         display: flex;
         flex-direction: column;
         justify-content:flex-end;
+
         color: #FF4300;
         font-size: 20px;
-        min-width: 80px;
+        border-left: 1px solid #BFC7CE;
+        
 
-        & div {
-            text-align : center;
+        & .ApplicationMoneyTitle{
+            display: flex;
+            padding: 5px;
+            font-size: 20px;
         }
         & input{
             border: none;
             width: 120px;
-            font-size: 16px;
+            font-size: 25px;
+
+            &:hover, :focus{
+                border: none;
+                outline: none;
+            }
         }
-        @media screen and (max-width:500px) {
-            margin-right : 20px;
+        @media screen and (max-width: 350px) {
+             padding-left: 10px;
+             margin-left: 10px;
         }
     }
 
@@ -191,18 +238,70 @@ export const ApplicationInfo = styled.div`
         }
     }
 `;
+export const ApplicationInfoBox = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    & .ApplyCheck{
+        width: 83px;
+        border: none;
+        background: none;
+        color: #7A7A7A;
+        cursor: pointer;
+
+        :focus{
+            outline: none;
+        }
+    }
+    & .ApplicationInfoBoxTitle {
+        height: 38px;
+        min-width: 120px;
+        display: flex;
+        align-items: center;
+    }
+    & .ApplicationInfoBoxDetail{
+        min-height: 38px;
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        font-size: 18px;
+    }
+    & .ApplicationInfoBoxDatePicker{
+        width: 100px;
+        margin-right: 5px;
+        & input:read-only:hover {
+            border: 1px solid #FF4300;
+        }
+    }
+    & .ApplicationInfoBoxTimePicker{
+        width: 100px;
+        & input:hover {
+            border: 1px solid #FF4300;
+        }
+    }
+    & .ant-select-arrow{
+      color: #FF4300;
+    }
+    & .ant-calendar-picker-icon{
+        color: #FF4300;
+    }
+    & .ant-time-picker-clock-icon{
+        color: #FF4300; 
+    }
+`;
 
 export const DeadlineButton = styled.button`
-    background: ${props => (props.apply ? "#F0F0F0" : "#FF4300")};
+    background: ${props => (props.apply ? "#F0F0F0" : "#FF9644")};
     border: ${props => (props.apply ? "#F0F0F0":"#FF4300")};
     color: ${props => (props.apply ? "#7A7A7A" : "white")};
     font-size: 14px;
     border-radius: 5px;
     box-shadow: 2px 3px 5px #BFC7CE;
     width: 100%;
-    max-width: 120px;
-    min-width: 100px;
-    height: 30px;
+    height: 35px;
 
     :hover {
         opacity: 0.9;
@@ -218,43 +317,85 @@ export const DeadlineButton = styled.button`
 `;
 
 export const ContentItem = styled.div`
+    width: 100%;
+    margin-top: 20px;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     font-size: 25px;
-    margin-top: 35px;
-    width: 100%;
-    max-width: 550px;
-    min-width: 250px;
 
-    & > p{
-        margin-top: 10px;
-        font-size: 18px;
-        max-width: 550px;
-        min-width: 300px;
-        height: 200px;
+    & .ContentTitle{
+        margin-bottom: 10px;
     }
 
-    & .map{
+    & .ContentMapWrapper{
         width: 100%;
-        max-width: 550px;
-        min-width: 300px;
-        height: 200px;
-        font-size: 20px;
+        border: 1px solid #BFC7CE;
+        border-radius: 3px;
+        box-shadow: 0 0 10px 3px #E9E9E9;
+        & .ContentMap{
+            height: 200px;
+            padding: 0 1px;
+        }
+        & .ContentMapInfo{
+            padding: 10px 15px;
+            border-top: 1px solid #BFC7CE;
+            & .ContentMapLocation{
+                font-size: 18px;
+                padding-left: 5px;
+            }
+        }
     }
 
+    & > p {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #BFC7CE;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 3px #E9E9E9;
+        font-size: 18px;
+    }
     & > textarea {
         width: 100%;
-        max-width: 550px;
-        min-width: 250px;
-        height: 200px;
         resize: none;
         color: #7a7a7a;
         border-color: #d9d9d9;
         ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
-
         ::placeholder{
             color: #BFC7CE;
         }
     }
 `;
+
+function SampleNextArrow(props) { // 우 화살표
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style}}
+            onClick={onClick}
+        />
+    );
+  };
+
+function SamplePrevArrow(props) { // 좌 화살표
+    const { className, style, onClick } = props;
+    return (
+        <div
+            className={className}
+            style={{ ...style}}
+            onClick={onClick}
+        />
+    );
+  }
+
+export const slickSetting = {
+    initialSlide : 0,
+    dots : false,
+    autoplay : false,
+    infinite : true,
+    nextArrow : <SampleNextArrow/>,
+    prevArrow : <SamplePrevArrow/>,
+}
