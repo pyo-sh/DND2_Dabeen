@@ -16,6 +16,7 @@ import com.dabeen.dnd.exception.AlreadyExistedException;
 import com.dabeen.dnd.exception.EmailWrongException;
 import com.dabeen.dnd.exception.FailedMailSendException;
 import com.dabeen.dnd.exception.FileSaveFailedException;
+import com.dabeen.dnd.exception.MileageLessThanPriceException;
 import com.dabeen.dnd.exception.NameWrongException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
@@ -109,6 +110,14 @@ public class GlobalExceptionHandler {
         
         return Header.ERROR(HttpStatus.BAD_REQUEST, message);
     }
+
+    // 보유 마일리지가 결제하려는 금액보다 작을 경우
+    @ExceptionHandler(MileageLessThanPriceException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public Header<?> handlerMileageLessThanPriceException(MileageLessThanPriceException ex) {
+        return Header.ERROR(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
 
     // 메일 전송에 실패할 경우 발생되는 에러 처리
     @ExceptionHandler(FailedMailSendException.class)
