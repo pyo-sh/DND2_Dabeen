@@ -150,7 +150,6 @@ export const UploadProfile = styled.div`
             margin-right: -50px;
             margin-top: -50px;
         }
-    }
 `;
 export const Icons = styled(Icon)`
     font-size: 50px;
