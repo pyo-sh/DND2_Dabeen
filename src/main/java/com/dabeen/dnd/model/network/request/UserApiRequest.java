@@ -60,7 +60,7 @@ public class UserApiRequest {
     
     private String picPath; // 사진 경로명
     
-    private String rrnRear; // 주민번호 뒷자리
+    private String rrnPath; // 주민번호 사진 경로명
     
     @Min(value = 0, message = "값이 0에서 5사이의 값이어야 합니다.")
     @Max(value = 5, message = "값이 0에서 5사이의 값이어야 합니다.")
