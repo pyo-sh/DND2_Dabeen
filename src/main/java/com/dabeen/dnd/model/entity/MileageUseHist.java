@@ -43,6 +43,8 @@ public class MileageUseHist {
 
     private BigDecimal usePrice; // 사용 금액
 
+    private String wdrlBank; // 인출 은행
+
     private String wdrlAcctNum; // 인출계좌 번호
 
 
