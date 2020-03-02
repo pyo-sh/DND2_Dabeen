@@ -32,13 +32,13 @@ public class PymtApiController extends CrudController<PymtApiRequest, PymtApiRes
     
     @PostMapping("/execution")
     public Header<?> execution(@RequestBody Header<PymtExecutionApiRequest> request, Authentication authentication){
-        //if(!authentication.getAuthorities().toString().equals("ROLE_ADMIN")){
-        //    Claims claims = (Claims) authentication.getPrincipal();
-//
-        //    // jwt를 이용하여 본인인지 확인
-        //    if(!request.getData().getUserNum().equals(claims.get("userNum", String.class)))
-        //        throw new NotYourselfException();
-        //}
+        if(!authentication.getAuthorities().toString().equals("ROLE_ADMIN")){
+            Claims claims = (Claims) authentication.getPrincipal();
+
+            // jwt를 이용하여 본인인지 확인
+            if(!request.getData().getUserNum().equals(claims.get("userNum", String.class)))
+                throw new NotYourselfException();
+        }
         
         return pymtApiService.execution(request);
     } 

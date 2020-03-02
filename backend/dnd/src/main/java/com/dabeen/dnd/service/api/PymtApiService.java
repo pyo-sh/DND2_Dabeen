@@ -6,26 +6,36 @@ package com.dabeen.dnd.service.api;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.dabeen.dnd.exception.MileageLessThanPriceException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.exception.NotUpdateableException;
+import com.dabeen.dnd.model.entity.BsktComp;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
+import com.dabeen.dnd.model.entity.MileageUseHist;
 import com.dabeen.dnd.model.entity.Pymt;
+import com.dabeen.dnd.model.entity.User;
+import com.dabeen.dnd.model.enumclass.MileageUseType;
 import com.dabeen.dnd.model.enumclass.PymtMthdType;
 import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
-import com.dabeen.dnd.model.network.request.BsktApiRequest;
-import com.dabeen.dnd.model.network.request.BsktCompApiRequest;
 import com.dabeen.dnd.model.network.request.PymtApiRequest;
 import com.dabeen.dnd.model.network.request.PymtExecutionApiRequest;
-import com.dabeen.dnd.model.network.response.HelpCompUserInfoApiResponse;
 import com.dabeen.dnd.model.network.response.PymtApiResponse;
+import com.dabeen.dnd.model.pk.BsktCompPK;
+import com.dabeen.dnd.model.pk.MileageUseHistPK;
+import com.dabeen.dnd.repository.BsktCompRepository;
 import com.dabeen.dnd.repository.BsktRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
+import com.dabeen.dnd.repository.MileageUseHistRepository;
+import com.dabeen.dnd.repository.UserRepository;
+import com.dabeen.dnd.repository.mapper.BsktMapper;
 import com.dabeen.dnd.service.BaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +50,20 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
     private BsktRepository bsktRepository;
 
     @Autowired
-    private BsktApiService bsktApiService;
+    private BsktMapper bsktMapper;
 
+    @Autowired
+    private BsktCompRepository bsktCompRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+    
     @Autowired
     private HelpSupplCompRepository helpSupplCompRepository;
 
     @Autowired
-    private BsktCompApiService bsktCompApiService;
+    private MileageUseHistRepository mileageUseHistRepository;
+   
 
     @Override
     public Header<PymtApiResponse> create(Header<PymtApiRequest> request) {
@@ -131,45 +148,72 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
 
     // 결제 실행 API, 장바구니와 장바구니 구성 엔터티를 함께 생성
     public Header<?> execution(Header<PymtExecutionApiRequest> request){
-        PymtExecutionApiRequest requstData = request.getData();
+        PymtExecutionApiRequest requestData = request.getData();
         BigDecimal price = new BigDecimal("0.0");
         // 금액 합산을 위해. 한 트랜잭션 단위임으로 bskt를 통해 합산 금액을 못 불러옴
 
         // Bskt를 생성함
-        BsktApiRequest bsktApiRequest = BsktApiRequest.builder()
-                                                    .bsktUserNum(requstData.getUserNum())
-                                                    .totalPrice(BigDecimal.valueOf(0))
-                                                    .mileageUseWhet(requstData.getPymtMthdType() == PymtMthdType.m ? Whether.y : Whether.n)
-                                                    .build();
+        Map<String, Object> bsktMap = new HashMap<>();
 
-        String bsktNum = bsktApiService.create(Header.OK(bsktApiRequest))
-                                        .getData().getBsktNum();
+        bsktMap.put("bsktNum", null);
+        bsktMap.put("bsktUserNum", requestData.getUserNum());
+        bsktMap.put("totalPrice", BigDecimal.valueOf(0));
+        bsktMap.put("mileageUseWhet", requestData.getPymtMthdType() == PymtMthdType.m ? Whether.y : Whether.n);
+
+        bsktMapper.insert(bsktMap); 
         
+        String bsktNum = bsktMap.get("bsktNum").toString();
+
         // 입력받은 helpNums를 기반으로 공급자를 찾아 bsktComp을 생성
-        for(String helpNum : requstData.getHelpNums()){
+        for(String helpNum : requestData.getHelpNums()){
             List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
             
             for(HelpSupplComp helpSupplComp: helpSupplComps){
                 price = price.add(helpSupplComp.getHelp().getPrice());
 
-                BsktCompApiRequest bsktCompApiRequest = BsktCompApiRequest.builder()
-                                                                            .bsktNum(bsktNum)
-                                                                            .helpNum(helpNum)
-                                                                            .supplNum(helpSupplComp.getHelpSupplCompPK().getSupplNum())
-                                                                            .indvHelpPrice(helpSupplComp.getHelp().getPrice())
-                                                                            .build();
-                bsktCompApiService.create(Header.OK(bsktCompApiRequest));
+                BsktComp bsktComp = BsktComp.builder()
+                                            .bsktCompPK(new BsktCompPK())
+                                            .bskt(bsktRepository.findById(bsktNum).orElse(null))
+                                            .helpSupplComp(helpSupplComp)
+                                            .indvHelpPrice(helpSupplComp.getHelp().getPrice()).build();
+
+                bsktCompRepository.save(bsktComp);
             }
         }
 
-        // bskt를 기반으로 pymt 생성
-        PymtApiRequest pymtApiRequest = PymtApiRequest.builder()
-                                                        .pymtNum(bsktNum)
-                                                        .pymtMthdType(requstData.getPymtMthdType())
-                                                        .pymtPrice(price)
-                                                        .refdWhet(Whether.n)
-                                                        .build();
+        // 마일리지를 사용한 경우, 마일리지 사용이력 엔터티 생성
+        if(requestData.getPymtMthdType() == PymtMthdType.m){
+            User user = userRepository.findById(requestData.getUserNum())
+                                        .orElseThrow(() -> new NotFoundException("User"));
 
-        return Header.OK(create(Header.OK(pymtApiRequest)).getData());
+            // 보유 마일리지가 가격보다 작을때 에러
+            if(user.getOwnMileage().compareTo(price) == -1)
+             throw new MileageLessThanPriceException();
+
+            MileageUseHist mileageUseHist = MileageUseHist.builder()
+                                                            .mileageUseHistPK(new MileageUseHistPK(null, LocalDateTime.now()))
+                                                            .user(userRepository.findById(requestData.getUserNum())
+                                                                                .orElseThrow(() -> new NotFoundException("User")))
+                                                            .useType(MileageUseType.u)
+                                                            .usePrice(price)
+                                                            .bskt(bsktRepository.findById(bsktNum).orElse(null))
+                                                            .build();
+
+            mileageUseHistRepository.save(mileageUseHist);
+        }
+
+        // bskt를 기반으로 pymt 생성
+        Pymt pymt = Pymt.builder()
+                        .pymtNum(null)
+                        .bskt(bsktRepository.findById(bsktNum).orElse(null))
+                        .pymtDttm(LocalDateTime.now())
+                        .pymtMthdType(requestData.getPymtMthdType())
+                        .pymtPrice(price)
+                        .refdWhet(Whether.n)
+                        .build();
+              
+        Pymt newPymt = baseRepository.save(pymt);
+
+        return Header.OK(response(newPymt));
     } 
 }
