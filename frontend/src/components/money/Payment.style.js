@@ -19,7 +19,16 @@ export const PaymentModal = styled(Modal)`
       min-width: 320px;
     }
     & .paymentPrice {
+        display: flex;
+        align-items: flex-end;
         font-size : 28px;
+        padding-bottom: 3px;
+        /* border-bottom: 1px solid #E9E9E9; */
+        margin-bottom: 25px;
+        & div{
+            color: #FF9644;
+            font-size: 30px;
+        }
     }
     & button {
         width : 80px;
@@ -43,6 +52,7 @@ export const PaymentModal = styled(Modal)`
     }
     & .bankInfo {
       display : flex;
+      justify-content: center;
       align-items : center;
       & input {
           height : 38px;

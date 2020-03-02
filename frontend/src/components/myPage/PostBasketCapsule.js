@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
-import { PostBasketCapsuleUpperDiv, PostBasketCapsuleWrapper, PostBasketCheckIcon, PostBasketContent } from './PostBasketCapsule.style';
+import { PostBasketCapsuleUpperDiv, PostBasketCapsuleWrapper, BasketCapsuleCircle, PostBasketCheckIcon, PostBasketContent, PostBasketContentBox } from './PostBasketCapsule.style';
 
 const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
   const [iconState, setIconState] = useState(false);
@@ -17,10 +17,10 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
     }
     if(iconState) {
       setAllPrice(prev => prev + post.price);
-      setSelectHelps(prev => [...prev, post.help_num])
+      setSelectHelps(prev => [...prev, post.helpNum])
     } else {
       setAllPrice(prev => prev - post.price);
-      setSelectHelps(prev => prev.filter(p => p!== post.help_num));
+      setSelectHelps(prev => prev.filter(p => p !== post.helpNum));
     }
   }, [iconState]);
   
@@ -31,28 +31,35 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
         setcolor={iconState.toString()}
         onClick={onClickIcon}
       />
-      <PostBasketCapsuleUpperDiv>
-        <div className="BasketCapsuleCapture"></div>
+      <PostBasketCapsuleUpperDiv propImage={'/images/main2.jpg'}>
+        <BasketCapsuleCircle><div className="Circle"></div></BasketCapsuleCircle>
+        <img className="BasketCapsuleCapture" src={'/images/main2.jpg'}/>
         <PostBasketContent>
-          <div className="PostBasketContentTitle">{post.helpTitle}</div>
-          <div className="PostBasketContentInfo">
-            <div className="PostBasketContentInfoMoney">{post.price}</div>
-            <div className="PostBasketContentInfoTimeWrapper">
-              <div className="PostBasketContentInfoFinishTime">
-                신청마감 : {post.helpDeadLine}
-              </div>
-              <div className="PostBasketContentInfoDoingTime">
-                수행일 : {post.helpExecDate}
-              </div>
+          <div className="PostBasketTitle">{post.helpTitle}</div>
+          <PostBasketContentBox>
+            <div className="PostBasketPeople">
+              신청인원 :
+              <div className="PostBasketPeopleApplied">{post.approveNum}</div>
+              /
+              <div className="PostBasketPeopleApply">{post.applyNum}</div>
+            </div>
+          </PostBasketContentBox>
+          <PostBasketContentBox>
+            <div className="PostBasketMoney">
+              가격 :
+              <div className="PostBasketMoneyValue">{post.price}</div>
+              원
+            </div>
+            <div className="PostBasketPayCheck">결제가능</div>
+          </PostBasketContentBox>
+          <div className="PostBasketTimeWrapper">
+            <div className="PostBasketFinishTime">
+              신청마감 : {post.helpDeadLine && post.helpDeadLine.slice(0, 10)}
+            </div>
+            <div className="PostBasketDoingTime">
+              수행일 : {post.helpExecDate && post.helpExecDate.slice(0, 10)}
             </div>
           </div>
-          <div className="PostBasketContentPeople">
-            <div className="PostBasketContentPeopleApplied">
-              신청인원 : /{post.postNum}
-            </div>
-            <div className="PostBasketContentPeopleBtn">재 선택</div>
-          </div>
-          <div className="PostBasketContentPayCheck">결제가능</div>
         </PostBasketContent>
       </PostBasketCapsuleUpperDiv>
     </PostBasketCapsuleWrapper>
