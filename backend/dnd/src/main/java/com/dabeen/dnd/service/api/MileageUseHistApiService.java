@@ -64,7 +64,7 @@ public class MileageUseHistApiService {
                                                         .build();
 
         MileageUseHist newMileageUseHist = mileageUseHistRepository.save(mileageUseHist);
-        log.info("{}", newMileageUseHist);
+      
         return Header.OK(response(newMileageUseHist));
     }
 
