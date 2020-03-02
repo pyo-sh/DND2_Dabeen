@@ -26,7 +26,6 @@ public class MileageUseHistApiRequest {
     @NotEmpty(message = "값이 존재해야 합니다.")
     private String userNum; // 사용자 번호
 
-    @NotNull(message = "값이 존재해야 합니다.")
     private LocalDateTime mileageUseDttm; // 마일리지 사용 일시
     
     @NotNull(message = "값이 존재해야 합니다.")
