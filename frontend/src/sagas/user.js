@@ -112,23 +112,38 @@ function* watchSignUp() {
 
 // 유저 정보 수정
 function editUserInfoAPI(data){
-    const reqData = {
-        user_num: data.userNum,
-        nickname: data.nickname,
-        email: data.email,
-        phone_num: data.phoneNum,
-        address: data.address,
-        pic_path: data.picPath,
+    const reqData={};
+    if(data.password){
+        reqData.data = {
+            user_num: data.userNum,
+            pwd: data.password,
+            nickname: data.nickname,
+            email: data.email,
+            phone_num: data.phoneNum,
+            address: data.address,
+            pic_path: data.picPath,
+            itdc_cont: data.introduce
+        }
+    } else{
+        reqData.data = {
+            user_num: data.userNum,
+            nickname: data.nickname,
+            email: data.email,
+            phone_num: data.phoneNum,
+            address: data.address,
+            pic_path: data.picPath,
+            itdc_cont: data.introduce
+        }
     }
-
+    
     const {cookie} = data;
     return axios.put('/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {
     try {
-        const result = yield call(editUserInfoAPI, action.data);
-        yield put(editUserInfoSuccessAction(result.data.data));
+        yield call(editUserInfoAPI, action.data);
+        yield put(editUserInfoSuccessAction(action.data));
     }catch(e){
         console.error(e);
         yield put(editUserInfoFailureAction(e));

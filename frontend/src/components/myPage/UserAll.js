@@ -18,7 +18,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
           <div className='userInfomation'>
             <img className='userImage' src={userInfo.picPath || '/images/defaultProfile.png'}></img>
             <div className='userIntroduce'>
-              <h1 className='userNickname'>{userInfo.nickname}</h1>
+              <h1 className='userNickname'>{userInfo.nickName}</h1>
               {userInfo.userRole === 'y' ? (
                 <div className='userRate'>
                   <div>
@@ -36,7 +36,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                   다비너 신청
                 </button>
               )}
-              <div className='userParagraph'>안녕하세요 ~ 입니다</div>
+              <div className='userParagraph'>안녕하세요 {userInfo.nickName}입니다</div>
             </div>
           </div>
           <ul className='contentNavbar'>

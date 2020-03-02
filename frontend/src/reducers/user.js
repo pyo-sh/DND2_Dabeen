@@ -36,7 +36,7 @@ export const initialState = {
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
-    pic_path: undefined, // 프로필사진 주소
+    picPath: undefined, // 프로필사진 주소
     // 생각해보니 주민 사진은 우리는 필요없다.
     avgRate: undefined, // 평점 평균
     ownMilege: undefined // 소유 마일리지
@@ -175,10 +175,12 @@ const reducer = (state = initialState, action) => {
         draft.isUpdatingInfo = false;
         // draft.userInfo = action.data;
         // 임시로 redux만 수정
-        draft.userInfo.nickName = action.data.nickName;
-        draft.userInfo.email = action.data.email;
-        draft.userInfo.telephone = action.data.telephone;
-        draft.userInfo.address = action.data.address;
+        draft.me.nickName = action.data.nickname;
+        draft.me.email = action.data.email;
+        draft.me.phoneNumber = action.data.phoneNum;
+        draft.me.address = action.data.address;
+        draft.me.introduce = action.data.introduce;
+        draft.me.picPath = action.data.picPath;
         break;
       }
       case EDIT_USERINFO_FAILURE: {
@@ -202,7 +204,7 @@ const reducer = (state = initialState, action) => {
           draft.me.phoneNumber = action.data.info.phone_num;
 
           draft.me.userRole = action.data.info.suppl_whet;
-          draft.me.pic_path = action.data.info.pic_path;
+          draft.me.picPath = action.data.info.pic_path;
           draft.me.avgRate = action.data.info.avg_rate;
           draft.me.ownMilege = action.data.info.own_mileage || 0;
         }
@@ -218,7 +220,7 @@ const reducer = (state = initialState, action) => {
           draft.selectUser.phoneNumber = action.data.info.phone_num;
 
           draft.selectUser.userRole = action.data.info.suppl_whet;
-          draft.selectUser.pic_path = action.data.info.pic_path;
+          draft.selectUser.picPath = action.data.info.pic_path;
           draft.selectUser.avgRate = action.data.info.avg_rate;
         }
         break;
@@ -246,7 +248,7 @@ const reducer = (state = initialState, action) => {
         draft.me.phoneNumber = action.data.phone_num;
 
         draft.me.userRole = action.data.suppl_whet;
-        draft.me.pic_path = action.data.pic_path;
+        draft.me.picPath = action.data.pic_path;
         draft.me.avgRate = action.data.avg_rate;
         draft.me.ownMilege = action.data.own_mileage || 0;
         draft.applyDabeenerSuccess = true;
