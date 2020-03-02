@@ -26,6 +26,9 @@
             into help(help_num,cat_num,cnsr_num,title,exec_loc,price,pref_suppl_num,pref_help_exec_dttm,help_aply_cls_dttm,cont)
             values (#{helpNum}, #{catNum}, #{cnsrNum}, #{title}, #{execLoc}, #{price}, #{prefSupplNum}, #{prefHelpExecDttm}, #{helpAplyClsDttm}, #{cont})
     </insert>
+    <delete id="delete" parameterType="string">
+        delete from help where help_num = #{helpNum} 
+    </delete>
 </mapper>
 
 <!--

@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers("/api/msg/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/user/*/quests").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers("/api/help/*/no-payment-helps").hasAnyRole("USER", "SUPPLER", "ADMIN")
+            .antMatchers("/api/user/supplier").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.POST, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.PUT, "/api/help-pic").hasAnyRole("USER", "SUPPLER", "ADMIN")

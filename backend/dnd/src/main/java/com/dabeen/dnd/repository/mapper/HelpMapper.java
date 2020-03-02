@@ -11,4 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface HelpMapper{
     void insert(Map<String,Object> helpMap);
+    void delete(String helpNum);
 }

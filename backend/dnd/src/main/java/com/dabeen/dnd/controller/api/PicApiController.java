@@ -32,7 +32,7 @@ public class PicApiController {
     @Autowired
     private PicApiService picApiService;
 
-    @PostMapping(value = {"/upload/user", "/upload/help"})
+    @PostMapping(value = {"/upload/user", "/upload/help", "/upload/rrn"})
     public Header<String> upload(@RequestParam MultipartFile pic, HttpServletRequest request) {
         try {
             // 마지막이 help인지 user인지 알아내기 위해
