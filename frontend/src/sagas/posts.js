@@ -68,7 +68,7 @@ function updateHelpPostAPI(data) {
         data: {
             help_num: data.helpNum,
             cnsr_num: data.userNum,
-            help_pstn_dttm: data.helpPostDate,
+            // help_pstn_dttm: data.helpPostDate,
             cat_num: data.categoryNum,
             title: data.helpTitle,
             exec_loc: data.execLoc,
@@ -78,7 +78,8 @@ function updateHelpPostAPI(data) {
             help_aply_cls_dttm: data.helpDeadLine,
             cont: data.helpContent,
             help_aprv_whet: data.isHelpApprove,
-            pymt_whet:"n"
+            pymt_whet: data.isPaymentApprove,
+            help_pic: data.helpPic
         }
     }
     const {cookie} = data;
@@ -86,6 +87,7 @@ function updateHelpPostAPI(data) {
 };
 
 function* updateHelpPost(action) {
+    console.log(action.data)
     try {
         yield call(updateHelpPostAPI, action.data);
         yield put(updateHelpPostSuccessAction(action.data));
@@ -99,8 +101,8 @@ function* watchUpdateHelpPost() {
     yield takeLatest(UPDATE_HELPPOST_REQUEST, updateHelpPost);
 };
 
-function removeHelpPostAPI({helpNum, cookie}) {
-    return axios.delete(`/help/${helpNum}`, {headers : {Authorization: `Bearer ${cookie}`}});
+function removeHelpPostAPI({help_num, cookie}) {
+    return axios.delete(`/help/${help_num}`, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* removeHelpPost(action) {

@@ -9,13 +9,15 @@ import SearchJuso from '../map/SearchJuso';
 import { Modal, Icons, Content, Title, HelpPic, DetailSlick, slickSetting, ApplyCheck, EditTitle, Edit, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
 import { updateHelpPostRequestAction, removeHelpPostRequestAction } from '../../reducers/posts';
 import { getCookie } from '../../utils/cookieFunction';
+import Upload from '../uploadImages/Upload';
 
-const PostDetail = ({setVisible, data}) => {
+const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExec = data.helpExecDate.split('T');     // helpExec[0]=날짜 / helpExec[1]=시간
     const helpDeadline = data.helpDeadLine.split('T');  // helpDeadline[0]=날짜 / helpDeadline[1]=시간
     const helpExecHour = parseInt(helpExec[1].substring(0,2));
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
-    const imagesURL = data.helpPicList.map(pic => pic.path);    //path만 따로 배열에 저장
+    const imagesURL = data.helpPic.map(pic => pic.path);    //path만 따로 배열에 저장
+    // imgPaths.map(pic => delete pic.help_num)
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
@@ -28,14 +30,15 @@ const PostDetail = ({setVisible, data}) => {
     const [editExecLoc, setEditExecLoc] = useState(data.execLoc);  //수정할 주소
     const [editContent, setEditContent] = inputChangeHook(data.helpContent);    //수정할 요구사항
     const [editImages, setEditImages] = useState(imagesURL);       //도움 이미지
-    const [editImgPaths, setEditImgPaths] = useState(data.helpPicList);   //Request에 보낼 이미지
+    const [editImgPaths, setEditImgPaths] = useState([]);   //Request에 보낼 이미지
     const {me} = useSelector(state => state.user);  //내 정보
     const dispatch = useDispatch();
     const dateFormat = 'YYYY-MM-DD';
-    const timeFormat = 'HH:mm:ss';
+    const timeFormat = 'HH:mm';
     console.dir(data);
+    // setEditImgPaths(data.helpPic.map(pic => editImages.push({"pic_ornu": pic.pic_ornu, "path": pic.path})))
 
-    console.log(imagesURL);
+    console.log(editImgPaths);
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -43,7 +46,8 @@ const PostDetail = ({setVisible, data}) => {
             if(hour == 12) return <div>PM{time.substring(0, 5)}</div>
             else{
                 const hours = String(hour-12);
-                return <div>PM{hours + time.substring(2, 5)}</div>
+                if(parseInt(hours) <= 9) return <div>PM0{hours + time.substring(2, 5)}</div>
+                else return <div>PM{hours + time.substring(2, 5)}</div>
             }
         }
     }, []);
@@ -55,12 +59,13 @@ const PostDetail = ({setVisible, data}) => {
 
     //수정 완료 버튼 눌렀을 때
     const onConfirm = useCallback(() => {
+        setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
         dispatch(updateHelpPostRequestAction({
-                helpPostDate: data.helpPostDate,
+                // helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
-                categoryNum: data.categoryNum,
+                categoryNum: String(categoryNum),
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
                 helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
                 postNum: parseInt(editNeedPersonnel),
@@ -69,26 +74,13 @@ const PostDetail = ({setVisible, data}) => {
                 helpEndTime: data.helpEndTime,
                 isHelpApprove: data.isHelpApprove,
                 helpContent: editContent,
-                payment: data.payment,
+                isPaymentApprove: data.isPaymentApprove,
+                helpPic: editImgPaths,
                 cookie : getCookie()
             })
         );
         setEdit(prev => !prev);
-    }, [editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editContent]);
-
-    //수정 취소 눌렀을 경우
-    // const backPost = useCallback(() => {
-    //     setEdit(prev => !prev);
-    //     // setEditTitle(data.helpTitle);
-    //     // setEditHelpExecDate(helpExec[0]);
-    //     // setEditHelpExecTime(helpExec[1]);
-    //     // setEditHelpDeadLineDate(helpDeadline[0]);
-    //     // setEditHelpDeadLineTime(helpDeadline[1]);
-    //     // setEditNeedPersonnel(data.postNum);
-    //     // setEditPrice(data.price);
-    //     // setEditExecLoc(data.execLoc);
-    //     // setEditContent(data.helpContent);
-    // }, []);
+    }, [editTitle, editHelpDeadLineDate, editHelpDeadLineTime, editHelpExecDate, editHelpExecTime, editNeedPersonnel, editPrice, editExecLoc, editContent, editImages, editImgPaths]);
     
     const onChangeHelpDeadlineDate = useCallback((date, dateString) => {
         setEditHelpDeadLineDate(dateString);
@@ -113,12 +105,34 @@ const PostDetail = ({setVisible, data}) => {
     // }, []);
 
     //게시글 삭제 버튼 눌렀을 때
-    const deletePost = useCallback((id) => () => {
-        // console.log(helpNum)
-        dispatch(removeHelpPostRequestAction({helpNum: id, cookie : getCookie()}));
+    const deletePost = useCallback((helpNum) => () => {
+        if(imagesURL.length != 0){
+            console.log(imagesURL)
+            const imageFormData = new FormData();
+            imagesURL.map(url => imageFormData.append('url', url));
+            try{
+                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            }catch(e){
+                console.log(e.response);
+            }
+        }
+        console.log(helpNum)
+        dispatch(removeHelpPostRequestAction({help_num: helpNum, cookie : getCookie()}));
     }, []);
 
-    console.log(data.userNum)
+    //수정 취소 눌렀을 경우
+    // const backPost = useCallback(() => {
+    //     setEdit(prev => !prev);
+    //     setEditTitle(data.helpTitle);
+    //     setEditHelpExecDate(helpExec[0]);
+    //     setEditHelpExecTime(helpExec[1]);
+    //     setEditHelpDeadLineDate(helpDeadline[0]);
+    //     setEditHelpDeadLineTime(helpDeadline[1]);
+    //     setEditNeedPersonnel(data.postNum);
+    //     setEditPrice(data.price);
+    //     setEditExecLoc(data.execLoc);
+    //     setEditContent(data.helpContent);
+    // }, []);
     return (
         <Modal>
         <div>
@@ -137,7 +151,7 @@ const PostDetail = ({setVisible, data}) => {
                         <Popconfirm
                             placement="bottom"
                             title="수정을 그만두시겠습니까?"
-                            onConfirm={useCallback(()=>{setEdit(prev => !prev)}, [])}
+                            onConfirm={useCallback(() => {setEdit(prev => !prev)}, [])}
                             onCancel={edit}
                             okText="네"
                             cancelText="아니요"
@@ -188,7 +202,7 @@ const PostDetail = ({setVisible, data}) => {
                     </div>
                 </div>
             </Title>
-            {imagesURL.length === 0 ?
+            {!edit && (imagesURL.length === 0 ?
             <DetailSlick {...slickSetting}>
             <img className="PostDetailImage" src={'/images/main1.jpg'}/>
             <img className="PostDetailImage" src={'/images/main2.jpg'}/>
@@ -197,17 +211,16 @@ const PostDetail = ({setVisible, data}) => {
             </DetailSlick>
             :
             imagesURL.length === 1 ?
-                <HelpPic>
-                <img className="PostDetailImage" src={imagesURL} />
-                </HelpPic>
-                :
-                <DetailSlick {...slickSetting}>
-                {imagesURL.map((url, i) => {
-                    <img className="PostDetailImage" src={url} key={url}/>
-                })}
-                </DetailSlick>
-            }
-            
+            <HelpPic>
+            <img className="PostDetailImage" src={imagesURL} />
+            </HelpPic>
+            :
+            <DetailSlick {...slickSetting}>
+            {imagesURL.map((url, i) => {
+                <img className="PostDetailImage" src={url} key={url} alt={url}/>
+            })}
+            </DetailSlick>
+            )}
             <ApplicationInfo>
                 <div className="ApplicationInfoBoxWrapper">
                     <ApplicationInfoBox>
@@ -250,6 +263,7 @@ const PostDetail = ({setVisible, data}) => {
                                     />
                                 <TimePicker
                                     className="ApplicationInfoBoxTimePicker"
+                                    format="HH:mm"
                                     minuteStep={10}
                                     defaultValue={moment(editHelpDeadLineTime, timeFormat)}
                                     onChange={onChangeHelpDeadlineTime}
@@ -269,6 +283,7 @@ const PostDetail = ({setVisible, data}) => {
                                     />
                                 <TimePicker
                                     className="ApplicationInfoBoxTimePicker"
+                                    format="HH:mm"
                                     minuteStep={10}
                                     defaultValue={moment(editHelpExecTime, timeFormat)}
                                     onChange={onChangeHelpExecTime}
@@ -303,11 +318,11 @@ const PostDetail = ({setVisible, data}) => {
                 {!edit
                 ?   <div className="ContentMapWrapper">
                         <div className="ContentMap">
-                            <MyLocation myLocation={data.location}/>    
+                            <MyLocation myLocation={data.execLoc}/>    
                         </div>    
                         <div className="ContentMapInfo">
                             지도 위치
-                            <div className="ContentMapLocation">{data.location}</div>
+                            <div className="ContentMapLocation">{data.execLoc}</div>
                         </div>
                     </div>
                 :   <div className="ContentMapWrapper">
@@ -327,6 +342,11 @@ const PostDetail = ({setVisible, data}) => {
                 :   <textarea required value={editContent} onChange={setEditContent}/>
                 }
             </ContentItem>
+            {edit&&(<ContentItem>
+                <div className="ContentTitle">사진첨부</div>
+                <Upload images={editImages} setImages={setEditImages} imgPaths={editImgPaths} setImgPaths={setEditImgPaths}/>
+            </ContentItem>
+            )}
         </Content>
         </div>
         </Modal>

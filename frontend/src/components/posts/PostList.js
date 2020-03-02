@@ -27,7 +27,7 @@ const PostList = ({ categoryNum }) => {
           <>
             {helpPosts.map((help, index) => (
               <ColCapsule xs={24} md={12} xl={8} key={index}>
-                <PostCapsule data={help} />
+                <PostCapsule data={help} categoryNum={categoryNum}/>
               </ColCapsule>
             ))}
           </>

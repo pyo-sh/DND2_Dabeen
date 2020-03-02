@@ -5,24 +5,7 @@ export const initialState = {
   livePosts : [],
   isUserResult : false,
 
-  helpPosts : [//{
-  //   helpNum: "20200228", // 도움번호
-  //   userNum: "2002290004",
-  //   helpPostDate: "2020-02-28T10:12:12", // 도움게시일시
-  //   helpTitle: "학교 대신 가주세요",  //도움제목
-  //   categoryNum: "1000", // 카테고리번호
-  //   price: 30000, // 금액
-  //   helpContent: "학교 가기싫어영 대신 가줘요오오옹", // 내용
-  //   helpDeadLine: "2020-02-29T10:12:12", // 도움신청마감일시
-  //   isHelpApprove: 'n', // 도움승인여부
-  //   helpEndTime: "9999-12-31T23:59:59",
-  //   postNum: 1, // 선호공급자수
-  //   helpExecDate: "2020-03-16T09:00:00", // 선호도움이행일시
-  //   execLoc: "부산 남구 용소로 45", // 이행장소
-  //   payment: "n"
-  // }
-  ],
-  helpImages: [], //  도움 사진 첨부
+  helpPosts : [],
   totalPages: 1,
   helpsPerPage: 0,
   totalHelps: 0,
@@ -161,10 +144,12 @@ const reducer = (state = initialState, action) => {
           picPath: post.cnsr_user.pic_path, // 프로필사진경로명
           helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
           isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          isPaymentApprove: post.pymt_whet,
           postNum: post.pref_suppl_num, // 선호공급자수
           helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
+          helpEndTime: post.help_end_dttm,  //도움 마감
           execLoc: post.exec_loc, // 이행장소
-          helpPicList: post.help_pics // 도움사진목록,
+          helpPic: post.help_pics // 도움사진목록,
         }));
         draft.totalHelps = action.data.page.total_datas;
         draft.totalPages = action.data.page.total_pages;
@@ -199,8 +184,8 @@ const reducer = (state = initialState, action) => {
           postNum: action.data.pref_suppl_num, // 선호공급자수
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
           execLoc: action.data.exec_loc, // 이행장소
-          payment: action.data.pymt_whet, //결제 여부
-          helpPicList: action.data.help_pics//도움 사진 리스트
+          isPaymentApprove: action.data.pymt_whet, // 결제여부
+          helpPic: action.data.help_pics//도움 사진 리스트
         });
         // draft.maxId += 1;
         draft.helpPostAdded = true;
@@ -275,8 +260,8 @@ const reducer = (state = initialState, action) => {
             postNum: post.pref_suppl_num, // 선호공급자수
             helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
             helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
-            location: post.exec_loc, // 이행장소
-            helpPicList: post.help_pics,// 도움사진목록,
+            execLoc: post.exec_loc, // 이행장소
+            helpPic: post.help_pics,// 도움사진목록,
             
             userNum : post.cnsr_user.user_num,
             userId: post.cnsr_user.user_id,
@@ -317,7 +302,7 @@ const reducer = (state = initialState, action) => {
           helpNum: post.help.help_num, // 도움번호
           helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
           helpEndTime: post.help.help_end_dttm,  // 도움마감일시
-          // categoryNum: post.help.cat_num, // 카테고리번호
+          categoryNum: post.help.cat_num, // 카테고리번호
 
           userNum : post.help.cnsr_user.user_num,
           userName : post.help.cnsr_user.user_name,
@@ -335,12 +320,12 @@ const reducer = (state = initialState, action) => {
           userMileage: post.help.cnsr_user.own_mileage,
 
           helpTitle: post.help.title,  // 타이틀
-          location: post.help.exec_loc, // 이행장소
+          execLoc: post.help.exec_loc, // 이행장소
           price: post.help.price, // 금액
           postNum: post.help.pref_suppl_num, // 선호공급자수
           helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
           helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.help.cont, // 내용
+          helpContent: post.help.cont, // 내용
           isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
           isPaymentApprove: post.help.pymt_whet, // 결제여부
           helpPic : post.help.help_pics, // 사진
@@ -381,7 +366,7 @@ const reducer = (state = initialState, action) => {
           helpNum: post.help.help_num, // 도움번호
           helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
           helpEndTime: post.help.help_end_dttm,  // 도움마감일시
-          // categoryNum: post.help.cat_num, // 카테고리번호
+          categoryNum: post.help.cat_num, // 카테고리번호
 
           userNum : post.help.cnsr_user.user_num,
           userName : post.help.cnsr_user.user_name,
@@ -399,12 +384,12 @@ const reducer = (state = initialState, action) => {
           userMileage: post.help.cnsr_user.own_mileage,
 
           helpTitle: post.help.title,  // 타이틀
-          location: post.help.exec_loc, // 이행장소
+          execLoc: post.help.exec_loc, // 이행장소
           price: post.help.price, // 금액
           postNum: post.help.pref_suppl_num, // 선호공급자수
           helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
           helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.help.cont, // 내용
+          helpContent: post.help.cont, // 내용
           isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
           isPaymentApprove: post.help.pymt_whet, // 결제여부
           helpPic : post.help.help_pics, // 사진

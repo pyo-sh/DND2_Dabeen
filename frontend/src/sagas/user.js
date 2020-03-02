@@ -112,7 +112,7 @@ function* watchSignUp() {
 
 // 유저 정보 수정
 function editUserInfoAPI({userLog, cookie}){
-    return axios.put('/api/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.put('/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {
