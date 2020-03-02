@@ -11,10 +11,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 import com.dabeen.dnd.model.enumclass.Whether;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +20,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonDeserialize
 public class UserApiRequest {
     // requset에서 전달될 데이터
     private String userNum; // 사용자 번호
@@ -68,4 +63,4 @@ public class UserApiRequest {
     
     @Min(value = 0, message = "값이 0 이상이어야 합니다.")
     private BigDecimal ownMileage; // 보유 마일리지
-}
+}   

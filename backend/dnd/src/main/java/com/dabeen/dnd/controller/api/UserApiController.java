@@ -14,6 +14,7 @@ import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
 import com.dabeen.dnd.model.network.request.SupplierApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
+import com.dabeen.dnd.model.network.request.UserUpdateApiRequest;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
 import com.dabeen.dnd.model.network.response.PostApiResponse;
 import com.dabeen.dnd.model.network.response.UserApiResponse;
@@ -66,8 +67,8 @@ public class UserApiController{
 
     // Update 메소드
     @PutMapping("")
-    public Header<UserApiResponse> update(@RequestBody @Valid Header<UserApiRequest> request, Authentication authentication){
-        UserApiRequest reqDate = request.getData();
+    public Header<UserApiResponse> update(@RequestBody @Valid Header<UserUpdateApiRequest> request, Authentication authentication){
+        UserUpdateApiRequest reqDate = request.getData();
         
         this.idVerification(authentication, reqDate.getUserNum());
         this.validate(reqDate);
