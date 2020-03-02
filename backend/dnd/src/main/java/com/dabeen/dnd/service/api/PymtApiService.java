@@ -165,7 +165,7 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
         // bskt를 기반으로 pymt 생성
         PymtApiRequest pymtApiRequest = PymtApiRequest.builder()
                                                         .pymtNum(bsktNum)
-                                                        .pymtMthdType(PymtMthdType.c)
+                                                        .pymtMthdType(requstData.getPymtMthdType())
                                                         .pymtPrice(price)
                                                         .refdWhet(Whether.n)
                                                         .build();
