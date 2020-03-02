@@ -19,7 +19,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
     // 현재 날짜가 필요할 거 같아서..
     const nowDate = new Date();
     // 로그인하는데 유저의 필요한 정보의 state
-    const [profileImage, setProfileImage] = useState([]);
+    const [profileImage, setProfileImage] = useState('');
     const [nickname, changeNickname] = inputCheckChangeHook(userInfo.nickName, [check_eng, check_num, check_kor]);   // 닉네임 state
     const [introduce, changeIntroduce] = inputCheckChangeHook(userInfo.introduce, [/./g]); // 소개 state
     const [password, changePassword] = inputCheckChangeHook('', [check_eng, check_num, check_spc]);   // 비밀번호 state
@@ -39,14 +39,15 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
     
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickModify = useCallback((e) => {
-        if(passwordCheck){
+        if(isPasswordChecked){
             const userLog = {
                 id: userInfo.userId,
                 nickname,
-                password,
+                // password,
                 email,
                 telephone,
                 address,
+                pic_path: profileImage
             }
             dispatch(editUserInfoRequestAction({userLog, cookie : getCookie()}));
         }
@@ -55,12 +56,13 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         }
     }, [
         nickname,
-        password,
+        // password,
         email,
         telephone,
         address,
+        profileImage
     ]);
-
+    console.log(isPasswordChecked)
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
         // console.log(e.target.files[0]);
@@ -69,7 +71,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         try{
             const result = await customAxios.post('/pic/upload/user', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
-            setProfileImage(prev => [...prev, result.data.data]);
+            setProfileImage(result.data.data);
         }catch(e){
             console.log(e.response);
         }

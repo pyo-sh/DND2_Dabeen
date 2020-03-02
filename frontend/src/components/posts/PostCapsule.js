@@ -4,7 +4,7 @@ import { Divider } from "antd";
 import PostDetail from "./PostDetail";
 import { PostCapsuleUpperDiv, LocationIcon, CapsuleTitleWrapper } from './PostCapsule.style';
 
-const PostCapsule = ({ data }) => {
+const PostCapsule = ({ data, categoryNum}) => {
   const [postDetailVisible, setPostDetailVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   // const helpDeadline = data.helpDeadline.split('T');
   // const helpExecDate = data.helpExecDate.split('T');
@@ -60,7 +60,7 @@ const PostCapsule = ({ data }) => {
         </CapsuleTitleWrapper>
       </PostCapsuleUpperDiv>
       {postDetailVisible ? (
-        <PostDetail setVisible={setVisible} data={data} />
+        <PostDetail setVisible={setVisible} data={data} categoryNum={categoryNum}/>
       ) : null}
     </>
   );

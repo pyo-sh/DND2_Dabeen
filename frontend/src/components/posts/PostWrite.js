@@ -42,6 +42,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             try{
                 axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
                 setImages([]);
+                setImgPaths([]);
             }catch(e){
                 console.log(e.response);
             }
@@ -135,14 +136,14 @@ const PostWrite = ({setInvisible, userNum}) => {
                             <div className="postSettingTitle">신청 마감 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD"style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">수행 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
@@ -172,13 +173,13 @@ const PostWrite = ({setInvisible, userNum}) => {
                                     <div style={{fontSize: 23}}>UPLOAD</div>
                                 </div>
                                 <div className="previewImage">
-                                    {images.map((v, i) => {
+                                    {images.map((url, i) => {
                                         return (
-                                        <div key={v} className="imgBorder"> 
-                                        <div className="deleteIcon" onClick={deleteImage(v)}>
+                                        <div key={url} className="imgBorder"> 
+                                        <div className="deleteIcon" onClick={deleteImage(url)}>
                                             <Icon type="close" />
                                         </div>
-                                        <img src={v} alt={v} width="90" height="90"/> 
+                                        <img src={url} alt={url} width="90" height="90"/> 
                                         </div>
                                         )
                                     })}

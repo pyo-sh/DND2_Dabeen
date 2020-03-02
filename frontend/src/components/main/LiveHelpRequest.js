@@ -86,7 +86,7 @@ const LiveHelpRequest = () => {
                     <div className="LiveHelpRequestLocationTriangle"></div>
                     <div className="LiveHelpRequestLocationInfo">
                       <LocationIcon type="environment" />
-                      {help.location}
+                      {help.execLoc}
                     </div>
                   </div>
                   {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
