@@ -64,7 +64,7 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                         .build();
               
         Pymt newPymt = baseRepository.save(pymt);
-   
+
         return Header.OK(response(newPymt));
     }
 
@@ -139,7 +139,7 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
         BsktApiRequest bsktApiRequest = BsktApiRequest.builder()
                                                     .bsktUserNum(requstData.getUserNum())
                                                     .totalPrice(BigDecimal.valueOf(0))
-                                                    .mileageUseWhet(Whether.n)
+                                                    .mileageUseWhet(requstData.getPymtMthdType() == PymtMthdType.m ? Whether.y : Whether.n)
                                                     .build();
 
         String bsktNum = bsktApiService.create(Header.OK(bsktApiRequest))
@@ -169,7 +169,7 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
                                                         .pymtPrice(price)
                                                         .refdWhet(Whether.n)
                                                         .build();
-        
+
         return Header.OK(create(Header.OK(pymtApiRequest)).getData());
     } 
 }

@@ -24,8 +24,11 @@ import com.dabeen.dnd.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Transactional
 @Service
+@Slf4j
 public class MileageUseHistApiService {
     @Autowired
     private MileageUseHistRepository mileageUseHistRepository;
@@ -54,13 +57,14 @@ public class MileageUseHistApiService {
                                                         // 이때 findById의 파라미터가 null이면 오류가 발생하므로 null일 경우 아무 엔터티도 존재하지 않는 '0'으로 대체
                                                         .bskt(bsktRepository.findById(requestData.getBsktNum() == null ? "0" : requestData.getBsktNum())
                                                                             .orElse(null))
+                                                        .wdrlBank(requestData.getWdrlBank())
                                                         .wdrlAcctNum(requestData.getWdrlAcctNum())
                                                         .pymt(pymtRepository.findById(requestData.getPymtNum() == null ? "0" : requestData.getPymtNum())
                                                                             .orElse(null))
                                                         .build();
 
         MileageUseHist newMileageUseHist = mileageUseHistRepository.save(mileageUseHist);
-        
+        log.info("{}", newMileageUseHist);
         return Header.OK(response(newMileageUseHist));
     }
 
@@ -100,6 +104,7 @@ public class MileageUseHistApiService {
                     
                     mileageUseHist.setUseType(requestData.getUseType())
                                 .setUsePrice(requestData.getUsePrice())
+                                .setWdrlBank(requestData.getWdrlBank())
                                 .setWdrlAcctNum(requestData.getWdrlAcctNum());
                     return mileageUseHist;
                 })
@@ -127,6 +132,7 @@ public class MileageUseHistApiService {
                                                                             .useType(mileageUseHist.getUseType())
                                                                             .usePrice(mileageUseHist.getUsePrice())
                                                                             .bsktNum(mileageUseHist.getBskt() == null ? null : mileageUseHist.getBskt().getBsktNum())
+                                                                            .wdrlBank(mileageUseHist.getWdrlBank())
                                                                             .wdrlAcctNum(mileageUseHist.getWdrlAcctNum())
                                                                             .pymtNum(mileageUseHist.getPymt() == null ? null : mileageUseHist.getPymt().getPymtNum())
                                                                             .build();
