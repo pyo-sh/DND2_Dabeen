@@ -90,10 +90,13 @@ const LiveHelpRequest = () => {
                     </div>
                   </div>
                   {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
-                  <img className="LiveHelpRequestImage" src={'/images/main2.jpg'}/>
+                  {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path}/>
+                    :
+                    <img className="LiveHelpRequestImage" src={'/images/main2.jpg'}/>
+                  }
                   {/* <Divider orientation="left" style={{ marginTop: "42%" }}/> */}
                   <Divider orientation="left">
-                    <img className="LiveHelpRequestUserPicture" src={'/images/main4.jpg'}/>
+                    <img className="LiveHelpRequestUserPicture" src={help.userPic}/>
                   </Divider>
                   <div className="liveHelpRequestUserInfo">
                     <div className="liveHelpRequestNickname">{help.nickname}</div>

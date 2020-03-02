@@ -269,7 +269,7 @@ const reducer = (state = initialState, action) => {
             userName : post.cnsr_user.user_name,
             userPic : post.cnsr_user.pic_path,
             avgRate : post.cnsr_user.avg_rate,
-            userPic: post.cnsr_user.pic,
+            // userPic: post.cnsr_user.pic,
           }
         ));
         draft.isUserResult = action.data.isResult;

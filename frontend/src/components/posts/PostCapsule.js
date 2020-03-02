@@ -14,6 +14,7 @@ const PostCapsule = ({ data, categoryNum}) => {
     setPostDetailVisible(prev => !prev);
   }, []);
 
+  console.log(data.helpPic)
   return (
     <>
       <PostCapsuleUpperDiv
@@ -29,10 +30,15 @@ const PostCapsule = ({ data, categoryNum}) => {
               {data.execLoc}
             </div>
           </div>
+          {data.helpPic.length ? 
+          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt={data.helpPic[0].path}/>
+          :
           <img className="CapsuleMainImage" src={'/images/main2.jpg'}/>
+          }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              <img className="CapsuleMainPicture" src={'/images/main4.jpg'}/>
+              {/* 프로필 사진 없으면 기본 사진 뜨게 해야합니당 */}
+              <img className="CapsuleMainPicture" src={data.picPath}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>
