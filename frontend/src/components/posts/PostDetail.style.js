@@ -117,7 +117,6 @@ export const DetailSlick = styled(Slick)`
     /* width : -webkit-calc(100% - 40px); */
     & .PostDetailImage{
         width: 100%;
-        max-height: 680px;
         height: 45vw;
         max-height: 300px;
     }
