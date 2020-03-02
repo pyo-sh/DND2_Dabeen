@@ -28,6 +28,7 @@ const Header = ({asPath}) => {
   const clickLogout = useCallback(() => {
     dispatch(logoutRequestAction());
     alert("로그아웃 되었습니다.");
+    Router.push('/');
   }, []);
 
   const clickLogin = useCallback(() => {

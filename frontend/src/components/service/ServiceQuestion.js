@@ -15,14 +15,19 @@ const ServiceQuestion = memo(({visible, setVisible}) => {
 
     const handleOk = useCallback((e) => {
         e.preventDefault();
+        if(question.trim() === '' || title.trim() === ''){
+            alert('제목과 내용을 입력해주세요');
+            return;
+        }
+        dispatch(addQuestionRequestAction({userNum, title, question, cookie : getCookie()}))
         setQuestion('');
         setTitle('');
-        dispatch(addQuestionRequestAction({userNum, title, question, cookie : getCookie()}))
         setVisible(prev => !prev); // 이 때 문의사항을 보내야함!!
     }, [title, question, userNum]);
     const handleCancel = useCallback(() => {
         setVisible(prev => !prev);
     }, []);
+
     return (
         <CustomModal 
             visible={visible}
@@ -30,8 +35,8 @@ const ServiceQuestion = memo(({visible, setVisible}) => {
             onOk={handleOk}
             onCancel={handleCancel}
             footer={[
-                <Button className="submit" key="submit" type="primary" onClick={handleOk}>문의하기</Button>,
-                <Button className ="cancel" key="back" onClick={handleCancel}>취소</Button>
+                <Button className ="cancel" key="back" onClick={handleCancel}>취소</Button>,
+                <Button className="submit" key="submit" type="primary" onClick={handleOk}>문의하기</Button>
             ]}
         >
             <Input placeholder= "제목을 입력하세요." onChange={onChangeTitle} value={title}/>

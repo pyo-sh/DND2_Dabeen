@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS } from '../reducers/user';
+import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS, APPLY_DABEENER_REQUEST, applyDabeenerSuccessAction, applyDabeenerFailureAction } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../utils/cookieFunction';
 
@@ -102,7 +102,6 @@ function* signUp(action) {
         yield put(signUpSuccessAction());
     }catch(e){
         console.error(e);
-        console.log(e.response);
         yield put(signUpFailureAction(e.response.data.description));
         // 적용 되면 e.response.data.description으로 될듯
     }
@@ -113,7 +112,7 @@ function* watchSignUp() {
 
 // 유저 정보 수정
 function editUserInfoAPI({userLog, cookie}){
-    return axios.post('/api/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.put('/api/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {
@@ -129,49 +128,38 @@ function* watchEditUserInfo() {
     yield takeLatest(EDIT_USERINFO_REQUEST, editUserInfo);
 }
 
-// // 아이디 찾기
-// function findUserIdAPI(data){
-//     return axios.post('/api/user/findid', {name: data.name, email : data.emil})
-// }
 
-// function* findUserId(action) {
-//     try {
-//         const result = findUserIdAPI(action.data);
-//         yield put(findUserIdSuccessAction(result.data)); // 메일 날아가는건가?
-//     }catch(e){
-//         console.error(e);
-//         yield put(findUserIdFailureAction(e));
-//     }
-// }
-// function* watchFindId() {
-//     yield takeLatest(FIND_ID_REQUEST, findUserId);
-// }
+// 유저 정보 수정
+function applyDabeenerAPI({userNum, juminImage, profileImage, cookie}){
+    const reqData = {
+        data : {
+            user_num : userNum,
+            pic_path : profileImage,
+            rrn_path : juminImage
+        }
+    };
+    return axios.put('/api/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
 
-// // 비밀번호 찾기
+function* applyDabeener(action) {
+    try {
+        const result = yield call(applyDabeenerAPI, action.data);
+        yield put(applyDabeenerSuccessAction(result.data.data));
+    }catch(e){
+        console.error(e);
+        yield put(applyDabeenerFailureAction(e));
+    }
+}
+function* watchApplyDabeener() {
+    yield takeLatest(APPLY_DABEENER_REQUEST, applyDabeener);
+}
 
-// function findUserPasswordAPI(data){
-//     return axios.post('/api/user/findPwd', {id: data.id, email : data.email})
-// }
-
-// function* findUserPassword(action) {
-//     try {
-//         const result = findUserPasswordAPI(action.data);
-//         yield put(findUserPasswordSuccessAction(result.data)); // 이메일이 날아가는거일듯
-//     }catch(e){
-//         console.error(e);
-//         yield put(findUserPasswordFailureAction(e));
-//     }
-// }
-// function* watchFindPassword() {
-//     yield takeLatest(FIND_PASSWORD_REQUEST, findUserPassword);
-// }
 export default function* userSaga() {
     yield all([
         fork(watchLogin),
         fork(watchLoadUser),
         fork(watchSignUp),
         fork(watchEditUserInfo),
-        // fork(watchFindId),
-        // fork(watchFindPassword)
+        fork(watchApplyDabeener),
     ]);
 };

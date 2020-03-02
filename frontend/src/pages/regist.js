@@ -1,24 +1,80 @@
-import React, { useState, useCallback } from 'react';
-import { RegistSupplierUpperDiv, RegistSupplierLowerDiv, Icons, RegistButton } from '../pagesStyles/regist.style';
-import { Avatar, Upload, message } from 'antd';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { RegistSupplierUpperDiv, RegistSupplierLowerDiv, Icons, RegistButton, UploadProfile,  UploadImage } from '../pagesStyles/regist.style';
+import { Icon } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import Router from 'next/router';
+import { applyDabeenerRequestAction } from '../reducers/user';
+import { getCookie } from '../utils/cookieFunction';
+import customAxios from '../utils/axiosBase';
 
 // 공급자 등록 창
 const Regist = () => {
-    const [previewImage, setPreviewImage] = useState('');
-    const [userImage, setUserImage] = useState(null);
+    const { me, applyDabeenerSuccess } = useSelector(state => state.user);
+    const imageInput = useRef();
+    const juminInput = useRef();
 
-    const onChangeDragger = useCallback((info) => {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList, info);
+    useEffect(() => {
+        if (!me) {
+            alert('로그인을 하셔야합니다.');
+            Router.push('/');
         }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-            setUserImage({ file: info.file.originFileObj });
-            setPreviewImage(URL.createObjectURL(info.file.originFileObj));
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+        else if(me.userRole === 'y'){
+            alert('이미 다비너입니다.');
+            Router.push('/');
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(applyDabeenerSuccess){
+            alert('다비너 신청 되었습니다.')
+            Router.push('/');
+        }
+    }, [applyDabeenerSuccess]);
+    
+    const dispatch = useDispatch();
+    // const [previewImage, setPreviewImage] = useState(me.pic); // 유저 프로필
+    const [userImage, setUserImage] = useState(me.picPath);
+    const [juminImage, setJuminImage] = useState('');
+
+    const onClickProfileUpload = useCallback((inputRef) => () => {
+        inputRef.current.click();
+    }, []);
+
+    const onChangeProfile = useCallback(async (e) => {
+        const profileFormData = new FormData();
+        profileFormData.append('pic', e.target.files[0]);
+        try {
+            const result = await customAxios.post('/pic/upload/user', profileFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setUserImage(result.data.data);
+        } catch(e) {
+            console.error(e);
+        }
+    }, []);
+    
+    const onChangeJumin = useCallback(async (e) => {
+        const juminFormData = new FormData();
+        juminFormData.append('pic', e.target.files[0]);
+        try {
+            const result = await customAxios.post('/pic/upload/rrn', juminFormData,  {headers : {Authorization: `Bearer ${getCookie()}`}})
+            setJuminImage(result.data.data);
+        } catch(e){
+            console.log(e.response);
+        }
+    }, []);
+
+    const deleteImage = useCallback(async () => {
+        try{
+            await axios.post('/pic/delete', juminImage, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setJuminImage('');
+        }
+        catch(e){
+            console.error(e);
+        }
+    }, [juminImage]);
+
+    const onClickApply = useCallback(() => {
+        dispatch(applyDabeenerRequestAction({userNum : me.userNum, userImage, juminImage, cookie : getCookie()}));
+    }, [userImage, juminImage]);
 
     return (
         <RegistSupplierUpperDiv>
@@ -51,39 +107,62 @@ const Regist = () => {
                             </div>
                         </div>
                         <div className="RegistSupplierLowerImageUpload">
-                            <Upload.Dragger
-                                className="RegistSupplierLowerImageChange"
-                                name={'file'}
-                                action={'https://www.mocky.io/v2/5cc8019d300000980a055e76'}
-                                onChange={onChangeDragger}
-                                multiple={false}
-                                showUploadList={false}
-                            >
-                                {previewImage
-                                    ? <img src={previewImage} className="RegistSupplierLowerImage" />
-                                    : <div className="RegistSupplierLowerImage"></div>
-                                    // :   <Avatar className="RegistSupplierLowerImage" size={150} icon="user"/>
-                                }
-                                <img
-                                    className="RegistSupplierLowerImageIcon"
-                                    alt="writePost"
-                                    src={"/images/postIcon.PNG"}
-                                />
-                            </Upload.Dragger>
+                        <UploadProfile>
+                        <div>프로필사진 첨부</div>
+                            <img
+                            className="ModifyUserProfile"
+                            alt="유저 프로필"
+                            src={userImage || '/images/defaultProfile.png'}
+                            />
+                            <input type="file" hidden ref={imageInput} onChange={onChangeProfile}/>
+                            <img
+                            className="ModifyUserProfileChangeIcon"
+                            alt="writePost"
+                            src={"/images/postIcon.PNG"}
+                            onClick={onClickProfileUpload(imageInput)}
+                           />
+                    </UploadProfile>
                         </div>
                     </div>
                 </RegistSupplierLowerDiv>
+                
                 <RegistSupplierLowerDiv>
                     <div className="RegistSupplierLowerTitle">인증</div>
                     <div className="RegistSupplierLowerDetail">
                         <div className="RegistSupplierLowerDetailDescription">
                             안전한 서비스를 위해 다비너의 신원을 파악할 필요가 있습니다.
                             <br />
-                            입력된 주민등록번호는 신원을 파악하는 용도 외에는 사용되지 않습니다.
+                            주민등록번호 뒷자리와 주소를 가린 주민등록증을 보내주세요!
+                            <br/>
+                            <b>예시</b>
+                            <br/>
+                            <img src='/images/jumin.png' alt='주민등록증 예시' />
                         </div>
                     </div>
+                    <div className="RegistSupplierLowerJuminUpload">
+                    <UploadImage>
+                        <div>주민등록증 첨부</div>
+                            <div className="uploadImageFlex">
+                            {!juminImage ?
+                            <>
+                             <input type="file" hidden ref={juminInput} onChange={onChangeJumin}/> {/* 사진 있으면 안나오게 만들거임 */}
+                             <div className="uploadImageButton" onClick={onClickProfileUpload(juminInput)}>
+                                 <Icon type="plus-circle" style={{fontSize: 25}}/>
+                                 <div style={{fontSize: 23}}>UPLOAD</div>
+                             </div></> :  
+                             <div className="previewImage">
+                                <div className="imgBorder"> 
+                                    <div className="deleteIcon" onClick={deleteImage(juminImage)}>
+                                        <Icon type="close" />
+                                    </div>
+                                    <img src={juminImage} alt="주민번호 미리보기" width="90" height="90"/> 
+                                </div> 
+                            </div>}      
+                            </div>
+                    </UploadImage>
+                        </div>
                 </RegistSupplierLowerDiv>
-                <RegistButton>등록하기</RegistButton>
+                <RegistButton onClick={onClickApply}>등록하기</RegistButton>
             </div>
         </RegistSupplierUpperDiv>
     );

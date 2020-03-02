@@ -64,8 +64,9 @@ export const UserPageWrapper = styled.article`
       border-radius : 5px;
       height : 27px;
       cursor: pointer;
-      &:hover {
+      &:hover, :focus {
           color : black;
+          outline : none;
       }
     }
     & .contentNavbar {
@@ -110,8 +111,5 @@ export const UserPageWrapper = styled.article`
     margin: 0 20px;
     display: flex;
     flex-direction: column;
-    /* border: 1px solid #BFC7CE;
-    border-radius: 4px;
-    box-shadow: 0 5px 10px 0.5px #E9E9E9; */
   }
 `;
