@@ -65,7 +65,7 @@ public class UserApiController{
         return userApiService.read(num);
     }
 
-    // Update 메소드
+    // Update 메소드, 수정 가능한 컬럼만 받아서 수정
     @PutMapping("")
     public Header<UserApiResponse> update(@RequestBody @Valid Header<UserUpdateApiRequest> request, Authentication authentication){
         UserUpdateApiRequest reqDate = request.getData();
@@ -126,7 +126,8 @@ public class UserApiController{
 
         return userApiService.searchQuests(userNum);
     }
-
+    
+    // 공급자 등록 API
     @PostMapping("/supplier")
     public Header<UserApiResponse> supplierApplication(@RequestBody Header<SupplierApiRequest> request, Authentication authentication){
         this.idVerification(authentication, request.getData().getUserNum());
