@@ -61,22 +61,22 @@ public class UserRepositoryTest extends DemoApplicationTests {
     //     Assert.assertNotNull(userRepository.findById(user.getUserNum()));
     // }
 
-    @Test
-    public void read(){
-        Optional<User> user = userRepository.findById("2002160001");
-        Assert.assertNotNull(user.isPresent());
-    }
-
-    @Test
-    public void update(){
-        Optional<User> user = userRepository.findById("200203002");
-
-        user.ifPresent(selectorUser -> {
-            selectorUser.setPwd(passwordEncoder.encode("test02"));
-
-            userRepository.save(selectorUser);
-        });
-    }
+    //@Test
+    //public void read(){
+    //    Optional<User> user = userRepository.findById("2002160001");
+    //    Assert.assertNotNull(user.isPresent());
+    //}
+//
+    //@Test
+    //public void update(){
+    //    Optional<User> user = userRepository.findById("200203002");
+//
+    //    user.ifPresent(selectorUser -> {
+    //        selectorUser.setPwd(passwordEncoder.encode("test02"));
+//
+    //        userRepository.save(selectorUser);
+    //    });
+    //}
 
     // @Test
     // public void delete(){
