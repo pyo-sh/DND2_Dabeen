@@ -3,6 +3,7 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +30,9 @@ import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
+import com.dabeen.dnd.model.network.request.SupplierApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
+import com.dabeen.dnd.model.network.request.UserUpdateApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
 import com.dabeen.dnd.model.network.response.LoginApiResponse;
@@ -51,7 +54,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 @Slf4j
-public class UserApiService extends BaseService<UserApiRequest, UserApiResponse, User> {
+public class UserApiService{
     @Autowired
     private UserRepository userRepository; // 추가로 정의된 메소드를 사용하기 위해 userRepository 사용 x
 
@@ -70,15 +73,9 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
     @Autowired
     private PostApiService postApiService;
 
-    @Autowired
-    private HelpApiService helpApiService;
-
-    @Autowired
-    private HelpSupplCompApiService helpSupplCompApiService;
-
+    /* 기본 CRUD PUT의 requst 형태가 변경되어 직접 구현합니다. */
 
     // 사용자 생성, 회원가입
-    @Override
     public Header<UserApiResponse> create(@Valid Header<UserApiRequest> request) {
         UserApiRequest userApiRequset = request.getData();
 
@@ -111,7 +108,6 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
         return Header.OK(response(user));
     }
 
-    @Override
     public Header<UserApiResponse> read(String num) {
         Optional<User> optional = userRepository.findById(num);
 
@@ -120,43 +116,31 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                         .orElseThrow(() -> new NotFoundException("User"));
     }
 
-    @Override
-    public Header<UserApiResponse> update(@Valid Header<UserApiRequest> request) {
-        UserApiRequest userApiRequset = request.getData();
-        Optional<User> optional = userRepository.findById(userApiRequset.getUserNum());
+    public Header<UserApiResponse> update(@Valid Header<UserUpdateApiRequest> request) {
+        UserUpdateApiRequest requestData = request.getData();
+        User user = userRepository.findById(requestData.getUserNum())
+                                    .orElseThrow(() -> new NotFoundException("User"));
 
-        return optional.map(user -> {
-                        // 사용자 이름, 아이디, 주민번호 뒷자리는 수정불가. 수정하려고 할 시 에러 호출
-                        if (!userApiRequset.getUserName().equals(user.getUserName()))
-                            throw new NotUpdateableException("userName");
-                        if (!userApiRequset.getUserId().equals(user.getUserId()))
-                            throw new NotUpdateableException("Id");
-                        if (!userApiRequset.getRrnRear().equals(user.getRrnRear()))
-                            throw new NotFoundException("rrnRear");
-
-                        // 비밀번호 암호화
-                        String encryPwd = passwordEncoder.encode(userApiRequset.getPwd());
-                        
-                        user.setBirthDate(userApiRequset.getBirthDate())
-                            .setAddress(userApiRequset.getAddress())
-                            .setPhoneNum(userApiRequset.getPhoneNum())
-                            .setPwd(encryPwd)
-                            .setEmail(userApiRequset.getEmail())
-                            .setNickname(userApiRequset.getNickname())
-                            .setItdcCont(userApiRequset.getItdcCont())
-                            .setSupplWhet(userApiRequset.getSupplWhet())
-                            .setPicPath(userApiRequset.getPicPath())
-                            .setAvgRate(userApiRequset.getAvgRate())
-                            .setOwnMileage(userApiRequset.getOwnMileage());
-                        return user;
-                    })
-                    .map(userRepository::save)
-                    .map(this::response)
-                    .map(Header::OK)
-                    .orElseThrow(() -> new NotFoundException("User"));
+        // 수정할 값이 있다면 수정
+        if(requestData.getAddress() != null)
+            user.setAddress(requestData.getAddress());
+        if(requestData.getPhoneNum() != null)
+            user.setPhoneNum(requestData.getPhoneNum());
+        if(requestData.getPwd() != null)
+            user.setPwd(passwordEncoder.encode(requestData.getPwd()));
+        if(requestData.getEmail() != null)
+            user.setEmail(requestData.getEmail());
+        if(requestData.getNickname() != null)
+            user.setNickname(requestData.getNickname());
+        if(requestData.getItdcCont() != null)
+            user.setItdcCont(requestData.getItdcCont());
+        if(requestData.getPicPath() != null)
+            user.setPicPath(requestData.getPicPath());
+                      
+        User newUser = userRepository.save(user);
+        return Header.OK(response(newUser));
     }
 
-    @Override
     public Header delete(String num) {
         Optional<User> optional = userRepository.findById(num);
 
@@ -180,6 +164,7 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                                                         .itdcCont(user.getItdcCont())
                                                         .supplWhet(user.getSupplWhet())
                                                         .picPath(user.getPicPath())
+                                                        .rrnPath(user.getRrnPath())
                                                         .avgRate(user.getAvgRate())
                                                         .ownMileage(user.getOwnMileage())
                                                         .build();
@@ -286,5 +271,21 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
+    }
+
+    public Header<UserApiResponse> supplierApplication(Header<SupplierApiRequest> request){
+        SupplierApiRequest requestData = request.getData();
+        User user = userRepository.findById(requestData.getUserNum())
+                                .orElseThrow(() -> new NotFoundException("User"));
+
+        user.setSupplWhet(Whether.y)
+            .setPicPath(requestData.getPicPath())
+            .setRrnPath(requestData.getRrnPath())
+            .setAvgRate(BigDecimal.valueOf(0))
+            .setOwnMileage(BigDecimal.valueOf(0));
+        
+        User newUser = userRepository.save(user);
+
+        return Header.OK(response(newUser));
     }
 }

@@ -31,7 +31,7 @@ public class UserApiResponse{
     private String itdcCont; // 소개 내용
     private Whether supplWhet; // 공급자 여부
     private String picPath; // 사진 경로명
-    private String rrnRear; // 주민번호 뒷자리
+    private String rrnPath; // 주민번호 사진 경로명
     private BigDecimal avgRate; // 평점
     private BigDecimal ownMileage; // 보유 마일리지
 }

@@ -195,7 +195,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     public Header delete(String num) {
         // TODO Auto-generated method stub
         return helpRepository.findById(num).map(help -> {
-                                                    helpRepository.delete(help);
+                                                    helpMapper.delete(num);
                                                     return Header.OK();
         }).orElseThrow( () -> new NotFoundException("Help"));
     }
