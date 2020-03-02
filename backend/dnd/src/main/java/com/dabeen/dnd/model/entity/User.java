@@ -60,7 +60,7 @@ public class User{
 
     private String picPath; // 사진경로명
 
-    private String rrnRear; // 주민번호 뒷자리
+    private String rrnPath; // 주민번호 사진 경로명
     
     private BigDecimal avgRate; // 평점
 

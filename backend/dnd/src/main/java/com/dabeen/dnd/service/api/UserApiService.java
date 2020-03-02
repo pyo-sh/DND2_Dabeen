@@ -3,6 +3,7 @@
 
 package com.dabeen.dnd.service.api;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,6 +30,7 @@ import com.dabeen.dnd.model.enumclass.Whether;
 import com.dabeen.dnd.model.network.Header;
 import com.dabeen.dnd.model.network.request.FindApiRequest;
 import com.dabeen.dnd.model.network.request.LoginApiRequest;
+import com.dabeen.dnd.model.network.request.SupplierApiRequest;
 import com.dabeen.dnd.model.network.request.UserApiRequest;
 import com.dabeen.dnd.model.network.response.HelpApiResponse;
 import com.dabeen.dnd.model.network.response.HelpSupplCompApiResponse;
@@ -131,8 +133,8 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
                             throw new NotUpdateableException("userName");
                         if (!userApiRequset.getUserId().equals(user.getUserId()))
                             throw new NotUpdateableException("Id");
-                        if (!userApiRequset.getRrnRear().equals(user.getRrnRear()))
-                            throw new NotFoundException("rrnRear");
+                        if (!userApiRequset.getRrnPath().equals(user.getRrnPath()))
+                            throw new NotFoundException("rrnPath");
 
                         // 비밀번호 암호화
                         String encryPwd = passwordEncoder.encode(userApiRequset.getPwd());
@@ -286,5 +288,21 @@ public class UserApiService extends BaseService<UserApiRequest, UserApiResponse,
 
             return responses;
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
+    }
+
+    public Header<UserApiResponse> supplierApplication(Header<SupplierApiRequest> request){
+        SupplierApiRequest requestData = request.getData();
+        User user = userRepository.findById(requestData.getUserNum())
+                                .orElseThrow(() -> new NotFoundException("User"));
+
+        user.setSupplWhet(Whether.y)
+            .setPicPath(requestData.getPicPath())
+            .setRrnPath(requestData.getRrnPath())
+            .setAvgRate(BigDecimal.valueOf(0))
+            .setOwnMileage(BigDecimal.valueOf(0));
+        
+        User newUser = userRepository.save(user);
+
+        return Header.OK(response(newUser));
     }
 }
