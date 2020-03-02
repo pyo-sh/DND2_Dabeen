@@ -98,7 +98,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
             ) : pagename === 'service' ? (
               <ServiceCenter isMe={isMe} />
             ) : pagename === 'basket' ? (
-              <PostBasket isMe={isMe} />
+              <PostBasket userNum={userInfo.userNum} isMe={isMe} />
             ) : null}
           </div>
         </section>

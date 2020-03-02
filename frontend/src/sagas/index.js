@@ -3,6 +3,7 @@ import user from './user';
 import opponent from './opponent';
 import posts from './posts';
 import questions from './questions';
+import basket from './basket';
 import axios from 'axios';
 import { getCookie } from '../utils/cookieFunction';
 
@@ -21,5 +22,6 @@ export default function* rootSaga() {
         call(opponent),
         call(posts),
         call(questions),
+        call(basket),
     ])
 }
