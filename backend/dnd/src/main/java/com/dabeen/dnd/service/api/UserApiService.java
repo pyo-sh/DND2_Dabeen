@@ -116,6 +116,7 @@ public class UserApiService{
                         .orElseThrow(() -> new NotFoundException("User"));
     }
 
+    // 수정 가능한 컬럼만 받아서 수정
     public Header<UserApiResponse> update(@Valid Header<UserUpdateApiRequest> request) {
         UserUpdateApiRequest requestData = request.getData();
         User user = userRepository.findById(requestData.getUserNum())
@@ -273,6 +274,7 @@ public class UserApiService{
         }).map(Header::OK).orElseThrow(() -> new NotFoundException("User"));
     }
 
+    // 공급자 등록 API
     public Header<UserApiResponse> supplierApplication(Header<SupplierApiRequest> request){
         SupplierApiRequest requestData = request.getData();
         User user = userRepository.findById(requestData.getUserNum())
