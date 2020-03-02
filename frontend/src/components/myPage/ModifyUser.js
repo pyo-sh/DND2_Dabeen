@@ -37,22 +37,40 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         (password === passwordCheck)    ?   setIsPasswordChecked(true)  :   setIsPasswordChecked(false);
     }, [password, passwordCheck]);
     
+    console.log(!password)
     // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickModify = useCallback((e) => {
-        if(isPasswordChecked){
-            const userLog = {
-                id: userInfo.userId,
+        if(isPasswordChecked&&password){
+            // const userLog = {
+            //     user_num: userInfo.userId,
+            //     nickname,
+            //     pwd: password,
+            //     email,
+            //     phone_num: telephone,
+            //     address,
+            //     pic_path: profileImage
+            // }
+            dispatch(editUserInfoRequestAction({
+                userNum: userInfo.userId,
                 nickname,
-                // password,
+                pwd: password,
                 email,
-                telephone,
+                phoneNum: telephone,
                 address,
-                pic_path: profileImage
-            }
-            dispatch(editUserInfoRequestAction({userLog, cookie : getCookie()}));
+                picPath: profileImage, 
+                cookie : getCookie()
+            }));
         }
-        else{
-            alert('회원가입 실패!');
+        else if(isPasswordChecked&&!password){
+            dispatch(editUserInfoRequestAction({
+                userNum: userInfo.userId,
+                nickname,
+                email,
+                phoneNum: telephone,
+                address,
+                picPath: profileImage, 
+                cookie : getCookie()
+            }));
         }
     }, [
         nickname,

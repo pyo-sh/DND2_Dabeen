@@ -77,9 +77,9 @@ function updateHelpPostAPI(data) {
             pref_help_exec_dttm: data.helpExecDate,
             help_aply_cls_dttm: data.helpDeadLine,
             cont: data.helpContent,
-            help_aprv_whet: data.isHelpApprove,
-            pymt_whet: data.isPaymentApprove,
-            help_pic: data.helpPic
+            // help_aprv_whet: data.isHelpApprove,
+            // pymt_whet: data.isPaymentApprove,
+            help_pics: data.helpPic
         }
     }
     const {cookie} = data;

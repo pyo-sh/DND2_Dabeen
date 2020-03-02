@@ -38,7 +38,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     console.dir(data);
     // setEditImgPaths(data.helpPic.map(pic => editImages.push({"pic_ornu": pic.pic_ornu, "path": pic.path})))
 
-    console.log(editImgPaths);
+    console.log(editImages);
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -61,7 +61,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const onConfirm = useCallback(() => {
         setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
         dispatch(updateHelpPostRequestAction({
-                // helpPostDate: data.helpPostDate,
+                helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
@@ -72,9 +72,9 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
                 helpEndTime: data.helpEndTime,
-                isHelpApprove: data.isHelpApprove,
+                // isHelpApprove: data.isHelpApprove,
                 helpContent: editContent,
-                isPaymentApprove: data.isPaymentApprove,
+                // isPaymentApprove: data.isPaymentApprove,
                 helpPic: editImgPaths,
                 cookie : getCookie()
             })
@@ -202,7 +202,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     </div>
                 </div>
             </Title>
-            {!edit && (imagesURL.length === 0 ?
+            {!edit && (!imagesURL.length ?
             <DetailSlick {...slickSetting}>
             <img className="PostDetailImage" src={'/images/main1.jpg'}/>
             <img className="PostDetailImage" src={'/images/main2.jpg'}/>
@@ -217,7 +217,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             :
             <DetailSlick {...slickSetting}>
             {imagesURL.map((url, i) => {
-                <img className="PostDetailImage" src={url} key={url} alt={url}/>
+                return <img className="PostDetailImage" src={url} key={url} alt={url}/>
             })}
             </DetailSlick>
             )}

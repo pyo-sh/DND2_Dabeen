@@ -111,8 +111,18 @@ function* watchSignUp() {
 }
 
 // 유저 정보 수정
-function editUserInfoAPI({userLog, cookie}){
-    return axios.put('/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
+function editUserInfoAPI(data){
+    const reqData = {
+        user_num: data.userNum,
+        nickname: data.nickname,
+        email: data.email,
+        phone_num: data.phoneNum,
+        address: data.address,
+        pic_path: data.picPath,
+    }
+
+    const {cookie} = data;
+    return axios.put('/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {
