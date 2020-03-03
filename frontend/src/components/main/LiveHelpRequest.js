@@ -96,7 +96,11 @@ const LiveHelpRequest = () => {
                   }
                   {/* <Divider orientation="left" style={{ marginTop: "42%" }}/> */}
                   <Divider orientation="left">
+                    {help.userPic ? 
                     <img className="LiveHelpRequestUserPicture" src={help.userPic}/>
+                    :
+                    <img className="LiveHelpRequestUserPicture" src={`/images/defaultProfile.png`}/>
+                    }
                   </Divider>
                   <div className="liveHelpRequestUserInfo">
                     <div className="liveHelpRequestNickname">{help.nickname}</div>

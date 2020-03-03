@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Upload, message } from 'antd';
+import { Button, Upload, message, Icon } from 'antd';
 import DabeenInput, { check_num,
     check_eng,
     check_spc,
@@ -37,7 +37,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         (password === passwordCheck)    ?   setIsPasswordChecked(true)  :   setIsPasswordChecked(false);
     }, [password, passwordCheck]);
     
-    // 가입하기 버튼 눌렀을 때 값을 전달하기 위한 함수
+    // 수정 버튼 눌렀을 때 값을 전달하기 위한 함수
     const onClickModify = useCallback((e) => {
         dispatch(editUserInfoRequestAction({
             userNum: userInfo.userNum,
@@ -53,6 +53,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         // else{
         //     alert("정보수정 실패")
         // }
+        onClickCancel() //다시 회원정보 화면으로 돌아감
     }, [
         nickname,
         password,
@@ -63,11 +64,10 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         profileImage
     ]);
 
+    //프로필 사진 등록
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
-        // console.log(e.target.files[0]);
         imageFormData.append('pic', e.target.files[0]);
-        // console.log(imageFormData.get('pic'));
         try{
             const result = await customAxios.post('/pic/upload/user', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
@@ -81,15 +81,38 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         imageInput.current.click();
     }, [imageInput.current]);
 
+    const deleteProfileImage = useCallback((url) => () => {
+        const imageFormData = new FormData();
+        imageFormData.append('url', url);
+        try{
+            customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setProfileImage('');
+        } catch(e){
+            console.log(e.response);
+        }
+    }, []);
+
     return (
         <ModifyUserUpperDiv>
             <div className="ModifyTitle">회원정보 수정</div>
             <div className="ModifyContent">
+                {profileImage ?
+                <>
+                <Icon className="ModifyUserProfileDeleteIcon" type="close-circle" theme="twoTone" twoToneColor="#BFC7CE" onClick={deleteProfileImage(profileImage)}/>
                 <img
                     className="ModifyUserProfile"
                     alt="UserProfileImage"
                     src={profileImage}
                 />
+                </>
+                :
+                <img
+                    className="ModifyUserProfile"
+                    alt="UserProfileImage"
+                    src={`/images/defaultProfile.png`}
+                />
+                }
+                
                 <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
                 <img
                     className="ModifyUserProfileChangeIcon"

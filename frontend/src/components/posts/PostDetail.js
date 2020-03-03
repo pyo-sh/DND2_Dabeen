@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { Icon, TimePicker, DatePicker, Popconfirm } from 'antd';
+import { Icon, TimePicker, DatePicker, Popconfirm, message } from 'antd';
 import CheckDabeener from './CheckDabeener';
 import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
@@ -19,7 +19,6 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExecHour = parseInt(helpExec[1].substring(0,2));
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
     const imagesURL = data.helpPic.map(pic => pic.path);    //path만 따로 배열에 저장
-    // imgPaths.map(pic => delete pic.help_num)
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
@@ -73,20 +72,16 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const onConfirm = useCallback(() => {
         setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
         dispatch(updateHelpPostRequestAction({
-                helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
-                categoryNum: String(categoryNum),
+                categoryNum: data.categoryNum,
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
                 helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
                 postNum: parseInt(editNeedPersonnel),
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
-                helpEndTime: data.helpEndTime,
-                // isHelpApprove: data.isHelpApprove,
                 helpContent: editContent,
-                // isPaymentApprove: data.isPaymentApprove,
                 helpPic: editImgPaths,
                 cookie : getCookie()
             })
@@ -110,15 +105,9 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
         setEditHelpExecTime(timeString);
     }, []);
 
-    //Picker들 수정할 때 이거 쓰니까 오류떠서 잠시 안씀
-    // const onChangeHelpDatePicker = setStateFunc =>
-    // useCallback((moment, string) => {
-    //   setStateFunc(string); 
-    // }, []);
-
     //게시글 삭제 버튼 눌렀을 때
     const deletePost = useCallback((helpNum) => () => {
-        if(imagesURL.length != 0){
+        if(imagesURL.length !== 0){
             console.log(imagesURL)
             const imageFormData = new FormData();
             imagesURL.map(url => imageFormData.append('url', url));
@@ -152,7 +141,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 <div className="TitleWrapper">
                     {!edit
                     ?   <div className="PostTitle">
-                            {data.helpTitle}
+                            {editTitle}
                         </div>
                     :   <EditTitle value={editTitle} onChange={setEditTitle}/>
                     }
@@ -220,13 +209,13 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <img className="PostDetailImage" src={'/images/main4.jpg'}/>
             </DetailSlick>
             :
-            imagesURL.length === 1 ?
+            editImages.length === 1 ?
             <HelpPic>
-            <img className="PostDetailImage" src={imagesURL} />
+            <img className="PostDetailImage" src={editImages} />
             </HelpPic>
             :
             <DetailSlick {...slickSetting}>
-            {imagesURL.map((url, i) => {
+            {editImages.map((url, i) => {
                 return <img className="PostDetailImage" src={url} key={url} alt={url}/>
             })}
             </DetailSlick>
@@ -246,7 +235,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                                     {applyDabeeners ? applyDabeeners.length : 0} 신청 확인
                                 </button>
                             </div>      
-                            {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={data.postNum} helpNum={data.helpNum} postUserNum={data.userNum} applyDabeeners={applyDabeeners} applyCheck={data.isHelpApprove}
+                            {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={editNeedPersonnel} helpNum={data.helpNum} postUserNum={data.userNum} applyDabeeners={applyDabeeners} applyCheck={data.isHelpApprove}
                                         approveDabeenersNum={approveDabeenersNum} setApproveDabeenersNum={setApproveDabeenersNum}/>}
                             </>
                         :   <div style ={{display:"flex"}} className="ApplicationInfoBoxDetail">
@@ -265,7 +254,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">신청 마감 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpDeadline[0]}</div>{time(helpDeadlineHour, helpDeadline[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{editHelpDeadLineDate}</div>{time(helpDeadlineHour, editHelpDeadLineTime)}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -285,7 +274,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">수행 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpExec[0]}</div>{time(helpExecHour, helpExec[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{editHelpExecDate}</div>{time(helpExecHour, editHelpExecTime)}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -306,7 +295,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 <div className="ApplicationMoney">
                     {!edit
                     ?   <>
-                        <div className="ApplicationMoneyTitle"><div className="ApplicationMoneyTitleValue">{data.price}</div>원</div>
+                        <div className="ApplicationMoneyTitle"><div className="ApplicationMoneyTitleValue">{editPrice}</div>원</div>
                         {data.userNum === me.userNum    //내가 쓴 게시글이면 마감버튼 뜨게, 아닐시엔 신청 버튼이 뜨게
                         ?   (isEnd
                             ?   <DeadlineButton apply>마감 완료</DeadlineButton>
@@ -329,11 +318,11 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 {!edit
                 ?   <div className="ContentMapWrapper">
                         <div className="ContentMap">
-                            <MyLocation myLocation={data.execLoc}/>    
+                            <MyLocation myLocation={editExecLoc}/>    
                         </div>    
                         <div className="ContentMapInfo">
                             지도 위치
-                            <div className="ContentMapLocation">{data.execLoc}</div>
+                            <div className="ContentMapLocation">{editExecLoc}</div>
                         </div>
                     </div>
                 :   <div className="ContentMapWrapper">
@@ -349,7 +338,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <ContentItem>
                 <div className="ContentTitle">도움정보</div>
                 {!edit
-                ?   <p>{data.helpContent}</p>
+                ?   <p>{editContent}</p>
                 :   <textarea required value={editContent} onChange={setEditContent}/>
                 }
             </ContentItem>

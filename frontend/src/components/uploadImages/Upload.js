@@ -15,11 +15,6 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
         try{
             axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image != url));
-            console.log(images);
-            // const index = imgPaths.findIndex(path => path.pic_ornu == i+1);
-            // console.log(index)
-            // setImgPaths(imgPaths.splice(index, 1));
-            // setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){
             console.log(e.response);
         }
@@ -27,15 +22,11 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
-        // console.log(e.target.files[0]);
         imageFormData.append('pic', e.target.files[0]);
-        // console.log(imageFormData.get('pic'));
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             console.log(result);
-            // setImages(prev => [...prev, {"path" : result.data.data}]);
             setImages(prev => [...prev, result.data.data]);
-            // setImgPaths(prev => [...prev, {"pic_ornu": prev.length + 1, "path": result.data.data}]);
         }catch(e){
             console.log(e.response);
         }

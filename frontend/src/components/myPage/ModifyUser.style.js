@@ -27,6 +27,15 @@ export const ModifyUserUpperDiv = styled.div`
             width: 150px;
             height: 150px;
         }
+        & .ModifyUserProfileDeleteIcon {
+            position: relative;
+            font-size: 45px;
+            width: 50px;
+            cursor: pointer;
+            margin-left: 50px;
+            margin-right: -50px;
+            top: 50px;
+        }
             & .ModifyUserProfileChangeIcon {
                 width: 50px;
                 cursor: pointer;

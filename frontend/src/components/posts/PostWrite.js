@@ -30,6 +30,7 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
     const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
+    const {me} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
@@ -82,13 +83,12 @@ const PostWrite = ({setInvisible, userNum}) => {
         setInvisible();
     }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
 
-//    console.log(images.map(image => image));
     //이미지 삭제
-    const deleteImage = useCallback((url) => () => {
+    const deleteImage = useCallback((url) => async() => {
         const imageFormData = new FormData();
         imageFormData.append('url', url);
         try{
-            axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            await axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image !== url));
             setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){
@@ -98,13 +98,9 @@ const PostWrite = ({setInvisible, userNum}) => {
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
-        // console.log(e.target.files[0]);
         imageFormData.append('pic', e.target.files[0]);
-        console.log(imageFormData.get('pic'));
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
-            console.log(result);
-            // setImages(prev => [...prev, {"path" : result.data.data}]);
             setImages(prev => [...prev, result.data.data]);
             setImgPaths(prev => [...prev, {"path": result.data.data}]);
         }catch(e){
@@ -112,7 +108,6 @@ const PostWrite = ({setInvisible, userNum}) => {
         }
     }, [imgPaths]);
 
-    console.log(imgPaths)
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);

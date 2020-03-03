@@ -217,6 +217,7 @@ export const UploadImage = styled.div`
                 font-size: 12px;
                 text-align: right;
                 margin-left: 5px;
+                cursor: pointer;
             }
         }
 

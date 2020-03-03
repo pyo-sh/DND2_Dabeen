@@ -9,6 +9,7 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
   const setVisible = useCallback(e => {
     setMyHelpVisible(prev => !prev);
   }, []);
+  
   return (
     <>
       <MyHelpCapsuleUpperDiv
@@ -23,7 +24,12 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
             }
           </div>
         </div>
-        <img className="MyhelpCapsuleImage" src={imagesURL.length === 1 ? imagesURL[0] : '/images/main2.jpg'}/>
+        {helpData.helpPic.length ? 
+        <img className="MyhelpCapsuleImage" src={helpData.helpPic[0].path}/>
+        :
+        <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/>
+        }
+        {/* <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/> */}
         <MyHelpCapsuleTitle>
           <div className="MyhelpCapsuleTitleMain">{helpData.helpTitle}</div>
           <div className="MyhelpCapsuleTitleSub">

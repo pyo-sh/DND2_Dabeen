@@ -12,6 +12,7 @@ const PostList = ({ categoryNum }) => {
   // const onChangePagination = useCallback((page, pageSize) => {
   //   console.log(page, pageSize);
   // }, []);
+  
   return (
     <PostListUpperDiv>
       <Row gutter={[24, 24]}>
@@ -25,7 +26,8 @@ const PostList = ({ categoryNum }) => {
           </>
         ) : (
           <>
-            {helpPosts.map((help, index) => (
+            {helpPosts.map((help, index) => 
+              (categoryNum === parseInt(help.categoryNum))&&(
               <ColCapsule xs={24} md={12} xl={8} key={index}>
                 <PostCapsule data={help} categoryNum={categoryNum}/>
               </ColCapsule>
