@@ -60,8 +60,10 @@ public class HelpSupplCompApiService {
 
         HelpSupplComp helpSupplComp = HelpSupplComp.builder()
                                                     .helpSupplCompPK(new HelpSupplCompPK())
-                                                    .suppler(userRepository.findById(requestData.getSupplNum()).orElse(null))
-                                                    .help(helpRepository.findById(requestData.getHelpNum()).orElse(null))
+                                                    .suppler(userRepository.findById(requestData.getSupplNum())
+                                                                            .orElseThrow(() -> new NotFoundException("User")))
+                                                    .help(helpRepository.findById(requestData.getHelpNum())
+                                                                        .orElseThrow(() -> new NotFoundException("Help")))
                                                     .aprvDttm(requestData.getAprvDttm())
                                                     .astDttm(requestData.getAstDttm())
                                                     .rate(requestData.getRate())
@@ -128,7 +130,7 @@ public class HelpSupplCompApiService {
     }
 
     // helpSupplComp -> HelpCompUserInfoApiResponse
-    public HelpCompUserInfoApiResponse responseUSer(HelpSupplComp helpSupplComp){
+    public HelpCompUserInfoApiResponse responseUser(HelpSupplComp helpSupplComp){
         HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
                                                                             .compDttm(helpSupplComp.getCompDttm())
                                                                             .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
@@ -143,6 +145,23 @@ public class HelpSupplCompApiService {
 
     /* 사용자 API */
 
+    // 도움 신청 API
+    public Header<HelpCompUserInfoApiResponse> applyHelp(Header<HelpSupplCompApiRequest> request){
+        HelpSupplCompApiRequest requestData = request.getData();
+
+        HelpSupplComp helpSupplComp = HelpSupplComp.builder()
+                                                    .helpSupplCompPK(new HelpSupplCompPK())
+                                                    .suppler(userRepository.findById(requestData.getSupplNum())
+                                                                            .orElseThrow(() -> new NotFoundException("User")))
+                                                    .help(helpRepository.findById(requestData.getHelpNum())
+                                                                        .orElseThrow(() -> new NotFoundException("Help")))
+                                                    .build();
+                                                
+        HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp);
+
+        return Header.OK(responseUser(newHelpSupplComp));
+    }
+
     // 공급자 승인 API
     public Header<HelpCompUserInfoApiResponse> supplierApproved(Header<HelpSupplCompApiRequest> request){
         HelpSupplCompApiRequest requestData = request.getData();
@@ -156,7 +175,11 @@ public class HelpSupplCompApiService {
         
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
 
+<<<<<<< HEAD
+        return Header.OK(responseUser(newHelpSupplComp));
+=======
         return Header.OK(responseUSer(newHelpSupplComp));
+>>>>>>> 378a1852edaa9a30a72c02b50e193fcc5e32e48a
     }
 
     // 공급자 평가 API
@@ -177,7 +200,11 @@ public class HelpSupplCompApiService {
 
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
 
+<<<<<<< HEAD
+        return Header.OK(responseUser(newHelpSupplComp));
+=======
         return Header.OK(responseUSer(newHelpSupplComp));
+>>>>>>> 378a1852edaa9a30a72c02b50e193fcc5e32e48a
     }
 
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
@@ -186,7 +213,11 @@ public class HelpSupplCompApiService {
 
         // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
         List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
+<<<<<<< HEAD
+                                                                    .map(this::responseUser)
+=======
                                                                     .map(this::responseUSer)
+>>>>>>> 378a1852edaa9a30a72c02b50e193fcc5e32e48a
                                                                     .collect(Collectors.toList());
     
        
