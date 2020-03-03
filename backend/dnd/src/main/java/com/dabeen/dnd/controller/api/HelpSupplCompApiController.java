@@ -83,6 +83,12 @@ public class HelpSupplCompApiController{
         return helpSupplCompApiService.delete(pk);
     }
 
+    // 도움 신청 API, response 형태가 달라 따로 구현
+    @PostMapping("/apply")
+    public Header<HelpCompUserInfoApiResponse> applyHelp(@RequestBody Header<HelpSupplCompApiRequest> request){
+        return helpSupplCompApiService.applyHelp(request);
+    }
+
     // 공급자 승인 API
     @PutMapping("/approved")
     public Header<HelpCompUserInfoApiResponse> supplierApproved(@RequestBody Header<HelpSupplCompApiRequest> request){
