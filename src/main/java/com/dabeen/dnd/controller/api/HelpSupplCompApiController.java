@@ -83,6 +83,18 @@ public class HelpSupplCompApiController{
         return helpSupplCompApiService.delete(pk);
     }
 
+    // 공급자 승인 API
+    @PutMapping("/approved")
+    public Header<HelpCompUserInfoApiResponse> supplierApproved(@RequestBody Header<HelpSupplCompApiRequest> request){
+        return helpSupplCompApiService.supplierApproved(request);
+    }
+
+    // 공급자 평가 API
+    @PutMapping("/assessment")
+    public Header<HelpCompUserInfoApiResponse> supplierAssessment(@RequestBody Header<HelpSupplCompApiRequest> request){
+        return helpSupplCompApiService.supplierAssessment(request);
+    }
+
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     @GetMapping("{helpNum}/supplers")
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(@PathVariable String helpNum){
