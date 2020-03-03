@@ -52,7 +52,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 @Slf4j
-public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse, Help> {
+public class HelpApiService {
     @Autowired
     private HelpRepository helpRepository;
 
@@ -80,8 +80,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
     @Autowired
     private HelpPicApiService helpPicApiService;
 
-    @Override
-    public Header<HelpApiResponse> create(Header<HelpApiRequest> request) {
+    public Header<HelpSearchApiResponse> create(Header<HelpApiRequest> request) {
         // TODO Auto-generated method stub
         HelpApiRequest helpApiRequest = request.getData();
         
@@ -102,28 +101,22 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
         helpMapper.insert(helpMap);
 
-        List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
+        if (helpApiRequest.getHelpPics() != null){
+            List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
 
-        List<HelpPicApiResponse> helpPicResponses = helpPicRequests.stream().map(helpPicRequest -> {
-                               
-                               Map<String,Object> helpPicMap = new HashMap<>();
-                               helpPicMap.put("helpNum",helpMap.get("helpNum"));
-                               helpPicMap.put("picOrnu",null);
-                               helpPicMap.put("path",helpPicRequest.getPath()); 
+            helpPicRequests.forEach(helpPicRequest -> {
+                                   Map<String,Object> helpPicMap = new HashMap<>();
+                                   helpPicMap.put("helpNum",helpMap.get("helpNum"));
+                                   helpPicMap.put("picOrnu",null);
+                                   helpPicMap.put("path",helpPicRequest.getPath()); 
 
-                               helpPicMapper.insert(helpPicMap);
-
-                               HelpPicPK helpPicPK = new HelpPicPK((String) helpPicMap.get("helpNum"), (Integer) helpPicMap.get("picOrnu"));
-                               HelpPicApiResponse helpPicApiResponse = helpPicRepository.findById(helpPicPK).map(helpPic -> helpPicApiService.response(helpPic)).orElseThrow(() -> new NotFoundException("HelpPic"));
-                               
-                               return helpPicApiResponse;
-                            }).collect(Collectors.toList());
-
-        return Header.OK(picResponse(helpRepository.findById((String) helpMap.get("helpNum"))
-                        .orElseThrow(() -> new NotFoundException("Created Entity")),helpPicResponses));
+                                   helpPicMapper.insert(helpPicMap);
+            });      
+        }
+        return Header.OK(searchResponse(helpRepository.findById((String) helpMap.get("helpNum"))
+                        .orElseThrow(() -> new NotFoundException("Created Entity"))));
     }
 
-    @Override
     public Header<HelpApiResponse> read(String num) {
         // TODO Auto-generated method stub
         log.info("{}",num);  
@@ -136,8 +129,7 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
     }
 
-    @Override
-    public Header<HelpApiResponse> update(Header<HelpApiRequest> request) {
+    public Header<HelpSearchApiResponse> update(Header<HelpApiRequest> request) {
         // TODO Auto-generated method stub
         
         HelpApiRequest helpApiRequest = request.getData();
@@ -167,31 +159,29 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
 
                     return help;
                 })
-                .map(helpRepository::save)
                 .map(help ->{
-                    List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
-                    List<HelpPicApiResponse> helpPicResponses = helpPicRequests.stream()
-                                    .map(helpPicRequest ->{
-                                        
-                                        HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(),helpPicRequest.getPicOrnu());
-                                        HelpPic newHelpPic = helpPicRepository.findById(helpPicPK)
-                                                            .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
-                                                            .map(helpPic -> helpPicRepository.save(helpPic))
-                                                            .orElseThrow(()-> new NotFoundException("HelpPic"));
+                    log.info("{}", helpApiRequest);
+                    if(helpApiRequest.getHelpPics() != null){
+                        log.info("{}", "hello");
+                        List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
 
-                                        HelpPicApiResponse helpPicApiResponse = helpPicApiService.response(newHelpPic);
-
-                                        return helpPicApiResponse;
-                                    })
-                                    .collect(Collectors.toList());
-                    return picResponse(help, helpPicResponses);
+                        helpPicRequests.forEach(helpPicRequest -> {
+                            HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(), helpPicRequest.getPicOrnu());
+                            log.info("{}", "hello");
+                            helpPicRepository.findById(helpPicPK)
+                                                .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
+                                                .map(helpPic -> helpPicRepository.save(helpPic))
+                                                .orElseThrow(()-> new NotFoundException("HelpPic"));
+                        });
+                    }
+                    return help;
                 })
-                // .map(this::response)
+                .map(helpRepository::save)
+                .map(this::searchResponse)
                 .map(Header::OK)
                 .orElseThrow(() -> new NotFoundException("Help"));
     }
 
-    @Override
     public Header delete(String num) {
         // TODO Auto-generated method stub
         return helpRepository.findById(num).map(help -> {
@@ -223,34 +213,6 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
         return helpApiResponse;
 
     }
-
-    public HelpApiResponse picResponse(Help help, List<HelpPicApiResponse> helpPics){
-
-        HelpApiResponse helpApiResponse = HelpApiResponse.builder().helpNum(help.getHelpNum())
-                                                                    .helpPstnDttm(help.getHelpPstnDttm())
-                                                                    .helpEndDttm(help.getHelpEndDttm())
-                                                                    // .catNum(help.getCatNum())
-                                                                    // .cnsrNum(help.getCnsrNum())
-                                                                    .catNum(help.getCategory().getCatNum())
-                                                                    .cnsrNum(help.getUser().getUserNum())
-                                                                    .title(help.getTitle())
-                                                                    .execLoc(help.getExecLoc())
-                                                                    .price(help.getPrice())
-                                                                    .prefSupplNum(help.getPrefSupplNum())
-                                                                    .prefHelpExecDttm(help.getPrefHelpExecDttm())
-                                                                    .helpAplyClsDttm(help.getHelpAplyClsDttm())
-                                                                    .cont(help.getCont())
-                                                                    .helpAprvWhet(help.getHelpAprvWhet())
-                                                                    // .execSggName(help.getExecSggName())
-                                                                    .pymtWhet(help.getPymtWhet())
-                                                                    .helpPics(helpPics)
-                                                                    .build();
-        
-        return helpApiResponse;
-
-    }
-
-
 
     /* 사용자 API */
 
@@ -460,10 +422,10 @@ public class HelpApiService extends BaseService<HelpApiRequest, HelpApiResponse,
                                 .cont(help.getCont())
                                 .helpAprvWhet(help.getHelpAprvWhet())
                                 .pymtWhet(help.getPymtWhet())
-                                .helpPics(help.getHelpPics()
-                                                .stream()
-                                                .map(helpPicApiService::response)
-                                                .collect(Collectors.toList()))
+                                .helpPics(help.getHelpPics() == null ? null : help.getHelpPics()
+                                                                                .stream()
+                                                                                .map(helpPicApiService::response)
+                                                                                .collect(Collectors.toList()))
                                 .build();
         
         return helpExecLocApiResponse;
