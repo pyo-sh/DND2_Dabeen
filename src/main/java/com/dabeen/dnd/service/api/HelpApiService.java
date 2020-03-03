@@ -267,11 +267,21 @@ public class HelpApiService {
     // 받은 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 과거인 것
     public Header<Map<String, Object>> searchReceivedHelps(String userNum, Pageable pageable){
         Page<Help> helps = helpRepository.findByUser_UserNumAndPrefHelpExecDttmBeforeOrderByHelpNumDesc(userNum, LocalDateTime.now(), pageable);
-        
-        List<HelpApiResponse> responses = helps.getContent()
-                                                .stream()
-                                                .map(this::response)
-                                                .collect(Collectors.toList());
+        List<HelpAppliInfoApiResponse > responses = new ArrayList<>();
+
+        helps.forEach(help -> {
+            // 신청인원
+            Long appliNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNum(help.getHelpNum());
+            // 승인인원
+            Long aprvNum = helpSupplCompRepository.countByHelpSupplCompPK_helpNumAndHelpAprvWhet(help.getHelpNum(), Whether.y);
+            
+            HelpAppliInfoApiResponse response = HelpAppliInfoApiResponse.builder()
+                                                                        .appliNum(appliNum)
+                                                                        .aprvNum(aprvNum)
+                                                                        .help(this.searchResponse(help))
+                                                                        .build();
+            responses.add(response);                                                                                        
+        });
 
         Map<String, Object> map = new HashMap<>();
         map.put("page", new PageApiResponse((int)helps.getTotalElements(), helps.getTotalPages(), pageable.getPageSize()));
@@ -279,7 +289,6 @@ public class HelpApiService {
              
         return Header.OK(map);
     }
-
 
     // (회원용) 메인화면 카테고리에 따른 상위 9개 결과를 리턴하기 위한 함수
     public Header<Map<String,Object>> searchMainExecLocHelps(String execLoc, String catNum){
@@ -412,6 +421,7 @@ public class HelpApiService {
                                 .helpNum(help.getHelpNum())
                                 .helpPstnDttm(help.getHelpPstnDttm())
                                 .helpEndDttm(help.getHelpEndDttm())
+                                .catNum(help.getCategory().getCatNum())
                                 .cnsrUser(userApiService.response(help.getUser()))
                                 .title(help.getTitle())
                                 .execLoc(help.getExecLoc())
@@ -427,7 +437,6 @@ public class HelpApiService {
                                                                                 .map(helpPicApiService::response)
                                                                                 .collect(Collectors.toList()))
                                 .build();
-        
         return helpExecLocApiResponse;
         
     }
