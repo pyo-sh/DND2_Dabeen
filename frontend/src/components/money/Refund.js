@@ -1,9 +1,9 @@
 // 환불 부터 해야함!!
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import RefundWrite from "./RefundWrite";
 import RefundConfirm from './RefundConfirm';
 
-const Refund = ({ visible, setVisible }) => {
+const Refund = ({ visible, setVisible, ownMilege }) => {
   const [checking, setChecking] = useState(false); // 확인하는 건지 아닌지
 
   const [selectBank, setSelectBank] = useState("");
@@ -20,6 +20,8 @@ const Refund = ({ visible, setVisible }) => {
       setAccountNumber={setAccountNumber}
       setRefundPrice={setRefundPrice}
       setVisible={setVisible}
+      refundPrice={refundPrice}
+      ownMilege={ownMilege}
     /> : 
     <RefundConfirm
       setChecking={setChecking}

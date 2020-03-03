@@ -55,6 +55,8 @@ export const initialState = {
   loadUserError : "",
 
   applyDabeenerSuccess: false,
+  isRefunding : false,
+  refundError : ''
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -89,6 +91,10 @@ export const APPLY_DABEENER_REQUEST = "APPLY_DABEENER_REQUEST";
 export const APPLY_DABEENER_SUCCESS = "APPLY_DABEENER_SUCCESS";
 export const APPLY_DABEENER_FAILURE = "APPLY_DABEENER_FAILURE";
 
+export const REFUND_MILEAGE_REQUEST = "REFUND_MILEAGE_REQUEST";
+export const REFUND_MILEAGE_SUCCESS = "REFUND_MILEAGE_SUCCESS";
+export const REFUND_MILEAGE_FAILURE = "REFUND_MILEAGE_FAILURE";
+
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
 export const signUpRequestAction = createAction(SIGN_UP_REQUEST);
 export const signUpSuccessAction = createAction(SIGN_UP_SUCCESS);
@@ -116,6 +122,9 @@ export const applyDabeenerRequestAction = createAction(APPLY_DABEENER_REQUEST);
 export const applyDabeenerSuccessAction = createAction(APPLY_DABEENER_SUCCESS);
 export const applyDabeenerFailureAction = createAction(APPLY_DABEENER_FAILURE);
 
+export const refundMileageRequestAction = createAction(REFUND_MILEAGE_REQUEST);
+export const refundMileageSuccessAction = createAction(REFUND_MILEAGE_SUCCESS);
+export const refundMileageFailureAction = createAction(REFUND_MILEAGE_FAILURE);
 
 // 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
 
@@ -258,6 +267,21 @@ const reducer = (state = initialState, action) => {
         draft.isUpdatingInfo = false;
         draft.updateError = action.data;
         draft.applyDabeenerSuccess = false;
+        break;
+      }
+      case REFUND_MILEAGE_REQUEST : {
+        draft.isRefunding = true;
+        draft.refundError = '';
+        break;
+      }
+      case REFUND_MILEAGE_SUCCESS : {
+        draft.isRefunding = false;
+        draft.me.ownMilege -= action.data;
+        break;
+      }
+      case REFUND_MILEAGE_FAILURE : {
+        draft.isRefunding = false;
+        draft.refundError = action.data;
         break;
       }
       default:
