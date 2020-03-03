@@ -32,6 +32,7 @@ import com.dabeen.dnd.model.pk.BsktCompPK;
 import com.dabeen.dnd.model.pk.MileageUseHistPK;
 import com.dabeen.dnd.repository.BsktCompRepository;
 import com.dabeen.dnd.repository.BsktRepository;
+import com.dabeen.dnd.repository.HelpRepository;
 import com.dabeen.dnd.repository.HelpSupplCompRepository;
 import com.dabeen.dnd.repository.MileageUseHistRepository;
 import com.dabeen.dnd.repository.UserRepository;
@@ -166,8 +167,11 @@ public class PymtApiService extends BaseService<PymtApiRequest, PymtApiResponse,
 
         // 입력받은 helpNums를 기반으로 공급자를 찾아 bsktComp을 생성
         for(String helpNum : requestData.getHelpNums()){
-            List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNum(helpNum);
-            
+            List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNumAndHelpAprvWhet(helpNum, Whether.y);
+
+            if(helpSupplComps.isEmpty())
+                throw new NotFoundException("승인된 사용자의");
+
             for(HelpSupplComp helpSupplComp: helpSupplComps){
                 price = price.add(helpSupplComp.getHelp().getPrice());
 
