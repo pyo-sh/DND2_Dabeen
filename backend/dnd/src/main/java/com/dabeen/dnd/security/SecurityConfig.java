@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers(HttpMethod.DELETE, "/api/user/**" ).hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 공급자만 사용 가능
-            .antMatchers(HttpMethod.POST, "/api/help-suppl-comp").hasAnyRole("SUPPLER", "ADMIN")
+            .antMatchers(HttpMethod.POST, "/api/help-suppl-comp/*").hasAnyRole("SUPPLER", "ADMIN")
             .antMatchers(HttpMethod.DELETE, "/api/help-suppl-comp/**").hasAnyRole("USER", "SUPPLER", "ADMIN")
 
             // 관리자만 사용 가능
