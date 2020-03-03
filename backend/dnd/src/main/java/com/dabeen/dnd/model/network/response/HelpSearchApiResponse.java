@@ -27,6 +27,8 @@ public class HelpSearchApiResponse{
 
     private LocalDateTime helpEndDttm;
 
+    private String catNum;
+
     private UserApiResponse cnsrUser;
 
     private String title;
