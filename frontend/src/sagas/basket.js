@@ -4,8 +4,8 @@ import {
     loadUserBasketPostSuccessAction,
     loadUserBasketPostFailureAction,
     PAY_POST_REQUEST,
-    PayPostSuccessAction,
-    PayPostFailuerAction,
+    payPostSuccessAction,
+    payPostFailuerAction,
 } from '../reducers/basket';
 import axios from 'axios';
 
@@ -17,9 +17,9 @@ function* loadUserBasketPost(action) {
     try {
         const result = yield call(loadUserBasketPostApi, action.data);
         yield put(loadUserBasketPostSuccessAction(result.data.data));
-    } catch(e) {
-        console.error(e);
-        yield put(loadUserBasketPostFailureAction(e));
+    } catch(error) {
+        console.error(error);
+        yield put(loadUserBasketPostFailureAction(error));
     }
 };
 function* watchLoadUserBasketPost() {
@@ -28,19 +28,22 @@ function* watchLoadUserBasketPost() {
 // 결제를 하는 saga
 function payPostApi({ userNum, helpNums, payWay, cookie }){
     const reqData = {
-        user_num: userNum,
-        pymt_mthd_type: payWay,
-        help_nums: helpNums,
+        data: {
+            user_num: userNum,
+            pymt_mthd_type: payWay,
+            help_nums: helpNums,
+        }
     }
-    return  axios.get(`/pymt/execution`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+    return  axios.post(`/pymt/execution`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 }
 function* payPost(action) {
     try {
         const result = yield call(payPostApi, action.data);
-        yield put(PayPostSuccessAction(result.data.data));
-    } catch(e) {
-        console.error(e);
-        yield put(PayPostFailuerAction(e));
+        console.log(result)
+        yield put(payPostSuccessAction(result.data.data));
+    } catch(error) {
+        console.error(error);
+        yield put(payPostFailuerAction(error));
     }
 };
 function* watchPayPost() {

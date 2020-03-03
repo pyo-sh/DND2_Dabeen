@@ -5,7 +5,17 @@ import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 export const BanksUpperDiv = styled.div`
-
+  & .ant-tabs-ink-bar, .ant-tabs-ink-bar-animated{
+    background-color: #FF4300;
+  }
+  & .ant-tabs-tab-active, .ant-tabs-tab:hover{
+    color: #FF4300;
+  }
+  & .BanksAccountValue{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 export const BanksItemBox = styled(TabPane)`
@@ -20,7 +30,9 @@ export const BanksItemBox = styled(TabPane)`
     align-items: center;
   }
 
-  & .BanksAccountValue, .BanksMileageValue{
+  & .BanksAccountValue{
+    width: 300px;
+    text-align: center;
     font-size: 20px;
     color: #FF4300;
   }

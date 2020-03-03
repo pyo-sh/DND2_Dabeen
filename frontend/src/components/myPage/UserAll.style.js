@@ -32,7 +32,6 @@ export const UserPageWrapper = styled.article`
       height: 80vw;
       min-height: 200px;
       max-height: 300px;
-      border-radius: 5px;
     }
     & .userParagraph{
       padding-top: 17.5px;

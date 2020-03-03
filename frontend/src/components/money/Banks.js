@@ -1,9 +1,11 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Tabs } from 'antd';
 import { BanksUpperDiv, BanksItemBox, Select } from './Banks.style';
 import DabeenInput from "../signUp/InputFunctions";
 
 const Banks = ({ tabKey, onTabClick, accountNumber, setAccountNumber, selectOnChange }) => {
+  const { ownMilege } = useSelector(state => state.user.me);
   return (
     <BanksUpperDiv>
       <Tabs
@@ -13,7 +15,7 @@ const Banks = ({ tabKey, onTabClick, accountNumber, setAccountNumber, selectOnCh
         <BanksItemBox tab="무통장 입금" key="d">
           <div className="BanksAccount">
             국민은행
-              <div className="BanksAccountValue">93930200154654</div>
+              <div className="BanksAccountValue">939302 00 154654</div>
           </div>
         </BanksItemBox>
         <BanksItemBox tab="카드" key="c">
@@ -55,8 +57,10 @@ const Banks = ({ tabKey, onTabClick, accountNumber, setAccountNumber, selectOnCh
           />
         </BanksItemBox>
         <BanksItemBox tab="마일리지" key="m">
-            현재 보유마일리지 : 
-            <div className="BanksMileageValue">1000</div>
+          <div className="BanksAccount">
+            현재 보유마일리지
+              <div className="BanksAccountValue">{ownMilege}</div>
+          </div>
         </BanksItemBox>
       </Tabs>
     </BanksUpperDiv>
@@ -80,6 +84,6 @@ const phoneOptions = [
   "SKT",
   "KT",
   "LG U+"
-]
+];
 
 export default Banks;

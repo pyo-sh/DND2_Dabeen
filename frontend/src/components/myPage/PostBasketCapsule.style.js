@@ -17,6 +17,8 @@ export const PostBasketCapsuleUpperDiv = styled.div`
   justify-content: center;
   align-items: center;
 
+  cursor: pointer;
+
   & .BasketCapsuleCapture {
     flex: 1;
     width: 100%;
@@ -28,6 +30,7 @@ export const PostBasketCapsuleUpperDiv = styled.div`
     border: 5px solid #FF9644;
     border-radius: 10px;
     box-shadow: 0 0 10px 1px #E9E9E9;
+    background-color: white;
   }
   & .BasketCapsuleCapture:hover{
     box-shadow: 0 0 10px 2px #BFC7CE;
@@ -90,14 +93,21 @@ export const PostBasketContentBox = styled.div`
     align-items: center;
     margin-right: 10px;
     & .PostBasketMoneyValue{
-      max-width: 135px;
+      max-width: 130px;
       margin-left: 5px;
       color: #FF9644;
       font-size: 18px;
     }
-    & .PostBasketPayCheck {
-
-    }
+  }
+  & .PostBasketPayCheck, .PostBasketPayUncheck {
+    padding-left: 5px;
+    border-left: 1px solid #BFC7CE;
+  }
+  & .PostBasketPayCheck{
+    color: #FF9644;
+  }
+  & .PostBasketPayUncheck{
+    color: #7A7A7A;
   }
 `;
 
