@@ -161,7 +161,7 @@ function applyDabeenerAPI({userNum, juminImage, profileImage, cookie}){
             rrn_path : juminImage
         }
     };
-    return axios.put('/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.post('/user/supplier', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* applyDabeener(action) {
@@ -191,7 +191,7 @@ function refundMileageAPI({userNum, refundPrice, selectBank, cookie}){
 
 function* refundMileage(action) {
     try {
-        const result = yield call(refundMileageAPI, action.data);
+        yield call(refundMileageAPI, action.data);
         yield put(refundMileageSuccessAction(action.data.refundPrice));
     }catch(e){
         console.error(e);

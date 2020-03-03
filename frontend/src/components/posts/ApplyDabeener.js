@@ -5,7 +5,7 @@ import { calculateRate } from '../../utils/calculateRate';
 import {getCookie} from '../../utils/cookieFunction';
 import Link from 'next/link';
 import {useDispatch} from 'react-redux';
-import { cancelApplyRequestAction } from '../../reducers/posts';
+import { cancelApplyRequestAction, approveDabeenerRequestAction } from '../../reducers/posts';
 
 const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeenersNum}) => {
     const dispatch = useDispatch();
@@ -13,8 +13,8 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeeners
     const isMyProfile = useMemo(() => myNum === dabeener.user.userNum, [myNum, dabeener.user.userNum]);
     
     const choiceDabeener = useCallback(() => { // 글올린 사람이 선택하는 버튼 클릭
-
-    }, []);
+        dispatch(approveDabeenerRequestAction({helpNum, userNum: dabeener.user.userNum, cookie: getCookie()}));
+    }, [helpNum, dabeener && dabeener.user.userNum]);
 
     const cancelDabeener = useCallback(() => { // 자기가 신청한 것 취소하는 버튼 클릭
         dispatch(cancelApplyRequestAction({helpNum, userNum : myNum, cookie:getCookie()}));

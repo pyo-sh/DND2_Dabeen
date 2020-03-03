@@ -152,7 +152,7 @@ const Regist = () => {
                              </div></> :  
                              <div className="previewImage">
                                 <div className="imgBorder"> 
-                                    <div className="deleteIcon" onClick={deleteImage(juminImage)}>
+                                    <div className="deleteIcon" onClick={deleteImage}>
                                         <Icon type="close" />
                                     </div>
                                     <img src={juminImage} alt="주민번호 미리보기" width="90" height="90"/> 
