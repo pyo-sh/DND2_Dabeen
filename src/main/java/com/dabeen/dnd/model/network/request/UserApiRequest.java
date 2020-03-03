@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserApiRequest {
     // requset에서 전달될 데이터
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String userNum; // 사용자 번호
 
     @NotEmpty(message = "값이 존재해야 합니다.")

@@ -60,7 +60,7 @@ public class HelpApiController{
     /* jwt 검증때문에 상속없이 직접 구현  */
     // Create 메소드
     @PostMapping("")
-    public Header<HelpApiResponse> create(@RequestBody @Valid Header<HelpApiRequest> request, Authentication authentication){
+    public Header<HelpSearchApiResponse> create(@RequestBody @Valid Header<HelpApiRequest> request, Authentication authentication){
         HelpApiRequest reqDate = request.getData();
 
         this.idVerification(authentication, reqDate.getCnsrNum());
@@ -77,7 +77,7 @@ public class HelpApiController{
 
     // Update 메소드
     @PutMapping("")
-    public Header<HelpApiResponse> update(@RequestBody @Valid Header<HelpApiRequest> request, Authentication authentication){
+    public Header<HelpSearchApiResponse> update(@RequestBody @Valid Header<HelpApiRequest> request, Authentication authentication){
         HelpApiRequest reqDate = request.getData();
 
         this.idVerification(authentication, reqDate.getCnsrNum());
