@@ -175,7 +175,6 @@ const reducer = (state = initialState, action) => {
           helpPostDate: action.data.help_pstn_dttm, // 도움게시일시
           helpTitle: action.data.title,  //도움제목
           helpContent: action.data.cont, // 내용
-          userNum: action.data.cnsr_num,
           categoryNum: action.data.cat_num, // 카테고리번호
           price: action.data.price, // 금액
           helpDeadLine: action.data.help_aply_cls_dttm, // 도움신청마감일시
@@ -185,7 +184,11 @@ const reducer = (state = initialState, action) => {
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
           execLoc: action.data.exec_loc, // 이행장소
           isPaymentApprove: action.data.pymt_whet, // 결제여부
-          helpPic: action.data.help_pics//도움 사진 리스트
+          helpPic: action.data.help_pics,//도움 사진 리스트
+          userNum: action.data.cnsr_user.user_num,
+          userId: action.data.cnsr_user.user_id,
+          nickname: action.data.cnsr_user.nickname,
+          picPath: action.data.cnsr_user.pic_path
         });
         // draft.maxId += 1;
         draft.helpPostAdded = true;
@@ -216,7 +219,7 @@ const reducer = (state = initialState, action) => {
       }
       case UPDATE_HELPPOST_SUCCESS: {
         draft.isUpdatingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.helpNum);
+        const index = draft.helpPosts.findIndex(v => v.helpNum == action.data.helpNum);
         draft.helpPosts[index] = action.data;
         draft.helpPostUpdated = true;
         break;
@@ -234,7 +237,7 @@ const reducer = (state = initialState, action) => {
       }
       case REMOVE_HELPPOST_SUCCESS: {
         draft.isRemovingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data);
+        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.help_num);
         draft.helpPosts.splice(index, 1);
         draft.helpPostRemoved = true;
         break;

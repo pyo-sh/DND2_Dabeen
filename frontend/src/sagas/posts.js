@@ -68,7 +68,6 @@ function updateHelpPostAPI(data) {
         data: {
             help_num: data.helpNum,
             cnsr_num: data.userNum,
-            // help_pstn_dttm: data.helpPostDate,
             cat_num: data.categoryNum,
             title: data.helpTitle,
             exec_loc: data.execLoc,
@@ -77,8 +76,6 @@ function updateHelpPostAPI(data) {
             pref_help_exec_dttm: data.helpExecDate,
             help_aply_cls_dttm: data.helpDeadLine,
             cont: data.helpContent,
-            // help_aprv_whet: data.isHelpApprove,
-            // pymt_whet: data.isPaymentApprove,
             help_pics: data.helpPic
         }
     }
@@ -128,7 +125,7 @@ function loadHelpPostAPI(data) {
 function* loadHelpPost(action) {
     try {
         const result = yield call(loadHelpPostAPI, action.data);
-        console.log(result.data);
+        console.log(result.data.data);
         yield put(loadHelpPostSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
@@ -156,29 +153,6 @@ function* loadLivePost(action) {
 };
 function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
-};
-
-function addImageAPI({path, cookie}) {
-    const reqData = {
-        data:{
-            path
-        }
-    };
-    return axios.post('/help-pic', reqData,{headers : {Authorization: `Bearer ${cookie}`}});
-};
-
-function* addImage(action) {
-    try {
-        const result = yield call(addImageAPI, action.data);
-        yield put(addImageSuccessAction(result.data.data));
-    } catch (e) {
-        console.log(e);
-        yield put(addImageFailureAction(e));
-    }
-};
-
-function* watchAddImage() {
-    yield takeLatest(ADD_IMAGE_REQUEST, addImage);
 };
 
 // 받을도움 / 줄도움
@@ -231,10 +205,8 @@ export default function* postsSaga() {
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
         fork(watchLoadActiveUserPost),
-        fork(watchRemoveHelpPost),
         fork(watchLoadInactiveUserPost),
         fork(watchAddHelpPost),
-        fork(watchAddImage),
         fork(watchUpdateHelpPost),
         fork(watchRemoveHelpPost),
     ]);

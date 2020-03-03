@@ -2,6 +2,19 @@ import styled from 'styled-components';
 
 export const Search = styled.div`
     width: 100%;
+    & input {
+            width: 72%;
+            flex : 1;
+            max-width: 300px;
+            min-width: 250px;
+            margin: 5px;
+            padding: 4px 30px 4px 11px;
+            border: 1px solid #BFC7CE;
+            border-radius: 3px;
+            & :focus {
+                outline: none;
+            }
+        }
     /* & .inputAddress {
         margin-bottom: 1vh;
         & input{
@@ -24,16 +37,6 @@ export const Search = styled.div`
             padding: 20px 5px;
         }
 
-        & input {
-            width: 72%;
-            flex : 1;
-            max-width: 300px;
-            min-width: 250px;
-            margin: 5px;
-            padding: 4px 30px 4px 11px;
-            border: 1px solid #BFC7CE;
-            border-radius: 3px;
-        }
     }
     & .ant-input {
         width: 100%;

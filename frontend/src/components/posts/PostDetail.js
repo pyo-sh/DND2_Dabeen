@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { Icon, TimePicker, DatePicker, Popconfirm } from 'antd';
+import { Icon, TimePicker, DatePicker, Popconfirm, message } from 'antd';
 import CheckDabeener from './CheckDabeener';
 import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
@@ -17,7 +17,6 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExecHour = parseInt(helpExec[1].substring(0,2));
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
     const imagesURL = data.helpPic.map(pic => pic.path);    //path만 따로 배열에 저장
-    // imgPaths.map(pic => delete pic.help_num)
     const [click, setClick] = useState(false);
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
@@ -36,9 +35,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm';
     console.dir(data);
-    // setEditImgPaths(data.helpPic.map(pic => editImages.push({"pic_ornu": pic.pic_ornu, "path": pic.path})))
-
-    console.log(editImages);
+    
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -61,20 +58,16 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const onConfirm = useCallback(() => {
         setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
         dispatch(updateHelpPostRequestAction({
-                helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
-                categoryNum: String(categoryNum),
+                categoryNum: data.categoryNum,
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
                 helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
                 postNum: parseInt(editNeedPersonnel),
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
-                helpEndTime: data.helpEndTime,
-                // isHelpApprove: data.isHelpApprove,
                 helpContent: editContent,
-                // isPaymentApprove: data.isPaymentApprove,
                 helpPic: editImgPaths,
                 cookie : getCookie()
             })
@@ -98,15 +91,9 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
         setEditHelpExecTime(timeString);
     }, []);
 
-    //Picker들 수정할 때 이거 쓰니까 오류떠서 잠시 안씀
-    // const onChangeHelpDatePicker = setStateFunc =>
-    // useCallback((moment, string) => {
-    //   setStateFunc(string); 
-    // }, []);
-
     //게시글 삭제 버튼 눌렀을 때
     const deletePost = useCallback((helpNum) => () => {
-        if(imagesURL.length != 0){
+        if(imagesURL.length !== 0){
             console.log(imagesURL)
             const imageFormData = new FormData();
             imagesURL.map(url => imageFormData.append('url', url));
@@ -116,23 +103,10 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 console.log(e.response);
             }
         }
-        console.log(helpNum)
         dispatch(removeHelpPostRequestAction({help_num: helpNum, cookie : getCookie()}));
     }, []);
 
-    //수정 취소 눌렀을 경우
-    // const backPost = useCallback(() => {
-    //     setEdit(prev => !prev);
-    //     setEditTitle(data.helpTitle);
-    //     setEditHelpExecDate(helpExec[0]);
-    //     setEditHelpExecTime(helpExec[1]);
-    //     setEditHelpDeadLineDate(helpDeadline[0]);
-    //     setEditHelpDeadLineTime(helpDeadline[1]);
-    //     setEditNeedPersonnel(data.postNum);
-    //     setEditPrice(data.price);
-    //     setEditExecLoc(data.execLoc);
-    //     setEditContent(data.helpContent);
-    // }, []);
+    
     return (
         <Modal>
         <div>
@@ -141,7 +115,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 <div className="TitleWrapper">
                     {!edit
                     ?   <div className="PostTitle">
-                            {data.helpTitle}
+                            {editTitle}
                         </div>
                     :   <EditTitle value={editTitle} onChange={setEditTitle}/>
                     }
@@ -196,7 +170,17 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                             )
                         }
                         {data.isHelpApprove === 'y'
-                        ?   <ApplyCheck apply>마감</ApplyCheck>
+                        ?
+                        // <Popconfirm
+                        //     placement="bottom"
+                        //     title="정말 마감하시겠습니까?"
+                        //     onConfirm={}
+                        //     onCancel={edit}
+                        //     okText="네"
+                        //     cancelText="아니요"
+                        // >   
+                        <ApplyCheck apply>마감</ApplyCheck>
+                        // </Popconfirm>
                         :   <ApplyCheck>신청 중</ApplyCheck>
                         }
                     </div>
@@ -210,13 +194,13 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <img className="PostDetailImage" src={'/images/main4.jpg'}/>
             </DetailSlick>
             :
-            imagesURL.length === 1 ?
+            editImages.length === 1 ?
             <HelpPic>
-            <img className="PostDetailImage" src={imagesURL} />
+            <img className="PostDetailImage" src={editImages} />
             </HelpPic>
             :
             <DetailSlick {...slickSetting}>
-            {imagesURL.map((url, i) => {
+            {editImages.map((url, i) => {
                 return <img className="PostDetailImage" src={url} key={url} alt={url}/>
             })}
             </DetailSlick>
@@ -230,13 +214,13 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                             <div style={{display: "flex"}} className="ApplicationInfoBoxDetail">
                                 <div style={{display: "flex", alignItems: "center"}}>
                                     <span style={{fontSize: 25, color: "#FF4300"}}>0</span>
-                                    /{data.postNum}
+                                    /{editNeedPersonnel}
                                 </div>
                                 <button className="ApplyCheck" onClick={onModal}>
                                     신청 확인
                                 </button>
                             </div>      
-                            {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={data.postNum} applyCheck={data.isHelpApprove}/>}
+                            {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={editNeedPersonnel} applyCheck={data.isHelpApprove}/>}
                             </>
                         :   <div style ={{display:"flex"}} className="ApplicationInfoBoxDetail">
                                 <div>
@@ -254,7 +238,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">신청 마감 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpDeadline[0]}</div>{time(helpDeadlineHour, helpDeadline[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{editHelpDeadLineDate}</div>{time(helpDeadlineHour, editHelpDeadLineTime)}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -274,7 +258,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     <ApplicationInfoBox>
                         <div className="ApplicationInfoBoxTitle">수행 일시</div>
                         {!edit
-                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{helpExec[0]}</div>{time(helpExecHour, helpExec[1])}</div>
+                        ?   <div className="ApplicationInfoBoxDetail"><div className="ApplicationInfoBoxDetailDate">{editHelpExecDate}</div>{time(helpExecHour, editHelpExecTime)}</div>
                         :   <div className="ApplicationInfoBoxDetail">
                                 <DatePicker
                                     className="ApplicationInfoBoxDatePicker"
@@ -295,7 +279,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 <div className="ApplicationMoney">
                     {!edit
                     ?   <>
-                        <div className="ApplicationMoneyTitle"><div className="ApplicationMoneyTitleValue">{data.price}</div>원</div>
+                        <div className="ApplicationMoneyTitle"><div className="ApplicationMoneyTitleValue">{editPrice}</div>원</div>
                         {data.userNum === me.userNum    //내가 쓴 게시글이면 마감버튼 뜨게, 아닐시엔 신청 버튼이 뜨게
                         ?   (data.isHelpApprove === 'y'
                             ?   <DeadlineButton apply>마감 완료</DeadlineButton>
@@ -318,11 +302,11 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 {!edit
                 ?   <div className="ContentMapWrapper">
                         <div className="ContentMap">
-                            <MyLocation myLocation={data.execLoc}/>    
+                            <MyLocation myLocation={editExecLoc}/>    
                         </div>    
                         <div className="ContentMapInfo">
                             지도 위치
-                            <div className="ContentMapLocation">{data.execLoc}</div>
+                            <div className="ContentMapLocation">{editExecLoc}</div>
                         </div>
                     </div>
                 :   <div className="ContentMapWrapper">
@@ -338,7 +322,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <ContentItem>
                 <div className="ContentTitle">도움정보</div>
                 {!edit
-                ?   <p>{data.helpContent}</p>
+                ?   <p>{editContent}</p>
                 :   <textarea required value={editContent} onChange={setEditContent}/>
                 }
             </ContentItem>
