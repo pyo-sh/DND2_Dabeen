@@ -16,7 +16,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
       <UserPageWrapper>
         <section className='profileSection'>
           <div className='userInfomation'>
-            <img className='userImage' src={userInfo.picPath || '/images/defaultProfile.png'}></img>
+            <img className='userImage' src={userInfo.picPath || '/images/defaultProfile.png'}/>
             <div className='userIntroduce'>
               <h1 className='userNickname'>{userInfo.nickname}</h1>
               {userInfo.userRole === 'y' ? (

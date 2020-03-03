@@ -293,7 +293,7 @@ const reducer = (state = initialState, action) => {
         draft.userActivePostsPage = { // 페이지 정보
           totalDatas: action.data.page.total_datas,
           totalPages: action.data.page.total_pages,
-          helpsPerPage: action.data.page.pages_per_datas,
+          helpsPerPage: action.data.page.data_per_page,
         };
         draft.userActivePosts = action.data.list.map(post => ({ // 도움정보
           applyNum: post.appli_num,
@@ -357,7 +357,7 @@ const reducer = (state = initialState, action) => {
         draft.userInactivePostsPage = { // 페이지 정보
           totalDatas: action.data.page.total_datas,
           totalPages: action.data.page.total_pages,
-          helpsPerPage: action.data.page.pages_per_datas,
+          helpsPerPage: action.data.page.data_per_page,
         };
         draft.userInactivePosts = action.data.list.map(post => ({ // 도움정보
           applyNum: post.appli_num,

@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { loadActiveUserPostRequestAction } from "../../reducers/posts";
+import { loadActiveUserPostRequestAction, loadInactiveUserPostRequestAction } from "../../reducers/posts";
 import { Row, Pagination } from 'antd';
 import MyHelpCapsule from "./MyHelpCapsule";
 import { MyHelpUpperDiv, MyHelpCol } from './MyHelp.style';
 
 const MyHelp = ({ userNum, helpType, isMe }) => {
   const dispatch = useDispatch();
+  const [nowActivePage, setNowActivePage] = useState(1);
+  const [nowInactivePage, setNowInActivePage] = useState(1);
   const {
     userActivePosts,
     userActivePostsPage,
@@ -15,15 +17,23 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
   } = useSelector(state => state.posts);
   // componentDidMount
   useEffect(() => {
-    dispatch(loadActiveUserPostRequestAction({ userNum, page: 0, helpType }));
+    dispatch(loadActiveUserPostRequestAction({ userNum, page: nowActivePage-1, helpType }));
+    dispatch(loadInactiveUserPostRequestAction({ userNum, page: nowInactivePage-1, helpType }));
   }, []);
   // helpType이 바뀔 때 마다 render
   useEffect(() => {
-    dispatch(loadActiveUserPostRequestAction({ userNum, page: 0, helpType }));
+    dispatch(loadActiveUserPostRequestAction({ userNum, page: nowActivePage-1, helpType }));
+    dispatch(loadInactiveUserPostRequestAction({ userNum, page: nowInactivePage-1, helpType }));
   }, [helpType]);
+  useEffect(()=>{
+    dispatch(loadActiveUserPostRequestAction({ userNum, page: nowActivePage-1, helpType }));
+  }, [nowActivePage])
+  useEffect(()=>{
+    dispatch(loadInactiveUserPostRequestAction({ userNum, page: nowInactivePage-1, helpType }));
+  }, [nowInactivePage]);
   // 페이지 바꿀 때 도움 요청
-  const onChangePagination = useCallback(( page, pageSize ) => {
-    dispatch(loadActiveUserPostRequestAction({userNum, page, helpType}));
+  const onChangePagination = (setState) => useCallback(( page, pageSize ) => {
+    setState(page);
   }, []);
   return (
     <MyHelpUpperDiv>
@@ -41,8 +51,9 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
           </Row>
           <Pagination
             className="MyhelpContentPage"
-            onChange={onChangePagination}
+            onChange={onChangePagination(setNowActivePage)}
             simple
+            current={nowActivePage}
             defaultCurrent={1}
             pageSize={15}
             total={userActivePostsPage.totalDatas}
@@ -63,8 +74,9 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
           </Row>
           <Pagination
             className="MyhelpContentPage"
-            onChange={onChangePagination}
+            onChange={onChangePagination(setNowInActivePage)}
             simple
+            current={nowInactivePage}
             defaultCurrent={1}
             pageSize={15}
             total={userInactivePostsPage.totalDatas}

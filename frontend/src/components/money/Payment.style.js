@@ -5,6 +5,9 @@ export const PaymentModal = styled(Modal)`
     & .ant-modal-header div {
         font-size: 25px;
     }
+    & .ant-modal-close{
+        width: 56px;
+    }
     & input {
         &:hover, :focus {
             border: 1px solid #ff4300;

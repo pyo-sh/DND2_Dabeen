@@ -34,6 +34,7 @@ export const MyHelpCapsuleUpperDiv = styled.div`
   & .MyhelpCapsuleImage{
     width: 100%;
     min-height: 150px;
+    max-height: 150px;
     margin-top: -34px;
     justify-self: flex-end;
     align-self: flex-end;

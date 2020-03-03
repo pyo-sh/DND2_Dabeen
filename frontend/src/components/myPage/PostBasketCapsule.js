@@ -1,9 +1,24 @@
 import React, { useState, useEffect, useCallback, useRef, memo } from "react";
-import { PostBasketCapsuleUpperDiv, PostBasketCapsuleWrapper, BasketCapsuleCircle, PostBasketCheckIcon, PostBasketContent, PostBasketContentBox } from './PostBasketCapsule.style';
+import {
+  PostBasketCapsuleUpperDiv,
+  PostBasketCapsuleWrapper,
+  BasketCapsuleCircle,
+  PostBasketCheckIcon,
+  PostBasketContent,
+  PostBasketContentBox
+} from './PostBasketCapsule.style';
+import PostDetail from '../posts/PostDetail';
 
 const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
   const [iconState, setIconState] = useState(false);
   const first = useRef(true);
+  const imagesURL = post.helpPic.map(pic => pic.path);
+  
+  const [visibleDetail, setVisibleDetail] = useState(false);
+  const setVisible = useCallback(e => {
+    setVisibleDetail(prev => !prev);
+  }, []);
+  
   const onClickIcon = useCallback(
     e => {
       setIconState(prev => !prev);
@@ -15,25 +30,34 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
       first.current = false;
       return;
     }
+    const thisPrice = post.price * post.approveNum;
     if(iconState) {
-      setAllPrice(prev => prev + post.price);
+      setAllPrice(prev => prev + thisPrice);
       setSelectHelps(prev => [...prev, post.helpNum])
     } else {
-      setAllPrice(prev => prev - post.price);
+      setAllPrice(prev => prev - thisPrice);
       setSelectHelps(prev => prev.filter(p => p !== post.helpNum));
     }
   }, [iconState]);
-  
+
+  const canPay = post.approveNum !== 0;
   return (
     <PostBasketCapsuleWrapper>
-      <PostBasketCheckIcon
-        type="check-circle"
-        setcolor={iconState.toString()}
-        onClick={onClickIcon}
-      />
-      <PostBasketCapsuleUpperDiv propImage={'/images/main2.jpg'}>
+      {canPay
+      ? <PostBasketCheckIcon
+          type="check-circle"
+          setcolor={iconState.toString()}
+          onClick={onClickIcon}
+        />
+      : <PostBasketCheckIcon
+          type="stop"
+          setcolor={iconState.toString()}
+          onClick={()=>{alert("결제는 승인 인원이 최소 1명 이상이여야 합니다!")}}
+        />
+      }
+      <PostBasketCapsuleUpperDiv onClick={setVisible}>
         <BasketCapsuleCircle><div className="Circle"></div></BasketCapsuleCircle>
-        <img className="BasketCapsuleCapture" src={'/images/main2.jpg'}/>
+        <img className="BasketCapsuleCapture" src={imagesURL.length === 1 ? imagesURL[0] : '/images/main2.jpg'}/>
         <PostBasketContent>
           <div className="PostBasketTitle">{post.helpTitle}</div>
           <PostBasketContentBox>
@@ -41,7 +65,7 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
               신청인원 :
               <div className="PostBasketPeopleApplied">{post.approveNum}</div>
               /
-              <div className="PostBasketPeopleApply">{post.applyNum}</div>
+              <div className="PostBasketPeopleApply">{post.postNum}</div>
             </div>
           </PostBasketContentBox>
           <PostBasketContentBox>
@@ -50,7 +74,7 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
               <div className="PostBasketMoneyValue">{post.price}</div>
               원
             </div>
-            <div className="PostBasketPayCheck">결제가능</div>
+            <div className={canPay ? "PostBasketPayCheck" : "PostBasketPayUncheck"}>{canPay ? "결제 가능" : "결제 불가"}</div>
           </PostBasketContentBox>
           <div className="PostBasketTimeWrapper">
             <div className="PostBasketFinishTime">
@@ -62,6 +86,10 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
           </div>
         </PostBasketContent>
       </PostBasketCapsuleUpperDiv>
+      {visibleDetail
+      ? <PostDetail setVisible={setVisible} data={post} />
+      : null
+      }
     </PostBasketCapsuleWrapper>
   );
 });
