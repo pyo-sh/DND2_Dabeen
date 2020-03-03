@@ -12,10 +12,12 @@ export const ApplyDabeenerDiv = styled.div`
     align-items: center;
     margin-bottom: 2vh;
 
-    & .ant-avatar {
+    & .userProfile {
         width: 100%;
         max-width: 80px;
         height: 80px;
+        border-radius : 50%;
+        cursor: pointer;
     }
 `;
 
@@ -99,5 +101,17 @@ export const ChoiceButton = styled.button`
 
     :focus{
         outline: none;
+    }
+`;
+
+export const CancelButton = styled.button`
+    width: 80px;
+    height: 30px;
+    border-radius: 5px;
+    border: 0;
+    background : grey;
+    color :white;
+    &:hover {
+        opacity : 0.8;
     }
 `;

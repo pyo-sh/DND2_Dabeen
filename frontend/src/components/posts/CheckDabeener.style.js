@@ -33,7 +33,7 @@ export const DrawerForm = styled.div`
     padding: 1rem;
     width: 40%;
     max-width: 500px;
-    min-width: 300px;
+    min-width: 400px;
     display: flex; 
     flex-direction: column;
     justify-content: flex-start;

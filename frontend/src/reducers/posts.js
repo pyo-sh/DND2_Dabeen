@@ -9,6 +9,15 @@ export const initialState = {
   totalPages: 1,
   helpsPerPage: 0,
   totalHelps: 0,
+  applyDabeeners: [],
+  isApplyingDabeener : false,
+  applyDabeenerError : '',
+
+  isAddingApplying : false,
+  addApplyError : '',
+
+  isCancelApplying : false,
+  cancelApplyError : '',
   // 유저의 도움 중 받을 도움 / 줄 도움
   userActivePosts: [],
   userActivePostsPage: {
@@ -53,6 +62,18 @@ export const LOAD_HELPPOST_REQUEST = "LOAD_HELPPOST_REQUEST";
 export const LOAD_HELPPOST_SUCCESS = "LOAD_HELPPOST_SUCCESS";
 export const LOAD_HELPPOST_FAILURE = "LOAD_HELPPOST_FAILURE";
 
+export const LOAD_APPLYDABEENER_REQUEST = "LOAD_APPLYDABEENER_REQUEST";
+export const LOAD_APPLYDABEENER_SUCCESS = "LOAD_APPLYDABEENER_SUCCESS";
+export const LOAD_APPLYDABEENER_FAILURE = "LOAD_APPLYDABEENER_FAILURE";
+
+export const ADD_APPLY_REQUEST = "ADD_APPLY_REQUEST";
+export const ADD_APPLY_SUCCESS = "ADD_APPLY_SUCCESS";
+export const ADD_APPLY_FAILURE = "ADD_APPLY_FAILURE";
+
+export const CANCEL_APPLY_REQUEST = "CANCEL_APPLY_REQUEST";
+export const CANCEL_APPLY_SUCCESS = "CANCEL_APPLY_SUCCESS";
+export const CANCEL_APPLY_FAILURE = "CANCEL_APPLY_FAILURE";
+
 //도움 게시글 작성
 export const ADD_HELPPOST_REQUEST = "ADD_HELPPOST_REQUEST";
 export const ADD_HELPPOST_SUCCESS = "ADD_HELPPOST_SUCCESS";
@@ -90,6 +111,18 @@ export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
 export const loadHelpPostRequestAction = createAction(LOAD_HELPPOST_REQUEST);
 export const loadHelpPostSuccessAction = createAction(LOAD_HELPPOST_SUCCESS);
 export const loadHelpPostFailureAction = createAction(LOAD_HELPPOST_FAILURE);
+
+export const loadApplyDabeenerRequestAction = createAction(LOAD_APPLYDABEENER_REQUEST);
+export const loadApplyDabeenerSuccessAction = createAction(LOAD_APPLYDABEENER_SUCCESS);
+export const loadApplyDabeenerFailureAction = createAction(LOAD_APPLYDABEENER_FAILURE);
+
+export const addApplyRequestAction = createAction(ADD_APPLY_REQUEST);
+export const addApplySuccessAction = createAction(ADD_APPLY_SUCCESS);
+export const addApplyFailureAction = createAction(ADD_APPLY_FAILURE);
+
+export const cancelApplyRequestAction = createAction(CANCEL_APPLY_REQUEST);
+export const cancelApplySuccessAction = createAction(CANCEL_APPLY_SUCCESS);
+export const cancelApplyFailureAction = createAction(CANCEL_APPLY_FAILURE);
 
 export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
@@ -160,6 +193,67 @@ const reducer = (state = initialState, action) => {
       case LOAD_HELPPOST_FAILURE: {
         draft.isLoadingHelpPost = false;
         draft.loadHelpPostErrorReason = action.data.error;
+        break;
+      }
+      case LOAD_APPLYDABEENER_REQUEST : {
+        draft.applyDabeenerError = '';
+        draft.isApplyingDabeener = true;
+        break;
+      }
+      case LOAD_APPLYDABEENER_SUCCESS : {
+        draft.isApplyingDabeener = false;
+        draft.applyDabeeners = action.data.map(dabeener => ({
+          applyDate : dabeener.comp_dttm, // 신청 일시
+          isApprove : dabeener.help_aprv_whet,
+          aprroveDate : dabeener.apprv_dttm,
+          evaluationDate : dabeener.ast_dttm,
+          rate : dabeener.rate,
+          evaluationContent : dabeener.ast_cont,
+          user : {
+            userNum : dabeener.user.user_num,
+            userName : dabeener.user.user_name,
+            userId : dabeener.user.user_id,
+            nickname : dabeener.user.nickname,
+            introduce : dabeener.user.itdc_cont,
+            pic_path : dabeener.user.pic_path,
+            avgRate : dabeener.user.avg_rate,
+          }
+        }))
+        break;
+      }
+      case LOAD_APPLYDABEENER_FAILURE : {
+        draft.applyDabeenerError = action.data;
+        draft.isApplyingDabeener = false;
+        break;
+      }
+      case ADD_APPLY_REQUEST : {
+        draft.isAddingApplying = true;
+        draft.addApplyError = '';
+        break;
+      }
+      case ADD_APPLY_SUCCESS : {
+        draft.isAddingApplying = false;
+        // draft.applyDabeeners= false;
+        break;
+      }
+      case ADD_APPLY_FAILURE : {
+        draft.isAddingApplying = false;
+        draft.addApplyError = action.data;
+        break;
+      }
+      case CANCEL_APPLY_REQUEST : {
+        draft.isCancelApplying = true;
+        draft.cancelApplyError = '';
+        break;
+      };
+      case CANCEL_APPLY_SUCCESS : {
+        draft.isCancelApplying = false;
+        draft.applyDabeeners = draft.applyDabeeners.filter(v => v.user.userNum !== action.data.userNum );
+        break;
+      }
+      case CANCEL_APPLY_FAILURE : {
+        draft.cancelApplyError = action.data;
+        draft.isCancelApplying = false;
         break;
       }
       case ADD_HELPPOST_REQUEST: {
