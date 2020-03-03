@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import { useSeletor } from 'react-redux';
+import React, { useState, useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Icon } from 'antd';
 import {Modal, DrawerForm} from './CheckDabeener.style';
 import ApplyDabeener from './ApplyDabeener';
 
-const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
+const CheckDabeener = ({click, onModal,helpNum, needPersonnel, postUserNum, applyCheck, applyDabeeners, approveDabeenersNum, setApproveDabeenersNum}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
     const [visible, setVisible] = useState(click);
     const [count, setCount] = useState(0);
-
+    const { me } = useSelector(state => state.user);
+    const isMe = useMemo(() => me.userNum === postUserNum, [me && me.userNum, postUserNum]);
     const onClose = useCallback(() => {
         onModal(!visible);
     },[visible]);
@@ -29,23 +30,19 @@ const CheckDabeener = ({click, onModal, needPersonnel, applyCheck}) => {
                 <div className="drawerTop">
                     <div className="drawerTopFlex">
                          <div className="drawerTopMargin">신청인원</div>
-                         <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>N</span>명</div>
+                         <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>{applyDabeeners.length}</span>명</div>
                      </div>
                      <div className="drawerTopMargin">|</div>
                      <div className="drawerTopFlex">
                      <div className="drawerTopMargin">확정인원</div>
-                        <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>1</span>/{needPersonnel}</div>
+                        <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>{approveDabeenersNum}</span>/{needPersonnel}</div>
                      </div>
                      {
-                        applyCheck === "y" &&<button className="pay">결제!</button>
+                        applyCheck === "y" && isMe && <button className="pay">결제!</button>
                      }
                  </div>
                  <div className="drawerMiddle">
-                    {/* 얘도 map으로 줘야함.... 
-                        아이디, 닉네임, 총 도움수, 평점, 자기소개 받아와서 출력
-                    */}
-                    <ApplyDabeener />
-                    <ApplyDabeener />
+                    {applyDabeeners.map(dabeener => <ApplyDabeener key={dabeener.user.userNum} helpNum={helpNum} dabeener={dabeener} myNum={me.userNum} isMe={isMe} setApproveDabeenersNum={setApproveDabeenersNum}/>)}
                 </div>
             </DrawerForm>
         </Modal>

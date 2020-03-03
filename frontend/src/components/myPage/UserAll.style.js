@@ -49,7 +49,7 @@ export const UserPageWrapper = styled.article`
     & .userRate{
       display: flex;
       align-items: center;
-      padding-left: 3px;
+      /* padding-left: 3px; */
       & .userRateTitle{
         color: #FF4300;
         padding: 4px 0 0 13px;

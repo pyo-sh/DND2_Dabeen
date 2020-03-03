@@ -23,7 +23,16 @@ import {
     addImageSuccessAction,
     addImageFailureAction,
     UPDATE_HELPPOST_REQUEST,
-    REMOVE_HELPPOST_REQUEST
+    REMOVE_HELPPOST_REQUEST,
+    LOAD_APPLYDABEENER_REQUEST,
+    loadApplyDabeenerSuccessAction,
+    loadApplyDabeenerFailureAction,
+    CANCEL_APPLY_REQUEST,
+    cancelApplySuccessAction,
+    cancelApplyFailureAction,
+    addApplySuccessAction,
+    addApplyFailureAction,
+    ADD_APPLY_REQUEST
 } from '../reducers/posts';
 import axios from 'axios';
 
@@ -158,6 +167,68 @@ function* watchLoadLivePost() {
     yield takeLatest(LOAD_LIVEPOST_REQUEST, loadLivePost);
 };
 
+// 신청 다비너 불러오기
+function applyDabeenerAPI({helpNum}) {
+    return axios.get(`/help-suppl-comp/${helpNum}/supplers`);
+};
+
+function* applyDabeener(action) {
+    try {
+        const result = yield call(applyDabeenerAPI, action.data);
+        yield put(loadApplyDabeenerSuccessAction(result.data.data));
+    } catch (e) {
+        console.log(e);
+        yield put(loadApplyDabeenerFailureAction(e));
+    }
+};
+function* watchApplyDabeener() {
+    yield takeLatest(LOAD_APPLYDABEENER_REQUEST, applyDabeener);
+};
+
+
+function addApplyAPI({helpNum, userNum, cookie}) {
+    const reqData = {
+        data : {
+            help_num : helpNum,
+            suppl_num : userNum,
+            help_aprv_whet : 'n'
+        }
+    }
+    return axios.post(`/help-suppl-comp`, reqData ,{headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* addApply(action) {
+    try {
+        const result = yield call(addApplyAPI, action.data);
+        console.log(result.data.data);
+        yield put(addApplySuccessAction(result.data.data));
+    } catch (e) {
+        console.log(e);
+        yield put(addApplyFailureAction(e));
+    }
+};
+function* watchAddApply() {
+    yield takeLatest(ADD_APPLY_REQUEST, addApply);
+};
+
+function cancelApplyAPI({helpNum, userNum, cookie}) {
+    return axios.delete(`/help-suppl-comp/?help_num=${helpNum}&suppl_num=${userNum}`,{headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* cancelApply(action) {
+    try {
+        yield call(cancelApplyAPI, action.data);
+        yield put(cancelApplySuccessAction(action.data));
+    } catch (e) {
+        console.log(e);
+        yield put(cancelApplyFailureAction(e));
+    }
+};
+function* watchCancelApply() {
+    yield takeLatest(CANCEL_APPLY_REQUEST, cancelApply);
+};
+
+// 이미지 추가
 function addImageAPI({path, cookie}) {
     const reqData = {
         data:{
@@ -189,7 +260,7 @@ function loadActiveUserPostAPI(data) {
     else if(data.helpType === "give"){
         return axios.get(`/help-suppl-comp/${data.userNum}/applied-helps?page=${data.page}`);
     }
-    else    return null;
+    return null;
 };
 function* loadActiveUserPost(action) {
     try {
@@ -211,8 +282,9 @@ function loadInactiveUserPostAPI(data) {
     else if(data.helpType === "give"){
         return axios.get(`/help-suppl-comp/${data.userNum}/supplied-helps?page=${data.page}`);
     }
-    else    return null;
+    return null;
 };
+
 function* loadInactiveUserPost(action) {
     try {
         const result = yield call(loadInactiveUserPostAPI, action.data);
@@ -230,6 +302,7 @@ export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
+        fork(watchApplyDabeener),
         fork(watchLoadActiveUserPost),
         fork(watchRemoveHelpPost),
         fork(watchLoadInactiveUserPost),
@@ -237,5 +310,7 @@ export default function* postsSaga() {
         fork(watchAddImage),
         fork(watchUpdateHelpPost),
         fork(watchRemoveHelpPost),
+        fork(watchAddApply),
+        fork(watchCancelApply),
     ]);
 };

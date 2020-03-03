@@ -1,7 +1,8 @@
 import React from 'react';
-import { Avatar, Rate } from 'antd';
+import { Rate } from 'antd';
 import Link from 'next/link';
 import {MainDaBeenerProfileForm, MainDaBeenerProfileInfo } from './MainDaBeenerProfile.style';
+import { calculateRate } from '../../utils/calculateRate';
 
 const MainDaBeenerProfile = ({ recommendOpponents }) => {
   return (
@@ -22,9 +23,7 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
                 allowHalf
                 disabled
                 defaultValue={
-                  Math.round(user.avgRate + 0.5) === Math.round(user.avgRate)
-                    ? user.avgRate
-                    : Math.floor(user.avgRate) + 0.5
+                  calculateRate(user.avgRate)
                 }
                 style={{ fontSize: 12 }}
               />

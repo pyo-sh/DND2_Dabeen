@@ -267,7 +267,8 @@ export const ApplicationInfoBox = styled.div`
     flex-wrap: wrap;
 
     & .ApplyCheck{
-        width: 83px;
+        width: 100px;
+        margin-left: 20px;
         border: none;
         background: none;
         color: #7A7A7A;
@@ -282,12 +283,14 @@ export const ApplicationInfoBox = styled.div`
         min-width: 120px;
         display: flex;
         align-items: center;
+        justify-content : space-evenly;
     }
     & .ApplicationInfoBoxDetail{
         min-height: 38px;
         margin-left: 20px;
         display: flex;
         align-items: center;
+        justify-content : space-between;
         flex-wrap: wrap;
         font-size: 18px;
         & .ApplicationInfoBoxDetailDate{

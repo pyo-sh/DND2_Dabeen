@@ -13,7 +13,7 @@ export const initialState = {
     nickName: undefined,
     address: undefined,
     phoneNumber: undefined,
-    userRole: "", // 다비너 여부
+    userRole: "", // 다비너 여부  'y' 공급자
 
     // 공급자일 경우 필수
     picPath: undefined, // 프로필사진 주소
@@ -71,14 +71,6 @@ export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST"; // 서버쪽에 갔다 와야 
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 
-// export const FIND_ID_REQUEST = "FIND_ID_REQUEST";
-// export const FIND_ID_SUCCESS = "FIND_ID_SUCCESS";
-// export const FIND_ID_FAILURE = "FIND_ID_FAILURE";
-
-// export const FIND_PASSWORD_REQUEST = "FIND_PASSWORD_REQUEST";
-// export const FIND_PASSWORD_SUCCESS = "FIND_PASSWORD_SUCCESS";
-// export const FIND_PASSWORD_FAILURE = "FIND_PASSWORD_FAILURE";
-
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
@@ -94,6 +86,7 @@ export const APPLY_DABEENER_FAILURE = "APPLY_DABEENER_FAILURE";
 export const REFUND_MILEAGE_REQUEST = "REFUND_MILEAGE_REQUEST";
 export const REFUND_MILEAGE_SUCCESS = "REFUND_MILEAGE_SUCCESS";
 export const REFUND_MILEAGE_FAILURE = "REFUND_MILEAGE_FAILURE";
+
 
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
 export const signUpRequestAction = createAction(SIGN_UP_REQUEST);

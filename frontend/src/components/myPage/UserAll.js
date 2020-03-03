@@ -7,11 +7,13 @@ import PostBasket from './PostBasket';
 import ServiceCenter from '../service/ServiceCenter';
 import { Rate } from 'antd';
 import { UserPageWrapper } from './UserAll.style';
+import { calculateRate } from '../../utils/calculateRate';
 
 const UserAll = ({userInfo, userNum, pagename, isMe}) => {
     const dabeenerRegist = useCallback(() => {
         Router.push('/regist');
       }, []);
+      console.log(userInfo.avgRate);
     return (
       <UserPageWrapper>
         <section className='profileSection'>
@@ -25,7 +27,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                     <Rate
                       allowHalf
                       disabled
-                      defaultValue={userInfo.agvRate}
+                      defaultValue={calculateRate(userInfo.avgRate)}
                       style={{ fontSize: 12 }}
                     />
                   </div>
