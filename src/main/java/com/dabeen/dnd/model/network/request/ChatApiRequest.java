@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ChatApiRequest{
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String chatNum;
 
     @NotNull(message = "값이 존재해야 합니다.")

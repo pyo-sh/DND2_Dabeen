@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BsktApiRequest{
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String bsktNum; // 장바구니 번호
 
     @NotEmpty(message = "값이 존재해야 합니다.")
