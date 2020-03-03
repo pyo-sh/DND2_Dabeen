@@ -16,6 +16,9 @@ export const initialState = {
   isAddingApplying : false,
   addApplyError : '',
 
+  isApproving : false,
+  approveError : '',
+
   isCancelApplying : false,
   cancelApplyError : '',
   // 유저의 도움 중 받을 도움 / 줄 도움
@@ -52,6 +55,9 @@ export const initialState = {
   removeHelpPostErrorReason: "", //도움 게시글 삭제 실패 사유
   isRemovingHelpPost: false, //도움 게시글 삭제 중
   helpPostRemoved: false, //도움 게시글 삭제 성공
+
+  isClosing : false,
+  closeError : '',
 };
 // 실시간 도움 요청
 export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
@@ -73,6 +79,10 @@ export const ADD_APPLY_FAILURE = "ADD_APPLY_FAILURE";
 export const CANCEL_APPLY_REQUEST = "CANCEL_APPLY_REQUEST";
 export const CANCEL_APPLY_SUCCESS = "CANCEL_APPLY_SUCCESS";
 export const CANCEL_APPLY_FAILURE = "CANCEL_APPLY_FAILURE";
+
+export const APPROVE_DABEENER_REQUEST = "APPROVE_DABEENER_REQUEST";
+export const APPROVE_DABEENER_SUCCESS = "APPROVE_DABEENER_SUCCESS";
+export const APPROVE_DABEENER_FAILURE = "APPROVE_DABEENER_FAILURE";
 
 //도움 게시글 작성
 export const ADD_HELPPOST_REQUEST = "ADD_HELPPOST_REQUEST";
@@ -103,6 +113,10 @@ export const LOAD_INACTIVE_USERPOST_REQUEST = "LOAD_INACTIVE_USERPOST_REQUEST";
 export const LOAD_INACTIVE_USERPOST_SUCCESS = "LOAD_INACTIVE_USERPOST_SUCCESS";
 export const LOAD_INACTIVE_USERPOST_FAILURE = "LOAD_INACTIVE_USERPOST_FAILURE";
 
+export const HELP_CLOSE_REQUEST = "HELP_CLOSE_REQUEST";
+export const HELP_CLOSE_SUCCESS = "HELP_CLOSE_SUCCESS";
+export const HELP_CLOSE_FAILURE = "HELP_CLOSE_FAILURE";
+
 // Actions
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
@@ -123,6 +137,10 @@ export const addApplyFailureAction = createAction(ADD_APPLY_FAILURE);
 export const cancelApplyRequestAction = createAction(CANCEL_APPLY_REQUEST);
 export const cancelApplySuccessAction = createAction(CANCEL_APPLY_SUCCESS);
 export const cancelApplyFailureAction = createAction(CANCEL_APPLY_FAILURE);
+
+export const approveDabeenerRequestAction = createAction(APPROVE_DABEENER_REQUEST);
+export const approveDabeenerSuccessAction = createAction(APPROVE_DABEENER_SUCCESS);
+export const approveDabeenerFailureAction = createAction(APPROVE_DABEENER_FAILURE);
 
 export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
@@ -148,6 +166,10 @@ export const loadActiveUserPostFailureAction = createAction(LOAD_ACTIVE_USERPOST
 export const loadInactiveUserPostRequestAction = createAction(LOAD_INACTIVE_USERPOST_REQUEST);
 export const loadInactiveUserPostSuccessAction = createAction(LOAD_INACTIVE_USERPOST_SUCCESS);
 export const loadInactiveUserPostFailureAction = createAction(LOAD_INACTIVE_USERPOST_FAILURE);
+
+export const helpCloseRequestAction = createAction(HELP_CLOSE_REQUEST);
+export const helpCloseSuccessAction = createAction(HELP_CLOSE_SUCCESS);
+export const helpCloseFailureAction = createAction(HELP_CLOSE_FAILURE);
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -233,7 +255,22 @@ const reducer = (state = initialState, action) => {
       }
       case ADD_APPLY_SUCCESS : {
         draft.isAddingApplying = false;
-        // draft.applyDabeeners= false;
+        draft.applyDabeeners.push({   
+          applyDate : action.data.comp_dttm, // 신청 일시
+          isApprove : action.data.help_aprv_whet,
+          aprroveDate : action.data.apprv_dttm,
+          evaluationDate : action.data.ast_dttm,
+          rate : action.data.rate,
+          evaluationContent : action.data.ast_cont,
+          user : {
+            userNum : action.data.user.user_num,
+            userName : action.data.user.user_name,
+            userId : action.data.user.user_id,
+            nickname : action.data.user.nickname,
+            introduce : action.data.user.itdc_cont,
+            pic_path : action.data.user.pic_path,
+            avgRate : action.data.user.avg_rate,
+          }});
         break;
       }
       case ADD_APPLY_FAILURE : {
@@ -254,6 +291,22 @@ const reducer = (state = initialState, action) => {
       case CANCEL_APPLY_FAILURE : {
         draft.cancelApplyError = action.data;
         draft.isCancelApplying = false;
+        break;
+      }
+      case APPROVE_DABEENER_REQUEST : {
+        draft.isApproving = true;
+        draft.approveError = '';
+        break;
+      }
+      case APPROVE_DABEENER_SUCCESS : {
+        draft.isApproving = false;
+        const index = draft.applyDabeeners.findIndex(v.user.user_num === action.data.user.user_num);
+        draft.applyDabeeners[index] = action.data;
+        break;
+      }
+      case APPROVE_DABEENER_FAILURE :{
+        draft.isApproving = false;
+        draft.approveError = action.data;
         break;
       }
       case ADD_HELPPOST_REQUEST: {
@@ -499,6 +552,31 @@ const reducer = (state = initialState, action) => {
           helpsPerPage: 15,
         };
         draft.userInactivePosts = [];
+        break;
+      }
+      case HELP_CLOSE_REQUEST : {
+        draft.isClosing = true;
+        draft.closeError = '';
+        break;
+      }
+      case HELP_CLOSE_SUCCESS : { // 마감하면 넣어야 할 때가 너무 많은데...? 어디서 마감할지를 모르니깐..
+        draft.isClosing = false;
+        let index;
+        if (action.data.pathname === '/'){
+          index = draft.livePosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.livePosts[index].helpEndTime = action.data.result.help_end_dttm;
+        }else if (action.data.pathname === '/[postmain]') {
+          index = draft.helpPosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.helpPosts[index].helpEndTime = action.data.result.help_end_dttm;
+        } else {
+          index = draft.userActivePosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.userActivePosts[index].helpEndTime = action.data.result.help_end_dttm; // 도움마감일시 = action.data.result;
+        }
+        break;
+      }
+      case HELP_CLOSE_FAILURE : {
+        draft.isClosing = false;
+        draft.closeError = action.data;
         break;
       }
       default:

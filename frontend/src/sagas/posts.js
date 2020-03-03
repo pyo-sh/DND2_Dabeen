@@ -32,7 +32,13 @@ import {
     cancelApplyFailureAction,
     addApplySuccessAction,
     addApplyFailureAction,
-    ADD_APPLY_REQUEST
+    ADD_APPLY_REQUEST,
+    APPROVE_DABEENER_REQUEST,
+    approveDabeenerSuccessAction,
+    approveDabeenerFailureAction,
+    HELP_CLOSE_REQUEST,
+    helpCloseSuccessAction,
+    helpCloseFailureAction
 } from '../reducers/posts';
 import axios from 'axios';
 
@@ -191,16 +197,14 @@ function addApplyAPI({helpNum, userNum, cookie}) {
         data : {
             help_num : helpNum,
             suppl_num : userNum,
-            help_aprv_whet : 'n'
         }
     }
-    return axios.post(`/help-suppl-comp`, reqData ,{headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.post(`/help-suppl-comp/apply`, reqData ,{headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* addApply(action) {
     try {
         const result = yield call(addApplyAPI, action.data);
-        console.log(result.data.data);
         yield put(addApplySuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
@@ -226,6 +230,30 @@ function* cancelApply(action) {
 };
 function* watchCancelApply() {
     yield takeLatest(CANCEL_APPLY_REQUEST, cancelApply);
+};
+
+
+function approveDabeenerAPI({helpNum, userNum, cookie}) {
+    const reqData = {
+        data : {
+            help_num : helpNum,
+            suppl_num : userNum
+        }
+    }
+    return axios.put(`/help-suppl-comp/approved`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* approveDabeener(action) {
+    try {
+        yield call(approveDabeenerAPI, action.data);
+        yield put(approveDabeenerSuccessAction(action.data));
+    } catch (e) {
+        console.log(e);
+        yield put(approveDabeenerFailureAction(e));
+    }
+};
+function* watchApproveDabeener() {
+    yield takeLatest(APPROVE_DABEENER_REQUEST, approveDabeener);
 };
 
 // 이미지 추가
@@ -298,6 +326,28 @@ function* watchLoadInactiveUserPost() {
     yield takeLatest(LOAD_INACTIVE_USERPOST_REQUEST, loadInactiveUserPost);
 };
 
+function helpCloseAPI({helpNum, cookie}) {
+    const reqData = {
+        data : {
+            help_num : helpNum,
+        }
+    }
+    return axios.put(`/help/finish-help`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* helpClose(action) {
+    try {
+        const result = yield call(helpCloseAPI, action.data);
+        yield put(helpCloseSuccessAction({result : result.data.data, pathname: action.data.pathname}));
+    } catch (e) {
+        console.log(e);
+        yield put(helpCloseFailureAction(e));
+    }
+};
+function* watchHelpClose() {
+    yield takeLatest(HELP_CLOSE_REQUEST, helpClose);
+};
+
 export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
@@ -312,5 +362,7 @@ export default function* postsSaga() {
         fork(watchRemoveHelpPost),
         fork(watchAddApply),
         fork(watchCancelApply),
+        fork(watchApproveDabeener),
+        fork(watchHelpClose),
     ]);
 };

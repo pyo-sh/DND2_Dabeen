@@ -7,10 +7,11 @@ import inputChangeHook from '../../hooks/inputChangeHook';
 import moment from 'moment';
 import SearchJuso from '../map/SearchJuso';
 import { Modal, Icons, Content, Title, HelpPic, DetailSlick, slickSetting, ApplyCheck, EditTitle, Edit, ApplicationInfo, ApplicationInfoBox, DeadlineButton, ContentItem} from './PostDetail.style';
-import { updateHelpPostRequestAction, removeHelpPostRequestAction, loadApplyDabeenerRequestAction, addApplyRequestAction } from '../../reducers/posts';
+import { updateHelpPostRequestAction, removeHelpPostRequestAction, loadApplyDabeenerRequestAction, addApplyRequestAction, helpCloseRequestAction } from '../../reducers/posts';
 import { getCookie } from '../../utils/cookieFunction';
 import Upload from '../uploadImages/Upload';
 import customAxios from '../../utils/axiosBase';
+import {useRouter} from 'next/router';
 
 const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExec = data.helpExecDate.split('T');     // helpExec[0]=날짜 / helpExec[1]=시간
@@ -35,6 +36,8 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
 
     const {me} = useSelector(state => state.user);  //내 정보
     const dispatch = useDispatch();
+    const router = useRouter();
+    const pathname = router.pathname;
     const dateFormat = 'YYYY-MM-DD';
     const timeFormat = 'HH:mm';
 
@@ -46,7 +49,8 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const [ approveDabeenersNum, setApproveDabeenersNum ]= useState(applyDabeeners.filter(v => v.isApprove === 'y').length)
     // setEditImgPaths(data.helpPic.map(pic => editImages.push({"pic_ornu": pic.pic_ornu, "path": pic.path})))
     const isApplyed = useMemo(() => applyDabeeners.filter(v => v.user.userNum === me.userNum).length, [applyDabeeners, me&&me.userNum])
-    
+    const isEnd = useMemo(() => data.helpEndTime.split('T')[0] !== '9999-12-31', [data && data.helpEndTime]);
+    // 끝났는지? 끝낫으면 true, 아니면 false;
     // AM, PM 표시 하도록 하는 함수
     const time = useCallback((hour, time) => {
         if(hour < 12) return <div>AM{time.substring(0, 5)}</div>
@@ -127,13 +131,18 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
         dispatch(removeHelpPostRequestAction({help_num: helpNum, cookie : getCookie()}));
     }, []);
 
-    const helpApply = useCallback(async () => {
+    const helpApply = useCallback(() => {
         if (me.userRole !== 'y') {
             alert('다비너로 등록된 회원만 신청 가능합니다.');
             return;
         }
         dispatch(addApplyRequestAction({helpNum: data.helpNum, userNum : me.userNum, cookie: getCookie()}));
     }, [data.helpNum, me.userNum, me.userRole]);
+
+    const clickClose = useCallback(() => {
+        dispatch(helpCloseRequestAction({helpNum : data.helpNum, pathname, cookie:getCookie()}));
+        alert('마감되었습니다.');
+    }, [data.helpNum, pathname]);
 
     return (
         <Modal>
@@ -197,8 +206,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                             </Popconfirm>
                             )
                         }
-                        {data.isHelpApprove === 'y'
-                        ?   <ApplyCheck apply>마감</ApplyCheck>
+                        {isEnd ? <ApplyCheck apply>마감</ApplyCheck>
                         :   <ApplyCheck>신청 중</ApplyCheck>
                         }
                     </div>
@@ -300,9 +308,9 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     ?   <>
                         <div className="ApplicationMoneyTitle"><div className="ApplicationMoneyTitleValue">{data.price}</div>원</div>
                         {data.userNum === me.userNum    //내가 쓴 게시글이면 마감버튼 뜨게, 아닐시엔 신청 버튼이 뜨게
-                        ?   (data.isHelpApprove === 'y'
+                        ?   (isEnd
                             ?   <DeadlineButton apply>마감 완료</DeadlineButton>
-                            :   <DeadlineButton>마감</DeadlineButton> 
+                            :   <DeadlineButton onClick={clickClose}>마감</DeadlineButton> 
                             )
                         :   isApplyed ?<DeadlineButton apply={true} disabled>신청완료</DeadlineButton>  : <DeadlineButton onClick={helpApply}>신청</DeadlineButton>
                         }
