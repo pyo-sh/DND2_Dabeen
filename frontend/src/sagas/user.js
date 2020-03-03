@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS, APPLY_DABEENER_REQUEST, applyDabeenerSuccessAction, applyDabeenerFailureAction } from '../reducers/user';
+import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS, APPLY_DABEENER_REQUEST, applyDabeenerSuccessAction, applyDabeenerFailureAction, REFUND_MILEAGE_REQUEST, refundMileageSuccessAction, refundMileageFailureAction } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../utils/cookieFunction';
 
@@ -128,8 +128,6 @@ function* watchEditUserInfo() {
     yield takeLatest(EDIT_USERINFO_REQUEST, editUserInfo);
 }
 
-
-// 유저 정보 수정
 function applyDabeenerAPI({userNum, juminImage, profileImage, cookie}){
     const reqData = {
         data : {
@@ -138,7 +136,7 @@ function applyDabeenerAPI({userNum, juminImage, profileImage, cookie}){
             rrn_path : juminImage
         }
     };
-    return axios.put('/api/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+    return axios.put('/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* applyDabeener(action) {
@@ -154,6 +152,31 @@ function* watchApplyDabeener() {
     yield takeLatest(APPLY_DABEENER_REQUEST, applyDabeener);
 }
 
+function refundMileageAPI({userNum, refundPrice, selectBank, cookie}){
+    const reqData = {
+        data : {
+            user_num : userNum,
+            use_price : refundPrice,
+            use_type : 'w',
+            wdrl_bank : selectBank
+        }
+    };
+    return axios.post('/mileage-use-hist', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* refundMileage(action) {
+    try {
+        const result = yield call(refundMileageAPI, action.data);
+        yield put(refundMileageSuccessAction(action.data.refundPrice));
+    }catch(e){
+        console.error(e);
+        yield put(refundMileageFailureAction(e));
+    }
+}
+function* watchRefundMileage() {
+    yield takeLatest(REFUND_MILEAGE_REQUEST, refundMileage);
+}
+
 export default function* userSaga() {
     yield all([
         fork(watchLogin),
@@ -161,5 +184,6 @@ export default function* userSaga() {
         fork(watchSignUp),
         fork(watchEditUserInfo),
         fork(watchApplyDabeener),
+        fork(watchRefundMileage),
     ]);
 };

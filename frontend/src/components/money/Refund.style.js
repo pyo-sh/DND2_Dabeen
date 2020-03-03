@@ -20,7 +20,7 @@ export const ConfirmModal = styled(Modal)`
   }
   & .ant-modal-footer {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     & .BtnWrapper{
       display: flex;
     }
@@ -106,13 +106,19 @@ export const RefundModal = styled(Modal)`
   }
   & .ant-modal-footer {
     display: flex;
-    justify-content: center;
-    & button {
+    justify-content: flex-end;
+    & .refundButton {
       background: #ff4300;
       color: white;
       & :hover {
         border: 1px solid #ff4300;
         background : rgba(255,67,0, 0.9)
+      }
+    }
+    & .cancelButton {
+      &:hover, :focus {
+        color : #ff4300;
+        border : 1px solid #ff4300;
       }
     }
   }
