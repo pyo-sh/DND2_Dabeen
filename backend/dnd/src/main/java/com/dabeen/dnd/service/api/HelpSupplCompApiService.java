@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.dabeen.dnd.exception.NotAstUserException;
 import com.dabeen.dnd.exception.NotFoundException;
 import com.dabeen.dnd.model.entity.HelpSupplComp;
 import com.dabeen.dnd.model.enumclass.Whether;
@@ -126,7 +127,58 @@ public class HelpSupplCompApiService {
         return helpSupplCompApiResponse;
     }
 
+    // helpSupplComp -> HelpCompUserInfoApiResponse
+    public HelpCompUserInfoApiResponse responseUSer(HelpSupplComp helpSupplComp){
+        HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
+                                                                            .compDttm(helpSupplComp.getCompDttm())
+                                                                            .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
+                                                                            .aprvDttm(helpSupplComp.getAprvDttm())
+                                                                            .astDttm(helpSupplComp.getAstDttm())
+                                                                            .rate(helpSupplComp.getRate())
+                                                                            .astCont(helpSupplComp.getAstCont())
+                                                                            .user(userApiService.response(helpSupplComp.getSuppler()))
+                                                                            .build();
+        return response;
+    }
+
     /* 사용자 API */
+
+    // 공급자 승인 API
+    public Header<HelpCompUserInfoApiResponse> supplierApproved(Header<HelpSupplCompApiRequest> request){
+        HelpSupplCompApiRequest requestData = request.getData();
+        HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
+
+        HelpSupplComp helpSupplComp =  helpSupplCompRepository.findById(pk)
+                                                            .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
+
+        helpSupplComp.setHelpAprvWhet(Whether.y)
+                    .setAprvDttm(LocalDateTime.now());
+        
+        HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
+
+        return Header.OK(responseUSer(newHelpSupplComp));
+    }
+
+    // 공급자 평가 API
+    public Header<HelpCompUserInfoApiResponse> supplierAssessment(Header<HelpSupplCompApiRequest> request){
+        HelpSupplCompApiRequest requestData = request.getData();
+        HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
+
+        HelpSupplComp helpSupplComp =  helpSupplCompRepository.findById(pk)
+                                                            .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
+
+        // 승인되지 않은 사용자를 평가하려고 한 경우 에러
+        if(helpSupplComp.getHelpAprvWhet() == Whether.n)
+            throw new NotAstUserException();
+        
+        helpSupplComp.setAstDttm(LocalDateTime.now())
+                    .setRate(requestData.getRate())
+                    .setAstCont(requestData.getAstCont());
+
+        HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
+
+        return Header.OK(responseUSer(newHelpSupplComp));
+    }
 
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
@@ -134,18 +186,7 @@ public class HelpSupplCompApiService {
 
         // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
         List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
-                                                                    .map(helpSupplComp -> {
-                                                                        HelpCompUserInfoApiResponse response = HelpCompUserInfoApiResponse.builder()
-                                                                                                                    .compDttm(helpSupplComp.getCompDttm())
-                                                                                                                    .helpAprvWhet(helpSupplComp.getHelpAprvWhet())
-                                                                                                                    .aprvDttm(helpSupplComp.getAprvDttm())
-                                                                                                                    .astDttm(helpSupplComp.getAstDttm())
-                                                                                                                    .rate(helpSupplComp.getRate())
-                                                                                                                    .astCont(helpSupplComp.getAstCont())
-                                                                                                                    .user(userApiService.response(helpSupplComp.getSuppler()))
-                                                                                                                    .build();
-                                                                        return response;
-                                                                    })
+                                                                    .map(this::responseUSer)
                                                                     .collect(Collectors.toList());
     
        
