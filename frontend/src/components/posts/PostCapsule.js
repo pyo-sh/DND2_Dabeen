@@ -29,18 +29,14 @@ const PostCapsule = ({ data, categoryNum}) => {
               {data.execLoc}
             </div>
           </div>
-          {data.helpPic.length ? 
+      {data.helpPic.length ? 
           <img className="CapsuleMainImage" src={data.helpPic[0].path} alt={data.helpPic[0].path}/>
           :
           <img className="CapsuleMainImage" src={'/images/main2.jpg'}/>
           }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              {data.picPath ? 
-              <img className="CapsuleMainPicture" src={data.picPath}/>
-              :
-              <img className="CapsuleMainPicture" src={`/images/defaultProfile.png`}/>
-              }
+              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>

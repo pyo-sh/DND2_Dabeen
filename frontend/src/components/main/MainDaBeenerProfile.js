@@ -16,7 +16,7 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
           <a>
             <MainDaBeenerProfileInfo >
               {/* <Avatar size={100} icon='user' /> */}
-              <img className="MainProfilePicture" src={'/images/main4.jpg'}/>
+              <img className="MainProfilePicture" src={user.picPath ||'/images/defaultProfile.png'}/>
               <div>@{user.nickname}</div>
               <div style={{ fontSize: 12 }}>{user.userId}</div>
               <Rate

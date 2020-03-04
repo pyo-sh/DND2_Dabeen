@@ -42,7 +42,7 @@ export const ServiceWrapper = styled.div`
   & .ServiceQuestion {
     border: 1px solid #bfc7ce;
     border-bottom: none;
-    border-radius: 2px;
+    border-radius: 5px;
     & ul {
       margin: 0;
       padding: 0;

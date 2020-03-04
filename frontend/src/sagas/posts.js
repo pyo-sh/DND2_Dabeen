@@ -38,7 +38,10 @@ import {
     approveDabeenerFailureAction,
     HELP_CLOSE_REQUEST,
     helpCloseSuccessAction,
-    helpCloseFailureAction
+    helpCloseFailureAction,
+    EVALUATE_DABEENER_REQUEST,
+    evaluateDabeenerSuccessAction,
+    evaluateDabeenerFailureAction
 } from '../reducers/posts';
 import axios from 'axios';
 
@@ -245,7 +248,7 @@ function* approveDabeener(action) {
         yield call(approveDabeenerAPI, action.data);
         yield put(approveDabeenerSuccessAction(action.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(approveDabeenerFailureAction(e));
     }
 };
@@ -346,6 +349,32 @@ function* watchHelpClose() {
     yield takeLatest(HELP_CLOSE_REQUEST, helpClose);
 };
 
+// 평가
+function evaluateDabeenerAPI({helpNum, userNum, rate, comment, cookie}) {
+    const reqData = {
+        data : {
+            help_num : helpNum,
+            suppl_num : userNum,
+            rate,
+            ast_cont : comment
+        }
+    }
+    return axios.put(`/help-suppl-comp/assessment`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* evaluateDabeener(action) {
+    try {
+        const result = yield call(evaluateDabeenerAPI, action.data);
+        yield put(evaluateDabeenerSuccessAction(result.data.data));
+    } catch (e) {
+        console.error(e);
+        yield put(evaluateDabeenerFailureAction(e));
+    }
+};
+function* watchEvaluate() {
+    yield takeLatest(EVALUATE_DABEENER_REQUEST, evaluateDabeener);
+};
+
 export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
@@ -360,5 +389,6 @@ export default function* postsSaga() {
         fork(watchCancelApply),
         fork(watchApproveDabeener),
         fork(watchHelpClose),
+        fork(watchEvaluate),
     ]);
 };

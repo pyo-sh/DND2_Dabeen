@@ -46,8 +46,8 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeeners
                             <div>{dabeener.user.avgRate}</div>
                         </div>
                     </div>
-                    {isMe && <ChoiceButton onClick={choiceDabeener}>선택</ChoiceButton>}
-                    {isMyProfile && <CancelButton onClick={cancelDabeener}>취소</CancelButton>}
+                    {isMe && dabeener.isApprove ==='y' ? <ChoiceButton choice>선택완료</ChoiceButton> : <ChoiceButton onClick={choiceDabeener}>선택</ChoiceButton>}
+                    {isMyProfile && <CancelButton onClick={cancelDabeener}>지원취소</CancelButton>}
                 </div>
             </UserInfo>
         </ApplyDabeenerDiv>

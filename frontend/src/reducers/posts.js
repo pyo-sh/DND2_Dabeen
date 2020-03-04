@@ -10,6 +10,7 @@ export const initialState = {
   helpsPerPage: 0,
   totalHelps: 0,
   applyDabeeners: [],
+  approveDabeenersNum : 0,
   isApplyingDabeener : false,
   applyDabeenerError : '',
 
@@ -58,6 +59,8 @@ export const initialState = {
 
   isClosing : false,
   closeError : '',
+  isEvaluating : false,
+  evaluateError : '',
 };
 // 실시간 도움 요청
 export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
@@ -117,6 +120,10 @@ export const HELP_CLOSE_REQUEST = "HELP_CLOSE_REQUEST";
 export const HELP_CLOSE_SUCCESS = "HELP_CLOSE_SUCCESS";
 export const HELP_CLOSE_FAILURE = "HELP_CLOSE_FAILURE";
 
+export const EVALUATE_DABEENER_REQUEST = "EVALUATE_DABEENER_REQUEST";
+export const EVALUATE_DABEENER_SUCCESS = "EVALUATE_DABEENER_SUCCESS";
+export const EVALUATE_DABEENER_FAILURE = "EVALUATE_DABEENER_FAILURE";
+
 // Actions
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
@@ -170,6 +177,10 @@ export const loadInactiveUserPostFailureAction = createAction(LOAD_INACTIVE_USER
 export const helpCloseRequestAction = createAction(HELP_CLOSE_REQUEST);
 export const helpCloseSuccessAction = createAction(HELP_CLOSE_SUCCESS);
 export const helpCloseFailureAction = createAction(HELP_CLOSE_FAILURE);
+
+export const evaluateDabeenerRequestAction = createAction(EVALUATE_DABEENER_REQUEST);
+export const evaluateDabeenerSuccessAction = createAction(EVALUATE_DABEENER_SUCCESS);
+export const evaluateDabeenerFailureAction = createAction(EVALUATE_DABEENER_FAILURE);
 
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
@@ -241,6 +252,7 @@ const reducer = (state = initialState, action) => {
             avgRate : dabeener.user.avg_rate,
           }
         }))
+        draft.approveDabeenersNum = draft.applyDabeeners.filter(v => v.isApprove === 'y').length;
         break;
       }
       case LOAD_APPLYDABEENER_FAILURE : {
@@ -300,8 +312,11 @@ const reducer = (state = initialState, action) => {
       }
       case APPROVE_DABEENER_SUCCESS : {
         draft.isApproving = false;
-        const index = draft.applyDabeeners.findIndex(v.user.user_num === action.data.user.user_num);
-        draft.applyDabeeners[index] = action.data;
+        const index = draft.applyDabeeners.findIndex(v => v.user.user_num === action.data.user.user_num);
+        draft.applyDabeeners[index].applyDate = action.data.comp_dttm; 
+        draft.applyDabeeners[index].isApprove = action.data.help_aprv_whet;
+        draft.applyDabeeners[index].aprroveDate =  action.data.apprv_dttm;
+        draft.approveDabeenersNum += 1
         break;
       }
       case APPROVE_DABEENER_FAILURE :{
@@ -582,6 +597,26 @@ const reducer = (state = initialState, action) => {
         draft.closeError = action.data;
         break;
       }
+
+      case EVALUATE_DABEENER_REQUEST :{
+        draft.isEvaluating = true;
+        draft.evaluateError = '';
+        break;
+      }
+      case EVALUATE_DABEENER_SUCCESS : {
+        draft.isEvaluating = false;
+        const index = draft.applyDabeeners.findIndex(v => v.user.userNum === action.data.user.user_num);
+        draft.applyDabeeners[index].evaluateDate = action.data.ast_dttm;
+        draft.applyDabeeners[index].rate = action.data.rate;
+        draft.applyDabeeners[index].evaluationContent = action.data.ast_cont;
+        break;
+      }
+      case EVALUATE_DABEENER_FAILURE : {
+        draft.isEvaluating = false;
+        draft.evaluateError = action.data;
+        break;
+      }
+
       default:
         break;
     }
