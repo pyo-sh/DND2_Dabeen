@@ -4,15 +4,10 @@ import { Icon } from 'antd';
 import {Modal, DrawerForm} from './CheckDabeener.style';
 import ApplyDabeener from './ApplyDabeener';
 
-const CheckDabeener = ({click, onModal,helpNum, needPersonnel, postUserNum, applyCheck, applyDabeeners, approveDabeenersNum, setApproveDabeenersNum}) => {
+const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck, applyDabeeners, approveDabeenersNum, setApproveDabeenersNum}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
-    const [visible, setVisible] = useState(click);
-    const [count, setCount] = useState(0);
     const { me } = useSelector(state => state.user);
     const isMe = useMemo(() => me.userNum === postUserNum, [me && me.userNum, postUserNum]);
-    const onClose = useCallback(() => {
-        onModal(!visible);
-    },[visible]);
     
     //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
     // const choiceDabeener = useCallback(() => {
@@ -25,7 +20,7 @@ const CheckDabeener = ({click, onModal,helpNum, needPersonnel, postUserNum, appl
         <Modal>
             <DrawerForm>
                 <div className="drawerTitle">
-                    <div>신청 다비너</div><Icon type="close" className="icon" onClick={onClose}/>
+                    <div>신청 다비너</div><Icon type="close" className="icon" onClick={onModal}/>
                 </div>
                 <div className="drawerTop">
                     <div className="drawerTopFlex">

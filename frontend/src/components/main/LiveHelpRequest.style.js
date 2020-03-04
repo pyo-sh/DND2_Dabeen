@@ -44,7 +44,7 @@ export const TestSlick = styled(Slick)`
 `;
 
 export const LiveHelpRequestWrapper = styled.div`
-  margin: 15px;
+  margin: 14px;
   border-radius: 5px;
   overflow: hidden;
 
@@ -88,8 +88,10 @@ export const LiveHelpRequestUpperDiv = styled.div`
   height: 250px;
   border-bottom: solid 1px #E9E9E9;
   & .LiveHelpRequestLocation{
+    width : 100%;
     height: 31px;
     align-self: flex-end;
+    justify-content : flex-end;
     display: flex;
     align-items: center;
     z-index: 0;
@@ -101,8 +103,9 @@ export const LiveHelpRequestUpperDiv = styled.div`
       opacity: 0.9;
     }
     & .LiveHelpRequestLocationInfo{
-      min-width: 170px;
+      min-width: 120px;
       max-width: 300px;
+      width : 48%;
       background: white;
       opacity: 0.9;
       padding: 5px 10px 5px 0;

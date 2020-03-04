@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import Router from 'next/router';
 import Link from 'next/link';
 import UserInfo from './UserInfo';
@@ -13,6 +13,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
     const dabeenerRegist = useCallback(() => {
         Router.push('/regist');
       }, []);
+      
     return (
       <UserPageWrapper>
         <section className='profileSection'>

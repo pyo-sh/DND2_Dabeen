@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { Icon, TimePicker, DatePicker, Popconfirm, message } from 'antd';
+import { Icon, TimePicker, DatePicker, Popconfirm } from 'antd';
 import CheckDabeener from './CheckDabeener';
 import MyLocation from '../map/MyLocation';
 import inputChangeHook from '../../hooks/inputChangeHook';
@@ -12,6 +12,7 @@ import { getCookie } from '../../utils/cookieFunction';
 import Upload from '../uploadImages/Upload';
 import customAxios from '../../utils/axiosBase';
 import {useRouter} from 'next/router';
+import EvaluateModal from './EvaluateModal';
 
 const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExec = data.helpExecDate.split('T');     // helpExec[0]=날짜 / helpExec[1]=시간
@@ -20,6 +21,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
     const imagesURL = data.helpPic.map(pic => pic.path);    //path만 따로 배열에 저장
     const [click, setClick] = useState(false);
+    const [clickEvaluate, setClickEvaluate] = useState(false); // 평가창 띄우기
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
     const [editTitle, setEditTitle] = inputChangeHook(data.helpTitle);  //수정할 게시글 제목
     const [editHelpExecDate, setEditHelpExecDate] = useState(helpExec[0]);  //수정할 도움 수행 날짜
@@ -44,8 +46,14 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
         dispatch(loadApplyDabeenerRequestAction({helpNum : data.helpNum}));
     }, [data.helpNum]);
     
-    const { applyDabeeners } = useSelector(state => state.posts);
-    const [ approveDabeenersNum, setApproveDabeenersNum ]= useState(applyDabeeners.filter(v => v.isApprove === 'y').length)
+    const { applyDabeeners, approveDabeenersNum } = useSelector(state => state.posts);
+    const evalDabeener = useMemo(() => applyDabeeners.filter(v => v.isApprove === 'y') , [applyDabeeners]);
+    // const [ approveDabeenersNum, setApproveDabeenersNum ]= useState(applyDabeeners.filter(v => v.isApprove === 'y').length);
+
+    // useEffect(() => {
+    //     setApproveDabeenersNum(applyDabeeners.filter(v => v.isApprove === 'y').length);
+    // }, [applyDabeeners]);
+
     // setEditImgPaths(data.helpPic.map(pic => editImages.push({"pic_ornu": pic.pic_ornu, "path": pic.path})))
     const isApplyed = useMemo(() => applyDabeeners.filter(v => v.user.userNum === me.userNum).length, [applyDabeeners, me&&me.userNum])
     const isEnd = useMemo(() => data.helpEndTime.split('T')[0] !== '9999-12-31', [data && data.helpEndTime]);
@@ -66,6 +74,10 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     //신청 다비너 창 여닫을떄
     const onModal = useCallback(() => {
         setClick(prev => !prev);
+    }, []);
+
+    const onEvaluateModal = useCallback(() => {
+        setClickEvaluate(prev => !prev);
     }, []);
 
     //수정 완료 버튼 눌렀을 때
@@ -108,13 +120,12 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     //게시글 삭제 버튼 눌렀을 때
     const deletePost = useCallback((helpNum) => () => {
         if(imagesURL.length !== 0){
-            console.log(imagesURL)
             const imageFormData = new FormData();
             imagesURL.map(url => imageFormData.append('url', url));
             try{
                 customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             }catch(e){
-                console.log(e.response);
+                console.error(e);
             }
         }
         dispatch(removeHelpPostRequestAction({help_num: helpNum, cookie : getCookie()}));
@@ -180,6 +191,10 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                     </div>
                     <div className="PostTitleDetailBtn">
                         {
+                            data.userNum === me.userNum && data.paymentApprove === 'p' && isEnd &&
+                            <ApplyCheck onClick={onEvaluateModal}>평가하기</ApplyCheck>
+                        }
+                        {
                             data.userNum === me.userNum && (
                             !edit ? <Edit onClick={useCallback(() => {setEdit(prev => !prev)}, [])}>Edit</Edit>
                             : 
@@ -199,6 +214,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                         :   <ApplyCheck>신청 중</ApplyCheck>
                         }
                     </div>
+                    {clickEvaluate && <EvaluateModal evalDabeener={evalDabeener} onEvaluateModal={onEvaluateModal} helpNum={data.helpNum}  />}
                 </div>
             </Title>
             {!edit && (!imagesURL.length ?
@@ -239,7 +255,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                                 </button>
                             </div>      
                             {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={editNeedPersonnel} helpNum={data.helpNum} postUserNum={data.userNum} applyDabeeners={applyDabeeners} applyCheck={data.isHelpApprove}
-                                        approveDabeenersNum={approveDabeenersNum} setApproveDabeenersNum={setApproveDabeenersNum}/>}
+                                        approveDabeenersNum={approveDabeenersNum}/>}
                             </>
                         :   <div style ={{display:"flex"}} className="ApplicationInfoBoxDetail">
                                 <div>

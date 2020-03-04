@@ -16,7 +16,7 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
         >
           <a>
             <MainDaBeenerProfileInfo >
-              <img className="MainProfilePicture" src={user.picPath ? user.picPath : `/images/defaultProfile.png`}/>
+              <img className="MainProfilePicture" src={user.picPath ||'/images/defaultProfile.png'} alt="유저프로필"/>
               <div className="MainProfileNickname">{user.nickname}</div>
               <div className="MainProfileId">@{user.userId}</div>
               <Rate

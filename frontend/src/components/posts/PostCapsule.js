@@ -36,11 +36,7 @@ const PostCapsule = ({ data, categoryNum}) => {
           }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              {data.picPath ? 
-              <img className="CapsuleMainPicture" src={data.picPath}/>
-              :
-              <img className="CapsuleMainPicture" src={`/images/defaultProfile.png`}/>
-              }
+              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>

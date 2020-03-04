@@ -239,20 +239,8 @@ const reducer = (state = initialState, action) => {
       }
       case APPLY_DABEENER_SUCCESS : {
         draft.isUpdatingInfo = false;
-        draft.me.userNum = action.data.user_num;
-        draft.me.userName = action.data.user_name;
-        draft.me.userId = action.data.user_id;
-        draft.me.nickName = action.data.nickname;
-        draft.me.email = action.data.email;
-        draft.me.birthDate = action.data.birth_date;
-        draft.me.introduce = action.data.itdc_cont;
-        draft.me.address = action.data.address;
-        draft.me.phoneNumber = action.data.phone_num;
-
         draft.me.userRole = action.data.suppl_whet;
         draft.me.picPath = action.data.pic_path;
-        draft.me.avgRate = action.data.avg_rate;
-        draft.me.ownMilege = action.data.own_mileage || 0;
         draft.applyDabeenerSuccess = true;
         break;
       }
