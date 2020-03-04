@@ -45,6 +45,6 @@ export const PostBasketUpperDiv = styled.div`
         }
     }
     & .BasketContent{
-        
+        width: 100%;
     }
 `;

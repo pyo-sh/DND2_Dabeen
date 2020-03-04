@@ -32,7 +32,7 @@ export const PostCapsuleUpperDiv = styled.div`
       box-shadow: 0 5px 10px 5px #E9E9E9;
     }
     & .CapsuleMainLocation {
-      height: 31px;
+      height: 32px;
       align-self: flex-end;
       display: flex;
       z-index: 0;
@@ -98,7 +98,6 @@ export const CapsuleTitleWrapper = styled.div`
   box-shadow: 0 3px 10px 2px #E9E9E9;
   & .CapsuleTitle {
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: flex-end;

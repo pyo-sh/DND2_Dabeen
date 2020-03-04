@@ -11,7 +11,7 @@ const ServiceItem = memo(({ service, faq}) => {
     {service ? 
       <ServiceItemBox isClick={isClick}>
       <div className="serviceItemQuestion" onClick={questionOnClick}>
-        <div className="questionTitle"><div><b>Q.</b>{service.questionTitle}</div><div>{service.questionDate}</div></div>
+        <div className="questionTitle"><div><b>Q.</b>{service.questionTitle}</div><div>{service.questionDate.split('T')[0]}</div></div>
         {isClick && <div>{service.questionContent}</div>}
       </div>
       {isClick && (

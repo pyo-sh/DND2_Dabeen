@@ -28,18 +28,21 @@ export const ServiceWrapper = styled.div`
       color: white;
       background: #ff4300;
       border: none;
-      border-radius: 2px;
+      border-radius: 5px;
       font-size: 14px;
       cursor: pointer;
-      & :hover {
-        color: #424242;
+      transition : 0.3s;
+      & :hover, :focus {
+        background : rgba(255,67,0,0.8);
+        border: none;
+        outline : none;
       }
     }
   }
   & .ServiceQuestion {
     border: 1px solid #bfc7ce;
     border-bottom: none;
-    border-radius: 2px;
+    border-radius: 5px;
     & ul {
       margin: 0;
       padding: 0;

@@ -5,26 +5,23 @@ export const initialState = {
   livePosts : [],
   isUserResult : false,
 
-  helpPosts : [{
-    helpNum: "20200228", // 도움번호
-    userNum: "2002200002",
-    helpPostDate: "2020-02-28T10:12:12", // 도움게시일시
-    helpTitle: "학교 대신 가주세요",  //도움제목
-    categoryNum: "1000", // 카테고리번호
-    price: 30000, // 금액
-    content: "학교 가기싫어영 대신 가줘요오오옹", // 내용
-    helpDeadLine: "2020-02-29T10:12:12", // 도움신청마감일시
-    isHelpApprove: 'n', // 도움승인여부
-    helpEndTime: "9999-12-31T23:59:59",
-    postNum: 1, // 선호공급자수
-    helpExecDate: "2020-03-16T09:00:00", // 선호도움이행일시
-    location: "부산 남구 용소로 45", // 이행장소
-    payment: "n"
-  }],
-  helpImages: [], //  도움 사진 첨부
+  helpPosts : [],
   totalPages: 1,
   helpsPerPage: 0,
   totalHelps: 0,
+  applyDabeeners: [],
+  approveDabeenersNum : 0,
+  isApplyingDabeener : false,
+  applyDabeenerError : '',
+
+  isAddingApplying : false,
+  addApplyError : '',
+
+  isApproving : false,
+  approveError : '',
+
+  isCancelApplying : false,
+  cancelApplyError : '',
   // 유저의 도움 중 받을 도움 / 줄 도움
   userActivePosts: [],
   userActivePostsPage: {
@@ -59,6 +56,11 @@ export const initialState = {
   removeHelpPostErrorReason: "", //도움 게시글 삭제 실패 사유
   isRemovingHelpPost: false, //도움 게시글 삭제 중
   helpPostRemoved: false, //도움 게시글 삭제 성공
+
+  isClosing : false,
+  closeError : '',
+  isEvaluating : false,
+  evaluateError : '',
 };
 // 실시간 도움 요청
 export const LOAD_LIVEPOST_REQUEST = "LOAD_LIVEPOST_REQUEST";
@@ -68,6 +70,22 @@ export const LOAD_LIVEPOST_FAILURE = "LOAD_LIVEPOST_FAILURE";
 export const LOAD_HELPPOST_REQUEST = "LOAD_HELPPOST_REQUEST";
 export const LOAD_HELPPOST_SUCCESS = "LOAD_HELPPOST_SUCCESS";
 export const LOAD_HELPPOST_FAILURE = "LOAD_HELPPOST_FAILURE";
+
+export const LOAD_APPLYDABEENER_REQUEST = "LOAD_APPLYDABEENER_REQUEST";
+export const LOAD_APPLYDABEENER_SUCCESS = "LOAD_APPLYDABEENER_SUCCESS";
+export const LOAD_APPLYDABEENER_FAILURE = "LOAD_APPLYDABEENER_FAILURE";
+
+export const ADD_APPLY_REQUEST = "ADD_APPLY_REQUEST";
+export const ADD_APPLY_SUCCESS = "ADD_APPLY_SUCCESS";
+export const ADD_APPLY_FAILURE = "ADD_APPLY_FAILURE";
+
+export const CANCEL_APPLY_REQUEST = "CANCEL_APPLY_REQUEST";
+export const CANCEL_APPLY_SUCCESS = "CANCEL_APPLY_SUCCESS";
+export const CANCEL_APPLY_FAILURE = "CANCEL_APPLY_FAILURE";
+
+export const APPROVE_DABEENER_REQUEST = "APPROVE_DABEENER_REQUEST";
+export const APPROVE_DABEENER_SUCCESS = "APPROVE_DABEENER_SUCCESS";
+export const APPROVE_DABEENER_FAILURE = "APPROVE_DABEENER_FAILURE";
 
 //도움 게시글 작성
 export const ADD_HELPPOST_REQUEST = "ADD_HELPPOST_REQUEST";
@@ -98,6 +116,14 @@ export const LOAD_INACTIVE_USERPOST_REQUEST = "LOAD_INACTIVE_USERPOST_REQUEST";
 export const LOAD_INACTIVE_USERPOST_SUCCESS = "LOAD_INACTIVE_USERPOST_SUCCESS";
 export const LOAD_INACTIVE_USERPOST_FAILURE = "LOAD_INACTIVE_USERPOST_FAILURE";
 
+export const HELP_CLOSE_REQUEST = "HELP_CLOSE_REQUEST";
+export const HELP_CLOSE_SUCCESS = "HELP_CLOSE_SUCCESS";
+export const HELP_CLOSE_FAILURE = "HELP_CLOSE_FAILURE";
+
+export const EVALUATE_DABEENER_REQUEST = "EVALUATE_DABEENER_REQUEST";
+export const EVALUATE_DABEENER_SUCCESS = "EVALUATE_DABEENER_SUCCESS";
+export const EVALUATE_DABEENER_FAILURE = "EVALUATE_DABEENER_FAILURE";
+
 // Actions
 export const loadLivePostRequestAction = createAction(LOAD_LIVEPOST_REQUEST);
 export const loadLivePostSuccessAction = createAction(LOAD_LIVEPOST_SUCCESS);
@@ -106,6 +132,22 @@ export const loadLivePostFailureAction = createAction(LOAD_LIVEPOST_FAILURE);
 export const loadHelpPostRequestAction = createAction(LOAD_HELPPOST_REQUEST);
 export const loadHelpPostSuccessAction = createAction(LOAD_HELPPOST_SUCCESS);
 export const loadHelpPostFailureAction = createAction(LOAD_HELPPOST_FAILURE);
+
+export const loadApplyDabeenerRequestAction = createAction(LOAD_APPLYDABEENER_REQUEST);
+export const loadApplyDabeenerSuccessAction = createAction(LOAD_APPLYDABEENER_SUCCESS);
+export const loadApplyDabeenerFailureAction = createAction(LOAD_APPLYDABEENER_FAILURE);
+
+export const addApplyRequestAction = createAction(ADD_APPLY_REQUEST);
+export const addApplySuccessAction = createAction(ADD_APPLY_SUCCESS);
+export const addApplyFailureAction = createAction(ADD_APPLY_FAILURE);
+
+export const cancelApplyRequestAction = createAction(CANCEL_APPLY_REQUEST);
+export const cancelApplySuccessAction = createAction(CANCEL_APPLY_SUCCESS);
+export const cancelApplyFailureAction = createAction(CANCEL_APPLY_FAILURE);
+
+export const approveDabeenerRequestAction = createAction(APPROVE_DABEENER_REQUEST);
+export const approveDabeenerSuccessAction = createAction(APPROVE_DABEENER_SUCCESS);
+export const approveDabeenerFailureAction = createAction(APPROVE_DABEENER_FAILURE);
 
 export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
@@ -132,6 +174,14 @@ export const loadInactiveUserPostRequestAction = createAction(LOAD_INACTIVE_USER
 export const loadInactiveUserPostSuccessAction = createAction(LOAD_INACTIVE_USERPOST_SUCCESS);
 export const loadInactiveUserPostFailureAction = createAction(LOAD_INACTIVE_USERPOST_FAILURE);
 
+export const helpCloseRequestAction = createAction(HELP_CLOSE_REQUEST);
+export const helpCloseSuccessAction = createAction(HELP_CLOSE_SUCCESS);
+export const helpCloseFailureAction = createAction(HELP_CLOSE_FAILURE);
+
+export const evaluateDabeenerRequestAction = createAction(EVALUATE_DABEENER_REQUEST);
+export const evaluateDabeenerSuccessAction = createAction(EVALUATE_DABEENER_SUCCESS);
+export const evaluateDabeenerFailureAction = createAction(EVALUATE_DABEENER_FAILURE);
+
 const reducer = (state = initialState, action) => {
   return produce(state, draft => {
     switch (action.type) {
@@ -143,38 +193,135 @@ const reducer = (state = initialState, action) => {
       }
       case LOAD_HELPPOST_SUCCESS: {
         draft.isLoadingHelpPost = false; // 뭐 여러개의 포스트를 불러와서 넣을거임
-        draft.helpPosts = dummyHelpPost2.helpPosts; // 일단 더미를 준다!
-        draft.helpPosts = action.data.map(post => ({
+        draft.helpPosts = action.data.helps.map(post => ({
           helpNum: post.help_num, // 도움번호
           helpTitle: post.title,  // 도움이름
           helpPostDate: post.help_pstn_dttm, // 도움게시일시
           categoryNum: post.cat_num, // 카테고리번호
           price: post.price, // 금액
-          content: post.cont, // 내용
-          userNum: post.user_num,// 수요자번호
-          userName: post.user_name, // 사용자명
-          address: post.address, // 주소
-          phoneNumber: post.phone_num, // 휴대폰번호
-          userId: post.user_id, // 아이디
-          email: post.email, // 이메일
-          nickname: post.nickname, // 닉네임
-          picPath: post.pic_path, // 사진경로명
+          helpContent: post.cont, // 내용
+          userNum: post.cnsr_user.user_num,// 수요자번호
+          userName: post.cnsr_user.user_name, // 사용자명
+          address: post.cnsr_user.address, // 주소
+          phoneNumber: post.cnsr_user.phone_num, // 휴대폰번호
+          userId: post.cnsr_user.user_id, // 아이디
+          email: post.cnsr_user.email, // 이메일
+          nickname: post.cnsr_user.nickname, // 닉네임
+          picPath: post.cnsr_user.pic_path, // 프로필사진경로명
           helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
           isHelpApprove: post.help_aprv_whet, // 도움승인여부
+          isPaymentApprove: post.pymt_whet,
           postNum: post.pref_suppl_num, // 선호공급자수
           helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
-          location: post.exec_loc, // 이행장소
-          helpPicList: '' // 도움사진목록,
+          helpEndTime: post.help_end_dttm,  //도움 마감
+          execLoc: post.exec_loc, // 이행장소
+          helpPic: post.help_pics // 도움사진목록,
         }));
-        draft.totalHelps = action.data.total_helps;
-        draft.totalPages = action.data.total_pages;
-        draft.helpsPerPage = action.data.helps_per_page;
+        draft.totalHelps = action.data.page.total_datas;
+        draft.totalPages = action.data.page.total_pages;
+        draft.helpsPerPage = action.data.page.data_per_page;
         draft.helpPostLoaded = true; // 추가 다 됨.
         break;
       }
       case LOAD_HELPPOST_FAILURE: {
         draft.isLoadingHelpPost = false;
         draft.loadHelpPostErrorReason = action.data.error;
+        break;
+      }
+      case LOAD_APPLYDABEENER_REQUEST : {
+        draft.applyDabeenerError = '';
+        draft.isApplyingDabeener = true;
+        break;
+      }
+      case LOAD_APPLYDABEENER_SUCCESS : {
+        draft.isApplyingDabeener = false;
+        draft.applyDabeeners = action.data.map(dabeener => ({
+          applyDate : dabeener.comp_dttm, // 신청 일시
+          isApprove : dabeener.help_aprv_whet,
+          aprroveDate : dabeener.apprv_dttm,
+          evaluationDate : dabeener.ast_dttm,
+          rate : dabeener.rate,
+          evaluationContent : dabeener.ast_cont,
+          user : {
+            userNum : dabeener.user.user_num,
+            userName : dabeener.user.user_name,
+            userId : dabeener.user.user_id,
+            nickname : dabeener.user.nickname,
+            introduce : dabeener.user.itdc_cont,
+            pic_path : dabeener.user.pic_path,
+            avgRate : dabeener.user.avg_rate,
+          }
+        }))
+        draft.approveDabeenersNum = draft.applyDabeeners.filter(v => v.isApprove === 'y').length;
+        break;
+      }
+      case LOAD_APPLYDABEENER_FAILURE : {
+        draft.applyDabeenerError = action.data;
+        draft.isApplyingDabeener = false;
+        break;
+      }
+      case ADD_APPLY_REQUEST : {
+        draft.isAddingApplying = true;
+        draft.addApplyError = '';
+        break;
+      }
+      case ADD_APPLY_SUCCESS : {
+        draft.isAddingApplying = false;
+        draft.applyDabeeners.push({   
+          applyDate : action.data.comp_dttm, // 신청 일시
+          isApprove : action.data.help_aprv_whet,
+          aprroveDate : action.data.apprv_dttm,
+          evaluationDate : action.data.ast_dttm,
+          rate : action.data.rate,
+          evaluationContent : action.data.ast_cont,
+          user : {
+            userNum : action.data.user.user_num,
+            userName : action.data.user.user_name,
+            userId : action.data.user.user_id,
+            nickname : action.data.user.nickname,
+            introduce : action.data.user.itdc_cont,
+            pic_path : action.data.user.pic_path,
+            avgRate : action.data.user.avg_rate,
+          }});
+        break;
+      }
+      case ADD_APPLY_FAILURE : {
+        draft.isAddingApplying = false;
+        draft.addApplyError = action.data;
+        break;
+      }
+      case CANCEL_APPLY_REQUEST : {
+        draft.isCancelApplying = true;
+        draft.cancelApplyError = '';
+        break;
+      };
+      case CANCEL_APPLY_SUCCESS : {
+        draft.isCancelApplying = false;
+        draft.applyDabeeners = draft.applyDabeeners.filter(v => v.user.userNum !== action.data.userNum );
+        break;
+      }
+      case CANCEL_APPLY_FAILURE : {
+        draft.cancelApplyError = action.data;
+        draft.isCancelApplying = false;
+        break;
+      }
+      case APPROVE_DABEENER_REQUEST : {
+        draft.isApproving = true;
+        draft.approveError = '';
+        break;
+      }
+      case APPROVE_DABEENER_SUCCESS : {
+        draft.isApproving = false;
+        const index = draft.applyDabeeners.findIndex(v => v.user.user_num === action.data.user.user_num);
+        draft.applyDabeeners[index].applyDate = action.data.comp_dttm; 
+        draft.applyDabeeners[index].isApprove = action.data.help_aprv_whet;
+        draft.applyDabeeners[index].aprroveDate =  action.data.apprv_dttm;
+        draft.approveDabeenersNum += 1
+        break;
+      }
+      case APPROVE_DABEENER_FAILURE :{
+        draft.isApproving = false;
+        draft.approveError = action.data;
         break;
       }
       case ADD_HELPPOST_REQUEST: {
@@ -190,7 +337,6 @@ const reducer = (state = initialState, action) => {
           helpPostDate: action.data.help_pstn_dttm, // 도움게시일시
           helpTitle: action.data.title,  //도움제목
           helpContent: action.data.cont, // 내용
-          userNum: action.data.cnsr_num,
           categoryNum: action.data.cat_num, // 카테고리번호
           price: action.data.price, // 금액
           helpDeadLine: action.data.help_aply_cls_dttm, // 도움신청마감일시
@@ -199,7 +345,12 @@ const reducer = (state = initialState, action) => {
           postNum: action.data.pref_suppl_num, // 선호공급자수
           helpExecDate: action.data.pref_help_exec_dttm, // 선호도움이행일시
           execLoc: action.data.exec_loc, // 이행장소
-          payment: action.data.pymt_whet
+          isPaymentApprove: action.data.pymt_whet, // 결제여부
+          helpPic: action.data.help_pics,//도움 사진 리스트
+          userNum: action.data.cnsr_user.user_num,
+          userId: action.data.cnsr_user.user_id,
+          nickname: action.data.cnsr_user.nickname,
+          picPath: action.data.cnsr_user.pic_path
         });
         // draft.maxId += 1;
         draft.helpPostAdded = true;
@@ -230,7 +381,7 @@ const reducer = (state = initialState, action) => {
       }
       case UPDATE_HELPPOST_SUCCESS: {
         draft.isUpdatingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.helpNum);
+        const index = draft.helpPosts.findIndex(v => v.helpNum == action.data.helpNum);
         draft.helpPosts[index] = action.data;
         draft.helpPostUpdated = true;
         break;
@@ -248,7 +399,7 @@ const reducer = (state = initialState, action) => {
       }
       case REMOVE_HELPPOST_SUCCESS: {
         draft.isRemovingHelpPost = false;
-        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data);
+        const index = draft.helpPosts.findIndex(v => v.helpNum === action.data.help_num);
         draft.helpPosts.splice(index, 1);
         draft.helpPostRemoved = true;
         break;
@@ -274,8 +425,8 @@ const reducer = (state = initialState, action) => {
             postNum: post.pref_suppl_num, // 선호공급자수
             helpExecDate: post.pref_help_exec_dttm, // 선호도움이행일시
             helpDeadLine: post.help_aply_cls_dttm, // 도움신청마감일시
-            location: post.exec_loc, // 이행장소
-            helpPicList: post.help_pics,// 도움사진목록,
+            execLoc: post.exec_loc, // 이행장소
+            helpPic: post.help_pics,// 도움사진목록,
             
             userNum : post.cnsr_user.user_num,
             userId: post.cnsr_user.user_id,
@@ -283,7 +434,7 @@ const reducer = (state = initialState, action) => {
             userName : post.cnsr_user.user_name,
             userPic : post.cnsr_user.pic_path,
             avgRate : post.cnsr_user.avg_rate,
-            userPic: post.cnsr_user.pic,
+            // userPic: post.cnsr_user.pic,
           }
         ));
         draft.isUserResult = action.data.isResult;
@@ -307,7 +458,7 @@ const reducer = (state = initialState, action) => {
         draft.userActivePostsPage = { // 페이지 정보
           totalDatas: action.data.page.total_datas,
           totalPages: action.data.page.total_pages,
-          helpsPerPage: action.data.page.pages_per_datas,
+          helpsPerPage: action.data.page.data_per_page,
         };
         draft.userActivePosts = action.data.list.map(post => ({ // 도움정보
           applyNum: post.appli_num,
@@ -316,7 +467,7 @@ const reducer = (state = initialState, action) => {
           helpNum: post.help.help_num, // 도움번호
           helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
           helpEndTime: post.help.help_end_dttm,  // 도움마감일시
-          // categoryNum: post.help.cat_num, // 카테고리번호
+          categoryNum: post.help.cat_num, // 카테고리번호
 
           userNum : post.help.cnsr_user.user_num,
           userName : post.help.cnsr_user.user_name,
@@ -334,12 +485,12 @@ const reducer = (state = initialState, action) => {
           userMileage: post.help.cnsr_user.own_mileage,
 
           helpTitle: post.help.title,  // 타이틀
-          location: post.help.exec_loc, // 이행장소
+          execLoc: post.help.exec_loc, // 이행장소
           price: post.help.price, // 금액
           postNum: post.help.pref_suppl_num, // 선호공급자수
           helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
           helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.help.cont, // 내용
+          helpContent: post.help.cont, // 내용
           isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
           isPaymentApprove: post.help.pymt_whet, // 결제여부
           helpPic : post.help.help_pics, // 사진
@@ -371,7 +522,7 @@ const reducer = (state = initialState, action) => {
         draft.userInactivePostsPage = { // 페이지 정보
           totalDatas: action.data.page.total_datas,
           totalPages: action.data.page.total_pages,
-          helpsPerPage: action.data.page.pages_per_datas,
+          helpsPerPage: action.data.page.data_per_page,
         };
         draft.userInactivePosts = action.data.list.map(post => ({ // 도움정보
           applyNum: post.appli_num,
@@ -380,7 +531,7 @@ const reducer = (state = initialState, action) => {
           helpNum: post.help.help_num, // 도움번호
           helpPostDate: post.help.help_pstn_dttm, // 도움게시일시
           helpEndTime: post.help.help_end_dttm,  // 도움마감일시
-          // categoryNum: post.help.cat_num, // 카테고리번호
+          categoryNum: post.help.cat_num, // 카테고리번호
 
           userNum : post.help.cnsr_user.user_num,
           userName : post.help.cnsr_user.user_name,
@@ -398,12 +549,12 @@ const reducer = (state = initialState, action) => {
           userMileage: post.help.cnsr_user.own_mileage,
 
           helpTitle: post.help.title,  // 타이틀
-          location: post.help.exec_loc, // 이행장소
+          execLoc: post.help.exec_loc, // 이행장소
           price: post.help.price, // 금액
           postNum: post.help.pref_suppl_num, // 선호공급자수
           helpExecDate: post.help.pref_help_exec_dttm, // 선호도움이행일시
           helpDeadLine: post.help.help_aply_cls_dttm, // 도움신청마감일시
-          content: post.help.cont, // 내용
+          helpContent: post.help.cont, // 내용
           isHelpApprove: post.help.help_aprv_whet, // 도움승인여부
           isPaymentApprove: post.help.pymt_whet, // 결제여부
           helpPic : post.help.help_pics, // 사진
@@ -421,6 +572,51 @@ const reducer = (state = initialState, action) => {
         draft.userInactivePosts = [];
         break;
       }
+      case HELP_CLOSE_REQUEST : {
+        draft.isClosing = true;
+        draft.closeError = '';
+        break;
+      }
+      case HELP_CLOSE_SUCCESS : { // 마감하면 넣어야 할 때가 너무 많은데...? 어디서 마감할지를 모르니깐..
+        draft.isClosing = false;
+        let index;
+        if (action.data.pathname === '/'){
+          index = draft.livePosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.livePosts[index].helpEndTime = action.data.result.help_end_dttm;
+        }else if (action.data.pathname === '/[postmain]') {
+          index = draft.helpPosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.helpPosts[index].helpEndTime = action.data.result.help_end_dttm;
+        } else {
+          index = draft.userActivePosts.findIndex(v => v.helpNum === action.data.result.help_num);
+          draft.userActivePosts[index].helpEndTime = action.data.result.help_end_dttm; // 도움마감일시 = action.data.result;
+        }
+        break;
+      }
+      case HELP_CLOSE_FAILURE : {
+        draft.isClosing = false;
+        draft.closeError = action.data;
+        break;
+      }
+
+      case EVALUATE_DABEENER_REQUEST :{
+        draft.isEvaluating = true;
+        draft.evaluateError = '';
+        break;
+      }
+      case EVALUATE_DABEENER_SUCCESS : {
+        draft.isEvaluating = false;
+        const index = draft.applyDabeeners.findIndex(v => v.user.userNum === action.data.user.user_num);
+        draft.applyDabeeners[index].evaluateDate = action.data.ast_dttm;
+        draft.applyDabeeners[index].rate = action.data.rate;
+        draft.applyDabeeners[index].evaluationContent = action.data.ast_cont;
+        break;
+      }
+      case EVALUATE_DABEENER_FAILURE : {
+        draft.isEvaluating = false;
+        draft.evaluateError = action.data;
+        break;
+      }
+
       default:
         break;
     }

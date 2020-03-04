@@ -11,7 +11,6 @@ export const UserPageWrapper = styled.article`
   }
   & a {
     color: black;
-    cursor: pointer;
   }
   & .profileSection {
     width: 80%;
@@ -33,7 +32,6 @@ export const UserPageWrapper = styled.article`
       height: 80vw;
       min-height: 200px;
       max-height: 300px;
-      border-radius: 5px;
     }
     & .userParagraph{
       padding-top: 17.5px;
@@ -50,7 +48,7 @@ export const UserPageWrapper = styled.article`
     & .userRate{
       display: flex;
       align-items: center;
-      padding-left: 3px;
+      /* padding-left: 3px; */
       & .userRateTitle{
         color: #FF4300;
         padding: 4px 0 0 13px;
@@ -65,8 +63,9 @@ export const UserPageWrapper = styled.article`
       border-radius : 5px;
       height : 27px;
       cursor: pointer;
-      &:hover {
+      &:hover, :focus {
           color : black;
+          outline : none;
       }
     }
     & .contentNavbar {
@@ -89,6 +88,7 @@ export const UserPageWrapper = styled.article`
         padding: 10px;
         border-radius: 2px;
         box-shadow: 3px 3px 10px 0.5px #E9E9E9;
+        cursor: pointer;
       }
       & .click {
         & a{
@@ -110,8 +110,5 @@ export const UserPageWrapper = styled.article`
     margin: 0 20px;
     display: flex;
     flex-direction: column;
-    /* border: 1px solid #BFC7CE;
-    border-radius: 4px;
-    box-shadow: 0 5px 10px 0.5px #E9E9E9; */
   }
 `;

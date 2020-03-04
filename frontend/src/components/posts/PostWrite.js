@@ -8,6 +8,8 @@ import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentI
 import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
 import { getCookie } from '../../utils/cookieFunction';
+import MyLocation from '../map/MyLocation';
+import axios from 'axios';
 
 const categorys = {
     "심부름": "1000",
@@ -27,22 +29,27 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [location, setLocation] = useState('');   //이행위치
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
-    // const {imagePaths} = useSelector(state => state.posts);
+    const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
+    const {me} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
 
-    // const onClose = useCallback(async() => {
-    //     try{
-    //         const url = images[0];
-    //         await axios.post('/pic/delete', "help/20200228/55a61596-17ff-4f59-bacd-d3de3022a661_1516799552217.jpg");
-    //         // console.log(result);
-    //         setImages([]);
-    //     }catch(e){
-    //         console.log(e.response);
-    //     }
-    //     setInvisible();
-    // }, []);
+    //만약 사진 업로드 한 채로 글쓰기 창 닫으면 사진도 같이 삭제되게 한다. 
+    const onClose = useCallback((images) => () =>{
+        if(images.length !== 0) {
+            const imageFormData = new FormData();
+            images.map(image => imageFormData.append('url', image));
+            try{
+                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+                setImages([]);
+                setImgPaths([]);
+            }catch(e){
+                console.error(e);
+            }
+        }
+        setInvisible();
+    }, [images]);
 
     const getCategory = useCallback(category => {
         setCategory(categorys[category]);
@@ -52,12 +59,8 @@ const PostWrite = ({setInvisible, userNum}) => {
     useCallback((moment, string) => {
       setStateFunc(string);
     }, []);
-
-    const getLocation = useCallback((fullAddress) => {
-        setLocation(fullAddress);
-    }, []);
     
-    //게시글 업로드
+    //도움 업로드
     const addPost = useCallback((e) => {
         e.preventDefault();
         if(!postTitle || !postTitle.trim()){
@@ -74,35 +77,36 @@ const PostWrite = ({setInvisible, userNum}) => {
             price: parseInt(money),
             execLoc: location,
             content: content,
+            helpPics: imgPaths,
             cookie : getCookie()
         }));
         setInvisible();
-        // dispatch(addImageRequestAction({
-        //     path: `/home/help/${time.format('YYYYMMDD')}/${images[0].split('/')[6]}`
-        // }));
     }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
 
-    // console.log(time.format('YYYYMMDD'))
-    // console.log(images[0].split('/')[6])
     //이미지 삭제
-    // const deleteImage = useCallback(key => e =>{
-    //     setUrls(urls.filter(url => url.key !== key));
-    //     setImages(images.filter(image => image.key !== key));
-    // }, [urls, images]);
+    const deleteImage = useCallback((url) => async() => {
+        const imageFormData = new FormData();
+        imageFormData.append('url', url);
+        try{
+            await axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setImages(images.filter(image => image !== url));
+            setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
+        }catch(e){
+            console.error(e);
+        }
+    }, [images]);
 
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
-        // console.log(e.target.files[0]);
         imageFormData.append('pic', e.target.files[0]);
-        // console.log(imageFormData.get('pic'));
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
-            console.log(result);
             setImages(prev => [...prev, result.data.data]);
+            setImgPaths(prev => [...prev, {"path": result.data.data}]);
         }catch(e){
-            console.log(e.response);
+            console.error(e);
         }
-    }, []);
+    }, [imgPaths]);
 
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
@@ -114,7 +118,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                 <Content>
                     <Title>
                         <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
-                        <Icon onClick={setInvisible} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
+                        <Icon onClick={onClose(images)} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
                     </Title>
                     <PostSetting>
                         <PostSettingBox>
@@ -127,14 +131,14 @@ const PostWrite = ({setInvisible, userNum}) => {
                             <div className="postSettingTitle">신청 마감 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD"style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
-                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
                             <div className="postSettingTitle">수행 일시</div>
                             <div className="postSettingGetData">
                                 <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
-                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm:ss" onChange={onChangeHelpPicker(setHelpExecTime)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
                         </PostSettingBox>
                         <PostSettingBox>
@@ -147,32 +151,34 @@ const PostWrite = ({setInvisible, userNum}) => {
                         </PostSettingBox>
                     </PostSetting>
                     <ContentItem>
-                        <div>위치</div>  
-                        <SearchJuso location={location} getLocation={getLocation}/>
+                        <div className="PostWriteContentItemTitle">위치</div>
+                        <div className="PostWriteLocationWrapper">
+                            <MyLocation myLocation={location} />
+                            <div className="PostWriteLocationInfo">
+                                <SearchJuso location={location} setLocation={setLocation}/>
+                            </div>
+                        </div>
                     </ContentItem>
                     <ContentItem>
-                        <div>요구사항</div>
+                        <div className="PostWriteContentItemTitle">요구사항</div>
                         <textarea placeholder="요구사항을 입력하세요." required  value={content} onChange={onChangeContent}/>
                     </ContentItem>
                     <UploadImage>
-                        <div>사진첨부</div>
+                        <div className="UploadImageTitle">사진첨부</div>
                             <div className="uploadImageFlex">
-                                <input type="file"  hidden ref={imageInput} onChange={onChangeImages}/>
-                                {/* 업로드버튼 새로 만드세영^_^ */}
+                                <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
                                 <div className="uploadImageButton" onClick={onClickImageUpload}>
                                     <Icon type="plus-circle" style={{fontSize: 25}}/>
                                     <div style={{fontSize: 23}}>UPLOAD</div>
                                 </div>
-                                {/* <Button onClick={onClickImageUpload}><Icon type="upload" />Upload</Button> */}
                                 <div className="previewImage">
-                                    {/* <img src={`https://s3.ap-northeast-2.amazonaws.com/dabeen/help/20200227/5ad03fab-7983-4a8f-a988-f75dd1397efa_1516799552217.jpg`} alt="에러" width="90" height="90"/> */}
-                                    {images.map((v, i) => {
+                                    {images.map((url, i) => {
                                         return (
-                                        <div key={v} className="imgBorder"> 
-                                        <div className="deleteIcon">
+                                        <div key={url} className="imgBorder"> 
+                                        <div className="deleteIcon" onClick={deleteImage(url)}>
                                             <Icon type="close" />
                                         </div>
-                                        <img src={v} alt={v} width="90" height="90"/> 
+                                        <img src={url} alt={url} width="90" height="90"/> 
                                         </div>
                                         )
                                     })}

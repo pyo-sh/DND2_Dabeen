@@ -6,7 +6,6 @@ import { loadLivePostRequestAction } from '../reducers/posts';
 const Home = () => {
   return (
       <Main/>
-      // <PostDetail />
   );
 };
 

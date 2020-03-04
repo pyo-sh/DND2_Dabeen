@@ -4,7 +4,7 @@ import { Divider } from "antd";
 import PostDetail from "./PostDetail";
 import { PostCapsuleUpperDiv, LocationIcon, CapsuleTitleWrapper } from './PostCapsule.style';
 
-const PostCapsule = ({ data }) => {
+const PostCapsule = ({ data, categoryNum}) => {
   const [postDetailVisible, setPostDetailVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   // const helpDeadline = data.helpDeadline.split('T');
   // const helpExecDate = data.helpExecDate.split('T');
@@ -26,17 +26,21 @@ const PostCapsule = ({ data }) => {
             <div className="CapsuleMainLocationTriangle"></div>
             <div className="CapsuleMainLocationInfo">
               <LocationIcon type="environment" />
-              {data.address} 부산광역시 남구 대연동
+              {data.execLoc}
             </div>
           </div>
-          <img className="CapsuleMainImage" src={'/images/main2.jpg'}/>
+          {data.helpPic.length ? 
+          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="PostImage"/>
+          :
+          <img className="CapsuleMainImage" src={'/images/noImage.jpg'}/>
+          }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              <img className="CapsuleMainPicture" src={'/images/main4.jpg'}/>
+              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`}/>
             </Divider>
             <div className="CapsuleMainUserInfo">
-              <div className="CapsuleMainNickname">아이언맨{data.nickname}</div>
-              <div className="CapsuleMainId">@순두부{data.id}</div>
+              <div className="CapsuleMainNickname">{data.nickname}</div>
+              <div className="CapsuleMainId">@{data.userId}</div>
             </div>
           </div>
         </div>
@@ -60,7 +64,7 @@ const PostCapsule = ({ data }) => {
         </CapsuleTitleWrapper>
       </PostCapsuleUpperDiv>
       {postDetailVisible ? (
-        <PostDetail setVisible={setVisible} data={data} />
+        <PostDetail setVisible={setVisible} data={data} categoryNum={categoryNum}/>
       ) : null}
     </>
   );

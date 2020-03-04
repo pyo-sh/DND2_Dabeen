@@ -1,7 +1,8 @@
 import React from 'react';
-import { Avatar, Rate } from 'antd';
+import { Rate } from 'antd';
 import Link from 'next/link';
 import {MainDaBeenerProfileForm, MainDaBeenerProfileInfo } from './MainDaBeenerProfile.style';
+import { calculateRate } from '../../utils/calculateRate';
 
 const MainDaBeenerProfile = ({ recommendOpponents }) => {
   return (
@@ -14,19 +15,18 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
         >
           <a>
             <MainDaBeenerProfileInfo >
-              <Avatar size={100} icon='user' />
-              <div>@{user.nickname}</div>
-              <div style={{ fontSize: 12 }}>{user.userId}</div>
+              <img className="MainProfilePicture" src={user.picPath ||'/images/defaultProfile.png'} alt="유저프로필"/>
+              <div className="MainProfileNickname">{user.nickname}</div>
+              <div className="MainProfileId">@{user.userId}</div>
               <Rate
                 allowHalf
                 disabled
                 defaultValue={
-                  Math.round(user.avgRate + 0.5) === Math.round(user.avgRate)
-                    ? user.avgRate
-                    : Math.floor(user.avgRate) + 0.5
+                  calculateRate(user.avgRate)
                 }
                 style={{ fontSize: 12 }}
               />
+              <div className="MainProfileRateValue">{user.avgRate}</div>
             </MainDaBeenerProfileInfo>
           </a>
         </Link>

@@ -13,11 +13,10 @@ export const initialState = {
     nickName: undefined,
     address: undefined,
     phoneNumber: undefined,
-    userRole: "", // 다비너 여부
+    userRole: "", // 다비너 여부  'y' 공급자
 
     // 공급자일 경우 필수
-    pic: undefined, // 프로필사진 주소
-    rrnRear: undefined, // 주민 번호 뒷자리
+    picPath: undefined, // 프로필사진 주소
     avgRate: undefined, // 평점 평균
     ownMilege: undefined // 소유 마일리지
 
@@ -37,8 +36,8 @@ export const initialState = {
     userRole: "", // 다비너 여부
 
     // 공급자일 경우 필수
-    pic: undefined, // 프로필사진 주소
-    rrnRear: undefined, // 주민 번호 뒷자리
+    picPath: undefined, // 프로필사진 주소
+    // 생각해보니 주민 사진은 우리는 필요없다.
     avgRate: undefined, // 평점 평균
     ownMilege: undefined // 소유 마일리지
 
@@ -53,7 +52,11 @@ export const initialState = {
   signUpError: "", // 회원 가입 실패
   isUpdatingInfo: false, // 정보 업데이트중
   updateError: "",
-  loadUserError : ""
+  loadUserError : "",
+
+  applyDabeenerSuccess: false,
+  isRefunding : false,
+  refundError : ''
 };
 
 export const SIGN_UP_REQUEST = "SIGN_UP_REQUEST";
@@ -68,14 +71,6 @@ export const LOG_OUT_REQUEST = "LOG_OUT_REQUEST"; // 서버쪽에 갔다 와야 
 export const LOG_OUT_SUCCESS = "LOG_OUT_SUCCESS";
 export const LOG_OUT_FAILURE = "LOG_OUT_FAILURE";
 
-// export const FIND_ID_REQUEST = "FIND_ID_REQUEST";
-// export const FIND_ID_SUCCESS = "FIND_ID_SUCCESS";
-// export const FIND_ID_FAILURE = "FIND_ID_FAILURE";
-
-// export const FIND_PASSWORD_REQUEST = "FIND_PASSWORD_REQUEST";
-// export const FIND_PASSWORD_SUCCESS = "FIND_PASSWORD_SUCCESS";
-// export const FIND_PASSWORD_FAILURE = "FIND_PASSWORD_FAILURE";
-
 export const LOAD_USER_REQUEST = "LOAD_USER_REQUEST";
 export const LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS";
 export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
@@ -83,6 +78,15 @@ export const LOAD_USER_FAILURE = "LOAD_USER_FAILURE";
 export const EDIT_USERINFO_REQUEST = "EDIT_USERINFO_REQUEST";
 export const EDIT_USERINFO_SUCCESS = "EDIT_USERINFO_SUCCESS";
 export const EDIT_USERINFO_FAILURE = "EDIT_USERINFO_FAILURE";
+
+export const APPLY_DABEENER_REQUEST = "APPLY_DABEENER_REQUEST";
+export const APPLY_DABEENER_SUCCESS = "APPLY_DABEENER_SUCCESS";
+export const APPLY_DABEENER_FAILURE = "APPLY_DABEENER_FAILURE";
+
+export const REFUND_MILEAGE_REQUEST = "REFUND_MILEAGE_REQUEST";
+export const REFUND_MILEAGE_SUCCESS = "REFUND_MILEAGE_SUCCESS";
+export const REFUND_MILEAGE_FAILURE = "REFUND_MILEAGE_FAILURE";
+
 
 // 회원가입 : data를 가지고 서버에 회원가입 요청을 날린다 -> 성공한다 : 회원가입 끝 OR 실패한다 : 에러 이유
 export const signUpRequestAction = createAction(SIGN_UP_REQUEST);
@@ -107,13 +111,14 @@ export const editUserInfoRequestAction = createAction(EDIT_USERINFO_REQUEST);
 export const editUserInfoSuccessAction = createAction(EDIT_USERINFO_SUCCESS);
 export const editUserInfoFailureAction = createAction(EDIT_USERINFO_FAILURE);
 
-// export const findUserIdRequestAction = createAction(FIND_ID_REQUEST);
-// export const findUserIdSuccessAction = createAction(FIND_ID_SUCCESS);
-// export const findUserIdFailureAction = createAction(FIND_ID_FAILURE);
+export const applyDabeenerRequestAction = createAction(APPLY_DABEENER_REQUEST);
+export const applyDabeenerSuccessAction = createAction(APPLY_DABEENER_SUCCESS);
+export const applyDabeenerFailureAction = createAction(APPLY_DABEENER_FAILURE);
 
-// export const findUserPasswordRequestAction = createAction(FIND_PASSWORD_REQUEST);
-// export const findUserPasswordSuccessAction = createAction(FIND_PASSWORD_SUCCESS);
-// export const findUserPasswordFailureAction = createAction(FIND_PASSWORD_FAILURE);
+export const refundMileageRequestAction = createAction(REFUND_MILEAGE_REQUEST);
+export const refundMileageSuccessAction = createAction(REFUND_MILEAGE_SUCCESS);
+export const refundMileageFailureAction = createAction(REFUND_MILEAGE_FAILURE);
+
 // 자신 정보 수정을 보낸다 -> 성공한다 : 유저정보 불러와서 다시 저장 or 실패한다 : 에러
 
 const reducer = (state = initialState, action) => {
@@ -172,10 +177,12 @@ const reducer = (state = initialState, action) => {
         draft.isUpdatingInfo = false;
         // draft.userInfo = action.data;
         // 임시로 redux만 수정
-        draft.userInfo.nickName = action.data.nickName;
-        draft.userInfo.email = action.data.email;
-        draft.userInfo.telephone = action.data.telephone;
-        draft.userInfo.address = action.data.address;
+        draft.me.nickName = action.data.nickname;
+        draft.me.email = action.data.email;
+        draft.me.phoneNumber = action.data.phoneNum;
+        draft.me.address = action.data.address;
+        draft.me.introduce = action.data.introduce;
+        draft.me.picPath = action.data.picPath;
         break;
       }
       case EDIT_USERINFO_FAILURE: {
@@ -198,11 +205,9 @@ const reducer = (state = initialState, action) => {
           draft.me.address = action.data.info.address;
           draft.me.phoneNumber = action.data.info.phone_num;
 
-          draft.me.blonSggName = action.data.info.blon_sgg_name;
           draft.me.userRole = action.data.info.suppl_whet;
-          draft.me.pic = action.data.info.pic;
+          draft.me.picPath = action.data.info.pic_path;
           draft.me.avgRate = action.data.info.avg_rate;
-          draft.me.rrnRear = action.data.info.rrn_rear;
           draft.me.ownMilege = action.data.info.own_mileage || 0;
         }
         else {
@@ -216,15 +221,48 @@ const reducer = (state = initialState, action) => {
           draft.selectUser.address = action.data.info.address;
           draft.selectUser.phoneNumber = action.data.info.phone_num;
 
-          draft.selectUser.blonSggName = action.data.info.blon_sgg_name;
           draft.selectUser.userRole = action.data.info.suppl_whet;
-          draft.selectUser.pic = action.data.info.pic;
+          draft.selectUser.picPath = action.data.info.pic_path;
           draft.selectUser.avgRate = action.data.info.avg_rate;
         }
         break;
       }
       case LOAD_USER_FAILURE : {
         draft.loadUserError = action.data;
+        break;
+      }
+      case APPLY_DABEENER_REQUEST : {
+        draft.isUpdatingInfo = true;
+        draft.updateError = '';
+        draft.applyDabeenerSuccess = false;
+        break;
+      }
+      case APPLY_DABEENER_SUCCESS : {
+        draft.isUpdatingInfo = false;
+        draft.me.userRole = action.data.suppl_whet;
+        draft.me.picPath = action.data.pic_path;
+        draft.applyDabeenerSuccess = true;
+        break;
+      }
+      case APPLY_DABEENER_FAILURE : {
+        draft.isUpdatingInfo = false;
+        draft.updateError = action.data;
+        draft.applyDabeenerSuccess = false;
+        break;
+      }
+      case REFUND_MILEAGE_REQUEST : {
+        draft.isRefunding = true;
+        draft.refundError = '';
+        break;
+      }
+      case REFUND_MILEAGE_SUCCESS : {
+        draft.isRefunding = false;
+        draft.me.ownMilege -= action.data;
+        break;
+      }
+      case REFUND_MILEAGE_FAILURE : {
+        draft.isRefunding = false;
+        draft.refundError = action.data;
         break;
       }
       default:
