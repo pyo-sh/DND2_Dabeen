@@ -6,8 +6,8 @@ import { MarkImage, Map } from './MyLocation.styled';
 
 const MyLocation = ({myLocation}) => {
     // //임시로 부경대학교 위치가 제일 처음 뜨게 설정했다.
-    const [lat, setLat] = useState(35.135);
-    const [lng, setLng] = useState(129.107);
+    const [lat, setLat] = useState(0);
+    const [lng, setLng] = useState(0);
     const Marker = ({ image }) => <MarkImage src={image} alt="지도 핀"/>;
 
     useEffect(()=>{
@@ -17,7 +17,6 @@ const MyLocation = ({myLocation}) => {
             response => {
                 setLat(response.results[0].geometry.location.lat)
                 setLng(response.results[0].geometry.location.lng)
-                console.log(response.results[0].geometry.location)
             },
             error => {
                 console.error(error);
