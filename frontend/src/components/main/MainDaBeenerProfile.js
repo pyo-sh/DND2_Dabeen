@@ -5,6 +5,7 @@ import {MainDaBeenerProfileForm, MainDaBeenerProfileInfo } from './MainDaBeenerP
 import { calculateRate } from '../../utils/calculateRate';
 
 const MainDaBeenerProfile = ({ recommendOpponents }) => {
+  console.dir(recommendOpponents)
   return (
     <MainDaBeenerProfileForm>
       {recommendOpponents.map(user => (
@@ -15,10 +16,9 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
         >
           <a>
             <MainDaBeenerProfileInfo >
-              {/* <Avatar size={100} icon='user' /> */}
-              <img className="MainProfilePicture" src={'/images/main4.jpg'}/>
-              <div>@{user.nickname}</div>
-              <div style={{ fontSize: 12 }}>{user.userId}</div>
+              <img className="MainProfilePicture" src={user.picPath ? user.picPath : `/images/defaultProfile.png`}/>
+              <div className="MainProfileNickname">{user.nickname}</div>
+              <div className="MainProfileId">@{user.userId}</div>
               <Rate
                 allowHalf
                 disabled
@@ -27,6 +27,7 @@ const MainDaBeenerProfile = ({ recommendOpponents }) => {
                 }
                 style={{ fontSize: 12 }}
               />
+              <div className="MainProfileRateValue">{user.avgRate}</div>
             </MainDaBeenerProfileInfo>
           </a>
         </Link>

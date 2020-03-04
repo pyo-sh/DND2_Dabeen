@@ -9,7 +9,6 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
   const setVisible = useCallback(e => {
     setMyHelpVisible(prev => !prev);
   }, []);
-  
   return (
     <>
       <MyHelpCapsuleUpperDiv
@@ -17,24 +16,34 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
         onClick={setVisible}
         >
         <div className="DoWrapper">
-          <div className={helpData.isHelpApprove === "y" ? "done" : "doing"}>
-            {helpType === "take" && isMe
-            ? helpData.isPaymentApprove === "y" ? "결제완료" : "결제필요"
-            : helpData.isHelpApprove === "y" ? "도움완료" : "진행 중"
-            }
-          </div>
+          {helpType === "take" && isMe
+          ? helpData.isPaymentApprove === "p"
+            ? <div className="done">결제완료</div>
+            : <div className="doing">결제필요</div>
+          : helpData.isHelpApprove === "y"
+            ? <div className="done">도움완료</div>
+            : <div className="doing">진행 중</div>
+          } 
         </div>
         {helpData.helpPic.length ? 
         <img className="MyhelpCapsuleImage" src={helpData.helpPic[0].path}/>
         :
-        <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/>
+        <img className="MyhelpCapsuleImage" src={'/images/noImage.jpg'}/>
         }
         {/* <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/> */}
         <MyHelpCapsuleTitle>
           <div className="MyhelpCapsuleTitleMain">{helpData.helpTitle}</div>
-          <div className="MyhelpCapsuleTitleSub">
-            <div className="MyhelpCapsuleTitlePeople">신청인원 : </div>
-          </div>
+          {helpType === "take"
+          ? <div className="MyhelpCapsuleTitleSub">
+              신청인원 : 
+              <div className="MyhelpCapsuleTitlePeople">{helpData.approveNum}</div>
+              /
+              <div className="MyhelpCapsuleTitlePeople">{helpData.postNum}</div>
+            </div>
+          : <div>
+              <div className="MyhelpCapsuleTime">수행일 : {helpData.helpExecDate && (helpData.helpExecDate.slice(0, 10)+" / "+helpData.helpExecDate.slice(11, 19))}</div>
+            </div>
+          }
         </MyHelpCapsuleTitle>
         <MyHelpCapsuleInfo>
           <div className="MyhelpCapsuleTime">마감일 : {helpData.helpDeadLine && helpData.helpDeadLine.slice(0, 10)}</div>

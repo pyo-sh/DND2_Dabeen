@@ -36,7 +36,6 @@ const PostBasket = ({ userNum, isMe }) => {
         dispatch(loadUserBasketPostRequestAction({userNum, cookie : getCookie()}));
         setShowPayment(false);
     });
-
     return (
         <>
         <PostBasketUpperDiv>
@@ -54,7 +53,7 @@ const PostBasket = ({ userNum, isMe }) => {
                 className="BasketContent"
                 gutter={10}
                 >
-                {userBasketPosts && userBasketPosts.map(basket => (
+                {userBasketPosts && Array.from(userBasketPosts).reverse().map(basket => (
                     <Col lg={24} xl={12} xxl={12} key={basket.helpNum}>
                         <PostBasketCapsule post={basket} setAllPrice={setAllPrice} setSelectHelps={setSelectHelps}/>
                     </Col>))}

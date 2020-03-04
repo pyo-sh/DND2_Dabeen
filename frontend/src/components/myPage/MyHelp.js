@@ -68,7 +68,7 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
           <Row gutter={[12, 12]}>
             {userInactivePosts && userInactivePosts.map((element, index) => (
               <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
-                <MyHelpCapsule helpType={helpType} helpData={element} />
+                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe}/>
               </MyHelpCol>
             ))}
           </Row>

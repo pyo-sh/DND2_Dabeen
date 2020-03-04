@@ -79,9 +79,9 @@ export const MyHelpCapsuleTitle = styled.div`
   }
   & .MyhelpCapsuleTitleSub{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     & .MyhelpCapsuleTitlePeople{
+      padding: 0 5px;
       font-size: 16px;
       color: #7A7A7A;
     }

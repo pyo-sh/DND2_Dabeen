@@ -313,10 +313,9 @@ function loadInactiveUserPostAPI(data) {
 function* loadInactiveUserPost(action) {
     try {
         const result = yield call(loadInactiveUserPostAPI, action.data);
-        console.dir(result)
         yield put(loadInactiveUserPostSuccessAction(result.data.data));
     } catch (e) {
-        console.dir(e);
+        console.error(e);
         yield put(loadInactiveUserPostFailureAction(e));
     }
 };

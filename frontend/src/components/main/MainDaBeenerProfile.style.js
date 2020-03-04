@@ -41,13 +41,21 @@ export const MainDaBeenerProfileInfo = styled.div`
       margin: 0 15px;  
     }
   }
-
-  & span.ant-avatar{
-    transition : transform 0.3s;
-    &:hover {
-      transform: scale(1.1);
-    }
+  & .MainProfileNickname{
+    padding-top: 5px;
+    font-size: 18px;
   }
+  & .MainProfileId{
+    color: #7A7A7A;
+    font-size: 12;
+    padding-bottom: 2px;
+  }
+  & .MainProfileRateValue{
+    font-size: 16px;
+    color: #424242;
+    font-weight: bold;
+  }
+  
   & .ant-rate {
     color: #ff4300;
   }

@@ -13,7 +13,6 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
     const dabeenerRegist = useCallback(() => {
         Router.push('/regist');
       }, []);
-      console.log(userInfo.avgRate);
     return (
       <UserPageWrapper>
         <section className='profileSection'>

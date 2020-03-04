@@ -92,7 +92,7 @@ const LiveHelpRequest = () => {
                   {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
                   {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path}/>
                     :
-                    <img className="LiveHelpRequestImage" src={'/images/main2.jpg'}/>
+                    <img className="LiveHelpRequestImage" src={'/images/noImage.jpg'}/>
                   }
                   {/* <Divider orientation="left" style={{ marginTop: "42%" }}/> */}
                   <Divider orientation="left">

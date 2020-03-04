@@ -202,12 +202,15 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                 </div>
             </Title>
             {!edit && (!imagesURL.length ?
-            <DetailSlick {...slickSetting}>
-            <img className="PostDetailImage" src={'/images/main1.jpg'}/>
-            <img className="PostDetailImage" src={'/images/main2.jpg'}/>
-            <img className="PostDetailImage" src={'/images/main3.jpg'}/>
-            <img className="PostDetailImage" src={'/images/main4.jpg'}/>
-            </DetailSlick>
+            // <DetailSlick {...slickSetting}>
+            // <img className="PostDetailImage" src={'/images/main1.jpg'}/>
+            // <img className="PostDetailImage" src={'/images/main2.jpg'}/>
+            // <img className="PostDetailImage" src={'/images/main3.jpg'}/>
+            // <img className="PostDetailImage" src={'/images/main4.jpg'}/>
+            // </DetailSlick>
+            <HelpPic>
+                <img className="PostDetailImage" src={'/images/noImage.jpg'} />
+            </HelpPic>
             :
             editImages.length === 1 ?
             <HelpPic>

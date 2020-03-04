@@ -30,9 +30,9 @@ const PostCapsule = ({ data, categoryNum}) => {
             </div>
           </div>
           {data.helpPic.length ? 
-          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt={data.helpPic[0].path}/>
+          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="PostImage"/>
           :
-          <img className="CapsuleMainImage" src={'/images/main2.jpg'}/>
+          <img className="CapsuleMainImage" src={'/images/noImage.jpg'}/>
           }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">

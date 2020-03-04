@@ -125,6 +125,7 @@ const SignUpMain = () => {
           telephone,
           address,
         };
+        console.dir(userLog)
         dispatch(signUpRequestAction(userLog)); // 회원가입 요청
       }
     },
@@ -142,7 +143,7 @@ const SignUpMain = () => {
       isPasswordChecked,
     ]
   );
-    console.log(birthMonth)
+  
   return (
     <SignUpUpperDiv>
       <div className="SignupTitle">회원가입</div>

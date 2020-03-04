@@ -57,7 +57,7 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
       }
       <PostBasketCapsuleUpperDiv onClick={setVisible}>
         <BasketCapsuleCircle><div className="Circle"></div></BasketCapsuleCircle>
-        <img className="BasketCapsuleCapture" src={imagesURL.length === 1 ? imagesURL[0] : '/images/main2.jpg'}/>
+        <img className="BasketCapsuleCapture" src={imagesURL.length === 1 ? imagesURL[0] : '/images/noImage.jpg'}/>
         <PostBasketContent>
           <div className="PostBasketTitle">{post.helpTitle}</div>
           <PostBasketContentBox>
