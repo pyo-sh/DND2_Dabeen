@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Button,} from "antd";
-import Banks from './banks';
+import Banks from './Banks';
 import { RefundModal } from './Refund.style';
 
 const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank, setVisible, setChecking, refundPrice, ownMilege }) => {

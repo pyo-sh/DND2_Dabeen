@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { Result, Button } from 'antd';
+import { Result } from 'antd';
 
 const PayResult = ({ setVisible }) => {
     const result = useSelector(state => state.basket.payResult);

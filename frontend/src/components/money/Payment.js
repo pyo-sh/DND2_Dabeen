@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { PaymentModal } from './Payment.style';
 
-import Banks from './banks';
+import Banks from './Banks';
 import PayResult from './PayResult';
 import { check_num } from "../signUp/InputFunctions";
 import { inputCheckChangeHook } from "../../hooks/inputChangeHook";
