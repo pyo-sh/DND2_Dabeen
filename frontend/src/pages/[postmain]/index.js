@@ -130,7 +130,7 @@ const Postmain = ({categoryNum, search}) => {
           <img
             className="postmainWriteIcon"
             alt="writePost"
-            src={"/images/postIcon.PNG"}
+            src={"/images/postIcon.png"}
           />
         </div>
         {postWriteVisible ? (

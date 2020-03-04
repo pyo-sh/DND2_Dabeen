@@ -32,14 +32,6 @@ const PostList = ({ categoryNum }) => {
           </>
         )}
       </Row>
-      {/* <Pagination
-        className="PostListPagination"
-        onChange={onChangePagination}
-        simple
-        defaultCurrent={1}
-        pageSize={6}
-        total={12}
-      /> */}
     </PostListUpperDiv>
   );
 };
