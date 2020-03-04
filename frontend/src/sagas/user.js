@@ -153,11 +153,11 @@ function* watchEditUserInfo() {
     yield takeLatest(EDIT_USERINFO_REQUEST, editUserInfo);
 }
 
-function applyDabeenerAPI({userNum, juminImage, profileImage, cookie}){
+function applyDabeenerAPI({userNum, juminImage, userImage, cookie}){
     const reqData = {
         data : {
             user_num : userNum,
-            pic_path : profileImage,
+            pic_path : userImage,
             rrn_path : juminImage
         }
     };

@@ -203,7 +203,7 @@ export const UploadImage = styled.div`
         margin-top: 5px;
 
         & .imgBorder{
-            width: 120px;
+            width: 240px;
             height: 120px;
             border: 1px solid #BFC7CE;
             border-radius: 4px;
@@ -213,6 +213,7 @@ export const UploadImage = styled.div`
                 font-size: 12px;
                 text-align: right;
                 margin-left: 5px;
+                cursor: pointer;
             }
         }
 

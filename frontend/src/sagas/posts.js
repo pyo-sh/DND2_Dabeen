@@ -174,21 +174,21 @@ function* watchLoadLivePost() {
 };
 
 // 신청 다비너 불러오기
-function applyDabeenerAPI({helpNum}) {
+function loadApplyDabeenerAPI({helpNum}) {
     return axios.get(`/help-suppl-comp/${helpNum}/supplers`);
 };
 
-function* applyDabeener(action) {
+function* loadApplyDabeener(action) {
     try {
-        const result = yield call(applyDabeenerAPI, action.data);
+        const result = yield call(loadApplyDabeenerAPI, action.data);
         yield put(loadApplyDabeenerSuccessAction(result.data.data));
     } catch (e) {
         console.log(e);
         yield put(loadApplyDabeenerFailureAction(e));
     }
 };
-function* watchApplyDabeener() {
-    yield takeLatest(LOAD_APPLYDABEENER_REQUEST, applyDabeener);
+function* watchLoadApplyDabeener() {
+    yield takeLatest(LOAD_APPLYDABEENER_REQUEST, loadApplyDabeener);
 };
 
 
@@ -378,7 +378,7 @@ export default function* postsSaga() {
     yield all([
         fork(watchLoadHelpPost),
         fork(watchLoadLivePost),
-        fork(watchApplyDabeener),
+        fork(watchLoadApplyDabeener),
         fork(watchLoadActiveUserPost),
         fork(watchLoadInactiveUserPost),
         fork(watchAddHelpPost),
@@ -389,5 +389,6 @@ export default function* postsSaga() {
         fork(watchApproveDabeener),
         fork(watchHelpClose),
         fork(watchEvaluate),
+        fork(watchAddImage),
     ]);
 };

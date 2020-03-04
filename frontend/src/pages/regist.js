@@ -63,8 +63,10 @@ const Regist = () => {
     }, []);
 
     const deleteImage = useCallback(async () => {
+        const delteFormData = new FormData();
+        delteFormData.append('url', juminImage);
         try{
-            await axios.post('/pic/delete', juminImage, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            await customAxios.post('/pic/delete', delteFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setJuminImage('');
         }
         catch(e){
@@ -155,7 +157,7 @@ const Regist = () => {
                                     <div className="deleteIcon" onClick={deleteImage}>
                                         <Icon type="close" />
                                     </div>
-                                    <img src={juminImage} alt="주민번호 미리보기" width="90" height="90"/> 
+                                    <img src={juminImage} alt="주민번호 미리보기" width="200" height="120"/> 
                                 </div> 
                             </div>}      
                             </div>
