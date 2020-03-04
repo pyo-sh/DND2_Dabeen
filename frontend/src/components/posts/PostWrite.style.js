@@ -15,12 +15,12 @@ export const Modal = styled.div`
 `;
 
 export const Content = styled.div`
-    width: 100%;
-    max-width: 600px;
+    width: 100vw;
+    max-width: 680px;
     min-width: 300px;
     padding: 30px;
     margin: 60px 0;
-    border-radius : 12px;
+    border-radius : 5px;
 
     display: flex;
     flex-direction: column;
@@ -29,6 +29,7 @@ export const Content = styled.div`
     font-size: 20px;
     color: #424242;
     background: white;
+    box-shadow: 0 0 10px 4px #7A7A7A;
 `;
 
 export const Title = styled.div`
@@ -36,16 +37,12 @@ export const Title = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 550px;
-    min-width: 300px;
     font-size: 40px;
     margin-bottom: 20px;
 `;
 
 export const PostSetting = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 230px;
     padding: 10px;
     margin-bottom: 20px;
 
@@ -63,8 +60,6 @@ export const PostSettingBox = styled.div`
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
-    max-width: 550px;
-    min-width: 230px;
 
     & .postSettingTitle {
         min-width: 160px;
@@ -149,8 +144,6 @@ export const InputTitle = styled.input`
 
 export const ContentItem = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
     height: auto;
     margin-bottom: 20px;
     display: flex;
@@ -158,10 +151,13 @@ export const ContentItem = styled.div`
     align-items: flex-start;
     font-size: 20px;
 
+    & .PostWriteContentItemTitle{
+        font-size: 25px;
+        font-weight: bold;
+        padding-bottom: 5px;
+    }
     & > textarea {
         width: 100%;
-        max-width: 550px;
-        min-width: 250px;
         height: 200px;
         resize: none;
         color: #7a7a7a;
@@ -174,14 +170,28 @@ export const ContentItem = styled.div`
             color: #BFC7CE;
         }
     }
+    & .PostWriteLocationWrapper{
+        width: 100%;
+        border: 1px solid #BFC7CE;
+        border-radius: 3px;
+        box-shadow: 0 0 10px 3px #E9E9E9;
+    }
+    & .PostWriteLocationInfo{
+        width: 100%;
+        padding: 10px;
+        border-top: 1px solid #BFC7CE;
+    }
 `;
 
 export const UploadImage = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
     font-size: 25px;
 
+    & .UploadImageTitle{
+        font-size: 25px;
+        font-weight: bold;
+        padding-bottom: 5px;
+    }
     & .uploadImageFlex {
         display: flex;
     }
@@ -230,8 +240,8 @@ export const UploadImage = styled.div`
 
 export const UploadButton = styled(Button)`
     width: 200px;
-    height: 45px;
-    margin-top: 20px;
+    height: 40px;
+    margin-top: 30px;
     margin-bottom: 20px;
     background: #FF4300;
     border: #FF4300;

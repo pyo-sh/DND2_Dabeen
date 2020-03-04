@@ -167,7 +167,7 @@ const Header = ({asPath}) => {
                   </div>
                 ) : null}
               </div>
-              <div>
+              <div className="loginBoxRight">
                 <a onClick={clickLogout}>로그아웃</a>
               </div>
             </>
@@ -176,7 +176,7 @@ const Header = ({asPath}) => {
               <div>
                 <a onClick={clickLogin}>로그인</a>
               </div>
-              <div>
+              <div className="loginBoxRight">
                 <Link href="/terms">
                   <a
                     name="terms signup"

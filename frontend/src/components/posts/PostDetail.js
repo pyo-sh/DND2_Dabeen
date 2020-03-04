@@ -251,7 +251,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
                                     /{data.postNum}
                                 </div>
                                 <button className="ApplyCheck" onClick={onModal}>
-                                    {applyDabeeners ? applyDabeeners.length : 0} 신청 확인
+                                    {applyDabeeners ? applyDabeeners.length : 0}명 신청 확인
                                 </button>
                             </div>      
                             {click &&<CheckDabeener click={click} onModal={onModal} needPersonnel={editNeedPersonnel} helpNum={data.helpNum} postUserNum={data.userNum} applyDabeeners={applyDabeeners} applyCheck={data.isHelpApprove}

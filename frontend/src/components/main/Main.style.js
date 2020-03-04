@@ -41,9 +41,9 @@ export const MainForm = styled.div`
 
     & .LiveHelpRequestWrapper{
         width: 100%;
-        margin-top: 5vw;
+        /* margin-top: 5vw; */
         padding: 20px;
-        box-shadow: 0 0px 5px 3px #BFC7CE;
+        /* box-shadow: 0 0px 5px 3px #BFC7CE; */
 
         display: flex;
         flex-direction: column;
@@ -51,7 +51,7 @@ export const MainForm = styled.div`
     }
     & .MainDaBeenerProfileWrapper{
         width: 100%;
-        margin-top: 5vw;
+        margin-top: 3vw;
         padding: 30px;
         /* box-shadow: 0 0px 5px 0.5px #BFC7CE; */
 

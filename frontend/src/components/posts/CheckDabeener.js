@@ -24,14 +24,14 @@ const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck,
                 </div>
                 <div className="drawerTop">
                     <div className="drawerTopFlex">
-                         <div className="drawerTopMargin">신청인원</div>
-                         <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>{applyDabeeners.length}</span>명</div>
-                     </div>
-                     <div className="drawerTopMargin">|</div>
-                     <div className="drawerTopFlex">
-                     <div className="drawerTopMargin">확정인원</div>
-                        <div className="drawerTopMargin"><span style={{color: "#FF4300"}}>{approveDabeenersNum}</span>/{needPersonnel}</div>
-                     </div>
+                         <div className="drawerTopSubTitle">신청인원</div>
+                         <div className="drawerTopSubTitleValue"><span style={{color: "#FF4300"}}>{applyDabeeners.length}</span>명</div>
+                    </div>
+                    <div className="drawerTopMargin">|</div>
+                    <div className="drawerTopFlex">
+                        <div className="drawerTopSubTitle">확정인원</div>
+                        <div className="drawerTopSubTitleValue"><span style={{color: "#FF4300"}}>{approveDabeenersNum}</span>/{needPersonnel}</div>
+                    </div>
                      {
                         applyCheck === "y" && isMe && <button className="pay">결제!</button>
                      }

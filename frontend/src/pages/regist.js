@@ -1,5 +1,13 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { RegistSupplierUpperDiv, RegistSupplierLowerDiv, Icons, RegistButton, UploadProfile,  UploadImage } from '../pagesStyles/regist.style';
+import {
+    RegistSupplierUpperDiv,
+    RegistSupplierLowerDiv,
+    Icons,
+    Images,
+    RegistButton,
+    UploadProfile,
+    UploadImage
+} from '../pagesStyles/regist.style';
 import { Icon } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
@@ -85,9 +93,11 @@ const Regist = () => {
             <div className="RegistSupplierContent">
                 <RegistSupplierLowerDiv>
                     <div className="RegistSupplierLowerTitle">다비너란?</div>
-                    <div className="RegistSupplierLowerScript">
+                    <div className="RegistSupplierLowerScriptFirst">
                         이웃들의 여러 어려움을 도와주고 소소한 금전적인 보상을 받는 사람들을 말합니다.
-                        아래의 간단한 인증과정 후 심사를 거쳐 다비너가 되어보세요.
+                    </div>
+                    <div className="RegistSupplierLowerScript">
+                        아래의 인증을 통해 다비너가 되어보세요!
                     </div>
                 </RegistSupplierLowerDiv>
                 <RegistSupplierLowerDiv>
@@ -100,28 +110,32 @@ const Regist = () => {
                             <br />
                             <div className="RegistSupplierLowerDetailWarning">* 얼굴이 나오지 않은 증명사진 / 캐릭터 / 단순배경 / 동물은 승인되지 않습니다.<div /></div>
                             <div className="RegistSupplierLowerDetailIcon">
+                                <Images src='/images/registDenied1.jpg'/>
                                 <Icons type="stop" />
+                                <Images src='/images/registDenied2.png'/>
                                 <Icons type="stop" />
+                                <Images src='/images/registDenied3.png'/>
                                 <Icons type="stop" />
+                                <Images src='/images/registDenied4.jpg'/>
                                 <Icons type="stop" />
                             </div>
                         </div>
                         <div className="RegistSupplierLowerImageUpload">
-                        <UploadProfile>
-                        <div>프로필사진 첨부</div>
-                            <img
-                            className="ModifyUserProfile"
-                            alt="유저 프로필"
-                            src={userImage || '/images/defaultProfile.png'}
-                            />
-                            <input type="file" hidden ref={imageInput} onChange={onChangeProfile}/>
-                            <img
-                            className="ModifyUserProfileChangeIcon"
-                            alt="writePost"
-                            src={"/images/postIcon.PNG"}
-                            onClick={onClickProfileUpload(imageInput)}
-                           />
-                    </UploadProfile>
+                            <UploadProfile>
+                                <img
+                                    className="ModifyUserProfile"
+                                    alt="유저 프로필"
+                                    src={userImage || '/images/defaultProfile.png'}
+                                    />
+                                <input type="file" hidden ref={imageInput} onChange={onChangeProfile}/>
+                                <img
+                                    className="ModifyUserProfileChangeIcon"
+                                    alt="writePost"
+                                    src={"/images/postIcon.PNG"}
+                                    onClick={onClickProfileUpload(imageInput)}
+                                    />
+                                <div className="RegistNowUserProfileImage">현재 프로필 사진</div>
+                            </UploadProfile>
                         </div>
                     </div>
                 </RegistSupplierLowerDiv>
@@ -134,31 +148,32 @@ const Regist = () => {
                             <br />
                             주민등록번호 뒷자리와 주소를 가린 주민등록증을 보내주세요!
                             <br/>
-                            <b>예시</b>
-                            <br/>
-                            <img src='/images/jumin.png' alt='주민등록증 예시' />
+                            <div className="RegistSupplierLowerDetailExample">예시</div>
+                            <img className="RegistSupplierLowerDetailExampleImage"src='/images/jumin.png' alt='주민등록증 예시' />
                         </div>
                     </div>
                     <div className="RegistSupplierLowerJuminUpload">
                     <UploadImage>
-                        <div>주민등록증 첨부</div>
-                            <div className="uploadImageFlex">
-                            {!juminImage ?
-                            <>
-                             <input type="file" hidden ref={juminInput} onChange={onChangeJumin}/> {/* 사진 있으면 안나오게 만들거임 */}
-                             <div className="uploadImageButton" onClick={onClickProfileUpload(juminInput)}>
-                                 <Icon type="plus-circle" style={{fontSize: 25}}/>
-                                 <div style={{fontSize: 23}}>UPLOAD</div>
-                             </div></> :  
-                             <div className="previewImage">
-                                <div className="imgBorder"> 
-                                    <div className="deleteIcon" onClick={deleteImage}>
-                                        <Icon type="close" />
+                        <div className="uploadImageFlex">
+                            {!juminImage 
+                            ?   <>
+                                    <input type="file" hidden ref={juminInput} onChange={onChangeJumin}/> {/* 사진 있으면 안나오게 만들거임 */}
+                                    <div className="uploadImageButton" onClick={onClickProfileUpload(juminInput)}>
+                                        <Icon type="plus-circle" style={{fontSize: 25}}/>
+                                        <div style={{fontSize: 23}}>UPLOAD</div>
                                     </div>
-                                    <img src={juminImage} alt="주민번호 미리보기" width="90" height="90"/> 
-                                </div> 
-                            </div>}      
-                            </div>
+                                </>
+                            :   <div className="previewImage">
+                                    <div className="imgBorder"> 
+                                        <div className="deleteIcon" onClick={deleteImage}>
+                                            <Icon type="close" />
+                                        </div>
+                                        <img src={juminImage} alt="주민번호 미리보기" width="90" height="90"/> 
+                                    </div> 
+                                </div>
+                            }      
+                        </div>
+                        <div className="UploadRegistTitle">주민등록증 첨부</div>
                     </UploadImage>
                         </div>
                 </RegistSupplierLowerDiv>

@@ -39,6 +39,7 @@ export const DrawerForm = styled.div`
     justify-content: flex-start;
     align-items: center;
     overflow: auto;
+    box-shadow: -4px 0 10px 2px #7A7A7A;
     ::-webkit-scrollbar{display:none;}  
     animation: ${fade} 0.2s linear;
     transition: visible 0.2s linear;
@@ -46,10 +47,12 @@ export const DrawerForm = styled.div`
     & > .drawerTitle{
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
         max-width: 450px;
         min-width: 300px;
         font-size: 40px;
+        font-weight: bold;
 
         & > .icon{
             font-size: 35px;
@@ -67,9 +70,15 @@ export const DrawerForm = styled.div`
             display: flex;
             flex-wrap: wrap;
         }
+        & .drawerTopSubTitle{
+            margin-right: 5px;
+        }
+        & .drawerTopSubTitleValue{
+
+        }
 
         & > .drawerTopMargin {
-            margin-left: 5px;
+            margin: 0 10px;
         }
 
         & .pay{
@@ -88,11 +97,14 @@ export const DrawerForm = styled.div`
         }
     }
 
-    & > .drawerMiddle {
-        margin-bottom: 5px;
+    & .drawerMiddle {
+        margin: 10px 0;
         width: 100%;
-        max-width: 450px;
-        min-width: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #F0F0F0;
+        border-radius: 5px;
     }
 `;
 

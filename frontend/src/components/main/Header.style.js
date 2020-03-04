@@ -160,9 +160,16 @@ export const Menubar = styled.header`
       }
     & .loginBox {
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
+      padding-right: 20px;
+      @media screen and (min-width: 830px) {
+        padding-right: 40px;
+      }
       align-items: center;
       width: 18vw;
+      & .loginBoxRight{
+        margin-left: 18px;
+      }
      & .userPageBox {
        position: relative;
        & .userPageList {

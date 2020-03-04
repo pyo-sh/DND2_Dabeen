@@ -9,12 +9,13 @@ export const RegistSupplierUpperDiv = styled.div`
     justify-content: center;
     align-items: center;
 
-    max-width: 600px;
-    min-width: 320px;
+    max-width: 680px;
+    min-width: 300px;
+
 
     & .RegistSupplierTitle{
         width: 100%;
-
+        padding: 0 10px;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
@@ -30,7 +31,8 @@ export const RegistSupplierUpperDiv = styled.div`
     }
     & .RegistSupplierContent{
         width: 100%;
-        padding: 40px 25px;
+        padding: 25px;
+        margin-top: 10px;
 
         display: flex;
         flex-direction: column;
@@ -39,6 +41,7 @@ export const RegistSupplierUpperDiv = styled.div`
 
         border: 1px solid #d9d9d9;
         border-radius : 5px;
+        box-shadow: 0 0 10px 3.2px #E9E9E9;
     }
 `
 
@@ -46,21 +49,24 @@ export const RegistSupplierLowerDiv = styled.div`
     width: 100%;
     margin: 10px 0;
     & .RegistSupplierLowerTitle{
-        padding-bottom: 10px;
+        padding-bottom: 8px;
         font-size: 28px;
         font-weight: bold;
     }
     & .RegistSupplierLowerScript{
-        padding-top: 5px;
-        padding-bottom: 20px;
+        padding: 0 0 20px 8px;
         border-bottom: 1px solid #d9d9d9;
         margin-bottom: 20px;
         font-size: 20px;
         border-radius : 8px;
     }
+    & .RegistSupplierLowerScriptFirst{
+        font-size: 20px;
+        padding-left: 8px;
+    }
     & .RegistSupplierLowerDetailDescription{
         border-radius: 8px;
-        padding: 10px;
+        padding: 13px 18px;
         margin-bottom: 10px;
         font-size: 18px;
         background: #F0F0F0;
@@ -68,16 +74,34 @@ export const RegistSupplierLowerDiv = styled.div`
         & .RegistSupplierLowerDetailWarning{
             color: #FF4400;
             font-size: 14px;
-            padding: 3px 0;
-            & .RegistSupplierLowerDetailIcon{
-                
-            }
+            padding: 10px 0 3px 0;
+        }
+        & .RegistSupplierLowerDetailIcon{
+            display: flex;
+            align-items: center;
+            padding: 12px;
+        }
+        & .RegistSupplierLowerDetailExample{
+            color: #FF4400;
+            font-size: 18px;
+            padding: 10px 0 3px 0;
+        }
+        & .RegistSupplierLowerDetailExampleImage{
+            width: 100%;
+            max-width: 350px;
+            min-width: 230px;
+            height: 100%;
+            max-height: 225px;
         }
     }
     & .RegistSupplierLowerImageUpload{
-        width: 170px;
-        height: 170px;
+        width: 100%;
         padding: 10px;
+        & .RegistNowUserProfileImage{
+            font-size: 20px;
+            padding-bottom: 10px;
+            font-weight: bold;
+        }
         & .RegistSupplierLowerImage{
             border-radius: 50%;
             width: 150px;
@@ -133,8 +157,8 @@ export const UploadProfile = styled.div`
         align-items: center;
         justify-content: center;
         width: 100%;
-        max-width: 600px;
-        min-width: 280px;
+        /* max-width: 600px;
+        min-width: 280px; */
 
     & .ModifyUserProfile{
             border: 1px solid #BFC7CE;
@@ -152,14 +176,22 @@ export const UploadProfile = styled.div`
         }
 `;
 export const Icons = styled(Icon)`
+    z-index: 0;
     font-size: 50px;
     padding-right: 5px;
+    margin-left: -50px;
+    color: #FF4300;
+`;
+export const Images = styled.img`
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 `;
 export const RegistButton = styled(Button)`
     width : 200px;
-    height: 50px;
+    height: 40px;
     border-radius : 5px;
-    margin-top: 20px;
+    margin-top: 30px;
     color: white;
     background: #ff4300;
     transition : 0.3s;
@@ -174,12 +206,12 @@ export const RegistButton = styled(Button)`
 
 export const UploadImage = styled.div`
     width: 100%;
-    max-width: 550px;
-    min-width: 250px;
     font-size: 25px;
 
     & .uploadImageFlex {
         display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     & .uploadImageButton {
@@ -220,5 +252,12 @@ export const UploadImage = styled.div`
             margin-left: 15px;
             margin-bottom: 10px;
         }
+    }
+    & .UploadRegistTitle{
+        width: 100%;
+        text-align: center;
+        font-size: 20px;
+        padding-top: 10px;
+        font-weight: bold;
     }
 `;
