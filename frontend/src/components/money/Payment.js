@@ -71,8 +71,6 @@ const Payment = ({ userNum, showPayment, clickPayment, allPrice, selectHelps, re
                 // 결제 axios를 위해 dispatch 한다.
                 dispatch(payPostRequestAction({userNum, helpNums: selectHelps, payWay: payWay, cookie: getCookie()}));
                 // 결제할 때 사용한 은행/통신사 및 계좌/전화번호. 후에 이용한다면 사용할 듯
-                // console.log(selectCompany, accountNumber);
-                // dispatch(postPaidTrueRequestAction());
             }
             // 올바르지 않은 것은 checkIsRight 함수에서 각자의 경고에 대한 alert 할 것임.
         }

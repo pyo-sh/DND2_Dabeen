@@ -9,10 +9,7 @@ const helpPostNum = [1,2,3,4,5,6,7,8,9];
 // 카테고리 번호에 따라 다른 헬프 포스트들을 불러오게 하거나 걸러내게 해야할듯.
 const PostList = ({ categoryNum }) => {
   const { helpPosts, isLoadingHelpPost } = useSelector(state => state.posts);
-  // const onChangePagination = useCallback((page, pageSize) => {
-  //   console.log(page, pageSize);
-  // }, []);
-  
+
   return (
     <PostListUpperDiv>
       <Row gutter={[24, 24]}>

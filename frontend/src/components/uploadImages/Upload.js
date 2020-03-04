@@ -16,7 +16,7 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
             axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image != url));
         }catch(e){
-            console.log(e.response);
+            console.error(e);
         }
     }, [images]);
 
@@ -25,14 +25,12 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
         imageFormData.append('pic', e.target.files[0]);
         try{
             const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
-            console.log(result);
             setImages(prev => [...prev, result.data.data]);
         }catch(e){
-            console.log(e.response);
+            console.error(e);
         }
     }, []);
 
-    console.log(imgPaths)
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, [imageInput.current]);

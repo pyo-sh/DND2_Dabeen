@@ -45,7 +45,7 @@ const PostWrite = ({setInvisible, userNum}) => {
                 setImages([]);
                 setImgPaths([]);
             }catch(e){
-                console.log(e.response);
+                console.error(e);
             }
         }
         setInvisible();
@@ -92,7 +92,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             setImages(images.filter(image => image !== url));
             setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){
-            console.log(e.response);
+            console.error(e);
         }
     }, [images]);
 
@@ -104,7 +104,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             setImages(prev => [...prev, result.data.data]);
             setImgPaths(prev => [...prev, {"path": result.data.data}]);
         }catch(e){
-            console.log(e.response);
+            console.error(e);
         }
     }, [imgPaths]);
 

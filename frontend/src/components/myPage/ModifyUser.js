@@ -70,7 +70,6 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
         imageFormData.append('pic', e.target.files[0]);
         try{
             const result = await customAxios.post('/pic/upload/user', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
-            console.log(result);
             setProfileImage(result.data.data);
         }catch(e){
             console.log(e.response);
@@ -120,25 +119,6 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                     src={"/images/postIcon.PNG"}
                     onClick={onClickImageUpload}
                 />
-                {/* <Upload
-                    className="ModifyUserProfileChange"
-                    name='file'
-                    action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                    showUploadList={false}
-                    onChange={useCallback(info => {
-                        if (info.file.status !== 'uploading') {
-                            console.log(info.file, info.fileList, info);
-                        }
-                        if (info.file.status === 'done') {
-                            message.success(`${info.file.name} file uploaded successfully`);
-                            setProfileImage({file: info.file.originFileObj});
-                            setPorfileImageUrl(URL.createObjectURL(info.file.originFileObj));
-                        } else if (info.file.status === 'error') {
-                            message.error(`${info.file.name} file upload failed.`);
-                        }
-                    }, [])}
-                >
-                </Upload> */}
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">닉네임 *</div>
                     <DabeenInput

@@ -36,10 +36,6 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeeners
                     </div>
                 </div>
                 <div className="userDetailInfo">
-                    {/* <div>
-                        <div style={{fontSize:15}}>10</div>
-                        <div style={{fontSize:11}}>총 도움수</div>
-                    </div> */}
                     <div>
                         <div className="rateFlex">
                             <Rate allowHalf disabled defaultValue={calculateRate(dabeener.user.avgRate)} style={{fontSize: 15}}/>

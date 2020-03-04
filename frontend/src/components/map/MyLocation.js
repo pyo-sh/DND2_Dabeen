@@ -17,7 +17,6 @@ const MyLocation = ({myLocation}) => {
             response => {
                 setLat(response.results[0].geometry.location.lat)
                 setLng(response.results[0].geometry.location.lng)
-                console.log(response.results[0].geometry.location)
             },
             error => {
                 console.error(error);

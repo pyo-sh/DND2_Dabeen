@@ -17,9 +17,9 @@ function* loadUserBasketPost(action) {
     try {
         const result = yield call(loadUserBasketPostApi, action.data);
         yield put(loadUserBasketPostSuccessAction(result.data.data));
-    } catch(error) {
-        console.error(error);
-        yield put(loadUserBasketPostFailureAction(error));
+    } catch(e) {
+        console.error(e);
+        yield put(loadUserBasketPostFailureAction(e));
     }
 };
 function* watchLoadUserBasketPost() {
@@ -39,11 +39,10 @@ function payPostApi({ userNum, helpNums, payWay, cookie }){
 function* payPost(action) {
     try {
         const result = yield call(payPostApi, action.data);
-        console.log(result)
         yield put(payPostSuccessAction(result.data.data));
-    } catch(error) {
-        console.error(error);
-        yield put(payPostFailuerAction(error));
+    } catch(e) {
+        console.error(e);
+        yield put(payPostFailuerAction(e));
     }
 };
 function* watchPayPost() {

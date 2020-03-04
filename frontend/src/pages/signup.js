@@ -125,7 +125,6 @@ const SignUpMain = () => {
           telephone,
           address,
         };
-        console.dir(userLog)
         dispatch(signUpRequestAction(userLog)); // 회원가입 요청
       }
     },

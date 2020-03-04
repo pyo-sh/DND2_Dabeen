@@ -72,7 +72,7 @@ function* addHelpPost(action) {
         yield put(addHelpPostSuccessAction(result.data.data));
     }
     catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(addHelpPostFailureAction(e));
     }
 };
@@ -102,12 +102,11 @@ function updateHelpPostAPI(data) {
 };
 
 function* updateHelpPost(action) {
-    console.log(action.data)
     try {
         yield call(updateHelpPostAPI, action.data);
         yield put(updateHelpPostSuccessAction(action.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(updateHelpPostFailureAction(e));
     }
 }
@@ -125,7 +124,7 @@ function* removeHelpPost(action) {
         yield call(removeHelpPostAPI, action.data);
         yield put(removeHelpPostSuccessAction(action.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(removeHelpPostFailureAction(e));
     }
 };
@@ -143,10 +142,9 @@ function loadHelpPostAPI(data) {
 function* loadHelpPost(action) {
     try {
         const result = yield call(loadHelpPostAPI, action.data);
-        console.log(result.data.data);
         yield put(loadHelpPostSuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(loadHelpPostFailureAction(e));
     }
 };
@@ -165,7 +163,7 @@ function* loadLivePost(action) {
         const result = yield call(loadLivePostAPI, action.data);
         yield put(loadLivePostSuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(loadLivePostFailureAction(e));
     }
 };
@@ -183,7 +181,7 @@ function* loadApplyDabeener(action) {
         const result = yield call(loadApplyDabeenerAPI, action.data);
         yield put(loadApplyDabeenerSuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(loadApplyDabeenerFailureAction(e));
     }
 };
@@ -207,7 +205,7 @@ function* addApply(action) {
         const result = yield call(addApplyAPI, action.data);
         yield put(addApplySuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(addApplyFailureAction(e));
     }
 };
@@ -224,7 +222,7 @@ function* cancelApply(action) {
         yield call(cancelApplyAPI, action.data);
         yield put(cancelApplySuccessAction(action.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(cancelApplyFailureAction(e));
     }
 };
@@ -271,7 +269,7 @@ function* addImage(action) {
         const result = yield call(addImageAPI, action.data);
         yield put(addImageSuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(addImageFailureAction(e));
     }
 };
@@ -295,7 +293,7 @@ function* loadActiveUserPost(action) {
         const result = yield call(loadActiveUserPostAPI, action.data);
         yield put(loadActiveUserPostSuccessAction(result.data.data));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(loadActiveUserPostFailureAction(e));
     }
 };
@@ -340,7 +338,7 @@ function* helpClose(action) {
         const result = yield call(helpCloseAPI, action.data);
         yield put(helpCloseSuccessAction({result : result.data.data, pathname: action.data.pathname}));
     } catch (e) {
-        console.log(e);
+        console.error(e);
         yield put(helpCloseFailureAction(e));
     }
 };

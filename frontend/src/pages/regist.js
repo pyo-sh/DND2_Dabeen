@@ -58,7 +58,7 @@ const Regist = () => {
             const result = await customAxios.post('/pic/upload/rrn', juminFormData,  {headers : {Authorization: `Bearer ${getCookie()}`}})
             setJuminImage(result.data.data);
         } catch(e){
-            console.log(e.response);
+            console.error(e);
         }
     }, []);
 

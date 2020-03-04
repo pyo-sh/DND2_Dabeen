@@ -58,7 +58,7 @@ function* login(action) {
         yield put(loginSuccessAction({userNum, userId, userRole, nickname}));
         yield put(loadUserRequestAction({userNum, isMe: true }));
     }catch(e){
-        console.log(e.response);
+        console.error(e);
         yield put(loginFailureAction(e));
     }
 };
@@ -101,8 +101,8 @@ function* signUp(action) {
         yield call(signUpAPI, action.data);
         yield put(signUpSuccessAction());
     }catch(e){
-        console.dir(e);
-        yield put(signUpFailureAction(e.response.data.description));
+        console.error(e);
+        yield put(signUpFailureAction(e));
         // 적용 되면 e.response.data.description으로 될듯
     }
 }
