@@ -50,6 +50,7 @@ const PostBasket = ({ userNum, isMe }) => {
                 </div>
             </div>
             <Row
+                justify="start"
                 className="BasketContent"
                 gutter={10}
                 >
