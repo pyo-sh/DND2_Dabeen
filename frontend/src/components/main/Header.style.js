@@ -17,6 +17,9 @@ export const Menubar = styled.header`
   /* opacity : 0.9; */
   /* border-bottom: 1px solid #BFC7CE; */
   box-shadow: 0 2px 5px 0.5px #BFC7CE;
+  & select {
+    width: 18%;
+  }
   & .HeaderSearch{
     margin-bottom: -5px;
     margin-left: 10px;
@@ -35,7 +38,7 @@ export const Menubar = styled.header`
       & input {
         border : none;
         height : 100%;
-        width : 80%;
+        width : 75%;
         &:focus {
           outline : none;
           border : none;
@@ -73,6 +76,7 @@ export const Menubar = styled.header`
   }
   & .menuRight {
     display: none;
+    font-weight : bold;
   }
   & .ant-input-group {
     display : flex;
