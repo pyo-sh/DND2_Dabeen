@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Input, DatePicker, TimePicker, Button, Row } from "antd";
+import { Input, DatePicker, TimePicker, Button, Row, Col } from "antd";
 import {PostSearchUpperDiv, PostSearchBox} from './PostSearch.style';
 
 const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate, 
