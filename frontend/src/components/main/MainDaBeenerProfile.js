@@ -5,7 +5,6 @@ import {MainDaBeenerProfileForm, MainDaBeenerProfileInfo } from './MainDaBeenerP
 import { calculateRate } from '../../utils/calculateRate';
 
 const MainDaBeenerProfile = ({ recommendOpponents }) => {
-  console.dir(recommendOpponents)
   return (
     <MainDaBeenerProfileForm>
       {recommendOpponents.map(user => (
