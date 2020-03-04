@@ -7,7 +7,7 @@ import Link from 'next/link';
 import {useDispatch} from 'react-redux';
 import { cancelApplyRequestAction, approveDabeenerRequestAction } from '../../reducers/posts';
 
-const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeenersNum}) => {
+const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum}) => {
     const dispatch = useDispatch();
 
     const isMyProfile = useMemo(() => myNum === dabeener.user.userNum, [myNum, dabeener.user.userNum]);
@@ -42,7 +42,7 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeeners
                             <div>{dabeener.user.avgRate}</div>
                         </div>
                     </div>
-                    {isMe && dabeener.isApprove ==='y' ? <ChoiceButton choice>선택완료</ChoiceButton> : <ChoiceButton onClick={choiceDabeener}>선택</ChoiceButton>}
+                    {isMe && dabeener.isApprove ==='y' ? <ChoiceButton choice>선택완료</ChoiceButton> : isMe ?  <ChoiceButton onClick={choiceDabeener}>선택</ChoiceButton> : null}
                     {isMyProfile && <CancelButton onClick={cancelDabeener}>지원취소</CancelButton>}
                 </div>
             </UserInfo>

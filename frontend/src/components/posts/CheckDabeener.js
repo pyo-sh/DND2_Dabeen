@@ -8,7 +8,7 @@ const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck,
     // const {helpPosts} = useSeletor(state => state.posts);
     const { me } = useSelector(state => state.user);
     const isMe = useMemo(() => me.userNum === postUserNum, [me && me.userNum, postUserNum]);
-    
+  
     //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
     // const choiceDabeener = useCallback(() => {
     //     if(count <= needPersonnel){
@@ -37,7 +37,7 @@ const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck,
                      }
                  </div>
                  <div className="drawerMiddle">
-                    {applyDabeeners.map(dabeener => <ApplyDabeener key={dabeener.user.userNum} helpNum={helpNum} dabeener={dabeener} myNum={me.userNum} isMe={isMe} setApproveDabeenersNum={setApproveDabeenersNum}/>)}
+                    {applyDabeeners.map(dabeener => <ApplyDabeener key={dabeener.user.userNum} helpNum={helpNum} dabeener={dabeener} myNum={me.userNum} isMe={isMe}/>)}
                 </div>
             </DrawerForm>
         </Modal>

@@ -101,6 +101,7 @@ export const DrawerForm = styled.div`
         margin: 10px 0;
         width: 100%;
         display: flex;
+        flex-direction : column;
         justify-content: center;
         align-items: center;
         background: #F0F0F0;
