@@ -151,16 +151,20 @@ const PostWrite = ({setInvisible, userNum}) => {
                         </PostSettingBox>
                     </PostSetting>
                     <ContentItem>
-                        <div>위치</div>  
-                        <SearchJuso location={location} setLocation={setLocation}/>
-                        <MyLocation myLocation={location} />
+                        <div className="PostWriteContentItemTitle">위치</div>
+                        <div className="PostWriteLocationWrapper">
+                            <MyLocation myLocation={location} />
+                            <div className="PostWriteLocationInfo">
+                                <SearchJuso location={location} setLocation={setLocation}/>
+                            </div>
+                        </div>
                     </ContentItem>
                     <ContentItem>
-                        <div>요구사항</div>
+                        <div className="PostWriteContentItemTitle">요구사항</div>
                         <textarea placeholder="요구사항을 입력하세요." required  value={content} onChange={onChangeContent}/>
                     </ContentItem>
                     <UploadImage>
-                        <div>사진첨부</div>
+                        <div className="UploadImageTitle">사진첨부</div>
                             <div className="uploadImageFlex">
                                 <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
                                 <div className="uploadImageButton" onClick={onClickImageUpload}>

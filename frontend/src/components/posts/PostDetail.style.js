@@ -266,8 +266,9 @@ export const ApplicationInfoBox = styled.div`
     flex-wrap: wrap;
 
     & .ApplyCheck{
-        width: 100px;
-        margin-left: 20px;
+        width: 120px;
+        font-size: 16px;
+        margin-left: 15px;
         border: none;
         background: none;
         color: #7A7A7A;

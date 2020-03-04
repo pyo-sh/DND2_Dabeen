@@ -28,8 +28,8 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, setApproveDabeeners
             <UserInfo>
                 <div className="user">
                     <div className="userInfo">
-                        <div>{dabeener.user.nickname}</div>
-                        <div style={{fontSize: 14}}>@{dabeener.user.userId}</div>
+                        <div className="UserNickname">{dabeener.user.nickname}</div>
+                        <div className="UserId">@{dabeener.user.userId}</div>
                     </div>
                     <div className="userIntro">
                         {dabeener.user.introduce}
