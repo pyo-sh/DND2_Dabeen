@@ -1,77 +1,55 @@
 //도움말
-import React, { useState, useCallback } from "react";
-import styled from "styled-components";
-import ServiceItem from './ServiceItem';
-import ServiceQuestion from './ServiceQuestion';
-import Charge from "../money/Charge";
-import Refund from "../money/Refund";
-import RefundConfirm from "../money/RefundConfirm";
+import React, { useState, useCallback, useEffect } from "react";
+import {ServiceWrapper} from './ServiceCenter.style';
+import ServiceItem from "./ServiceItem";
+import ServiceQuestion from "./ServiceQuestion";
+import Router from 'next/router';
+import { useSelector } from 'react-redux';
 
-const dummyMyQuestion = [
-  {
-    Q: "이 회사 정말 비정상적이네요 ^^",
-    A: ""
-  },
-  {
-    Q: "결제가 잘 안 되요!!",
-    A: "이렇게 저렇게 해보세요!"
-  },
-  {
-    Q: "사기 당한거 보상해주세요!!",
-    A: "알겠습니다!"
-  },
-]
-const dummyQuestion = [
-  {
-    Q: "계정의 비밀번호가 기억나질 않아요",
-    A: "이렇게 저렇게 해보세요!"
-  },
-  {
-    Q: "환불을 받으려면 어떻게 해야하나요",
-    A: "이렇게 저렇게 해보세요!"
-  },
-  {
-    Q: "사기를 당했습니다.",
-    A: "이렇게 저렇게 해보세요!"
-  },
-  {
-    Q: "누군가 나의 이름으로 계정을 사용하고 있어요.",
-    A: "이렇게 저렇게 해보세요!"
-  },
-  {
-    Q: "회원탈퇴에 대해 알고 싶어요.",
-    A: "이렇게 저렇게 해보세요!"
-  }
-];
-const ServiceCenter = () => {
+const ServiceCenter = ({isMe}) => {
+  useEffect(() => {
+    if(!isMe){
+      alert('자신만 볼 수 있는 페이지입니다.');
+      Router.push('/');
+    } 
+  }, [isMe]);
   const [visible, setVisible] = useState(false);
+  const { myQuestions, faqs } = useSelector(state => state.questions);
   const showModal = useCallback(() => {
     setVisible(true);
   }, []);
+
+  // 내가 물은 질문 과 자주 묻는 질문 2개 !!
+  // const search = async () => {
+  //   const result = axios.get('http://localhost:3065/');
+  //   //result로 state 갱신해서 보여주게 한다!!
+  // };
+  // useEffect(() => {
+  //   search();
+
+  // }, []);
   return (
     <ServiceWrapper>
-      <div className="serviceTitle">
-        <h1>고객센터</h1>
-      </div>
-      <div className="serviceBox">
-        <h2>내 문의</h2>
-        <div className="serviceQuestion">
-          <ul>
-          {dummyMyQuestion.map((v,i) => (
-            <ServiceItem key={i} service={v}/>
-          ))}
-          </ul>
-        </div>
-        <div className="btnBox">
+      <div className="ServiceTitle">고객센터</div>
+      <div className="ServiceContent">
+        <div className="ServiceTitleMain">
+          내 문의
           <button onClick={showModal}>문의하기</button>
         </div>
-        {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
-        <RefundConfirm visible={visible} setVisible={setVisible} />
-        <h2>자주 묻는 질문</h2>
-        <div className="frequentQuestion">
+        <div className="ServiceQuestion">
           <ul>
-            {dummyQuestion.map((v,i) => (
-              <ServiceItem key={i} service={v}/>
+            {myQuestions.map(v => (
+              <ServiceItem key={v.questionNum} service={v} />
+            ))}
+          </ul>
+        </div>
+        {/* <ServiceQuestion visible={visible} setVisible={setVisible}/> */}
+        <ServiceQuestion visible={visible} setVisible={setVisible} />
+        <div className="ServiceTitleMain">자주 묻는 질문</div>
+        <div className="ServiceQuestion">
+          <ul>
+            {faqs.map(v => (
+              <ServiceItem key={v.faqNum} faq={v} />
             ))}
           </ul>
         </div>
@@ -79,66 +57,5 @@ const ServiceCenter = () => {
     </ServiceWrapper>
   );
 };
-
-const ServiceWrapper = styled.div`
-  width: 100%;
-  margin-top: 65px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  
-  & > div {
-    padding: 10px;
-  }
-  & .serviceTitle {
-    width : 60%;
-    display : flex;
-    justify-content : flex-start;
-    padding-bottom : 0px;
-  }
-  & .serviceBox {
-    border: 1px solid grey;
-    width: 60%;
-  }
-  & .serviceQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
-    & ul {
-      margin : 0;
-      padding : 0;
-    }
-  }
-  & .btnBox {
-    display : flex;
-  }
-  & div button {
-      border: none;
-      background: #FF4300;
-      color: white;
-      margin-left: auto;
-      margin-top : 10px;
-      width : 70px;
-      height: 30px;
-      cursor : pointer;
-      & :hover {
-        color : black;
-      }
-    }
-  & .frequentQuestion {
-    border: 1px solid grey;
-    border-bottom : 0px;
-    & ul {
-      margin : 0;
-      padding : 0;
-    }
-  }
-  @media screen and (max-width: 768px) { /* 768보다 작을 때는 화면 크게 만들거임!!*/
-    & .serviceTitle, .serviceBox {
-      width : 100%;
-      max-width : 612px;
-    }
-  }
-`;
 
 export default ServiceCenter;

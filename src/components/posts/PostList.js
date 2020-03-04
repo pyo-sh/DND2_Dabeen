@@ -1,55 +1,47 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useCallback } from "react";
+import { useSelector } from "react-redux";
+import { Row } from "antd";
+import PostCapsule from "./PostCapsule";
+import {PostListUpperDiv, ColCapsule} from './PostList.style';
+import SkeletonCapsule from './SkeletonCapsule';
 
-const PostList = () => {
-    return (
-        <PostListUpperDiv>
-            <div className="Title">
-                <div className="Title-Main">심부름  </div>
-                <div className="Title-Sub">간단한 심부름을 도와주세요!</div>
-            </div>
-            <div className="Search">
-                <PostListSearchBox>
-                    <div className="Search-Title">지역</div>
-                </PostListSearchBox>
-                <PostListSearchBox>
-                    <div className="Search-Title">신청 마감 일시</div>
-                </PostListSearchBox>
-                <PostListSearchBox>
-                    <div className="Search-Title">게시글 마감 일시</div>
-                </PostListSearchBox>
-                <PostListSearchBox>
-                    <div className="Search-Title">가격대</div>
-                </PostListSearchBox>
-            </div>
-            <div className="Content">
+const helpPostNum = [1,2,3,4,5,6,7,8,9];
+// 카테고리 번호에 따라 다른 헬프 포스트들을 불러오게 하거나 걸러내게 해야할듯.
+const PostList = ({ categoryNum }) => {
+  const { helpPosts, isLoadingHelpPost } = useSelector(state => state.posts);
 
-            </div>
-        </PostListUpperDiv>
-    );
+  return (
+    <PostListUpperDiv>
+      <Row gutter={[24, 24]}>
+        {isLoadingHelpPost ? (
+          <>
+          {helpPostNum.map(v => (
+              <ColCapsule xs={24} md={12} xl={8} key={v}>
+                <SkeletonCapsule />
+              </ColCapsule>
+          ))}
+          </>
+        ) : (
+          <>
+            {helpPosts.map((help, index) => 
+              (categoryNum === parseInt(help.categoryNum))&&(
+              <ColCapsule xs={24} md={12} xl={8} key={index}>
+                <PostCapsule data={help} categoryNum={categoryNum}/>
+              </ColCapsule>
+            ))}
+          </>
+        )}
+      </Row>
+      {/* <Pagination
+        className="PostListPagination"
+        onChange={onChangePagination}
+        simple
+        defaultCurrent={1}
+        pageSize={6}
+        total={12}
+      /> */}
+    </PostListUpperDiv>
+  );
 };
-
-const PostListUpperDiv = styled.div`
-    padding: 90px 0;
-    & .Title{
-        font-weight: bold;
-        display: flex;
-        align-items: flex-end;
-        & .Title-Main{
-            font-size: 50px;
-        }
-        & .Title-Sub{
-            font-size: 28px;
-        }
-    }
-`;
-const PostListSearchBox = styled.div`
-    padding: 5px;
-    display: flex;
-    align-items: flex-end;
-    & .Search-Title{
-        
-    }
-`;
 
 export default PostList;

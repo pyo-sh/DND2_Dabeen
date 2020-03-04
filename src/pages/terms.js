@@ -1,11 +1,10 @@
 // 약간의 동의를 확인하기 위해 만든 화면
 import React, { useState, useCallback, useEffect } from "react";
-import styled from "styled-components";
+import { TermsWrapper } from "../pagesStyles/terms.style";
 import { Icon } from "antd";
-import { useRouter } from "next/router";
+import Router from "next/router";
 
 const Terms = () => {
-  const router = useRouter();
   const [termsCheck, setTermsCheck] = useState(false);
   const [useTermCheck, setUseTermCheck] = useState(false);
   const [privacyInfoCheck, setPrivacyInfoCheck] = useState(false);
@@ -32,7 +31,7 @@ const Terms = () => {
       alert("모든 이용약관에 동의하셔야 합니다.");
       return;
     }
-    router.push("/signup");
+    Router.push("/signup");
     // 다음 할 일
   }, [termsCheck]);
 
@@ -49,7 +48,7 @@ const Terms = () => {
       privacyInfoCheck={privacyInfoCheck}
     >
       <div className="termsWrap">
-        <h1>DaBeen</h1>
+        <img src='/images/logo.svg' alt='dabeen logo' />
         <div>
           이용약관, 개인정보 수집 및 이용에 모두 동의합니다.
           <button className="checkButton terms" onClick={termsCheckOnClick}>
@@ -93,64 +92,4 @@ const Terms = () => {
   );
 };
 
-const TermsWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 65px;
-  & .termsWrap {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid grey;
-    border-radius: 7px;
-    padding : 15px;
-    & .checkButton {
-      border: none;
-      background: none;
-    }
-    & .termBox {
-      display: flex;
-      width: 60%;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 10px 0;
-    }
-    & .terms {
-      color: ${props => (props.termsCheck ? "green" : "grey")};
-    }
-    & .use {
-      color: ${props => (props.useTermCheck ? "green" : "grey")};
-    }
-    & .privacy {
-      color: ${props => (props.privacyInfoCheck ? "green" : "grey")};
-    }
-    & .term {
-      width: 100%;
-      height: 15vh;
-      border: 1px solid grey;
-    }
-    & .termDanger {
-      color: red;
-    }
-
-    & > button {
-      background: #ff4300;
-      border: none;
-      color: white;
-      cursor: pointer;
-      width: 25%;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    & .termsWrap {
-      width : 100%;
-      max-width: 452px;
-    }
-  }
-`;
 export default Terms;

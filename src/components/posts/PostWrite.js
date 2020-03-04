@@ -1,297 +1,197 @@
-import React, { useState, useCallback } from 'react';
-import {useSelector} from 'react-redux';
-import styled from 'styled-components';
-import { Select, DatePicker, TimePicker, Upload, Icon, Button, Form } from 'antd';
+import React, { useState, useCallback, useRef } from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import { Select,  DatePicker, TimePicker, Icon, Button, Form, message } from 'antd';
+import SearchJuso from '../map/SearchJuso';
+import inputChangeHook from '../../hooks/inputChangeHook';
+import { addHelpPostRequestAction, addImageRequestAction } from '../../reducers/posts';
+import {Modal, Content, Title, PostSetting, PostSettingBox, InputTitle, ContentItem, UploadImage, UploadButton} from './PostWrite.style';
+import customAxios from '../../utils/axiosBase';
+import moment from 'moment';
+import { getCookie } from '../../utils/cookieFunction';
+import MyLocation from '../map/MyLocation';
+import axios from 'axios';
 
-const categoryValue = ["심부름", "대여", "잡일"];   //카테고리
+const categorys = {
+    "심부름": "1000",
+    "대여": "2000",
+    "잡일": "3000"
+} //카테고리
 
-const format = 'HH:mm';
-const Option = {Select};
-
-const PostWrite = () => {
-    const [previewVisible, setPreviewVisible] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [fileList, setFileList] = useState([]);
-    const [title, setTitle] = useState('');
+const PostWrite = ({setInvisible, userNum}) => {
+    const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
-    const [postDeadline, setPostDeadline] = useState({});
-    const [executionDate, setExecutionDate] = useState({})
-    const {helpPosts} = useSelector(state => state.posts);
-    
-    // const getBase64 = (file) => {
-    //     return new Promise((resolve, reject) => {
-    //       const reader = new FileReader();
-    //       reader.readAsDataURL(file);
-    //       reader.onload = () => resolve(reader.result);
-    //       reader.onerror = error => reject(error);
-    //     });
-    // }
+    const [helpDeadlineDate, setHelpDeadlineDate] = useState(''); //신청 마감 날짜
+    const [helpDeadlineTime, setHelpDeadlineTime] = useState(''); //신청 마감 시간
+    const [helpExecDate, setHelpExecDate] = useState('');   //수행 날짜
+    const [helpExecTime, setHelpExecTime] = useState('');   //수행 시간
+    const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
+    const [money, onChangeMoney] = inputChangeHook(0);  //금액
+    const [location, setLocation] = useState('');   //이행위치
+    const [content, onChangeContent] = inputChangeHook('');   //요구사항
+    const [images, setImages] = useState([]);       //도움 이미지
+    const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
+    const {me} = useSelector(state => state.user);
+    const dispatch = useDispatch();
+    const imageInput = useRef();
+    const time = moment();
 
-    // const handleCancel = useCallback(() => {
-    //     setPreviewVisible(false);
-    // }, []);
+    //만약 사진 업로드 한 채로 글쓰기 창 닫으면 사진도 같이 삭제되게 한다. 
+    const onClose = useCallback((images) => () =>{
+        if(images.length !== 0) {
+            const imageFormData = new FormData();
+            images.map(image => imageFormData.append('url', image));
+            try{
+                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+                setImages([]);
+                setImgPaths([]);
+            }catch(e){
+                console.error(e);
+            }
+        }
+        setInvisible();
+    }, [images]);
 
-    // const handlePreview = useCallback(file => () => {
-    //     if (!file.url && !file.preview) {
-    //     file.preview = getBase64(file.originFileObj);
-    //     }
-        
-    //     setPreviewImage(file.url || file.priview)
-    //     setPreviewVisible(true);
-    // },[file]);
-
-    const handleChange = useCallback(({ fileList }) => () => {
-        setFileList({fileList});
-    },[fileList]);
-
-    const uploadButton = (
-        <div>
-          <Icon type="plus" />
-          <div className="ant-upload-text">Upload</div>
-        </div>
-    );
-
-    const addPost = useCallback(() => {
-
+    const getCategory = useCallback(category => {
+        setCategory(categorys[category]);
     }, []);
+
+    const onChangeHelpPicker = setStateFunc =>
+    useCallback((moment, string) => {
+      setStateFunc(string);
+    }, []);
+    
+    //도움 업로드
+    const addPost = useCallback((e) => {
+        e.preventDefault();
+        if(!postTitle || !postTitle.trim()){
+            message.error('제목을 입력해주세요!');
+        } 
+        dispatch(addHelpPostRequestAction({
+            todayDate: time.format('YYYY-MM-DDTHH:mm:ss'),
+            userNum: userNum,
+            postName: postTitle,
+            category: category,
+            helpDeadline: helpDeadlineDate.concat('T' + helpDeadlineTime),
+            helpExec: helpExecDate.concat('T' + helpExecTime),
+            postNum: parseInt(needPersonnel),
+            price: parseInt(money),
+            execLoc: location,
+            content: content,
+            helpPics: imgPaths,
+            cookie : getCookie()
+        }));
+        setInvisible();
+    }, [time, userNum, postTitle, category, helpDeadlineDate, helpDeadlineTime, helpExecDate, helpExecTime, needPersonnel, money, location, content]);
+
+    //이미지 삭제
+    const deleteImage = useCallback((url) => async() => {
+        const imageFormData = new FormData();
+        imageFormData.append('url', url);
+        try{
+            await axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setImages(images.filter(image => image !== url));
+            setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
+        }catch(e){
+            console.error(e);
+        }
+    }, [images]);
+
+    const onChangeImages = useCallback(async (e) => {
+        const imageFormData = new FormData();
+        imageFormData.append('pic', e.target.files[0]);
+        try{
+            const result = await customAxios.post('/pic/upload/help', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            setImages(prev => [...prev, result.data.data]);
+            setImgPaths(prev => [...prev, {"path": result.data.data}]);
+        }catch(e){
+            console.error(e);
+        }
+    }, [imgPaths]);
+
+    const onClickImageUpload = useCallback(() => {
+        imageInput.current.click();
+    }, [imageInput.current]);
 
     return (
         <Modal>
-            <Form onSubmit={addPost}>
-            <ContentFlex>
+            <Form onSubmit={addPost} encType="multipart/form-data">
                 <Content>
                     <Title>
-                        <InputTitle placeholder="제목을 입력하세요."/> {/*input 쓰삼 */}
-                        <Icon type="close" style={{fontSize: 25, color:"#BFC7CE"}}/>
+                        <InputTitle placeholder="제목을 입력하세요." value={postTitle} onChange={onChangePostTitle}/> {/*input 쓰삼 */}
+                        <Icon onClick={onClose(images)} type="close" style={{fontSize: 30, color:"#BFC7CE", marginRight: 10}}/>
                     </Title>
                     <PostSetting>
-                        <div className="category">
-                            <div>카테고리</div>
-                            <Select style={{width: 128}}>
-                                {categoryValue.map(category => <Option value={category}>{category}</Option>)}
+                        <PostSettingBox>
+                            <div className="postSettingTitle">카테고리</div>
+                            <Select className="postSettingSelect" placeholder="Category" onChange={getCategory}>
+                                {Object.keys(categorys).map((_category) => <Select.Option value={_category} key={_category}>{_category}</Select.Option>)}
                             </Select>
-                        </div>
-                        <div className="deadline">
-                            <div>신청 마감 일시</div>
-                            <div>
-                                <DatePicker style={{marginRight: 5}} />
-                                <TimePicker format={format} />
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">신청 마감 일시</div>
+                            <div className="postSettingGetData">
+                                <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD"style={{marginRight: 5}}  onChange={onChangeHelpPicker(setHelpDeadlineDate)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpDeadlineTime)}/>
                             </div>
-                        </div>
-                        <div className="executionDate">
-                            <div>수행 일시</div>
-                            <div>
-                                <DatePicker style={{marginRight: 5}}/>
-                                <TimePicker format={format}/>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">수행 일시</div>
+                            <div className="postSettingGetData">
+                                <DatePicker className="postSettingDatePicker" format="YYYY-MM-DD" style={{marginRight: 5}} onChange={onChangeHelpPicker(setHelpExecDate)}/>
+                                <TimePicker className="postSettingTimePicker" minuteStep={10} format="HH:mm" onChange={onChangeHelpPicker(setHelpExecTime)}/>
                             </div>
-                        </div>
-                        <div className="needPersonnel">
-                            <div>필요인원</div>
-                            <input type="number"/>
-                        </div>
-                        <div className="money">
-                            <div>금액</div>
-                            <input type="number" placeholder="최소 금액 0000원"/>
-                        </div>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">필요인원</div>
+                            <input className="postSettingInput" type="number" value={needPersonnel} onChange={onChangeNeedPersonnel}/>
+                        </PostSettingBox>
+                        <PostSettingBox>
+                            <div className="postSettingTitle">금액</div>
+                            <input className="postSettingInput" type="number" placeholder="최소 금액 0000원" value={money} onChange={onChangeMoney}/>
+                        </PostSettingBox>
                     </PostSetting>
                     <ContentItem>
-                        <div>위치</div>
-                        <div style={{border: "solid", width: 300, height: 300}}>카카오맵 API 쓰면 됨...............</div>
+                        <div className="PostWriteContentItemTitle">위치</div>
+                        <div className="PostWriteLocationWrapper">
+                            <MyLocation myLocation={location} />
+                            <div className="PostWriteLocationInfo">
+                                <SearchJuso location={location} setLocation={setLocation}/>
+                            </div>
+                        </div>
                     </ContentItem>
                     <ContentItem>
-                        <div>요구사항</div>
-                        <textarea id="requirement" placeholder="요구사항을 입력하세요." required />
+                        <div className="PostWriteContentItemTitle">요구사항</div>
+                        <textarea placeholder="요구사항을 입력하세요." required  value={content} onChange={onChangeContent}/>
                     </ContentItem>
                     <UploadImage>
-                        <div style={{width: "5vw"}}>사진첨부</div>
-                        <Upload
-                            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                            listType="picture-card"
-                            fileList={fileList}
-                            // onPreview={handlePreview}
-                            onChange={handleChange}
-                        >
-                            {fileList.length >= 8 ? null : uploadButton}
-                        </Upload>
-                    </UploadImage>    
-                    <UploadButton>글 올리기</UploadButton>     
+                        <div className="UploadImageTitle">사진첨부</div>
+                            <div className="uploadImageFlex">
+                                <input type="file" hidden ref={imageInput} onChange={onChangeImages}/>
+                                <div className="uploadImageButton" onClick={onClickImageUpload}>
+                                    <Icon type="plus-circle" style={{fontSize: 25}}/>
+                                    <div style={{fontSize: 23}}>UPLOAD</div>
+                                </div>
+                                <div className="previewImage">
+                                    {images.map((url, i) => {
+                                        return (
+                                        <div key={url} className="imgBorder"> 
+                                        <div className="deleteIcon" onClick={deleteImage(url)}>
+                                            <Icon type="close" />
+                                        </div>
+                                        <img src={url} alt={url} width="90" height="90"/> 
+                                        </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                    </UploadImage>
+                    <div style={{height:"auto"}}>    
+                    <UploadButton htmlType="submit">글 올리기</UploadButton>     
+                    </div>
                 </Content>                  
-            </ContentFlex>
             </Form>
         </Modal>
     );
 };
-
-const Modal = styled.div`
-    background: rgba(0, 0, 0, 0.25);
-    position: fixed;
-    left: 0;
-    top: 30;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
-
-const ContentFlex = styled.div`
-    font-size: 20px;
-    color: #424242;
-    background: white;
-    padding: 1rem;
-    width: 33vw;
-    height: 87vh;
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    overflow: scroll;
-    ::-webkit-scrollbar{display:none;}  /*스크롤바 안보이게*/
-`;
-
-const Content = styled.div`
-    width: 29vw;
-    height: 80vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-`;
-
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 29vw;
-`;
-
-const PostSetting = styled.div`
-    width: 29vw;
-    height: 27vh;
-    background: #F0F0F0;
-    font-size: 20px;
-    padding-top: 10px;
-    padding-left: 20px;
-
-    & .ant-select-arrow{
-        color: #FF4300;
-    }
-    & .ant-calendar-picker-icon{
-        color: #FF4300;
-    }
-
-    & .ant-time-picker-icon{
-        color: #FF4300;
-    }
-
-    & > .category {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
-    }
-
-    & > .deadline {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 383px;
-    }
-
-    & > .executionDate {
-        display: flex;
-        justify-content: space-between; 
-        margin-bottom: 1vh;
-        width: 383px;
-    }
-
-    & > .needPersonnel {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
-    }
-    
-    /* input type="number"일 경우 생기는 화살표 제거 */
-    & input[type="number"]::-webkit-outer-spin-button,
-    input[type="number"]::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-    & input {
-        border: 1px solid #d9d9d9;
-        border-radius: 4px;
-        width: 128px;
-        height: 32px;
-        font-size: 14px;
-        color: #7a7a7a;
-        :focus{
-            outline: none;
-        }
-        ::placeholder{
-            color: #BFC7CE;
-        }
-    }
-
-    & > .money{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 1vh;
-        width: 250px;
-    }
-`;
-
-const InputTitle = styled.input`
-    border: none;
-    color: #7a7a7a;
-    font-size: 40px;
-    width: 29vw;
-    ::placeholder{
-        color: #BFC7CE;
-    }
-`;
-
-const ContentItem = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 20px;
-    margin-top: 20px;
-    width: 29vw;
-
-    & > textarea {
-        width: 29vw;
-        height: 15vh;
-        resize: none;
-        color: #7a7a7a;
-        ::placeholder{
-            color: #BFC7CE;
-        }
-    }
-`;
-
-const UploadImage = styled.div`
-    display: flex;
-    margin-top: 20px;
-    width: 29vw;
-`;
-
-const UploadButton = styled(Button)`
-    width: 15vw;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background: #FF4300;
-    border: #FF4300;
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-    box-shadow: 2px 3px 5px #BFC7CE;
-
-    :hover {
-        opacity: 0.9;
-        background: #FF4300;
-        border: #FF4300;
-        color: white;
-    }
-`;
 
 export default PostWrite;
