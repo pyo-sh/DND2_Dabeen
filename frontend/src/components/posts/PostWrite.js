@@ -18,6 +18,7 @@ const categorys = {
 } //카테고리
 
 const PostWrite = ({setInvisible, userNum}) => {
+    const {me} = useSelector(state => state.user);
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
     const [helpDeadlineDate, setHelpDeadlineDate] = useState(''); //신청 마감 날짜
@@ -26,11 +27,10 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [helpExecTime, setHelpExecTime] = useState('');   //수행 시간
     const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
-    const [location, setLocation] = useState('');   //이행위치
+    const [location, setLocation] = useState(me.address);   //이행위치
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
     const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
-    const {me} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
