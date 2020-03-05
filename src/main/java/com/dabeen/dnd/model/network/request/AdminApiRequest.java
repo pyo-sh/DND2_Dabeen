@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AdminApiRequest{
-    @NotEmpty(message = "값이 존재해야 합니다.")
     private String adminNum; // 관리자 번호
 
     @NotEmpty(message = "값이 존재해야 합니다.")
