@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Icon } from 'antd';
 
 export const UserPageWrapper = styled.article`
   width: 100%;
@@ -23,9 +24,9 @@ export const UserPageWrapper = styled.article`
     align-items: center;
     & .userInfomation {
       width: 100%;
-      border: 1px solid #BFC7CE;
+      border: 1px solid #E9E9E9;
       border-radius: 5px;
-      box-shadow: 0 5px 10px 3px #E9E9E9;
+      /* box-shadow: 0 5px 10px 3px #E9E9E9; */
     }
     & .userImage {
       width: 100%;
@@ -41,6 +42,7 @@ export const UserPageWrapper = styled.article`
       padding: 10px 15px;
       display: flex;
       flex-direction: column;
+      border-top: 1px solid #E9E9E9;
       & .userNickname{
           margin-bottom: 0;
       }
@@ -76,26 +78,33 @@ export const UserPageWrapper = styled.article`
       flex-direction: column;
       justify-content : space-evenly;
       list-style : none;
-      border: 1px solid #BFC7CE;
+      border: 1px solid #E9E9E9;
       border-radius: 4px;
-      box-shadow: 0 5px 10px 3px #E9E9E9;
+      /* box-shadow: 0 5px 10px 3px #E9E9E9; */
       & h1{
+        padding-left: 8px;
         padding-bottom: 10px;
-        border-bottom: 1px solid #BFC7CE;
+        border-bottom: 1px solid #E9E9E9;
+        font-size: 18px;
       }
       & li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         margin: 5px;
         padding: 10px;
-        border-radius: 2px;
-        box-shadow: 3px 3px 10px 0.5px #E9E9E9;
+        /* border-radius: 2px; */
+        /* box-shadow: 3px 3px 10px 0.5px #E9E9E9; */
         cursor: pointer;
       }
       & .click {
         & a{
+          display: flex;
+          align-items: center;
           color : #FF9644;
         }
-        background: #F0F0F0;
-        border-right: 3px solid #FF4300
+        /* background: #F0F0F0; */
+        /* border-right: 3px solid #FF4300 */
       }
     }
   }
@@ -111,4 +120,10 @@ export const UserPageWrapper = styled.article`
     display: flex;
     flex-direction: column;
   }
+`;
+
+export const MenuIcon = styled(Icon)`
+  font-size: 15px;
+  color: #FF4300;
+  
 `;

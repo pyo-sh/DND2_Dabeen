@@ -40,7 +40,7 @@ const Banks = ({ tabKey, onTabClick, accountNumber, setAccountNumber, selectOnCh
         <BanksItemBox tab="휴대폰" key="p">
           <Select
             className="bankSelect"
-            placeholder="은행선택"
+            placeholder="통신사선택"
             onChange={selectOnChange}
           >
             {phoneOptions.map((b, i) => (

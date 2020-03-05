@@ -5,9 +5,9 @@ export const ModifyUserUpperDiv = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
-        padding-bottom: 25px;
-        border-bottom: 1px solid #BFC7CE;
-        font-size: 40px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #E9E9E9;
+        font-size: 33px;
         font-weight: bold;
     }
     & .ModifyContent{
@@ -55,7 +55,7 @@ export const ModifyUserUpperDiv = styled.div`
             margin: 10px 0;
             max-width: 425px;
             min-width: 270px;
-            font-size: 16px;
+            font-size: 15px;
         }
     }
     & .ModifyBtn{
@@ -98,11 +98,13 @@ export const ModifyUserGetDataDiv = styled.div`
     flex-direction: column;
    
     padding : 5px;
+    margin: 10px 0;
     max-width: 425px;
     min-width: 250px;
     width : 100%;
     
     & .ModifyUserTitle{
+        font-size: 20px;
         font-weight: bold;
     }
     & .ModifyUserCheck{

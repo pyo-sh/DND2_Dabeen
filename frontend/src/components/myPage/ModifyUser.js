@@ -137,7 +137,6 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                         onChangeFunc={changeIntroduce}
                     />
                 </ModifyUserGetDataDiv>
-                <hr className="Hr"></hr>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">비밀번호 *</div>
                     <DabeenInput
@@ -162,7 +161,6 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                     :   <div className="ModifyUserCheck">비밀번호를 확인해주세요</div>
                     }
                 </ModifyUserGetDataDiv>
-                <hr></hr>
                 <ModifyUserGetDataDiv>
                     <div className="ModifyUserTitle">이메일 *</div>
                     <DabeenInput

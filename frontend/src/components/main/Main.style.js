@@ -75,7 +75,7 @@ export const LiveHelpRequestMenuBar = styled.div`
         width: 20vw;
         min-width : 150px;
         height: 45px;
-        margin-right: 50px;
+        margin-right: 6.5vw;
         margin-top: -45px;
 
         align-self: flex-end;

@@ -8,8 +8,8 @@ export const PostBasketUpperDiv = styled.div`
 
     & .BasketTitle{
         width: 100%;
-        padding-bottom: 25px;
-        border-bottom: 1px solid #BFC7CE;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #E9E9E9;
         display: flex;
         align-items: flex-end;
         flex-wrap: wrap;
@@ -24,20 +24,20 @@ export const PostBasketUpperDiv = styled.div`
         }
         & .BasketTitleName{
             width: 150px;
-            font-size: 40px;
+            font-size: 33px;
             font-weight: bold;
         }
         & .BasketTitleMoney{
-            font-size: 25px;
+            font-size: 23px;
             padding-left: 20px;
         }
         & .BasketTitlePeople{
-            font-size: 20px;
+            font-size: 23px;
             padding-right: 15px;
         }
         & .BasketTitleBtn{
             width: 80px;
-            height: 27.5px;
+            height: 30x;
             color: white;
             background: #FF4300;
             border-radius: 10px;

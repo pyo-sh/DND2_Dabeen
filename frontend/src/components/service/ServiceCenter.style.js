@@ -5,9 +5,9 @@ export const ServiceWrapper = styled.div`
   & .ServiceTitle {
     display: flex;
     align-items: flex-end;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #bfc7ce;
-    font-size: 40px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #E9E9E9;
+    font-size: 33px;
     font-weight: bold;
   }
   & .ServiceContent {
@@ -40,7 +40,7 @@ export const ServiceWrapper = styled.div`
     }
   }
   & .ServiceQuestion {
-    border: 1px solid #bfc7ce;
+    border: 1px solid #E9E9E9;
     border-bottom: none;
     border-radius: 5px;
     & ul {
