@@ -70,7 +70,7 @@ const reducer = (state = initialState, action) => {
             userName : recommend.user_name,
             nickname : recommend.nickname,
             avgRate : recommend.avg_rate,
-            pic : recommend.pic,
+            picPath : recommend.pic_path,
           }
         ))
         break;
