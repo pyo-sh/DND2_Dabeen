@@ -38,7 +38,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                   다비너 신청
                 </button>
               )}
-              <div className='userParagraph'>안녕하세요 {userInfo.nickName}입니다</div>
+              <div className='userParagraph'>{userInfo.introduce}</div>
             </div>
           </div>
           <ul className='contentNavbar'>

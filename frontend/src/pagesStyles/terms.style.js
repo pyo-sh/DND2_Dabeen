@@ -36,13 +36,13 @@ export const TermsWrapper = styled.div`
       }
     }
     & .terms {
-      color: ${props => (props.termsCheck ? "green" : "grey")};
+      color: ${props => (props.termsCheck ? "#ff4300" : "grey")};
     }
     & .use {
-      color: ${props => (props.useTermCheck ? "green" : "grey")};
+      color: ${props => (props.useTermCheck ? "#ff4300" : "grey")};
     }
     & .privacy {
-      color: ${props => (props.privacyInfoCheck ? "green" : "grey")};
+      color: ${props => (props.privacyInfoCheck ? "#ff4300" : "grey")};
     }
     & .term {
       width: 100%;

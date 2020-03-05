@@ -3,6 +3,8 @@ import Document, { Main, NextScript, Head } from "next/document";
 import Helmet from "react-helmet";
 import { ServerStyleSheet, createGlobalStyle } from "styled-components";
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // .dotenv에 넣는게 좋긴할텐데..
+
 const GlobalStyles = createGlobalStyle`
        html, body {
             height: 100%;
@@ -34,7 +36,7 @@ class MyDocument extends Document {
     return (
       <html {...htmlAttrs}>
         <Head>
-          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+          {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/> */}
           <link
             href='https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean'
             rel='stylesheet'
