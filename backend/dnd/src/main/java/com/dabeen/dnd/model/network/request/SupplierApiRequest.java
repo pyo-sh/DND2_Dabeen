@@ -4,6 +4,8 @@
 
 package com.dabeen.dnd.model.network.request;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +16,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class SupplierApiRequest{
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String userNum;
+
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String picPath;
+
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String rrnPath;
 }

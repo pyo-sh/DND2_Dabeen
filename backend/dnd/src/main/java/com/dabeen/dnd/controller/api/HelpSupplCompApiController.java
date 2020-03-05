@@ -109,13 +109,13 @@ public class HelpSupplCompApiController{
 
     // 사용자의 승인된 도움 목록을 보여주는 API, 페이징 처리 
     @GetMapping("{userNum}/supplied-helps")
-    public Header<Map<String, Object>> searchSuppliedHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+    public Header<Map<String, Object>> searchSuppliedHelps(@PathVariable String userNum, @PageableDefault(size = 9) Pageable pageable){
         return helpSupplCompApiService.searchSuppliedHelps(userNum, pageable);
     }
 
     // 공급자가 신청한 도움 API, 페이지 처리
     @GetMapping("{userNum}/applied-helps")
-    public Header<Map<String, Object>> searchAppliedHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+    public Header<Map<String, Object>> searchAppliedHelps(@PathVariable String userNum, @PageableDefault(size = 9) Pageable pageable){
         return helpSupplCompApiService.searchAppliedHelps(userNum, pageable);
     }
 }

@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FqaApiRequest{
-
     private String fqaNum; // 자주묻는질문번호
 
     @NotNull(message = "값이 존재해야 합니다.")

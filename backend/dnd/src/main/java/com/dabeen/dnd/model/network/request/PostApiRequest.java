@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 public class PostApiRequest{
     private String postNum; // 게시글 번호
 
+    @NotEmpty(message = "값이 존재해야 합니다.")
     private String pstnerNum; // 작성자 번호
 
     private LocalDateTime pstnDttm; //게시글 작성 일시
