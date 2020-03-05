@@ -18,6 +18,8 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border : 1px solid #BFC7CE;
+  border-radius : 5px;
   & img {
       width : 80%;
       margin-bottom : 20px;
@@ -76,7 +78,7 @@ export const LoginButton = styled(Button)`
 
 export const ContentBottom = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 20vw;
   min-width : 200px;
   & a {

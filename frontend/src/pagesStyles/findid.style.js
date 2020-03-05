@@ -22,6 +22,8 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border : 1px solid #BFC7CE;
+  border-raidus : 5px;
 
   @media only screen and (max-width: 425px) {
     width: 320px;
@@ -82,7 +84,7 @@ export const LoginButton = styled(Button)`
 
 export const ContentBottom = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 25vw;
   min-width : 200px;
   & a {

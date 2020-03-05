@@ -34,7 +34,7 @@ class MyDocument extends Document {
     return (
       <html {...htmlAttrs}>
         <Head>
-          <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
+          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
           <link
             href='https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap&subset=korean'
             rel='stylesheet'

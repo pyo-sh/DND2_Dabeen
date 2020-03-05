@@ -58,9 +58,10 @@ border-radius: 5px;
 
 & .loginKeeping {
     display: flex;
-    justify-content: space-around; 
+    justify-content: center; 
+    align-items : center;
     width: 100%;
-    margin-bottom: 20px;
+    padding : 8px 0px;
 }
 
 & .confirmIDPasswordText {
@@ -76,8 +77,11 @@ width: 65%;
 margin-bottom: 2vh;
 font-size: 17.5px;
 
-:hover{
+&:hover{
     border-bottom: 2px solid #FF4300;
+}
+&:focus {
+    outline: none;
 }
 `;
 

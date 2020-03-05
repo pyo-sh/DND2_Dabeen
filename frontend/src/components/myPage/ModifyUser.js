@@ -116,7 +116,7 @@ const ModifyUser = ({ userInfo, onClickCancel }) => {
                 <img
                     className="ModifyUserProfileChangeIcon"
                     alt="writePost"
-                    src={"/images/postIcon.PNG"}
+                    src={"/images/postIcon.png"}
                     onClick={onClickImageUpload}
                 />
                 <ModifyUserGetDataDiv>

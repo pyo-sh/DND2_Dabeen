@@ -42,10 +42,8 @@ const Login = ({clickLogin}) => {
                         <InputUser onChange={onChangeId} value ={id} placeholder="아이디"/>
                         <InputUser type="password" onChange={onChangePassword} value={password} placeholder="비밀번호"/> 
                         <div className = "loginKeeping">
-                            <div>
-                            <Icon type="check-circle" onClick ={onClickMaintain} style = {{fontSize: '16px', color : loginMaintain ? "green" : "gray"}}/> 로그인 상태 유지
-                            </div>
-                            <div className="confirmIDPasswordText">아이디와 비밀번호를 확인해 주세요</div>
+                            <Icon type="check-circle" onClick ={onClickMaintain} style = {{fontSize: '16px', color : loginMaintain ? "#ff4300" : "gray"}}/>
+                            <div>로그인 상태 유지</div>
                         </div>
                     </div>
                     <LoginButton htmlType="submit" loading={isLoggingIn}>로그인</LoginButton>
