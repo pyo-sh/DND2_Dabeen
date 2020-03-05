@@ -5,9 +5,9 @@ export const UserInfoWrapper = styled.div`
            display: flex;
            justify-content: space-between;
            align-items: flex-end;
-           padding-bottom: 25px;
-           border-bottom: 1px solid #bfc7ce;
-           font-size: 40px;
+           padding-bottom: 18px;
+           border-bottom: 1px solid #E9E9E9;
+           font-size: 33px;
            font-weight: bold;
          }
          & .userinfoEditBtn,
@@ -20,6 +20,7 @@ export const UserInfoWrapper = styled.div`
            border-radius: 10px;
            font-size: 14px;
            transition: 0.3s;
+           margin-bottom: 3px;
            cursor: pointer;
            &:hover {
              background: rgba(255, 67, 0, 0.9);
@@ -36,7 +37,8 @@ export const UserInfoWrapper = styled.div`
            display: flex;
            & .userinfoContentName {
              min-width: 120px;
-             margin: 20px 0;
+             padding: 20px 0;
+            font-weight: bold;
              border-right: 1px solid #f0f0f0;
              & .icon {
                color: #ff4300;

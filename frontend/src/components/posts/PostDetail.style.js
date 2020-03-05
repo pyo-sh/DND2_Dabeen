@@ -283,7 +283,7 @@ export const ApplicationInfoBox = styled.div`
         min-width: 120px;
         display: flex;
         align-items: center;
-        justify-content : space-evenly;
+        font-weight: bold;
     }
     & .ApplicationInfoBoxDetail{
         min-height: 38px;
@@ -360,18 +360,19 @@ export const ContentItem = styled.div`
 
     & .ContentMapWrapper{
         width: 100%;
-        border: 1px solid #BFC7CE;
+        border: 1px solid #E9E9E9;
         border-radius: 3px;
-        box-shadow: 0 0 10px 3px #E9E9E9;
+        
         & .ContentMap{
             height: 200px;
             padding: 0 1px;
         }
         & .ContentMapInfo{
             padding: 10px 15px;
-            border-top: 1px solid #BFC7CE;
+            border-top: 1px solid #E9E9E9;
+            font-size: 20px;
             & .ContentMapLocation{
-                font-size: 18px;
+                font-size: 16px;
                 padding-left: 5px;
             }
         }
@@ -380,9 +381,8 @@ export const ContentItem = styled.div`
     & > p {
         width: 100%;
         padding: 10px;
-        border: 1px solid #BFC7CE;
+        border: 1px solid #E9E9E9;
         border-radius: 5px;
-        box-shadow: 0 0 10px 3px #E9E9E9;
         font-size: 18px;
     }
     & > textarea {

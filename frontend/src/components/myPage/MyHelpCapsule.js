@@ -33,27 +33,40 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
         {/* <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/> */}
         <MyHelpCapsuleTitle>
           <div className="MyhelpCapsuleTitleMain">{helpData.helpTitle}</div>
-          {helpType === "take"
-          ? <div className="MyhelpCapsuleTitleSub">
-              신청인원 : 
-              <div className="MyhelpCapsuleTitlePeople">{helpData.approveNum}</div>
-              /
-              <div className="MyhelpCapsuleTitlePeople">{helpData.postNum}</div>
-            </div>
-          : <div>
-              <div className="MyhelpCapsuleTime">수행일 : {helpData.helpExecDate && (helpData.helpExecDate.slice(0, 10)+" / "+helpData.helpExecDate.slice(11, 19))}</div>
-            </div>
-          }
+          <div>
+              <div className="MyhelpCapsuleTime">수행일 : {helpData.helpExecDate && (helpData.helpExecDate.slice(0, 10))}</div>
+              <div className="MyHelpCapsuleTimeWrapper">
+                <div className="MyhelpCapsuleTime">신청 마감일 : {helpData.helpDeadLine && helpData.helpDeadLine.slice(0, 10)}</div>
+                {helpType === "take"
+                ? null
+                : <div className="MyhelpCapsulePrice">
+                    <div className="MyhelpCapsulePriceValue">
+                      {helpData.price}
+                    </div>
+                    원
+                  </div>
+                }
+              </div>
+          </div>
         </MyHelpCapsuleTitle>
-        <MyHelpCapsuleInfo>
-          <div className="MyhelpCapsuleTime">마감일 : {helpData.helpDeadLine && helpData.helpDeadLine.slice(0, 10)}</div>
-          <section className="MyhelpCapsuleInfoPrice">
-            <div className="MyhelpCapsuleInfoPriceValue">
-              {helpData.price}
+        {helpType === "take"
+        ? <MyHelpCapsuleInfo>
+            <div className="MyhelpCapsuleSub">
+                신청인원 : 
+                <div className="MyhelpCapsulePeople">{helpData.approveNum}</div>
+                /
+                <div className="MyhelpCapsulePeople">{helpData.postNum}</div>
+              </div>
+            <div className="MyhelpCapsuleSub"></div>
+            <div className="MyhelpCapsulePrice">
+              <div className="MyhelpCapsulePriceValue">
+                {helpData.price}
+              </div>
+              원
             </div>
-            원
-          </section>
-        </MyHelpCapsuleInfo>
+          </MyHelpCapsuleInfo>
+        : null
+        }
       </MyHelpCapsuleUpperDiv>
       {myHelpVisible ? (
         <PostDetail setVisible={setVisible} data={helpData} />

@@ -39,7 +39,7 @@ const LiveHelpRequest = () => {
     setSelectPost(livePosts.filter(help => helpNum === help.helpNum)[0]);
     toggleDetail();
   },[livePosts]);
-
+  console.dir(livePosts);
   const setting = useMemo(()=> ({
     initialSlide : 0,
     dots : true,
@@ -104,8 +104,25 @@ const LiveHelpRequest = () => {
                   </div>
                 </LiveHelpRequestUpperDiv>
                 <div className="liveHelpRequestContent">
-                  <div className="liveHelpRequestTitle">{help.helpTitle}</div>
-                  <div className="liveHelpRequestDeadline">마감일 : {help.helpDeadLine.split('T')[0]}</div>
+                  <div className="liveHelpRequestTitleWrapper">
+                    <div className="liveHelpRequestTitle">{help.helpTitle}</div>
+                    {help.isHelpApprove === "y"? (
+                      <div setcolor="true" className="liveHelpRequestTitleCheck">
+                        마감
+                      </div>
+                    ) : (
+                      <div setcolor="false" className="liveHelpRequestTitleCheck">
+                        신청 중
+                      </div>
+                    )}
+                  </div>
+                  <div className="liveHelpRequestDeadline">수행일 : {help.helpExecDate.split('T')[0]}</div>
+                  <div className="liveHelpRequestValueWrapper">
+                    <div className="liveHelpRequestDeadline">신청 마감일 : {help.helpDeadLine.split('T')[0]}</div>
+                    <div className="liveHelpRequestMoney">
+                      <div className="liveHelpRequestMoneyValue">{help.price}</div>원
+                    </div>
+                  </div>
                 </div>
               </LiveHelpRequestWrapper>
             </div> 

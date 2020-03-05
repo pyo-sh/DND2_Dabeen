@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const ServiceItemBox = styled.div`
   cursor: pointer;
   & .question, .answer {
-    border-bottom: 1px solid #bfc7ce;
+    border-bottom: 1px solid #E9E9E9;
     width: 100%;
   }
   & .serviceItemQuestion, .serviceItemAnswer{
     width: 100%;
     padding : 10px;
-    border-bottom: 1px solid #bfc7ce;
+    border-bottom: 1px solid #E9E9E9;
     &:hover {
       color: #FF4300;
     }

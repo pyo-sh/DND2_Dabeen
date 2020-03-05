@@ -50,13 +50,13 @@ const SignUpMain = () => {
   const [birthYear, setBirthYear] = useState(nowDate.getFullYear()); // 생년월일 중 년
   const [birthMonth, setBirthMonth] = useState(nowDate.getMonth() + 1); // 생년월일 중 월
   const [birthDay, setBirthDay] = useState(nowDate.getDate());
-  const [email, changeEmail] = inputCheckChangeHook("", [
+  const [email, changeEmail] = inputCheckChangeHook("test@mail.com", [
     check_eng,
     check_num,
     /[@.]/g
   ]); // 이메일 state
-  const [telephone, changeTelephone] = inputCheckChangeHook("", [check_num, /[-]/g]);
-  const [address, changeAddress] = useState("");
+  const [telephone, changeTelephone] = inputCheckChangeHook("01010101010", [check_num, /[-]/g]);
+  const [address, changeAddress] = useState("서울광역시 마포구");
   // const [address, changeAddress] = inputCheckChangeHook("", [
   //   check_eng,
   //   check_num,

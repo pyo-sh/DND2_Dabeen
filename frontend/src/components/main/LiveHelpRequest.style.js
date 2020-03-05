@@ -56,6 +56,7 @@ export const LiveHelpRequestWrapper = styled.div`
 
   & .liveHelpRequestContent{
     padding: 12.5px;
+    padding-top: 10px;
 
     & .liveHelpRequestTitle{
       font-size: 22px;
@@ -63,11 +64,46 @@ export const LiveHelpRequestWrapper = styled.div`
       height: 35px;
     }
     & .liveHelpRequestDeadline{
-      padding-top: 5px;
+      padding-top: 3px;
       font-size: 15px;
     }
   }
-  & .liveHelpRequestTitle, .liveHelpRequestDeadline, .LiveHelpRequestLocationInfo, .liveHelpRequestNickname, .liveHelpRequestID{
+  & .liveHelpRequestTitleWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  & .liveHelpRequestTitleCheck{
+    min-width: 60px;
+    height: 25px;
+    padding: 2px;
+    border-radius: 10px;
+    margin: 10px 0 2px 10px;
+
+    font-size: 14px;
+    text-align: center;
+
+    color: ${props => (props.setcolor === "true" ? "#7A7A7A" : "white")};
+    background: ${props =>
+      props.setcolor === "false" ? "#F0F0F0" : "#FF4300"};
+  }
+  & .liveHelpRequestValueWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+  & .liveHelpRequestMoney{
+    display: flex;
+    align-items: flex-end;
+    color: #FF9644;
+    padding-top: 1px;
+    font-size: 16px;
+    & .liveHelpRequestMoneyValue{
+      max-width: 160px;
+    }
+  }
+  & .liveHelpRequestTitle, .liveHelpRequestDeadline, .LiveHelpRequestLocationInfo, .liveHelpRequestNickname, .liveHelpRequestID, .liveHelpRequestMoneyValue{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -114,20 +150,21 @@ export const LiveHelpRequestUpperDiv = styled.div`
   & .LiveHelpRequestImage{
     width: 100%;
     height: -webkit-calc(100% - 39px);
-    margin: -31px 0 -55px 0;
+    margin: -31px 0 -57px 0;
   }
 
   & .LiveHelpRequestUserPicture{
-    width: 75px;
-    height: 75px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
+    border: 1px solid #BFC7CE;
   }
   & .liveHelpRequestUserInfo{
     display: flex;
     align-items: flex-end;
     text-align: start;
     margin-top: -50px;
-    padding-left: 110px;
+    padding-left: 115px;
     padding-bottom: 6px;
   }
   & .liveHelpRequestNickname{

@@ -13,13 +13,21 @@ export const PostCapsuleUpperDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  border-radius: 5px;
+  box-shadow: 0 3.5px 10px 2px #E9E9E9;
+  overflow: hidden;
   cursor: pointer;
+
+  & :hover {
+    /* border: solid 1px #ff4300; */
+    box-shadow: 0 5px 10px 5px #BFC7CE;
+  }
+
   & .CapsuleMain {
     width: 100%;
     height: 246px;
     /* border: solid 1px #d0d0d0; */
-    border-radius: 5px;
-    box-shadow: 0 3.5px 10px 2px #E9E9E9;
     overflow:hidden;
     z-index: 0;
     background: white;
@@ -27,10 +35,6 @@ export const PostCapsuleUpperDiv = styled.div`
     flex-direction: column;
     justify-content: space-between;
 
-    & :hover {
-      /* border: solid 1px #ff4300; */
-      box-shadow: 0 5px 10px 5px #E9E9E9;
-    }
     & .CapsuleMainLocation {
       height: 32px;
       align-self: flex-end;
@@ -63,6 +67,7 @@ export const PostCapsuleUpperDiv = styled.div`
         width: 80px;
         height: 80px;
         border-radius: 50%;
+        border: 1px solid #E9E9E9;
       }
       & .CapsuleMainUserInfo {
         display: flex;
@@ -82,7 +87,7 @@ export const PostCapsuleUpperDiv = styled.div`
     }
   }
 
-  & .CapsuleTitleMain, .CapsuleMainLocationInfo{
+  & .CapsuleTitleMain, .CapsuleMainLocationInfo, .CapsuleContentMoneyValue{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -91,11 +96,11 @@ export const PostCapsuleUpperDiv = styled.div`
 
 export const CapsuleTitleWrapper = styled.div`
   width: 100%;
-  padding: 20px 10px 15px 15px;
-  margin-top: -10px;
+  padding: 5px 10px 15px 15px;
+  
+  margin-top: 0px;
 
-  border-radius: 5px;
-  box-shadow: 0 3px 10px 2px #E9E9E9;
+  border-top: 1px solid #E9E9E9;
   & .CapsuleTitle {
     width: 100%;
     display: flex;
@@ -103,6 +108,7 @@ export const CapsuleTitleWrapper = styled.div`
     align-items: flex-end;
     & .CapsuleTitleMain {
       font-size: 25px;
+      font-weight: bold;
       margin: 0px;
     }
     & .CapsuleTitleCheck {
@@ -110,7 +116,7 @@ export const CapsuleTitleWrapper = styled.div`
       height: 25px;
       padding: 2px;
       border-radius: 10px;
-      margin: 10px 10px 2px 10px;
+      margin: 10px 0 2px 10px;
 
       font-size: 14px;
       text-align: center;
@@ -120,7 +126,27 @@ export const CapsuleTitleWrapper = styled.div`
         props.setcolor === "false" ? "#F0F0F0" : "#FF4300"};
     }
   }
+  & .CapsuleDoingTime{
+    padding-top: 8px;
+  }
+  & .CapsuleContentValueWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
   & .CapsuleFinishTime{
-    padding-top: 5px;
+    padding-top: 3px;
+  }
+  & .CapsuleContentMoney{
+    padding-top: 3px;
+    padding-right: 2px;
+    color: #FF9644;
+    display: flex;
+    align-items: flex-end;
+    font-size: 15px;
+
+    & .CapsuleContentMoneyValue{
+      max-width: 105px;
+    }
   }
 `;

@@ -52,10 +52,9 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
           <Pagination
             className="MyhelpContentPage"
             onChange={onChangePagination(setNowActivePage)}
-            simple
             current={nowActivePage}
             defaultCurrent={1}
-            pageSize={15}
+            pageSize={userActivePostsPage.helpsPerPage}
             total={userActivePostsPage.totalDatas}
           />
         </div>
@@ -75,10 +74,9 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
           <Pagination
             className="MyhelpContentPage"
             onChange={onChangePagination(setNowInActivePage)}
-            simple
             current={nowInactivePage}
             defaultCurrent={1}
-            pageSize={15}
+            pageSize={userInactivePostsPage.helpsPerPage}
             total={userInactivePostsPage.totalDatas}
           />
         </div>
