@@ -3,9 +3,9 @@ import { Button,} from "antd";
 import Banks from './banks';
 import { RefundModal } from './Refund.style';
 
-const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank, setVisible, setChecking }) => {
-  const selectOnChange = useCallback(value => {
-    setSelectBank(value);
+const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank, setVisible, setChecking, refundPrice, ownMilege }) => {
+  const selectOnChange = useCallback(e => {
+    setSelectBank(e.target.value);
   }, []);
   const accountNumberOnChange = useCallback(e => {
     setAccountNumber(e.target.value);
@@ -15,19 +15,23 @@ const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank,
   }, []);
   const handleOk = useCallback(e => {
     e.preventDefault();
-    // 다른 행동 취해야함. 받은 은행, 계좌번호, 환불 등을 통해 신청!!
+    if(ownMilege < refundPrice) {
+      alert('가진 마일리지 보다 많이 환급 받을 수는 없습니다.');
+      return;
+    }
     setChecking(prev => !prev);
-  }, []);
+  }, [ownMilege, refundPrice]);
   const handleCancel = useCallback(() => {
     setVisible();
   }, []);
+
   return (
     <RefundModal
       visible={visible}
       onOk={handleOk}
       onCancel={handleCancel}
       title="환급"
-      footer={[<Button onClick={handleOk}>환급하기</Button>]}
+      footer={[<div className='btnBox'><Button className='cancelButton' onClick={handleCancel}>취소</Button><Button className='refundButton' onClick={handleOk}>환급하기</Button></div>]}
     >
       <div>
         <div className="bankSelectBoX">

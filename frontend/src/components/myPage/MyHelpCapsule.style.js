@@ -34,6 +34,7 @@ export const MyHelpCapsuleUpperDiv = styled.div`
   & .MyhelpCapsuleImage{
     width: 100%;
     min-height: 150px;
+    max-height: 150px;
     margin-top: -34px;
     justify-self: flex-end;
     align-self: flex-end;
@@ -78,9 +79,9 @@ export const MyHelpCapsuleTitle = styled.div`
   }
   & .MyhelpCapsuleTitleSub{
     display: flex;
-    justify-content: space-between;
     align-items: center;
     & .MyhelpCapsuleTitlePeople{
+      padding: 0 5px;
       font-size: 16px;
       color: #7A7A7A;
     }

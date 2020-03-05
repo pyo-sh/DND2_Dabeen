@@ -1,6 +1,6 @@
 import { all, fork, takeLatest, call, put} from 'redux-saga/effects';
 import axios from 'axios';
-import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS } from '../reducers/user';
+import { loginSuccessAction, loginFailureAction, SIGN_UP_REQUEST, signUpFailureAction, signUpSuccessAction, EDIT_USERINFO_REQUEST, editUserInfoFailureAction, editUserInfoSuccessAction, FIND_ID_REQUEST, findUserIdSuccessAction, findUserIdFailureAction, FIND_PASSWORD_REQUEST, findUserPasswordSuccessAction, findUserPasswordFailureAction, LOAD_USER_REQUEST, loadUserSuccessAction, loadUserFailureAction, LOG_IN_REQUEST, loadUserRequestAction, LOG_IN_SUCCESS, APPLY_DABEENER_REQUEST, applyDabeenerSuccessAction, applyDabeenerFailureAction, REFUND_MILEAGE_REQUEST, refundMileageSuccessAction, refundMileageFailureAction } from '../reducers/user';
 import jwt_decode from 'jwt-decode';
 import { setCookie } from '../utils/cookieFunction';
 
@@ -58,7 +58,7 @@ function* login(action) {
         yield put(loginSuccessAction({userNum, userId, userRole, nickname}));
         yield put(loadUserRequestAction({userNum, isMe: true }));
     }catch(e){
-        console.log(e.response);
+        console.error(e);
         yield put(loginFailureAction(e));
     }
 };
@@ -87,7 +87,7 @@ function signUpAPI(data) {
             user_name : data.name,
             nickname : data.nickname,
             email : data.email,
-            birth_date : data.birthYear + data.birthMonth + data.birthDay,
+            birth_date : data.birthYear + "-" + data.birthMonth + "-" + data.birthDay,
             address : data.address,
             phone_num : data.telephone,
             itdc_cont : `반갑습니다. ${data.nickname}입니다`,
@@ -102,8 +102,7 @@ function* signUp(action) {
         yield put(signUpSuccessAction());
     }catch(e){
         console.error(e);
-        console.log(e.response);
-        yield put(signUpFailureAction(e.response.data.description));
+        yield put(signUpFailureAction(e));
         // 적용 되면 e.response.data.description으로 될듯
     }
 }
@@ -112,14 +111,39 @@ function* watchSignUp() {
 }
 
 // 유저 정보 수정
-function editUserInfoAPI({userLog, cookie}){
-    return axios.post('/api/user', userLog, {headers : {Authorization: `Bearer ${cookie}`}});
+function editUserInfoAPI(data){
+    const reqData={};
+    if(data.password){
+        reqData.data = {
+            user_num: data.userNum,
+            pwd: data.password,
+            nickname: data.nickname,
+            email: data.email,
+            phone_num: data.phoneNum,
+            address: data.address,
+            pic_path: data.picPath,
+            itdc_cont: data.introduce
+        }
+    } else{
+        reqData.data = {
+            user_num: data.userNum,
+            nickname: data.nickname,
+            email: data.email,
+            phone_num: data.phoneNum,
+            address: data.address,
+            pic_path: data.picPath,
+            itdc_cont: data.introduce
+        }
+    }
+    
+    const {cookie} = data;
+    return axios.put('/user', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
 };
 
 function* editUserInfo(action) {
     try {
-        const result = yield call(editUserInfoAPI, action.data);
-        yield put(editUserInfoSuccessAction(result.data.data));
+        yield call(editUserInfoAPI, action.data);
+        yield put(editUserInfoSuccessAction(action.data));
     }catch(e){
         console.error(e);
         yield put(editUserInfoFailureAction(e));
@@ -129,49 +153,62 @@ function* watchEditUserInfo() {
     yield takeLatest(EDIT_USERINFO_REQUEST, editUserInfo);
 }
 
-// // 아이디 찾기
-// function findUserIdAPI(data){
-//     return axios.post('/api/user/findid', {name: data.name, email : data.emil})
-// }
+function applyDabeenerAPI({userNum, juminImage, userImage, cookie}){
+    const reqData = {
+        data : {
+            user_num : userNum,
+            pic_path : userImage,
+            rrn_path : juminImage
+        }
+    };
+    return axios.post('/user/supplier', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
 
-// function* findUserId(action) {
-//     try {
-//         const result = findUserIdAPI(action.data);
-//         yield put(findUserIdSuccessAction(result.data)); // 메일 날아가는건가?
-//     }catch(e){
-//         console.error(e);
-//         yield put(findUserIdFailureAction(e));
-//     }
-// }
-// function* watchFindId() {
-//     yield takeLatest(FIND_ID_REQUEST, findUserId);
-// }
+function* applyDabeener(action) {
+    try {
+        const result = yield call(applyDabeenerAPI, action.data);
+        yield put(applyDabeenerSuccessAction(result.data.data));
+    }catch(e){
+        console.error(e);
+        yield put(applyDabeenerFailureAction(e));
+    }
+}
+function* watchApplyDabeener() {
+    yield takeLatest(APPLY_DABEENER_REQUEST, applyDabeener);
+}
 
-// // 비밀번호 찾기
+function refundMileageAPI({userNum, refundPrice, selectBank, cookie}){
+    const reqData = {
+        data : {
+            user_num : userNum,
+            use_price : refundPrice,
+            use_type : 'w',
+            wdrl_bank : selectBank
+        }
+    };
+    return axios.post('/mileage-use-hist', reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
 
-// function findUserPasswordAPI(data){
-//     return axios.post('/api/user/findPwd', {id: data.id, email : data.email})
-// }
+function* refundMileage(action) {
+    try {
+        yield call(refundMileageAPI, action.data);
+        yield put(refundMileageSuccessAction(action.data.refundPrice));
+    }catch(e){
+        console.error(e);
+        yield put(refundMileageFailureAction(e));
+    }
+}
+function* watchRefundMileage() {
+    yield takeLatest(REFUND_MILEAGE_REQUEST, refundMileage);
+}
 
-// function* findUserPassword(action) {
-//     try {
-//         const result = findUserPasswordAPI(action.data);
-//         yield put(findUserPasswordSuccessAction(result.data)); // 이메일이 날아가는거일듯
-//     }catch(e){
-//         console.error(e);
-//         yield put(findUserPasswordFailureAction(e));
-//     }
-// }
-// function* watchFindPassword() {
-//     yield takeLatest(FIND_PASSWORD_REQUEST, findUserPassword);
-// }
 export default function* userSaga() {
     yield all([
         fork(watchLogin),
         fork(watchLoadUser),
         fork(watchSignUp),
         fork(watchEditUserInfo),
-        // fork(watchFindId),
-        // fork(watchFindPassword)
+        fork(watchApplyDabeener),
+        fork(watchRefundMileage),
     ]);
 };

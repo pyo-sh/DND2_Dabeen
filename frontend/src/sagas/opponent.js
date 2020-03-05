@@ -3,7 +3,7 @@ import { LOAD_RECOMMEND_REQUEST, loadRecommendFailure, loadRecommendSuccess } fr
 import axios from 'axios';
 
 function loadRecommendAPI({address, userNum}){
-    return (address || userNum) ? axios.get(`/user/main-page/?sgg_name=${address}&user_num=${userNum}`) : axios.get('/user/main-page');
+    return  (address || userNum) ? axios.get(`/user/main-page/?${userNum ? `user_num=${userNum}` : "" }${address ? `&sgg_name=${address}` : ""}`) : axios.get('/user/main-page');
 }
 
 function* loadRecommend(action) {

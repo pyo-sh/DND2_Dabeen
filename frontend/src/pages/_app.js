@@ -10,6 +10,7 @@ import rootSaga from "../sagas";
 import reducer from "../reducers";
 import axios from 'axios';
 import { loginRequestAction } from '../reducers/user';
+import { getCookie } from '../utils/cookieFunction';
 
 axios.defaults.baseURL = "http://15.164.2.26:3307/api";
 
@@ -55,13 +56,13 @@ Dabeen.getInitialProps = async context => {
  // 리덕스의 스토어 안에 있는 state 불러오기 가능
   const asPath = ctx.asPath;
   const state = ctx.store.getState();
-  let { cookie } = ctx.isServer ? ctx.req.headers : "";
-  if (cookie) {
-    cookie = cookie.split('=')[1];
+  let cookie = "";
+  if (ctx.isServer && ctx.req.headers.cookie) { // 쿠키를 서버일 때는 헤더에서 아닐 때는 getCookie로 넣어준다.
+    cookie = ctx.req.headers.cookie.split('=')[1];
   }
-  // if (ctx.isServer && cookie ) {
-  //   axios.defaults.headers.Authorization = `Bearer ${cookie.split('=')[1]}`;
-  // }
+  else if(!ctx.isServer) {
+    cookie = getCookie();
+  }
   
   // 서버쪽일 땐 axios의 쿠키가 없어서 헤더에 쿠키를 넣어줬던거고
   // 프론트는 알아서 withCredentials 가 되던것..
@@ -74,7 +75,6 @@ Dabeen.getInitialProps = async context => {
     pageProps = await Component.getInitialProps(ctx, cookie);
   }
   
-  // 만약에 localstroage에 토큰이 있으면 로그인 하는 로직을 추가합시다!!
   return { pageProps, asPath };
 };
 
