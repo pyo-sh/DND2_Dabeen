@@ -28,7 +28,23 @@ const Dabeen = ({ Component, store, pageProps, asPath }) => {
               {
                 "http-equiv": "X-UA-Compatible",
                 content: "IE=edge"
+              }, 
+              {
+                name: "description",
+                content: "DND Dabeen Project"
               },
+              {
+                name: "og:title",
+                content: "Dabeen"
+              },
+              {
+                name: "og:description",
+                content: "DND Dabeen Project"
+              },
+              {
+                property: "og:type",
+                content: "website"
+              }
           ]}
           link={[{},
             {
