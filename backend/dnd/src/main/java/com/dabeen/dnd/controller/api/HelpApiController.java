@@ -104,13 +104,13 @@ public class HelpApiController{
 
     // 받을 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 미래인 것
     @GetMapping("{userNum}/to-receive-helps")
-    public Header<Map<String, Object>> searchToReceiveHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+    public Header<Map<String, Object>> searchToReceiveHelps(@PathVariable String userNum, @PageableDefault(size = 9) Pageable pageable){
         return helpApiService.searchToReceiveHelps(userNum, pageable);
     }
 
     // 받은 도움 APi, 본인이 작성한 도움 중 이행 시간이 현재보다 과거인 것
     @GetMapping("{userNum}/received-helps")
-    public Header<Map<String, Object>> searchReceivedHelps(@PathVariable String userNum, @PageableDefault(size = 15) Pageable pageable){
+    public Header<Map<String, Object>> searchReceivedHelps(@PathVariable String userNum, @PageableDefault(size = 9) Pageable pageable){
         return helpApiService.searchReceivedHelps(userNum, pageable);
     }
 
