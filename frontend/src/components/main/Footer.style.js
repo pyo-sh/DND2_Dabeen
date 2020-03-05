@@ -4,7 +4,6 @@ import { Col } from 'antd';
 export const FooterBox = styled.footer`
     width : 100%;
     height : 80px;
-    /* margin-top: auto; */
     margin-top : 30px;
     padding : 10px;
 
@@ -13,7 +12,6 @@ export const FooterBox = styled.footer`
     justify-content: center;
     align-items: center;
 
-    /* border-top : 1px solid #BFC7CE; */
     box-shadow: -5px -2px 5px 0.5px #BFC7CE;
     & a {
         height: 22px;

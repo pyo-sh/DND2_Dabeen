@@ -9,7 +9,6 @@ import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
 import { getCookie } from '../../utils/cookieFunction';
 import MyLocation from '../map/MyLocation';
-import axios from 'axios';
 
 const categorys = {
     "심부름": "1000",
@@ -41,7 +40,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             const imageFormData = new FormData();
             images.map(image => imageFormData.append('url', image));
             try{
-                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+                customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
                 setImages([]);
                 setImgPaths([]);
             }catch(e){
@@ -49,7 +48,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             }
         }
         setInvisible();
-    }, [images]);
+    }, []); // images 필요없을듯 넣어주는거니깐.
 
     const getCategory = useCallback(category => {
         setCategory(categorys[category]);
@@ -88,7 +87,7 @@ const PostWrite = ({setInvisible, userNum}) => {
         const imageFormData = new FormData();
         imageFormData.append('url', url);
         try{
-            await axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            await customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image !== url));
             setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){

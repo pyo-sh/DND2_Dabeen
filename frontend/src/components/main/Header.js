@@ -40,7 +40,6 @@ const Header = ({asPath}) => {
   }, []);
 
   const onSearch = useCallback(() => {
-    // Router.push(`/${searchSubject}?search=${search}`);
     Router.push(`/[postmain]?search=${search}`,`/${searchSubject}?search=${search}`);
   }, [search, searchSubject]);
 
@@ -81,18 +80,6 @@ const Header = ({asPath}) => {
             <img width="150px" src="/images/logo.svg" alt="다빈로고" />
           </a>
         </Link>
-        {/* <select onChange={onChangeSearchSubject}>
-          <option value="errand">심부름</option>
-          <option value="rental">대여</option>
-          <option value="chores">잡일</option>
-        </select>
-          <Input.Search
-            placeholder="어떤 도움을 찾으시나요?"
-            onSearch={onSearch}
-            value={search}
-            onChange={onChangeSearch}
-            style={{ marginLeft: 10 }}
-          /> */}
           <Input.Group
             compact
             className="HeaderSearch"
