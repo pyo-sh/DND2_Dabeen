@@ -24,18 +24,21 @@ export const Menubar = styled.header`
     width : 100%;
     min-width : 100px;
     align-items : center;
-    margin-left : 5px;
+    margin-top: 5px;
+    margin-left : 10px;
     justify-content : space-between;
     border-radius : 5px;
     &:hover, :focus {
       border-color : #ff4300;
     }
     & select {
-      width: 18%;
+      min-width: 50px;
+      width: 100%;
       height : 95%;
       max-width : 65px;
       border : 0;
       border-radius : 5px;
+      text-align: center;
       &:focus, :hover{
         outline: none;
       }
@@ -43,7 +46,8 @@ export const Menubar = styled.header`
     & input {
       border : 0;
       height : 100%;
-      width : 75%;
+      width : 100%;
+      padding: 0 5px;
       &:focus {
         outline : none;
         border : none;

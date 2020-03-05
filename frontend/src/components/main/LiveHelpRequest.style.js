@@ -150,7 +150,7 @@ export const LiveHelpRequestUpperDiv = styled.div`
   & .LiveHelpRequestImage{
     width: 100%;
     height: -webkit-calc(100% - 39px);
-    margin: -31px 0 -57px 0;
+    margin: -31px 0 -58px 0;
   }
 
   & .LiveHelpRequestUserPicture{
