@@ -166,15 +166,17 @@ public class HelpSupplCompApiService {
     public Header<HelpCompUserInfoApiResponse> supplierApproved(Header<HelpSupplCompApiRequest> request){
         HelpSupplCompApiRequest requestData = request.getData();
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
-
+        log.info("{}", pk);
         HelpSupplComp helpSupplComp =  helpSupplCompRepository.findById(pk)
                                                             .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
-
+        log.info("{}",helpSupplComp);
         helpSupplComp.setHelpAprvWhet(Whether.y)
                     .setAprvDttm(LocalDateTime.now());
         
+                    
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
-
+        log.info("{}",newHelpSupplComp);
+        log.info("{}", responseUser(newHelpSupplComp));
         return Header.OK(responseUser(newHelpSupplComp));
     }
 

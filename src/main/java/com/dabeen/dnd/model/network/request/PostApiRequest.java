@@ -21,7 +21,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PostApiRequest{
-    @NotEmpty(message = "값이 존재해야 합니다.")
     private String postNum; // 게시글 번호
 
     @NotEmpty(message = "값이 존재해야 합니다.")
