@@ -155,10 +155,10 @@ public class GlobalExceptionHandler {
     }
 
     // 그 외의 에러처리. 에러사항이 다 노출되는 것은 보안 상 좋지 않으므로.
-    //@ExceptionHandler(RuntimeException.class)
-    //@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    //public Header<?> handleRuntimeException(RuntimeException ex) {
-    //    log.error("서버오류 : {}", ex.getMessage(), ex);
-    //    return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
-    //}
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Header<?> handleRuntimeException(RuntimeException ex) {
+        log.error("서버오류 : {}", ex.getMessage(), ex);
+        return Header.ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "알 수 없는 서버 오류가 발생하였습니다");
+    }
 }
