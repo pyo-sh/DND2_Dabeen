@@ -139,7 +139,7 @@ public class HelpApiController{
                                                 @RequestParam(value = "pref_help_exec_dttm", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime prefHelpExecDttm,
                                                 @RequestParam(value = "price_begin",required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceBegin,
                                                 @RequestParam(value = "price_end", required = false) @NumberFormat(pattern = "##########.####") BigDecimal priceEnd,
-                                                @PageableDefault(size = 9,sort = "help_num",direction = Direction.ASC) Pageable pageable){
+                                                @PageableDefault(size = 9,sort = "help_num",direction = Direction.DESC) Pageable pageable){
                                                 
             Map<String,Object> requestMap = new HashMap<>();
 
