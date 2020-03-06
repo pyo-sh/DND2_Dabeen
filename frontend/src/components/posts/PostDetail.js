@@ -357,7 +357,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <ContentItem>
                 <div className="ContentTitle">도움정보</div>
                 {!edit
-                ?   <p>{editContent}</p>
+                ?   <pre>{editContent}</pre>
                 :   <textarea required value={editContent} onChange={setEditContent}/>
                 }
             </ContentItem>

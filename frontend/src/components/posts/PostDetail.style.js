@@ -378,10 +378,12 @@ export const ContentItem = styled.div`
         }
     }
 
-    & > p {
+    & > pre {
         width: 100%;
         padding: 10px;
+        font-family : "Noto Sans KR", sans-serif;
         border: 1px solid #E9E9E9;
+        white-space : pre-wrap;
         border-radius: 5px;
         font-size: 18px;
     }

@@ -32,5 +32,6 @@ export const ServiceItemBox = styled.div`
     }
   & pre {
     white-space : pre-wrap;
+    font-family : "Noto Sans KR", sans-serif;
   }
 `;
