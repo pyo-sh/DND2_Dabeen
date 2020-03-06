@@ -135,7 +135,6 @@ public class HelpApiService {
         HelpApiRequest helpApiRequest = request.getData();
 
         Optional<Help> optional = helpRepository.findById(helpApiRequest.getHelpNum());
-        log.info("{}", optional);
         // log.info("{}", optional.get().getHelpNum());
   
         return optional.map(help -> {
@@ -160,7 +159,6 @@ public class HelpApiService {
                     return help;
                 })
                 .map(help ->{
-                    log.info("{}", helpApiRequest);
 
                     // List<HelpPic> helpPics = new ArrayList<>();
 
@@ -189,7 +187,7 @@ public class HelpApiService {
 
                             else{
                                 HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(), helpPicRequest.getPicOrnu());
-                                log.info("{}", "hello");
+                          
                                 helpPicRepository.findById(helpPicPK)
                                                     .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
                                                     .map(helpPic -> helpPicRepository.save(helpPic))
