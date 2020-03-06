@@ -4,7 +4,7 @@ import {Icon} from 'antd';
 import customAxios from '../../utils/axiosBase';
 import { getCookie } from '../../utils/cookieFunction';
 
-const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
+const Upload = ({images, setImages}) => {
     const imageInput = useRef();
 
     //이미지 삭제
@@ -18,7 +18,7 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
             console.error(e);
         }
     }, [images]);
-
+    
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
         imageFormData.append('pic', e.target.files[0]);
