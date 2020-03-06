@@ -166,17 +166,32 @@ public class HelpSupplCompApiService {
     public Header<HelpCompUserInfoApiResponse> supplierApproved(Header<HelpSupplCompApiRequest> request){
         HelpSupplCompApiRequest requestData = request.getData();
         HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
-        log.info("{}", pk);
+
         HelpSupplComp helpSupplComp =  helpSupplCompRepository.findById(pk)
                                                             .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
-        log.info("{}",helpSupplComp);
+
         helpSupplComp.setHelpAprvWhet(Whether.y)
                     .setAprvDttm(LocalDateTime.now());
         
                     
         HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
-        log.info("{}",newHelpSupplComp);
-        log.info("{}", responseUser(newHelpSupplComp));
+
+        return Header.OK(responseUser(newHelpSupplComp));
+    }
+
+     // 공급자 승인 API
+     public Header<HelpCompUserInfoApiResponse> supplierApprovedCancel(Header<HelpSupplCompApiRequest> request){
+        HelpSupplCompApiRequest requestData = request.getData();
+        HelpSupplCompPK pk = new HelpSupplCompPK(requestData.getHelpNum(), requestData.getSupplNum());
+
+        HelpSupplComp helpSupplComp =  helpSupplCompRepository.findById(pk)
+                                                            .orElseThrow(() -> new NotFoundException("HelpSupplComp"));
+
+        helpSupplComp.setHelpAprvWhet(Whether.n)
+                    .setAprvDttm(null);
+        
+        HelpSupplComp newHelpSupplComp = helpSupplCompRepository.save(helpSupplComp); 
+
         return Header.OK(responseUser(newHelpSupplComp));
     }
 
@@ -203,7 +218,7 @@ public class HelpSupplCompApiService {
 
     // 해당 도움에 신청한 공급자의 목록을 보여주는 API
     public Header<List<HelpCompUserInfoApiResponse>> searchSupplers(String helpNum){
-        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNumOrderByCompDttm(helpNum);
+        List<HelpSupplComp> helpSupplComps = helpSupplCompRepository.findByHelpSupplCompPK_helpNumOrderByCompDttmDesc(helpNum);
 
         // 해당 도움 번호의 도움 공급 구성엔터티에서 필요한 속성들만 선택하여 List를 생성하여 반환
         List<HelpCompUserInfoApiResponse> userInfos = helpSupplComps.stream()
