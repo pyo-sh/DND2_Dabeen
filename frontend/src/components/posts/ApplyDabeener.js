@@ -17,11 +17,11 @@ const ApplyDabeener = memo(({dabeener, isMe, helpNum, myNum, needPersonnel, appr
             alert('필요 인원 보다 더 많이 승인할 수는 없습니다.');
             return;
         }
-        dispatch(approveDabeenerRequestAction({helpNum, userNum: dabeener.user.userNum, cookie: getCookie()}));
+        dispatch(approveDabeenerRequestAction({helpNum, userNum: dabeener.user.userNum, myNum, cookie: getCookie()}));
     }, [helpNum, dabeener && dabeener.user.userNum, approveDabeenersNum, needPersonnel]);
 
     const cancelApprove = useCallback(() => { // 글 올린 사람이 승인한 사람 취소하는 버튼
-        dispatch(approveCancelRequestAction({helpNum, userNum: dabeener.user.userNum, cookie: getCookie()}));
+        dispatch(approveCancelRequestAction({helpNum, userNum: dabeener.user.userNum, myNum, cookie: getCookie()}));
     }, [helpNum, dabeener && dabeener.user.userNum]);
 
     const cancelDabeener = useCallback(() => { // 자기가 신청한 것 취소하는 버튼 클릭

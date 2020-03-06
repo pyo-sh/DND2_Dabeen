@@ -46,6 +46,7 @@ import {
     approveCancelSuccessAction,
     approveCancelFailureAction
 } from '../reducers/posts';
+import {loadUserBasketPostRequestAction} from '../reducers/basket';
 import axios from 'axios';
 
 function addHelpPostAPI(data) { //게시글 업로드
@@ -248,6 +249,7 @@ function* approveDabeener(action) {
     try {
         const result = yield call(approveDabeenerAPI, action.data);
         yield put(approveDabeenerSuccessAction(result.data.data));
+        yield put(loadUserBasketPostRequestAction({userNum : action.data.myNum, cookie : action.data.cookie}));
     } catch (e) {
         console.error(e);
         yield put(approveDabeenerFailureAction(e));
@@ -271,6 +273,7 @@ function* cancelApprove(action) {
     try {
         const result = yield call(cancelApproveAPI, action.data);
         yield put(approveCancelSuccessAction(result.data.data));
+        yield put(loadUserBasketPostRequestAction({userNum : action.data.myNum, cookie : action.data.cookie}));
     } catch (e) {
         console.error(e);
         yield put(approveCancelFailureAction(e));
