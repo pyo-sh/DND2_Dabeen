@@ -8,11 +8,8 @@ import { createStore, compose, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas";
 import reducer from "../reducers";
-import axios from 'axios';
 import { loginRequestAction } from '../reducers/user';
 import { getCookie } from '../utils/cookieFunction';
-
-axios.defaults.baseURL = "http://15.164.2.26:3307/api";
 
 const Dabeen = ({ Component, store, pageProps, asPath }) => {
   return (
@@ -31,7 +28,23 @@ const Dabeen = ({ Component, store, pageProps, asPath }) => {
               {
                 "http-equiv": "X-UA-Compatible",
                 content: "IE=edge"
+              }, 
+              {
+                name: "description",
+                content: "DND Dabeen Project"
               },
+              {
+                name: "og:title",
+                content: "Dabeen"
+              },
+              {
+                name: "og:description",
+                content: "DND Dabeen Project"
+              },
+              {
+                property: "og:type",
+                content: "website"
+              }
           ]}
           link={[{},
             {

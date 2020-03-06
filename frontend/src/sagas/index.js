@@ -14,7 +14,7 @@ import { getCookie } from '../utils/cookieFunction';
 // if(isBrowser && document.cookie){
 //     axios.defaults.headers.Authorization = `Bearer ${getCookie()}`;
 // }
-axios.defaults.baseURL = "http://15.164.2.26:3307/api";
+axios.defaults.baseURL = "https://www.dabeen.org:3307/api";
 
 export default function* rootSaga() {
     yield all([

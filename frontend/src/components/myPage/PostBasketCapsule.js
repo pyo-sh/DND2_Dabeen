@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useRef, memo } from "react";
 import {
   PostBasketCapsuleUpperDiv,
   PostBasketCapsuleWrapper,
-  BasketCapsuleCircle,
   PostBasketCheckIcon,
   PostBasketContent,
   PostBasketContentBox
@@ -56,10 +55,19 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
         />
       }
       <PostBasketCapsuleUpperDiv onClick={setVisible}>
-        <BasketCapsuleCircle><div className="Circle"></div></BasketCapsuleCircle>
+        <div className="checkWrapper">
+          <div className="PostBasketTriangle"></div>
+          <div className={canPay ? "PostBasketPayCheck" : "PostBasketPayUncheck"}>{canPay ? "결제 가능" : "결제 불가"}</div>
+        </div>
         <img className="BasketCapsuleCapture" src={imagesURL.length === 1 ? imagesURL[0] : '/images/noImage.jpg'}/>
         <PostBasketContent>
           <div className="PostBasketTitle">{post.helpTitle}</div>
+          <div className="PostBasketFinishTime">
+            신청마감 : {post.helpDeadLine && post.helpDeadLine.slice(0, 10)}
+          </div>
+          <div className="PostBasketDoingTime">
+            수행일 : {post.helpExecDate && post.helpExecDate.slice(0, 10)}
+          </div>
           <PostBasketContentBox>
             <div className="PostBasketPeople">
               신청인원 :
@@ -67,23 +75,12 @@ const PostBasketCapsule = memo(({ post, setAllPrice, setSelectHelps }) => {
               /
               <div className="PostBasketPeopleApply">{post.postNum}</div>
             </div>
+            <div className="PostBasketMoneyWrapper">
+              <div className="PostBasketMoney">
+                <div className="PostBasketMoneyValue">{post.price}</div>원
+              </div>
+            </div>
           </PostBasketContentBox>
-          <PostBasketContentBox>
-            <div className="PostBasketMoney">
-              가격 :
-              <div className="PostBasketMoneyValue">{post.price}</div>
-              원
-            </div>
-            <div className={canPay ? "PostBasketPayCheck" : "PostBasketPayUncheck"}>{canPay ? "결제 가능" : "결제 불가"}</div>
-          </PostBasketContentBox>
-          <div className="PostBasketTimeWrapper">
-            <div className="PostBasketFinishTime">
-              신청마감 : {post.helpDeadLine && post.helpDeadLine.slice(0, 10)}
-            </div>
-            <div className="PostBasketDoingTime">
-              수행일 : {post.helpExecDate && post.helpExecDate.slice(0, 10)}
-            </div>
-          </div>
         </PostBasketContent>
       </PostBasketCapsuleUpperDiv>
       {visibleDetail

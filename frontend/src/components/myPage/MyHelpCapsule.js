@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import PostDetail from '../posts/PostDetail';
 import { MyHelpCapsuleUpperDiv, MyHelpCapsuleTitle, MyHelpCapsuleInfo } from './MyHelpCapsule.style';
 
-const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
+const MyHelpCapsule = ({ helpType, helpData, isMe, finish }) => {
   const [myHelpVisible, setMyHelpVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   const imagesURL = helpData.helpPic.map(pic => pic.path);
+  const isEnd = useMemo(() => helpData.helpEndTime.split('T')[0] !== '9999-12-31', [helpData && helpData.helpEndTime]);
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
     setMyHelpVisible(prev => !prev);
@@ -20,9 +21,13 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
           ? helpData.isPaymentApprove === "p"
             ? <div className="done">결제완료</div>
             : <div className="doing">결제필요</div>
-          : helpData.isHelpApprove === "y"
-            ? <div className="done">도움완료</div>
-            : <div className="doing">진행 중</div>
+          : finish 
+            ? helpData.isHelpApprove === "y"
+              ? <div className="done">도움완료</div>
+              : <div className="done">도움종료</div>
+            : helpData.isHelpApprove === "y"
+              ? <div className="doing">진행 중</div>
+              : <div className="doing">대기 중</div>
           } 
         </div>
         {helpData.helpPic.length ? 
@@ -33,27 +38,40 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
         {/* <img className="MyhelpCapsuleImage" src={'/images/main2.jpg'}/> */}
         <MyHelpCapsuleTitle>
           <div className="MyhelpCapsuleTitleMain">{helpData.helpTitle}</div>
-          {helpType === "take"
-          ? <div className="MyhelpCapsuleTitleSub">
-              신청인원 : 
-              <div className="MyhelpCapsuleTitlePeople">{helpData.approveNum}</div>
-              /
-              <div className="MyhelpCapsuleTitlePeople">{helpData.postNum}</div>
-            </div>
-          : <div>
-              <div className="MyhelpCapsuleTime">수행일 : {helpData.helpExecDate && (helpData.helpExecDate.slice(0, 10)+" / "+helpData.helpExecDate.slice(11, 19))}</div>
-            </div>
-          }
+          <div>
+              <div className="MyhelpCapsuleTime">수행일 : {helpData.helpExecDate && (helpData.helpExecDate.slice(0, 10))}</div>
+              <div className="MyHelpCapsuleTimeWrapper">
+                <div className="MyhelpCapsuleTime">신청 마감일 : {helpData.helpDeadLine && helpData.helpDeadLine.slice(0, 10)}</div>
+                {helpType === "take"
+                ? null
+                : <div className="MyhelpCapsulePrice">
+                    <div className="MyhelpCapsulePriceValue">
+                      {helpData.price}
+                    </div>
+                    원
+                  </div>
+                }
+              </div>
+          </div>
         </MyHelpCapsuleTitle>
-        <MyHelpCapsuleInfo>
-          <div className="MyhelpCapsuleTime">마감일 : {helpData.helpDeadLine && helpData.helpDeadLine.slice(0, 10)}</div>
-          <section className="MyhelpCapsuleInfoPrice">
-            <div className="MyhelpCapsuleInfoPriceValue">
-              {helpData.price}
+        {helpType === "take"
+        ? <MyHelpCapsuleInfo>
+            <div className="MyhelpCapsuleSub">
+                신청인원 : 
+                <div className="MyhelpCapsulePeople">{helpData.approveNum}</div>
+                /
+                <div className="MyhelpCapsulePeople">{helpData.postNum}</div>
+              </div>
+            <div className="MyhelpCapsuleSub"></div>
+            <div className="MyhelpCapsulePrice">
+              <div className="MyhelpCapsulePriceValue">
+                {helpData.price}
+              </div>
+              원
             </div>
-            원
-          </section>
-        </MyHelpCapsuleInfo>
+          </MyHelpCapsuleInfo>
+        : null
+        }
       </MyHelpCapsuleUpperDiv>
       {myHelpVisible ? (
         <PostDetail setVisible={setVisible} data={helpData} />

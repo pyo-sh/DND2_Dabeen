@@ -39,46 +39,44 @@ const MyHelp = ({ userNum, helpType, isMe }) => {
     <MyHelpUpperDiv>
       <div className="Myhelp">
         <div className="MyhelpTitle">
-          {helpType === "take" ? "받을 도움" : "줄 도움"}
+          {helpType === "take" ? "진행 도움" : "진행 도움"}
         </div>
         <div className="MyhelpContent">
           <Row gutter={[12, 12]}>
             {userActivePosts && userActivePosts.map((element, index) => (
               <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
-                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe}/>
+                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe} finish={false}/>
               </MyHelpCol>
             ))}
           </Row>
           <Pagination
             className="MyhelpContentPage"
             onChange={onChangePagination(setNowActivePage)}
-            simple
             current={nowActivePage}
             defaultCurrent={1}
-            pageSize={15}
+            pageSize={userActivePostsPage.helpsPerPage}
             total={userActivePostsPage.totalDatas}
           />
         </div>
       </div>
       <div className="Myhelp">
         <div className="MyhelpTitle">
-          {helpType === "take" ? "받은 도움" : "준 도움"}
+          {helpType === "take" ? "완료된 도움" : "완료된 도움"}
         </div>
         <div className="MyhelpContent">
           <Row gutter={[12, 12]}>
             {userInactivePosts && userInactivePosts.map((element, index) => (
               <MyHelpCol md={24} lg={12} xl={8} key={element.helpNum}>
-                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe}/>
+                <MyHelpCapsule helpType={helpType} helpData={element} isMe={isMe} finish={true}/>
               </MyHelpCol>
             ))}
           </Row>
           <Pagination
             className="MyhelpContentPage"
             onChange={onChangePagination(setNowInActivePage)}
-            simple
             current={nowInactivePage}
             defaultCurrent={1}
-            pageSize={15}
+            pageSize={userInactivePostsPage.helpsPerPage}
             total={userInactivePostsPage.totalDatas}
           />
         </div>

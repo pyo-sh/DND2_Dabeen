@@ -133,7 +133,7 @@ const Regist = () => {
                                 <img
                                     className="ModifyUserProfileChangeIcon"
                                     alt="writePost"
-                                    src={"/images/postIcon.PNG"}
+                                    src={"/images/postIcon.png"}
                                     onClick={onClickProfileUpload(imageInput)}
                                     />
                                 <div className="RegistNowUserProfileImage">현재 프로필 사진</div>

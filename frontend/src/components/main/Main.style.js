@@ -31,6 +31,7 @@ export const MainForm = styled.div`
     & .LiveHelpRequestTitle, .MainDaBeenerProfileTitle{
         color: #424242;
         font-size : 48px;
+        font-weight : bold;
         margin: 0;
         text-align: center;
         @media only screen and (max-width: 425px){
@@ -74,7 +75,7 @@ export const LiveHelpRequestMenuBar = styled.div`
         width: 20vw;
         min-width : 150px;
         height: 45px;
-        margin-right: 50px;
+        margin-right: 6.5vw;
         margin-top: -45px;
 
         align-self: flex-end;
@@ -94,6 +95,7 @@ export const LiveHelpRequestMenuBar = styled.div`
     & .LiveHelpRequest {
         /*선택시 색상 변경되게*/
         font-size: 30px;
+        font-weight : bold;
         cursor: pointer;
         transition : color 0.3s;
         :hover{

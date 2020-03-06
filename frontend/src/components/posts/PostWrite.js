@@ -9,7 +9,6 @@ import customAxios from '../../utils/axiosBase';
 import moment from 'moment';
 import { getCookie } from '../../utils/cookieFunction';
 import MyLocation from '../map/MyLocation';
-import axios from 'axios';
 
 const categorys = {
     "심부름": "1000",
@@ -18,6 +17,7 @@ const categorys = {
 } //카테고리
 
 const PostWrite = ({setInvisible, userNum}) => {
+    const {me} = useSelector(state => state.user);
     const [postTitle, onChangePostTitle] = inputChangeHook(''); //게시글 제목
     const [category, setCategory] = useState('');
     const [helpDeadlineDate, setHelpDeadlineDate] = useState(''); //신청 마감 날짜
@@ -26,11 +26,10 @@ const PostWrite = ({setInvisible, userNum}) => {
     const [helpExecTime, setHelpExecTime] = useState('');   //수행 시간
     const [needPersonnel, onChangeNeedPersonnel] = inputChangeHook(0);  //필요 인원
     const [money, onChangeMoney] = inputChangeHook(0);  //금액
-    const [location, setLocation] = useState('');   //이행위치
+    const [location, setLocation] = useState(me.address);   //이행위치
     const [content, onChangeContent] = inputChangeHook('');   //요구사항
     const [images, setImages] = useState([]);       //도움 이미지
     const [imgPaths, setImgPaths] = useState([]);   //Request에 보낼 이미지
-    const {me} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const imageInput = useRef();
     const time = moment();
@@ -41,7 +40,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             const imageFormData = new FormData();
             images.map(image => imageFormData.append('url', image));
             try{
-                axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+                customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
                 setImages([]);
                 setImgPaths([]);
             }catch(e){
@@ -49,7 +48,7 @@ const PostWrite = ({setInvisible, userNum}) => {
             }
         }
         setInvisible();
-    }, [images]);
+    }, []); // images 필요없을듯 넣어주는거니깐.
 
     const getCategory = useCallback(category => {
         setCategory(categorys[category]);
@@ -88,7 +87,7 @@ const PostWrite = ({setInvisible, userNum}) => {
         const imageFormData = new FormData();
         imageFormData.append('url', url);
         try{
-            await axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            await customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image !== url));
             setImgPaths(imgPaths.filter(path => Object.values(path) !== url));
         }catch(e){

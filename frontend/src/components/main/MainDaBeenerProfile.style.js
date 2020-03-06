@@ -30,10 +30,15 @@ export const MainDaBeenerProfileInfo = styled.div`
   margin-top: 2vh;
    
   & .MainProfilePicture{
-    width: 100px;
+    width: 105px;
     height: 100px;
+    border: 1px solid #BFC7CE;
     border-radius: 50%;
     margin: 0 30px;
+    transition : 0.3s;
+    &:hover{
+      transform : scale(1.1);
+    }
     @media only screen and (max-width: 860px){
       margin: 0 20px;  
     }

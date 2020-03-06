@@ -8,7 +8,6 @@ const PostCapsule = ({ data, categoryNum}) => {
   const [postDetailVisible, setPostDetailVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   // const helpDeadline = data.helpDeadline.split('T');
   // const helpExecDate = data.helpExecDate.split('T');
-  
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
     setPostDetailVisible(prev => !prev);
@@ -30,13 +29,13 @@ const PostCapsule = ({ data, categoryNum}) => {
             </div>
           </div>
           {data.helpPic.length ? 
-          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="PostImage"/>
+          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="게시글 이미지"/>
           :
-          <img className="CapsuleMainImage" src={'/images/noImage.jpg'}/>
+          <img className="CapsuleMainImage" src={'/images/noImage.jpg'} alt="이미지 없음"/>
           }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`}/>
+              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`} alt="유저 프로필"/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>
@@ -57,10 +56,15 @@ const PostCapsule = ({ data, categoryNum}) => {
               </div>
             )}
           </div>
-          <div className="CapsuleFinishTime">
-            신청 마감일 : {data.helpDeadLine.split('T')[0]}
-          </div>
           <div className="CapsuleDoingTime">수행일 : {data.helpExecDate.split('T')[0]}</div>
+          <div className="CapsuleContentValueWrapper">
+            <div className="CapsuleFinishTime">
+              신청 마감일 : {data.helpDeadLine.split('T')[0]}
+            </div>
+            <div className="CapsuleContentMoney">
+                <div className="CapsuleContentMoneyValue">{data.price}</div>원
+            </div>
+          </div>
         </CapsuleTitleWrapper>
       </PostCapsuleUpperDiv>
       {postDetailVisible ? (

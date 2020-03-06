@@ -41,8 +41,12 @@ import {
     helpCloseFailureAction,
     EVALUATE_DABEENER_REQUEST,
     evaluateDabeenerSuccessAction,
-    evaluateDabeenerFailureAction
+    evaluateDabeenerFailureAction,
+    APPROVE_CANCEL_REQUEST,
+    approveCancelSuccessAction,
+    approveCancelFailureAction
 } from '../reducers/posts';
+import {loadUserBasketPostRequestAction} from '../reducers/basket';
 import axios from 'axios';
 
 function addHelpPostAPI(data) { //게시글 업로드
@@ -243,8 +247,9 @@ function approveDabeenerAPI({helpNum, userNum, cookie}) {
 
 function* approveDabeener(action) {
     try {
-        yield call(approveDabeenerAPI, action.data);
-        yield put(approveDabeenerSuccessAction(action.data));
+        const result = yield call(approveDabeenerAPI, action.data);
+        yield put(approveDabeenerSuccessAction(result.data.data));
+        yield put(loadUserBasketPostRequestAction({userNum : action.data.myNum, cookie : action.data.cookie}));
     } catch (e) {
         console.error(e);
         yield put(approveDabeenerFailureAction(e));
@@ -254,6 +259,30 @@ function* watchApproveDabeener() {
     yield takeLatest(APPROVE_DABEENER_REQUEST, approveDabeener);
 };
 
+function cancelApproveAPI({helpNum, userNum, cookie}) {
+    const reqData = {
+        data : {
+            help_num : helpNum,
+            suppl_num : userNum
+        }
+    }
+    return axios.put(`/help-suppl-comp/approved-cancel`, reqData, {headers : {Authorization: `Bearer ${cookie}`}});
+};
+
+function* cancelApprove(action) {
+    try {
+        const result = yield call(cancelApproveAPI, action.data);
+        yield put(approveCancelSuccessAction(result.data.data));
+        yield put(loadUserBasketPostRequestAction({userNum : action.data.myNum, cookie : action.data.cookie}));
+    } catch (e) {
+        console.error(e);
+        yield put(approveCancelFailureAction(e));
+    }
+};
+
+function* watchCancelApprove() {
+    yield takeLatest(APPROVE_CANCEL_REQUEST, cancelApprove);
+}
 // 이미지 추가
 function addImageAPI({path, cookie}) {
     const reqData = {
@@ -385,6 +414,7 @@ export default function* postsSaga() {
         fork(watchAddApply),
         fork(watchCancelApply),
         fork(watchApproveDabeener),
+        fork(watchCancelApprove),
         fork(watchHelpClose),
         fork(watchEvaluate),
         fork(watchAddImage),

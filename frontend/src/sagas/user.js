@@ -59,7 +59,7 @@ function* login(action) {
         yield put(loadUserRequestAction({userNum, isMe: true }));
     }catch(e){
         console.error(e);
-        yield put(loginFailureAction(e));
+        yield put(loginFailureAction(e.response));
     }
 };
 
@@ -87,7 +87,7 @@ function signUpAPI(data) {
             user_name : data.name,
             nickname : data.nickname,
             email : data.email,
-            birth_date : data.birthYear + "-" + data.birthMonth + "-" + data.birthDay,
+            birth_date : data.birthYear + data.birthMonth + data.birthDay,
             address : data.address,
             phone_num : data.telephone,
             itdc_cont : `반갑습니다. ${data.nickname}입니다`,
@@ -101,7 +101,7 @@ function* signUp(action) {
         yield call(signUpAPI, action.data);
         yield put(signUpSuccessAction());
     }catch(e){
-        console.error(e);
+        console.dir(e);
         yield put(signUpFailureAction(e));
         // 적용 되면 e.response.data.description으로 될듯
     }

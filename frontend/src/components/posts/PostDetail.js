@@ -20,6 +20,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const helpExecHour = parseInt(helpExec[1].substring(0,2));
     const helpDeadlineHour = parseInt(helpDeadline[1].substring(0,2));
     const imagesURL = data.helpPic.map(pic => pic.path);    //path만 따로 배열에 저장
+    const imagesLength = imagesURL.length;
     const [click, setClick] = useState(false);
     const [clickEvaluate, setClickEvaluate] = useState(false); // 평가창 띄우기
     const [edit, setEdit] = useState(false);    //Edit 버튼 눌렀을 때 편집 모드로 바뀜
@@ -79,22 +80,33 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const onEvaluateModal = useCallback(() => {
         setClickEvaluate(prev => !prev);
     }, []);
-
+    
     //수정 완료 버튼 눌렀을 때
     const onConfirm = useCallback(() => {
-        setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
+        setEditImgPaths(editImages.map((pic, i) => {
+            if(i + 1 <= imagesLength){
+                editImgPaths.push({"path": pic, "pic_ornu" : i+1})
+            } else{
+                editImgPaths.push({"path" : pic})
+            }
+        }))
         dispatch(updateHelpPostRequestAction({
+                helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
                 categoryNum: data.categoryNum,
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
                 helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
+                helpEndTime: data.helpEndTime,
                 postNum: parseInt(editNeedPersonnel),
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
                 helpContent: editContent,
                 helpPic: editImgPaths,
+                nickname: data.nickname,
+                userId: data.userId,
+                picPath: data.picPath,
                 cookie : getCookie()
             })
         );
@@ -129,6 +141,7 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             }
         }
         dispatch(removeHelpPostRequestAction({help_num: helpNum, cookie : getCookie()}));
+        setVisible();
     }, []);
 
     const helpApply = useCallback(() => {
@@ -357,13 +370,13 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
             <ContentItem>
                 <div className="ContentTitle">도움정보</div>
                 {!edit
-                ?   <p>{editContent}</p>
+                ?   <pre>{editContent}</pre>
                 :   <textarea required value={editContent} onChange={setEditContent}/>
                 }
             </ContentItem>
             {edit&&(<ContentItem>
                 <div className="ContentTitle">사진첨부</div>
-                <Upload images={editImages} setImages={setEditImages} imgPaths={editImgPaths} setImgPaths={setEditImgPaths}/>
+                <Upload images={editImages} setImages={setEditImages}/>
             </ContentItem>
             )}
         </Content>

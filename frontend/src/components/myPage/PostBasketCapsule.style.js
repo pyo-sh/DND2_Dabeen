@@ -17,6 +17,11 @@ export const PostBasketCapsuleUpperDiv = styled.div`
   justify-content: center;
   align-items: center;
 
+  border-radius: 5px;
+  box-shadow: 0 0 10px 3px #E9E9E9;
+  &:hover{
+    box-shadow: 0 0 10px 2px #BFC7CE;
+  }
   cursor: pointer;
 
   & .BasketCapsuleCapture {
@@ -26,14 +31,34 @@ export const PostBasketCapsuleUpperDiv = styled.div`
     height: 30vw;
     min-height: 175px;
     max-height: 220px;
-    margin-top: -25px;
-    border: 5px solid #FF9644;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 1px #E9E9E9;
     background-color: white;
+    margin-top: -32px;
   }
-  & .BasketCapsuleCapture:hover{
-    box-shadow: 0 0 10px 2px #BFC7CE;
+  & .checkWrapper{
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: flex-end;
+    & .PostBasketTriangle{
+      border-top: 15.5px solid white;
+      border-right: 15.5px solid white;
+      border-bottom: 15.5px solid transparent;
+      border-left: 15.5px solid transparent;
+      opacity: 0.9;
+    }
+  }
+  & .PostBasketPayCheck, .PostBasketPayUncheck {
+    padding: 5px 15px 5px 2px;
+    background: white;
+    opacity: 0.9;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  & .PostBasketPayCheck{
+    color: #FF9644;
+  }
+  & .PostBasketPayUncheck{
+    color: #7A7A7A;
   }
 
   & .PostBasketTitle, .PostBasketMoneyValue, .PostBasketPeopleApplied, .PostBasketPeopleApply{
@@ -43,39 +68,56 @@ export const PostBasketCapsuleUpperDiv = styled.div`
   }
 `;
 export const PostBasketCheckIcon = styled(Icon)`
-  font-size: 20px;
+  margin: 0 10px 0 20px;
+  font-size: 23px;
   color: ${props => (props.setcolor==="true" ? "#FF3400" : "none")};
   cursor: pointer;
 `;
 export const PostBasketContent = styled.div`
   width: 100%;
-  padding: 10px 15px;
-  font-size: 16px;
+  font-size: 15px;
+  border-top: 1px solid #E9E9E9;
 
   & .PostBasketTitle {
-    width: 100%;
     height: 35px;
+    margin: 10px 15px 5px 15px;
 
     font-size: 23px;
     font-weight: bold;
   }
-  & .PostBasketTimeWrapper {
-    width: 100%;
-    
-    padding-top: 5px;
-    margin-top: 5px;
-    border-top: 1px solid #BFC7CE;
-    & .PostBasketFinishTime {
-    }
-    & .PostBasketDoingTime {
-    }
+  & .PostBasketFinishTime {
+    margin: 0 15px;
+  }
+  & .PostBasketDoingTime {
+    margin: 3px 15px 8px 15px;
   }
 `;
 
 export const PostBasketContentBox = styled.div`
+  padding: 10px 15px;
+
   display: flex;
   align-items: center;
-  margin-top: 3px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  border-top: 1px solid #E9E9E9;
+
+  & .PostBasketMoneyWrapper{
+    display: flex;
+    align-items: center;
+  }
+  & .PostBasketMoney{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    color: #FF9644;
+    & .PostBasketMoneyValue{
+      max-width: 130px;
+      margin-left: 5px;
+      font-size: 17px;
+    }
+  }
   & .PostBasketPeople{
     display: flex;
     align-items: center;
@@ -87,41 +129,5 @@ export const PostBasketContentBox = styled.div`
       max-width: 100px;
       margin-left: 5px;
     }
-  }
-  & .PostBasketMoney{
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    & .PostBasketMoneyValue{
-      max-width: 130px;
-      margin-left: 5px;
-      color: #FF9644;
-      font-size: 18px;
-    }
-  }
-  & .PostBasketPayCheck, .PostBasketPayUncheck {
-    padding-left: 5px;
-    border-left: 1px solid #BFC7CE;
-  }
-  & .PostBasketPayCheck{
-    color: #FF9644;
-  }
-  & .PostBasketPayUncheck{
-    color: #7A7A7A;
-  }
-`;
-
-export const BasketCapsuleCircle = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  & .Circle{
-    width: 150px;
-    height: 50px;
-    border: 10px solid #FF9644;
-    border-radius: 50%;
-
-    overflow: hidden;
-    /* box-shadow: 0 0 10px 1px #7A7A7A; */
   }
 `;

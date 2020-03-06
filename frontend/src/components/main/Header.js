@@ -40,7 +40,6 @@ const Header = ({asPath}) => {
   }, []);
 
   const onSearch = useCallback(() => {
-    // Router.push(`/${searchSubject}?search=${search}`);
     Router.push(`/[postmain]?search=${search}`,`/${searchSubject}?search=${search}`);
   }, [search, searchSubject]);
 
@@ -81,32 +80,15 @@ const Header = ({asPath}) => {
             <img width="150px" src="/images/logo.svg" alt="다빈로고" />
           </a>
         </Link>
-        {/* <select onChange={onChangeSearchSubject}>
-          <option value="errand">심부름</option>
-          <option value="rental">대여</option>
-          <option value="chores">잡일</option>
-        </select>
-          <Input.Search
-            placeholder="어떤 도움을 찾으시나요?"
-            onSearch={onSearch}
-            value={search}
-            onChange={onChangeSearch}
-            style={{ marginLeft: 10 }}
-          /> */}
-          <Input.Group
-            compact
-            className="HeaderSearch"
-            >
+          <div className="HeaderSearchInput">
             <select onChange={onChangeSearchSubject}>
               <option value="errand">심부름</option>
               <option value="rental">대여</option>
               <option value="chores">잡일</option>
             </select>
-            <div className="HeaderSearchInput">
-              <input placeholder="어떤 도움을 찾으시나요?" value={search} onChange={onChangeSearch} />
-              <Icon type="search" onClick={onSearch}/>
-            </div>
-            </Input.Group>
+            <input placeholder="어떤 도움을 찾으시나요?" value={search} onChange={onChangeSearch} onKeyPress={onSearch} />
+            <Icon type="search" onClick={onSearch}/>
+          </div>
       </nav>
       <nav className="menuRight" ref={divRef}>
         <ul>
@@ -152,14 +134,14 @@ const Header = ({asPath}) => {
                 {isClickMy ? (
                   <div className="userPageList">
                     <ul>
-                      <li>
+                      <li className="userMileage">
                         <Icon type="dollar-circle" theme="filled" />
                         &nbsp;
-                        <span>{me.ownMilege}</span>원
+                        <span>{me.ownMilege}</span>
                       </li>
                       <li><Link href="/userpage/[usernum]/[pagename]" as={`/userpage/${me.userNum}/basket`}><a onClick={clickMy}>장바구니</a></Link></li>
                       <hr />
-                      <li><Link href="/userpage/[usernum]/[pagename]"  as={`/userpage/${me.userNum}/userinfo`}><a onClick={clickMy}>마이페이지</a></Link></li>
+                      <li><Link href="/userpage/[usernum]/[pagename]"  as={`/userpage/${me.userNum}/userinfo`}><a onClick={clickMy}>상세정보</a></Link></li>
                       <li><Link href="/chat"><a onClick={clickMy}>채팅하기</a></Link></li>
                       <hr />
                       <li><Link href="/userpage/[usernum]/[pagename]" as={`/userpage/${me.userNum}/service`}><a onClick={clickMy}>고객센터</a></Link></li>

@@ -2,10 +2,9 @@ import React, {useCallback, useRef} from 'react';
 import {UploadImageDiv} from './Upload.style';
 import {Icon} from 'antd';
 import customAxios from '../../utils/axiosBase';
-import axios from 'axios';
 import { getCookie } from '../../utils/cookieFunction';
 
-const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
+const Upload = ({images, setImages}) => {
     const imageInput = useRef();
 
     //이미지 삭제
@@ -13,13 +12,13 @@ const Upload = ({images, setImages, imgPaths, setImgPaths}) => {
         const imageFormData = new FormData();
         imageFormData.append('url', url);
         try{
-            axios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
+            customAxios.post('/pic/delete', imageFormData, {headers : {Authorization: `Bearer ${getCookie()}`}});
             setImages(images.filter(image => image != url));
         }catch(e){
             console.error(e);
         }
     }, [images]);
-
+    
     const onChangeImages = useCallback(async (e) => {
         const imageFormData = new FormData();
         imageFormData.append('pic', e.target.files[0]);

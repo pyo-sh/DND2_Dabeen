@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { PaymentModal } from './Payment.style';
 
-import Banks from './banks';
+import Banks from './Banks';
 import PayResult from './PayResult';
 import { check_num } from "../signUp/InputFunctions";
 import { inputCheckChangeHook } from "../../hooks/inputChangeHook";
@@ -105,7 +105,7 @@ const Payment = ({ userNum, showPayment, clickPayment, allPrice, selectHelps, re
             onCancel={clickPayment}
             title={isResult ? "결제 결과" : isPayingPost ? "결제 대기" : "결제"}
             onOk = {onOk}
-            footer={[ <div className="btnBox">
+            footer={[ <div key={1} className="btnBox">
                 {isResult
                 ?   <Button className='pay' onClick={reRenderFunction}>돌아가기</Button>
                 :   isPayingPost

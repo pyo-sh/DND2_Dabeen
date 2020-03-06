@@ -126,12 +126,13 @@ const reducer = (state = initialState, action) => {
     switch (action.type) {
       case LOG_IN_REQUEST: {
         draft.isLoggingIn = true;
+        draft.loginError = '';
+        draft.isLoginSuccess = false;
         break;
       }
       case LOG_IN_SUCCESS: { // 로그인 토큰이 내려온다 -> 토큰 local 또는 session에 저장하고 토큰 해석해서 id 저장.
-        draft.isLoggingIn = false;   
-        // action.data.loginMaintain ? localStorage.setItem("token", action.data.token) : sessionStorage.setItem("token", action.data.token)
-        // const tokenResult = jwt_decode(action.data.token);
+        draft.isLoggingIn = false;
+        draft.isLoginSuccess = true;
         draft.me.userNum = action.data.userNum;
         draft.me.userId = action.data.userId;
         draft.me.userRole = action.data.role;
@@ -143,7 +144,7 @@ const reducer = (state = initialState, action) => {
       case LOG_IN_FAILURE: {
         draft.isLoggingIn = false;
         draft.isLoginSuccess = false;
-        draft.loginError = action.data;
+        draft.loginError = action.data.data.description;
         break;
       }
       case LOG_OUT_REQUEST: {

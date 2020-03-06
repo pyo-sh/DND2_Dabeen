@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Input, DatePicker, TimePicker, Select, Button, Row, Col } from "antd";
+import { Input, DatePicker, TimePicker, Button, Row, Col } from "antd";
 import {PostSearchUpperDiv, PostSearchBox} from './PostSearch.style';
 
 const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate, 
@@ -7,20 +7,9 @@ const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate,
   minPrice,  onChangeMinPrice, maxPrice, onChangeMaxPrice, helpKeyword, onChangeHelpKeyword,
   onChangeHelpClock, onChangePage }) => {
   
-    const clickSearch = () => {
+    const clickSearch = useCallback(() => {
       onChangePage();
-    };
-
-  // // 가격대 검색 Input이 바뀔 때 마다 실행하는 함수
-  // const onChangePrice = useCallback(e => {
-  //   const targetString = e.target.value; // Input창의 value 값
-  //   let deleteString = targetString.replace(/[0-9]/g, "");
-  //   if (!deleteString) setHelpPrice(e.target.value);
-  // }, []);
-  // // 가격대 범위 Select이 바뀔 때 마다 실행하는 함수
-  // const onChangeRange = value => {
-  //   setHelpPriceRange(value);
-  // };
+    }, []);
 
   return (
     <PostSearchUpperDiv>

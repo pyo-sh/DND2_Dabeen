@@ -72,8 +72,6 @@ const LiveHelpRequest = () => {
   }), [livePosts.length])
 
   return (
-    // <LiveHelpRequestForm>
-    // 뭐지 개수가 3의 배수로 안 맞아 떨어지면 제대로 안 되는건가???
     <>
       <TestSlick 
       {...setting}
@@ -89,12 +87,10 @@ const LiveHelpRequest = () => {
                       {help.execLoc}
                     </div>
                   </div>
-                  {/* {help.helpPicList.length ? help.helpPicList[0] : null} */}
-                  {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path}/>
+                  {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path} alt="유저 프로필"/>
                     :
                     <img className="LiveHelpRequestImage" src={'/images/noImage.jpg'}/>
                   }
-                  {/* <Divider orientation="left" style={{ marginTop: "42%" }}/> */}
                   <Divider orientation="left">
                     {help.userPic ? 
                     <img className="LiveHelpRequestUserPicture" src={help.userPic}/>
@@ -108,8 +104,25 @@ const LiveHelpRequest = () => {
                   </div>
                 </LiveHelpRequestUpperDiv>
                 <div className="liveHelpRequestContent">
-                  <div className="liveHelpRequestTitle">{help.helpTitle}</div>
-                  <div className="liveHelpRequestDeadline">마감일 : {help.helpDeadLine.split('T')[0]}</div>
+                  <div className="liveHelpRequestTitleWrapper">
+                    <div className="liveHelpRequestTitle">{help.helpTitle}</div>
+                    {help.isHelpApprove === "y"? (
+                      <div setcolor="true" className="liveHelpRequestTitleCheck">
+                        마감
+                      </div>
+                    ) : (
+                      <div setcolor="false" className="liveHelpRequestTitleCheck">
+                        신청 중
+                      </div>
+                    )}
+                  </div>
+                  <div className="liveHelpRequestDeadline">수행일 : {help.helpExecDate.split('T')[0]}</div>
+                  <div className="liveHelpRequestValueWrapper">
+                    <div className="liveHelpRequestDeadline">신청 마감일 : {help.helpDeadLine.split('T')[0]}</div>
+                    <div className="liveHelpRequestMoney">
+                      <div className="liveHelpRequestMoneyValue">{help.price}</div>원
+                    </div>
+                  </div>
                 </div>
               </LiveHelpRequestWrapper>
             </div> 

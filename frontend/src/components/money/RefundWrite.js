@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Button,} from "antd";
-import Banks from './banks';
+import { Select } from './Banks.style';
 import { RefundModal } from './Refund.style';
 
 const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank, setVisible, setChecking, refundPrice, ownMilege }) => {
@@ -35,7 +35,17 @@ const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank,
     >
       <div>
         <div className="bankSelectBoX">
-          <Banks selectOnChange={selectOnChange} />
+          <Select
+            className="bankSelect"
+            placeholder="은행선택"
+            onChange={selectOnChange}
+          >
+            {bankOptions.map((b, i) => (
+              <option key={i} value={b}>
+                {b}
+              </option>
+            ))}
+          </Select>
           <input
             type="number"
             placeholder="계좌번호"
@@ -57,5 +67,19 @@ const RefundWrite = ({ visible, setAccountNumber, setRefundPrice, setSelectBank,
     </RefundModal>
   );
 };
+
+const bankOptions = [
+  "카카오",
+  "신한",
+  "우리",
+  "국민",
+  "IBK",
+  "하나",
+  "제일",
+  "한국씨티",
+  "농협",
+  "부산",
+  "수협"
+];
 
 export default RefundWrite;

@@ -130,7 +130,7 @@ const Postmain = ({categoryNum, search}) => {
           <img
             className="postmainWriteIcon"
             alt="writePost"
-            src={"/images/postIcon.PNG"}
+            src={"/images/postIcon.png"}
           />
         </div>
         {postWriteVisible ? (
@@ -138,7 +138,7 @@ const Postmain = ({categoryNum, search}) => {
         ) : null}
         {tryLogin&&<Login clickLogin={clickLogin} />}
       </div>
-      <Pagination defaultCurrent={2} onChange={onChangePage} total={totalHelps} defaultPageSize={9}/>
+      <Pagination defaultCurrent={1} onChange={onChangePage} total={totalHelps} defaultPageSize={9}/>
     </PostUpperDiv>
   );
 };

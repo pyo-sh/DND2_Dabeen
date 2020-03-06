@@ -6,7 +6,7 @@ import MyHelp from './MyHelp';
 import PostBasket from './PostBasket';
 import ServiceCenter from '../service/ServiceCenter';
 import { Rate } from 'antd';
-import { UserPageWrapper } from './UserAll.style';
+import { UserPageWrapper, MenuIcon } from './UserAll.style';
 import { calculateRate } from '../../utils/calculateRate';
 
 const UserAll = ({userInfo, userNum, pagename, isMe}) => {
@@ -38,7 +38,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                   다비너 신청
                 </button>
               )}
-              <div className='userParagraph'>안녕하세요 {userInfo.nickName}입니다</div>
+              <div className='userParagraph'>{userInfo.introduce}</div>
             </div>
           </div>
           <ul className='contentNavbar'>
@@ -49,6 +49,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
             >
               <li className={pagename === 'userinfo' ? 'click' : ''}>
                 <a>상세정보</a>
+                {pagename === 'userinfo' ? <MenuIcon type="right"/> : null}
               </li>
             </Link>
             <Link
@@ -56,7 +57,8 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
               as={`/userpage/${userNum}/takehelp`}
             >
               <li className={pagename === 'takehelp' ? 'click' : ''}>
-                <a>받은 도움</a>
+                <a>필요한 도움</a>
+                {pagename === 'takehelp' ? <MenuIcon type="right"/> : null}
               </li>
             </Link>
             <Link
@@ -64,7 +66,8 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
               as={`/userpage/${userNum}/givehelp`}
             >
               <li className={pagename === 'givehelp' ? 'click' : ''}>
-                <a>준 도움</a>
+                <a>제공 도움</a>
+                {pagename === 'givehelp' ? <MenuIcon type="right"/> : null}
               </li>
             </Link>
             {isMe && (
@@ -75,6 +78,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                 >
                   <li className={pagename === 'basket' ? 'click' : ''}>
                     <a>장바구니</a>
+                    {pagename === 'basket' ? <MenuIcon type="right"/> : null}
                   </li>
                 </Link>
                 <Link
@@ -83,6 +87,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
                 >
                   <li className={pagename === 'service' ? 'click' : ''}>
                     <a>고객센터</a>
+                    {pagename === 'service' ? <MenuIcon type="right"/> : null}
                   </li>
                 </Link>
               </>

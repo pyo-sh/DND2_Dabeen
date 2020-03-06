@@ -4,11 +4,11 @@ import { Icon } from 'antd';
 import {Modal, DrawerForm} from './CheckDabeener.style';
 import ApplyDabeener from './ApplyDabeener';
 
-const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck, applyDabeeners, approveDabeenersNum, setApproveDabeenersNum}) => {
+const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck, applyDabeeners, approveDabeenersNum}) => {
     // const {helpPosts} = useSeletor(state => state.posts);
     const { me } = useSelector(state => state.user);
     const isMe = useMemo(() => me.userNum === postUserNum, [me && me.userNum, postUserNum]);
-    
+  
     //필요 인원 수 만큼 버튼 클릭 할 수 있게 만들어야함 
     // const choiceDabeener = useCallback(() => {
     //     if(count <= needPersonnel){
@@ -32,12 +32,13 @@ const CheckDabeener = ({onModal,helpNum, needPersonnel, postUserNum, applyCheck,
                         <div className="drawerTopSubTitle">확정인원</div>
                         <div className="drawerTopSubTitleValue"><span style={{color: "#FF4300"}}>{approveDabeenersNum}</span>/{needPersonnel}</div>
                     </div>
-                     {
+                     {/* {
                         applyCheck === "y" && isMe && <button className="pay">결제!</button>
-                     }
+                     } */}
                  </div>
                  <div className="drawerMiddle">
-                    {applyDabeeners.map(dabeener => <ApplyDabeener key={dabeener.user.userNum} helpNum={helpNum} dabeener={dabeener} myNum={me.userNum} isMe={isMe} setApproveDabeenersNum={setApproveDabeenersNum}/>)}
+                    {applyDabeeners.map(dabeener => <ApplyDabeener key={dabeener.user.userNum} helpNum={helpNum} dabeener={dabeener} myNum={me.userNum} isMe={isMe}
+                    needPersonnel ={needPersonnel} approveDabeenersNum={approveDabeenersNum}/>)}
                 </div>
             </DrawerForm>
         </Modal>
