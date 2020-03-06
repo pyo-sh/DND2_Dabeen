@@ -68,6 +68,7 @@ export const PostCapsuleUpperDiv = styled.div`
         height: 80px;
         border-radius: 50%;
         border: 1px solid #E9E9E9;
+        background : white;
       }
       & .CapsuleMainUserInfo {
         display: flex;
