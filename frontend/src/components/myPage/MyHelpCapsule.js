@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import PostDetail from '../posts/PostDetail';
 import { MyHelpCapsuleUpperDiv, MyHelpCapsuleTitle, MyHelpCapsuleInfo } from './MyHelpCapsule.style';
 
-const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
+const MyHelpCapsule = ({ helpType, helpData, isMe, finish }) => {
   const [myHelpVisible, setMyHelpVisible] = useState(false); // 카테고리 클릭에 대한 상세 정보
   const imagesURL = helpData.helpPic.map(pic => pic.path);
+  const isEnd = useMemo(() => helpData.helpEndTime.split('T')[0] !== '9999-12-31', [helpData && helpData.helpEndTime]);
   // 상세 정보를 보이게하는 Controls
   const setVisible = useCallback(e => {
     setMyHelpVisible(prev => !prev);
@@ -20,9 +21,13 @@ const MyHelpCapsule = ({ helpType, helpData, isMe }) => {
           ? helpData.isPaymentApprove === "p"
             ? <div className="done">결제완료</div>
             : <div className="doing">결제필요</div>
-          : helpData.isHelpApprove === "y"
-            ? <div className="done">도움완료</div>
-            : <div className="doing">진행 중</div>
+          : finish 
+            ? helpData.isHelpApprove === "y"
+              ? <div className="done">도움완료</div>
+              : <div className="done">도움종료</div>
+            : helpData.isHelpApprove === "y"
+              ? <div className="doing">진행 중</div>
+              : <div className="doing">대기 중</div>
           } 
         </div>
         {helpData.helpPic.length ? 

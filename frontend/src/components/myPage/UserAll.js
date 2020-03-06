@@ -57,7 +57,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
               as={`/userpage/${userNum}/takehelp`}
             >
               <li className={pagename === 'takehelp' ? 'click' : ''}>
-                <a>받은 도움</a>
+                <a>필요한 도움</a>
                 {pagename === 'takehelp' ? <MenuIcon type="right"/> : null}
               </li>
             </Link>
@@ -66,7 +66,7 @@ const UserAll = ({userInfo, userNum, pagename, isMe}) => {
               as={`/userpage/${userNum}/givehelp`}
             >
               <li className={pagename === 'givehelp' ? 'click' : ''}>
-                <a>준 도움</a>
+                <a>제공 도움</a>
                 {pagename === 'givehelp' ? <MenuIcon type="right"/> : null}
               </li>
             </Link>
