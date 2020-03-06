@@ -312,7 +312,7 @@ const reducer = (state = initialState, action) => {
       }
       case APPROVE_DABEENER_SUCCESS : {
         draft.isApproving = false;
-        const index = draft.applyDabeeners.findIndex(v => v.user.user_num === action.data.user.user_num);
+        const index = draft.applyDabeeners.findIndex(v => v.user.userNum === action.data.user.user_num);
         draft.applyDabeeners[index].applyDate = action.data.comp_dttm; 
         draft.applyDabeeners[index].isApprove = action.data.help_aprv_whet;
         draft.applyDabeeners[index].aprroveDate =  action.data.apprv_dttm;
