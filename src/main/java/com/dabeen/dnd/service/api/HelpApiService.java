@@ -161,19 +161,46 @@ public class HelpApiService {
                 })
                 .map(help ->{
                     log.info("{}", helpApiRequest);
+
+                    // List<HelpPic> helpPics = new ArrayList<>();
+
                     if(helpApiRequest.getHelpPics() != null){
                         log.info("{}", "hello");
                         List<HelpPicApiRequest> helpPicRequests = helpApiRequest.getHelpPics();
 
                         helpPicRequests.forEach(helpPicRequest -> {
-                            HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(), helpPicRequest.getPicOrnu());
-                            log.info("{}", "hello");
-                            helpPicRepository.findById(helpPicPK)
-                                                .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
-                                                .map(helpPic -> helpPicRepository.save(helpPic))
-                                                .orElseThrow(()-> new NotFoundException("HelpPic"));
+
+                            if(helpPicRequest.getPicOrnu() == null){
+
+                                Map<String,Object> helpPicMap = new HashMap<>();
+                                helpPicMap.put("helpNum",helpApiRequest.getHelpNum());
+                                helpPicMap.put("picOrnu",null);
+                                helpPicMap.put("path",helpPicRequest.getPath());
+                                
+                                helpPicMapper.insert(helpPicMap);
+
+                                // HelpPicPK newHelpPicPK = new HelpPicPK((String) helpPicMap.get("helpNum"),(Integer) helpPicMap.get("picOrnu"));
+
+                                // helpPicRepository.findById(newHelpPicPK)
+                                //                 .map(newHelpPic -> helpPics.add(newHelpPic))
+                                //                 .orElseThrow(() -> new NotFoundException("HelpPic"));
+
+                            }
+
+                            else{
+                                HelpPicPK helpPicPK = new HelpPicPK(helpApiRequest.getHelpNum(), helpPicRequest.getPicOrnu());
+                                log.info("{}", "hello");
+                                helpPicRepository.findById(helpPicPK)
+                                                    .map(helpPic -> helpPic.setPath(helpPicRequest.getPath()))
+                                                    .map(helpPic -> helpPicRepository.save(helpPic))
+                                                    // .map(helpPic -> helpPics.add(helpPic))
+                                                    .orElseThrow(()-> new NotFoundException("HelpPic"));
+                            }
                         });
                     }
+                    // 수정결과를 담은 helpPic들
+                    // log.info("{}",helpPics);
+
                     return help;
                 })
                 .map(helpRepository::save)
@@ -417,7 +444,7 @@ public class HelpApiService {
 
     public HelpSearchApiResponse searchResponse(Help help){
 
-        HelpSearchApiResponse helpExecLocApiResponse =  HelpSearchApiResponse.builder()
+        HelpSearchApiResponse helpSearchApiResponse =  HelpSearchApiResponse.builder()
                                 .helpNum(help.getHelpNum())
                                 .helpPstnDttm(help.getHelpPstnDttm())
                                 .helpEndDttm(help.getHelpEndDttm())
@@ -437,7 +464,7 @@ public class HelpApiService {
                                                                                 .map(helpPicApiService::response)
                                                                                 .collect(Collectors.toList()))
                                 .build();
-        return helpExecLocApiResponse;
+        return helpSearchApiResponse;
         
     }
 }
