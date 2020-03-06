@@ -158,6 +158,7 @@ export const LiveHelpRequestUpperDiv = styled.div`
     height: 80px;
     border-radius: 50%;
     border: 1px solid #BFC7CE;
+    background : white;
   }
   & .liveHelpRequestUserInfo{
     display: flex;

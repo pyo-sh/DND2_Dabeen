@@ -29,13 +29,13 @@ const PostCapsule = ({ data, categoryNum}) => {
             </div>
           </div>
           {data.helpPic.length ? 
-          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="PostImage"/>
+          <img className="CapsuleMainImage" src={data.helpPic[0].path} alt="게시글 이미지"/>
           :
-          <img className="CapsuleMainImage" src={'/images/noImage.jpg'}/>
+          <img className="CapsuleMainImage" src={'/images/noImage.jpg'} alt="이미지 없음"/>
           }
           <div className="CapsuleMainProfile">
             <Divider orientation="left">
-              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`}/>
+              <img className="CapsuleMainPicture" src={data.picPath || `/images/defaultProfile.png`} alt="유저 프로필"/>
             </Divider>
             <div className="CapsuleMainUserInfo">
               <div className="CapsuleMainNickname">{data.nickname}</div>

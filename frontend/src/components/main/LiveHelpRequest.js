@@ -87,7 +87,7 @@ const LiveHelpRequest = () => {
                       {help.execLoc}
                     </div>
                   </div>
-                  {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path}/>
+                  {help.helpPic.length ? <img className="LiveHelpRequestImage" src={help.helpPic[0].path} alt="유저 프로필"/>
                     :
                     <img className="LiveHelpRequestImage" src={'/images/noImage.jpg'}/>
                   }
