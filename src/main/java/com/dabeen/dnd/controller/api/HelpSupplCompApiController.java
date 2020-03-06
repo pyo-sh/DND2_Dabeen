@@ -95,6 +95,12 @@ public class HelpSupplCompApiController{
         return helpSupplCompApiService.supplierApproved(request);
     }
 
+    // 공급자 승인 취소 API
+    @PutMapping("/approved-cancel")
+    public Header<HelpCompUserInfoApiResponse> supplierApprovedCancel(@RequestBody Header<HelpSupplCompApiRequest> request){
+        return helpSupplCompApiService.supplierApprovedCancel(request);
+    }
+
     // 공급자 평가 API
     @PutMapping("/assessment")
     public Header<HelpCompUserInfoApiResponse> supplierAssessment(@RequestBody Header<HelpSupplCompApiRequest> request){
