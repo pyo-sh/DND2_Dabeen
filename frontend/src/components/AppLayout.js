@@ -1,20 +1,25 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import Header from "./main/Header";
 import Footer from "./main/Footer";
 import styled from "styled-components";
-import { loginRequestAction } from "../reducers/user";
+import { useSelector } from 'react-redux';
+import Router from 'next/router';
 
 
 const AppLayout = ({ children, asPath }) => {
-  const dispatch = useDispatch();
+  const { loginSuccess, loginError } = useSelector(state => state.user);
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-  //   if (token) {
-  //     dispatch(loginRequestAction({token}));
-  //   }
-  // }, []);
+  useEffect(() => {
+    if(loginSuccess) {
+      Router.push('/');
+    }
+  }, [loginSuccess]);
+
+  useEffect(() => {
+    if(loginError) {
+      alert(loginError);
+    }
+  }, [loginError]);
   return (
     <>
       <Header asPath={asPath} />

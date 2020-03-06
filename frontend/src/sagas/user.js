@@ -59,7 +59,7 @@ function* login(action) {
         yield put(loadUserRequestAction({userNum, isMe: true }));
     }catch(e){
         console.error(e);
-        yield put(loginFailureAction(e));
+        yield put(loginFailureAction(e.response));
     }
 };
 

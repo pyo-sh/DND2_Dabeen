@@ -2,14 +2,13 @@ import React, {useState, useCallback, useEffect } from 'react';
 import { Icon, Form } from 'antd';
 import {useDispatch, useSelector } from 'react-redux';
 import { loginRequestAction } from '../../reducers/user';
-import Router from 'next/router';
 import Link from 'next/link';
 import inputChangeHook from '../../hooks/inputChangeHook';
 import {Modal, Content, InputUser, LoginButton, ContentBottom} from './Login.style';
 
 const Login = ({clickLogin}) => {
     const dispatch = useDispatch();
-    const { isLoggingIn, isLoginSuccess } = useSelector(state => state.user);
+    const { isLoggingIn, isLoginSuccess, loginError } = useSelector(state => state.user);
     const [id, onChangeId] = inputChangeHook('');
     const [password, onChangePassword] = inputChangeHook('');
     const [loginMaintain, setLoginMaintain] = useState(false);
@@ -25,11 +24,7 @@ const Login = ({clickLogin}) => {
     const closeLoginModal = useCallback(() => {
         clickLogin(prev => !prev);
     }, []);
-    useEffect(() => {
-        if(isLoginSuccess){
-            Router.push('/');
-        }
-    }, [isLoginSuccess]);
+
     return (
             <Modal>
                 <Form onSubmit={submitForm}>
