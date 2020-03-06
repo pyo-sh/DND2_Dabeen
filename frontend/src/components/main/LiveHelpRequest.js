@@ -39,7 +39,7 @@ const LiveHelpRequest = () => {
     setSelectPost(livePosts.filter(help => helpNum === help.helpNum)[0]);
     toggleDetail();
   },[livePosts]);
-  console.dir(livePosts);
+
   const setting = useMemo(()=> ({
     initialSlide : 0,
     dots : true,
