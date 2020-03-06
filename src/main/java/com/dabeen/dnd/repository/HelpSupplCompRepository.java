@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public interface HelpSupplCompRepository extends JpaRepository<HelpSupplComp, HelpSupplCompPK>{
     List<HelpSupplComp> findByHelpSupplCompPK_helpNum(String helpNum);
     List<HelpSupplComp> findByHelpSupplCompPK_helpNumAndHelpAprvWhet(String helpNum, Whether whet);
-    List<HelpSupplComp> findByHelpSupplCompPK_helpNumOrderByCompDttm(String helpNum);
+    List<HelpSupplComp> findByHelpSupplCompPK_helpNumOrderByCompDttmDesc(String helpNum);
     Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelpAprvWhetAndHelp_PrefHelpExecDttmBeforeOrderByHelp_HelpNumDesc(String userNum, Whether whet, LocalDateTime dateTime, Pageable pageable);
     Page<HelpSupplComp> findByHelpSupplCompPK_SupplNumAndHelp_PrefHelpExecDttmAfterOrderByHelp_HelpNumDesc(String userNum, LocalDateTime dateTime, Pageable pageable);
 
