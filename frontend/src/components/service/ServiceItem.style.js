@@ -30,4 +30,7 @@ export const ServiceItemBox = styled.div`
       color: #FF4300;
       font-size: 20px;
     }
+  & pre {
+    white-space : pre-wrap;
+  }
 `;
