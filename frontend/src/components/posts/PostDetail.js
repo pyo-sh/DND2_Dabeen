@@ -79,22 +79,27 @@ const PostDetail = ({setVisible, data, categoryNum}) => {
     const onEvaluateModal = useCallback(() => {
         setClickEvaluate(prev => !prev);
     }, []);
-
+    
     //수정 완료 버튼 눌렀을 때
     const onConfirm = useCallback(() => {
         setEditImgPaths(editImages.map((pic, i) => editImgPaths.push({"path": pic, "pic_ornu": i+1})))
         dispatch(updateHelpPostRequestAction({
+                helpPostDate: data.helpPostDate,
                 userNum: data.userNum,
                 helpNum: data.helpNum,
                 helpTitle: editTitle, 
                 categoryNum: data.categoryNum,
                 helpDeadLine: editHelpDeadLineDate.concat('T' + editHelpDeadLineTime),
                 helpExecDate: editHelpExecDate.concat('T'+editHelpExecTime),
+                helpEndTime: data.helpEndTime,
                 postNum: parseInt(editNeedPersonnel),
                 price: parseInt(editPrice),
                 execLoc: editExecLoc,
                 helpContent: editContent,
                 helpPic: editImgPaths,
+                nickname: data.nickname,
+                userId: data.userId,
+                picPath: data.picPath,
                 cookie : getCookie()
             })
         );
