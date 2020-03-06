@@ -12,12 +12,12 @@ const ServiceItem = memo(({ service, faq}) => {
       <ServiceItemBox isClick={isClick}>
       <div className="serviceItemQuestion" onClick={questionOnClick}>
         <div className="questionTitle"><div><b>Q.</b>{service.questionTitle}</div><div>{service.questionDate.split('T')[0]}</div></div>
-        {isClick && <div>{service.questionContent}</div>}
+        {isClick && <pre>{service.questionContent}</pre>}
       </div>
       {isClick && (
         <div className="serviceItemAnswer">
             {service.replyPost ? <><div className="replyTitle"><div><b>A.</b>{service.replyPost.replyTitle}</div><div>{service.replyPost.replyDate.split('T')[0]}</div></div>
-              <div>{service.replyPost.replyContent}</div>
+              <pre>{`${service.replyPost.replyContent}`}</pre>
             </> :"아직 답변이 달리지 않았습니다."}
         </div>
       )}
