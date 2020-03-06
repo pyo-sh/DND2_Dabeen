@@ -16,7 +16,7 @@ const ServiceItem = memo(({ service, faq}) => {
       </div>
       {isClick && (
         <div className="serviceItemAnswer">
-            {service.replyPost ? <><div className="replyTitle"><div><b>A.</b>{service.replyPost.replyTitle}</div><div>{service.replyPost.replyDate}</div></div>
+            {service.replyPost ? <><div className="replyTitle"><div><b>A.</b>{service.replyPost.replyTitle}</div><div>{service.replyPost.replyDate.split('T')[0]}</div></div>
               <div>{service.replyPost.replyContent}</div>
             </> :"아직 답변이 달리지 않았습니다."}
         </div>
