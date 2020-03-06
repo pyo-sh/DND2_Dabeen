@@ -27,6 +27,7 @@ export const CustomModal = styled(Modal)`
         width : 100%;
         height: 20vh;
         border-radius: 5px;
+        border: 1px solid #E1E1E1;
     }
     & textarea:focus, textarea:hover {
         border : 1px solid #FF4300;

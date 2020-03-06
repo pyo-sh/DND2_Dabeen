@@ -20,6 +20,9 @@ export const initialState = {
   isApproving : false,
   approveError : '',
 
+  isCancelApprove : false,
+  cancelApproveError : '',
+
   isCancelApplying : false,
   cancelApplyError : '',
   // 유저의 도움 중 받을 도움 / 줄 도움
@@ -87,6 +90,10 @@ export const APPROVE_DABEENER_REQUEST = "APPROVE_DABEENER_REQUEST";
 export const APPROVE_DABEENER_SUCCESS = "APPROVE_DABEENER_SUCCESS";
 export const APPROVE_DABEENER_FAILURE = "APPROVE_DABEENER_FAILURE";
 
+export const APPROVE_CANCEL_REQUEST = "APPROVE_CANCEL_REQUEST";
+export const APPROVE_CANCEL_SUCCESS = "APPROVE_CANCEL_SUCCESS";
+export const APPROVE_CANCEL_FAILURE = "APPROVE_CANCEL_FAILURE";
+
 //도움 게시글 작성
 export const ADD_HELPPOST_REQUEST = "ADD_HELPPOST_REQUEST";
 export const ADD_HELPPOST_SUCCESS = "ADD_HELPPOST_SUCCESS";
@@ -148,6 +155,11 @@ export const cancelApplyFailureAction = createAction(CANCEL_APPLY_FAILURE);
 export const approveDabeenerRequestAction = createAction(APPROVE_DABEENER_REQUEST);
 export const approveDabeenerSuccessAction = createAction(APPROVE_DABEENER_SUCCESS);
 export const approveDabeenerFailureAction = createAction(APPROVE_DABEENER_FAILURE);
+
+export const approveCancelRequestAction = createAction(APPROVE_CANCEL_REQUEST);
+export const approveCancelSuccessAction = createAction(APPROVE_CANCEL_SUCCESS);
+export const approveCancelFailureAction = createAction(APPROVE_CANCEL_FAILURE);
+
 
 export const addHelpPostRequestAction = createAction(ADD_HELPPOST_REQUEST);
 export const addHelpPostSuccessAction = createAction(ADD_HELPPOST_SUCCESS);
@@ -322,6 +334,27 @@ const reducer = (state = initialState, action) => {
       case APPROVE_DABEENER_FAILURE :{
         draft.isApproving = false;
         draft.approveError = action.data;
+        break;
+      }
+      case APPROVE_CANCEL_REQUEST : {
+        draft.isCancelApplying = true;
+        draft.cancelApproveError = ''
+        break;
+      }
+      case APPROVE_CANCEL_SUCCESS : {
+        draft.isCancelApplying = false;
+        const index = draft.applyDabeeners.findIndex(v => v.user.userNum === action.data.user.user_num);
+        draft.applyDabeeners[index].applyDate = action.data.comp_dttm; 
+        draft.applyDabeeners[index].isApprove = action.data.help_aprv_whet;
+        draft.applyDabeeners[index].rate = action.data.rate;
+        draft.applyDabeeners[index].aprroveDate =  action.data.apprv_dttm;
+        draft.applyDabeeners[index].evaluationContent = action.data.ast_cont
+        draft.approveDabeenersNum -= 1;
+        break;
+      }
+      case APPROVE_CANCEL_FAILURE : {
+        draft.isCancelApplying = false;
+        draft.cancelApproveError = action.data;
         break;
       }
       case ADD_HELPPOST_REQUEST: {
