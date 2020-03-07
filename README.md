@@ -68,7 +68,7 @@ Git-Flow
 
 ### UI
 
-<img src="./images/.메인.PNG" width="300"/>
+<img src="./images/메인.PNG" width="300"/>
 <img src="./images/로그인.PNG" width="300"/>
 <img src="./images/도움조회.png" width="300"/>
 <img src="./images/도움작성.png" width="300"/>
