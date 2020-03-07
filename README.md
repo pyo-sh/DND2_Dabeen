@@ -1,16 +1,19 @@
-# DND 2기 Team-7 Dabeen
+# :two_men_holding_hands: DND 2기 Team-7 Dabeen 
 
 ### 서비스 기획내용
 우리동네 작은도움 서비스
 > 서비스 이용자들의 주변(동네)에서 도움을 주고받게 할 수 있는 플랫폼을 제공
 
-### 개발환경
+### :calendar: 기간 
+2019-12-28 ~ 2020-03-07
+
+### :earth_asia: 개발환경
 * frontEnd
     > React Redux Redux-Saga Next.js
 * backEnd
     > Springboot mySQL
 ----------------
-### Git
+### :octocat: Git
 Git-Flow
 * Branch
     - master  
@@ -28,19 +31,23 @@ Git-Flow
     - kwon  
     - mun
     - pyo  
-  
-Commit Message rules
-1.	메시지 양식은 “구현 중인 기능 : 구현 중인 세부사항” 으로 작성한다.  
-    Ex) 검색 : 유저 검색 구현 중
-2.	메시지의 내용은 되도록 간결하게 작성하며, 상세히 서술해야 할 내용은 Tag를 이용한다.
-3.	메시지는 프로그램 내용 부분을 제외하고 알아보기 쉽게 한글로 적는다.
-4.	구현 중인 세부사항 부분에 기능을 알아볼 수 있는 선에서 36자 안으로 남기고 싶은 말을 추가해도 된다.
-  
-branch 생성 유의명령어
-```
-git init
-git remote add origin https://github.com/geonwoomun/DND2_Dabeen.git
-git pull origin master
-git branch [branch명]
-git push origin [branch명]
-```
+    
+ ### :computer: 배포 사이트
+ 
+ 프론트 :  https://dnd-dabeen.now.sh/
+ 
+ 백엔드 :  https://www.dabeen.org:3307/
+ 
+ ### :ledger: 트렐로
+ 
+ https://trello.com/b/lEJuScFe/dd-project
+ 
+ ### :pencil: 느낀점
+ 
+ DND 1기를 하면서 필요성을 느꼈었던 Redux, Redux-Saga를 공부하고 적용해 볼 수 있어서 좋았다. SSR을 할 수 있게 만들어주는 프레임워크인 Next.js을 사용하며 공부할 수 있었다. 팀원들과 협업을 해볼 수 있어서 좋았다.  그리고 좀 더 react에 대해서 자세히 알 수 있었다. 다음엔 디자이너가 있는 팀에서 협업을 해보고 싶다. 디자인에 대해서는 별로 관심 없고 해본적도 없었는데 피그마를 배워보고 싶다는 생각이 들었다.
+ 
+ 하면서 좀 더 자세한 프로젝트 설계가 필요하겠다라고 느꼈다. 처음엔 에자일스럽게 하자고 요즘 에자일이 대세래~ 하면서 대충 정하고 넘어갔다가 너무 바뀐 점들이 많았기 때문이다. 그래서 프로젝트가 지연 되고 중간에 바꾸고 다시 회의하고 한다고 시간을 많이 빼앗긴 것 같다. 다음에는 애자일 방식으로 프로젝트를 진행하더라도 기본적인 개념은 확실하게 잡고 가는게 좋다고 느꼈다.
+ 
+웹 소켓을 이용해 채팅 기능까지 구현하고 싶었는데 공부만 조금 해보고 시간 부족과 기술 부족으로 인해 구현하지 못 한점이 아쉽다. 다음에 개인 프로젝트를 통해 구현해보고 싶다.
+
+다음 프로젝트 때는 Next.js에 대해서 좀 더 자세히 공부해서 제대로된 SSR과 SEO를 적용시켜 보고 싶고 TypeScript를 공부해 적용하여 더욱 안정적인 코드를 짜보고 싶다.
