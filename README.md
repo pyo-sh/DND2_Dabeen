@@ -1,6 +1,6 @@
 # :two_men_holding_hands: DND 2기 Team-7 Dabeen 
 
-### 서비스 기획내용
+### &#127752; 서비스 기획내용
 우리동네 작은도움 서비스
 > 서비스 이용자들의 주변(동네)에서 도움을 주고받게 할 수 있는 플랫폼을 제공
 
@@ -66,7 +66,7 @@ Git-Flow
 
 다음 프로젝트 때는 Next.js에 대해서 좀 더 자세히 공부해서 제대로된 SSR과 SEO를 적용시켜 보고 싶고 TypeScript를 공부해 적용하여 더욱 안정적인 코드를 짜보고 싶다.
 
-### UI
+### &#127760; UI
 
 <img src="./images/메인.PNG" width="300"/>
 <img src="./images/로그인.PNG" width="300"/>
