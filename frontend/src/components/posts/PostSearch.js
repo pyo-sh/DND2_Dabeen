@@ -7,9 +7,9 @@ const PostSearch = ({ helpLocation, onChangeLocation, setHelpApplyDate,
   minPrice,  onChangeMinPrice, maxPrice, onChangeMaxPrice, helpKeyword, onChangeHelpKeyword,
   onChangeHelpClock, onChangePage }) => {
   
-    const clickSearch = useCallback(() => {
+    const clickSearch = () => {
       onChangePage();
-    }, []);
+    };
 
   return (
     <PostSearchUpperDiv>
