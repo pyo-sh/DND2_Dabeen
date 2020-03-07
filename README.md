@@ -9,9 +9,15 @@
 
 ### :earth_asia: 개발환경
 * frontEnd
-    > React Redux Redux-Saga Next.js
+
+  <img src="./images/react.png" width="200"/>
+  <img src="./images/redux.png" width="150"/>
+  <img src="./images/nextjs.png" width="200"/>
+  
 * backEnd
-    > Springboot mySQL
+
+  <img src="./images/springBoot.png" width="150"/>
+  <img src="./images/mysql.png" width="150"/>
 ----------------
 ### :octocat: Git
 Git-Flow
@@ -32,11 +38,19 @@ Git-Flow
     - mun
     - pyo  
     
- ### :computer: 배포 사이트
+ ### :computer: 배포
  
- 프론트 :  https://dnd-dabeen.now.sh/
+ 프론트 
  
- 백엔드 :  https://www.dabeen.org:3307/
+  <img src="./images/배포2.png" width="200"/>
+
+ https://dnd-dabeen.now.sh/
+ 
+ 백엔드 
+ 
+ <img src="./images/배포1.png" width="150"/>
+ 
+ https://www.dabeen.org:3307/
  
  ### :ledger: 트렐로
  
@@ -51,3 +65,16 @@ Git-Flow
 웹 소켓을 이용해 채팅 기능까지 구현하고 싶었는데 공부만 조금 해보고 시간 부족과 기술 부족으로 인해 구현하지 못 한점이 아쉽다. 다음에 개인 프로젝트를 통해 구현해보고 싶다.
 
 다음 프로젝트 때는 Next.js에 대해서 좀 더 자세히 공부해서 제대로된 SSR과 SEO를 적용시켜 보고 싶고 TypeScript를 공부해 적용하여 더욱 안정적인 코드를 짜보고 싶다.
+
+### UI
+
+<img src="./images/.메인.PNG" width="300"/>
+<img src="./images/로그인.PNG" width="300"/>
+<img src="./images/도움조회.png" width="300"/>
+<img src="./images/도움작성.png" width="300"/>
+<img src="./images/도움상세정보조회.png" width="300"/>
+<img src="./images/도움신청다비너확인.jpg" width="300"/>
+<img src="./images/다비너등록.PNG" width="300"/>
+<img src="./images/장바구니.png" width="300"/>
+<img src="./images/결제.png" width="300"/>
+<img src="./images/환급.png" width="300"/>
