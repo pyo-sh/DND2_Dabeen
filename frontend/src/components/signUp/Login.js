@@ -43,7 +43,7 @@ const Login = ({clickLogin}) => {
                     </div>
                     <LoginButton htmlType="submit" loading={isLoggingIn}>로그인</LoginButton>
                     <ContentBottom>
-                        <div><Link href="/signup"><a onClick={closeLoginModal}>회원가입</a></Link></div>
+                        <div><Link href="/terms"><a onClick={closeLoginModal}>회원가입</a></Link></div>
                         <div className="idAndPasswordFind">
                             <div><Link href="/findid"><a onClick={closeLoginModal}>아이디 찾기</a></Link> </div>
                             &nbsp; |  &nbsp;
