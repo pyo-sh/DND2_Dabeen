@@ -56,7 +56,7 @@ Git-Flow
  
  https://trello.com/b/lEJuScFe/dd-project
  
- ### 이수증
+ ### &#128220; 이수증
  
  DND를 2기수 이수해서 다음과 같은 수료증을 받았다.
  
