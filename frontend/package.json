@@ -19,7 +19,7 @@
     "immer": "^5.1.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
-    "next": "^9.1.5",
+    "next": "^9.3.2",
     "next-redux-saga": "^4.1.2",
     "next-redux-wrapper": "^4.0.1",
     "node-sass": "^4.13.1",
