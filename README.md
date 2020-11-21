@@ -20,7 +20,6 @@
   <img src="./images/mysql.png" width="150"/>
 ----------------
 ### :octocat: Git
-Git-Flow
 * Branch
     - master  
         최종적인 기능을 갖춘 웹사이트 브랜치
