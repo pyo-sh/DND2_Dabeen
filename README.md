@@ -10,11 +10,13 @@
 ### :earth_asia: 개발환경
 
 * frontEnd
+
   <img src="./images/react.png" height = "150"/>
   <img src="./images/redux.png" height = "150"/>
   <img src="./images/nextjs.png" height = "150"/>
   
 * backEnd
+
   <img src="./images/springBoot.png" height = "150"/>
   <img src="./images/mysql.png" height = "150"/>
 
@@ -83,12 +85,39 @@ NEXTjs 프레임워크를 통해 Server Side Rendering 으로 진행하였다.
 ### &#127760; UI
 
 <img src="./images/메인.PNG" width="600"/>
+
+----------------
+
 <img src="./images/로그인.PNG" width="600"/>
+
+----------------
+
 <img src="./images/도움조회.png" width="600"/>
+
+----------------
+
 <img src="./images/도움작성.png" width="600"/>
+
+----------------
+
 <img src="./images/도움상세정보조회.png" width="600"/>
+
+----------------
+
 <img src="./images/도움신청다비너확인.jpg" width="600"/>
+
+----------------
+
 <img src="./images/다비너등록.PNG" width="600"/>
+
+----------------
+
 <img src="./images/장바구니.png" width="600"/>
+
+----------------
+
 <img src="./images/결제.png" width="600"/>
+
+----------------
+
 <img src="./images/환급.png" width="600"/>
