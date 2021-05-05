@@ -1,4 +1,6 @@
-export const apiKeys = {
+const apiKeys = {
     geocoding: '',
     googlemap: '',
-}
+};
+
+export default apiKeys;
