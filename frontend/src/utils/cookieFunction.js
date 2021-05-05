@@ -1,5 +1,5 @@
-export const getCookie = () => {
-    return '';
+export function getCookie() {
+    return document.cookie ? document.cookie.split('=')[1] : "";
 }
 
 export function setCookie (token, maintain=undefined) {
